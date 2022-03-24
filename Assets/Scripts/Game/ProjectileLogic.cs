@@ -6,6 +6,7 @@ public class ProjectileLogic : MonoBehaviour
     
     public GameObject m_Owner = null;
     public float m_Speed = 0;
+    public float m_Damage = 10;
     
     // Start is called before the first frame update
     void Start()
@@ -69,6 +70,10 @@ public class ProjectileLogic : MonoBehaviour
                         return;
                     }
                 }
+                break;
+            case "Enemies":
+                EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
+                enemy.TakeDamage(this.m_Damage);
                 break;
             default:
                 break;

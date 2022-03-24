@@ -157,7 +157,7 @@ public class PlayerCombat : MonoBehaviour
     {
         // If the mouse was just pressed, start the check if we're melee attacking
         if (this.m_MouseHoldTime == 0)
-            this.m_MouseHoldTime = Time.time + PlayerCombat.MeleeHoldTime;
+            this.m_MouseHoldTime = Time.time + PlayerCombat.MeleeHoldTime*Time.timeScale;
         
         // If we held the shoot button for too long, then we want to fire.
         if (this.m_MouseHoldTime < Time.time && this.m_NextFire < Time.time)
@@ -171,7 +171,7 @@ public class PlayerCombat : MonoBehaviour
             this.m_audio.Play("Weapons/Pistol_Fire");
             this.m_NextFire = Time.time + PlayerCombat.PistolFireRate;
             this.m_CombatState = CombatState.Shooting;
-            this.m_TimeToIdle = Time.time + PlayerCombat.ShootIdleTime;
+            this.m_TimeToIdle = Time.time + PlayerCombat.ShootIdleTime*Time.timeScale;
         }
     }
     
@@ -186,8 +186,8 @@ public class PlayerCombat : MonoBehaviour
         SwordLogic sword = Instantiate(this.m_swordprefab, this.m_fireattachment.transform.position, this.m_fireattachment.transform.rotation).GetComponent<SwordLogic>();
         sword.SetOwner(this.gameObject);
         this.m_CombatState = CombatState.Melee;
-        this.m_TimeToIdle = Time.time + PlayerCombat.MeleeIdleTime*(1/Time.timeScale);
-        this.m_audio.Play("Weapons/Sword_Swing1");
+        this.m_TimeToIdle = Time.time + PlayerCombat.MeleeIdleTime*Time.timeScale;
+        this.m_audio.Play("Weapons/Sword_Swing");
     }
     
     

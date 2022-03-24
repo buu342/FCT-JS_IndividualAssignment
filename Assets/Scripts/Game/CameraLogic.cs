@@ -7,14 +7,13 @@ public class CameraLogic : MonoBehaviour
     private const float MaxTraumaOffset = 1.0f;
     private float m_NoiseSeed;
     
+    private float m_Trauma = 0.0f;
     public GameObject m_Player;
-    private float m_Trauma;
     public Vector3 m_PoI;
     
     // Start is called before the first frame update
     void Start()
     {
-        this.m_Trauma = 0.0f;
         this.m_NoiseSeed = Random.value;
     }
 

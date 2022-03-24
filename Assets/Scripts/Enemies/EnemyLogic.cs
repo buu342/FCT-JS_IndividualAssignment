@@ -10,18 +10,23 @@ public class EnemyLogic : MonoBehaviour
 {
     private const float DepthPerception = 15.0f;
     private const float BlasterFireRate = 0.5f;
+    private const float TraumaSpeed     = 25.0f;
+    private const float MaxTraumaOffset = 2.0f;
+    private float m_NoiseSeed;
     
     // Health
     public int m_Health = 10;
-    private float m_Tremor;
+    private float m_Trauma = 0.0f;
     
     // Aim
+    private Vector3 m_OriginalMeshPos;
     private Vector3 m_OriginalAimPos;
     private Quaternion m_OriginalAimAng;
     private float m_NextFire = 0;
     
     // Components
-    public  GameObject m_bulletprefab; 
+    public  GameObject m_bulletprefab;
+    private GameObject m_mesh;
     private GameObject m_target;
     private GameObject m_fireattachment;
     private GameObject m_shoulder;
@@ -35,12 +40,15 @@ public class EnemyLogic : MonoBehaviour
     
     void Start()
     {
+        this.m_NoiseSeed = Random.value;
         this.m_target = GameObject.Find("Player");
         this.m_audio = FindObjectOfType<AudioManager>();
+        this.m_mesh = this.transform.Find("Mesh").gameObject;
         this.m_shoulder = this.transform.Find("Shoulder").gameObject;
         this.m_fireattachment = this.transform.Find("FireAttachment").gameObject;
         this.m_OriginalAimPos = this.m_fireattachment.transform.localPosition;
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
+        this.m_OriginalMeshPos = this.m_mesh.transform.localPosition;
     }
 
 
@@ -53,13 +61,25 @@ public class EnemyLogic : MonoBehaviour
     {
         HandleTargeting();
         
+        float shake = this.m_Trauma*this.m_Trauma;
+        float traumaoffsetx = EnemyLogic.MaxTraumaOffset*shake*(Mathf.PerlinNoise(this.m_NoiseSeed, Time.time*EnemyLogic.TraumaSpeed)*2 - 1);
+        float traumaoffsety = EnemyLogic.MaxTraumaOffset*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 1, Time.time*EnemyLogic.TraumaSpeed)*2 - 1);
+        
+        // Calculate the shake position
+        this.m_mesh.transform.localPosition = this.m_OriginalMeshPos;
+        this.m_mesh.transform.localPosition += new Vector3(traumaoffsetx, traumaoffsety, 0);
+        
+        // Decrease shake over time
+        this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime);
+        
         if (this.m_Health <= 0)
             Destroy(this.gameObject);
     }
     
     public void TakeDamage(int amount)
     {
-        //this.m_Health -= amount;
+        this.m_Health -= amount;
+        this.m_Trauma = Mathf.Min(0.5f, this.m_Trauma + ((float)amount)/30.0f);
     }
     
     private void HandleTargeting()

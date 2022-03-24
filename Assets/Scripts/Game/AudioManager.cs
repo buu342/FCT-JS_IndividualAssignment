@@ -26,12 +26,13 @@ public class AudioManager : MonoBehaviour
 
     public void Play(string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
+        Sound[] slist = Array.FindAll(sounds, sound => sound.name == name);
+        if (slist.Length == 0)
         {
             Debug.LogWarning("Sound: '"+name+"' not found!");
             return;
         }
+        Sound s = slist[(new System.Random()).Next(0, slist.Length)];
         s.source.volume = s.volume;
         s.source.pitch = s.pitch;
         s.source.Play();
