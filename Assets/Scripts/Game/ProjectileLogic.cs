@@ -46,7 +46,7 @@ public class ProjectileLogic : MonoBehaviour
                 {
                     this.SetOwner(sword.GetOwner());
                     this.transform.rotation = other.gameObject.transform.rotation;
-                    this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed;
+                    this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed*2;
                 }
                 return;
             case "Player":
@@ -66,14 +66,17 @@ public class ProjectileLogic : MonoBehaviour
                     {
                         this.SetOwner(other.gameObject);
                         this.transform.rotation = ply.GetFireAttachment().transform.rotation;
-                        this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed;
+                        this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed*2;
                         return;
                     }
                 }
                 break;
             case "Enemies":
+                // Ignore enemies if our owner is an enemy
+                if (this.GetOwner().tag == "Enemies")
+                    return;
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
-                enemy.TakeDamage(this.m_Damage);
+                enemy.TakeDamage((int)this.m_Damage);
                 break;
             default:
                 break;
