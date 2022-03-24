@@ -10,7 +10,8 @@ public class SwordLogic : MonoBehaviour
 {
     private const float LifeTime = 0.3f;
     
-    public GameObject m_Owner = null;
+    private GameObject m_Owner = null;
+    private int m_Damage = 20;
     private float m_DeathTime;
     private Vector3 m_OwnerOffset = Vector3.zero;
     
@@ -36,5 +37,24 @@ public class SwordLogic : MonoBehaviour
     {
         this.m_Owner = owner;
         this.m_OwnerOffset = this.transform.position - owner.transform.position;
+    }
+    
+    public void SetDamage(int damage)
+    {
+        this.m_Damage = damage;
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (other.tag)
+        {
+            case "Enemies":
+                // Ignore enemies if our owner is an enemy
+                if (this.GetOwner().tag == "Enemies")
+                    return;
+                EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
+                enemy.TakeDamage((int)this.m_Damage);
+                break;
+        }
     }
 }
