@@ -14,11 +14,19 @@ public class EnemyLogic : MonoBehaviour
     private const float MaxTraumaOffset = 2.0f;
     private float m_NoiseSeed;
     
+    // Enemy attack styles
+    public enum AttackStyle
+    {
+        Aiming,
+        Straight,
+    }
+    
     // Health
     public int m_Health = 10;
     private float m_Trauma = 0.0f;
     
     // Aim
+    public AttackStyle m_AttackStyle = AttackStyle.Aiming;
     private Vector3 m_OriginalMeshPos;
     private Vector3 m_OriginalAimPos;
     private Quaternion m_OriginalAimAng;
@@ -86,30 +94,46 @@ public class EnemyLogic : MonoBehaviour
     {
         Vector3 targetpos = this.m_target.transform.Find("Shoulder").gameObject.transform.position;
         
-        // If the player is within shooting distance
-        if (Vector3.Distance(targetpos, this.m_fireattachment.transform.position) < EnemyLogic.DepthPerception)
+        // Attack based on the style
+        switch (this.m_AttackStyle)
         {
-            // Calculate the direction to face the player
-            Vector3 direction = this.m_fireattachment.transform.position - targetpos;
-            direction.Normalize();
+            case AttackStyle.Aiming:
+                // If the player is within shooting distance
+                if (Vector3.Distance(targetpos, this.m_fireattachment.transform.position) < EnemyLogic.DepthPerception)
+                {
+                    // Calculate the direction to face the player
+                    Vector3 direction = this.m_fireattachment.transform.position - targetpos;
+                    direction.Normalize();
+                    
+                    // Rotate the firing attachment to point at the player
+                    this.m_fireattachment.transform.localPosition = this.m_OriginalAimPos;
+                    this.m_fireattachment.transform.localRotation = this.m_OriginalAimAng;
+                    this.m_fireattachment.transform.RotateAround(this.m_shoulder.transform.position, Vector3.forward, Mathf.Atan2(direction.y, direction.x)*Mathf.Rad2Deg);
+                    
+                    // Fire the bullet
+                    FireBullet();
+                }
+                break;
+            case AttackStyle.Straight:
+                // If the player is within shooting distance
+                if (Vector3.Distance(targetpos, this.m_fireattachment.transform.position) < EnemyLogic.DepthPerception*2)
+                    FireBullet();
+                break;
+        }
+    }
+    
+    private void FireBullet()
+    {
+        if (this.m_NextFire < Time.time)
+        {
+            // Create the bullet object
+            ProjectileLogic bullet = Instantiate(this.m_bulletprefab, this.m_fireattachment.transform.position, this.m_fireattachment.transform.rotation).GetComponent<ProjectileLogic>();
+            bullet.SetOwner(this.gameObject);
+            bullet.SetSpeed(15.0f);
             
-            // Rotate the firing attachment to point at the player
-            this.m_fireattachment.transform.localPosition = this.m_OriginalAimPos;
-            this.m_fireattachment.transform.localRotation = this.m_OriginalAimAng;
-            this.m_fireattachment.transform.RotateAround(this.m_shoulder.transform.position, Vector3.forward, Mathf.Atan2(direction.y, direction.x)*Mathf.Rad2Deg);
-            
-            // Fire bullets
-            if (this.m_NextFire < Time.time)
-            {
-                // Create the bullet object
-                ProjectileLogic bullet = Instantiate(this.m_bulletprefab, this.m_fireattachment.transform.position, this.m_fireattachment.transform.rotation).GetComponent<ProjectileLogic>();
-                bullet.SetOwner(this.gameObject);
-                bullet.SetSpeed(15.0f);
-                
-                // Play the shooting sound and set the next fire time
-                this.m_audio.Play("Weapons/Laser_Fire");
-                this.m_NextFire = Time.time + EnemyLogic.BlasterFireRate;
-            }
+            // Play the shooting sound and set the next fire time
+            this.m_audio.Play("Weapons/Laser_Fire");
+            this.m_NextFire = Time.time + EnemyLogic.BlasterFireRate;
         }
     }
 }
