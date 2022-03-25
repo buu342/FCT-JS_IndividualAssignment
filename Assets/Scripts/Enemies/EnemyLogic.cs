@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class EnemyLogic : MonoBehaviour
 {
-    private const float DepthPerception = 15.0f;
+    private const float DepthPerception = 18.7f;
     private const float BlasterFireRate = 0.5f;
     private const float TraumaSpeed     = 25.0f;
     private const float MaxTraumaOffset = 2.0f;
