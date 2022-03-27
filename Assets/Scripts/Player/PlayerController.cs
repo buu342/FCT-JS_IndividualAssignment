@@ -17,14 +17,34 @@ public class PlayerController : MonoBehaviour
     private const int   MaxJumps   = 2;         // Maximum number of allowed jumps
     private const float CoyoteTime = 0.1f;     // Coyote time (in seconds)
     
+    // Player state
+    public enum PlayerState
+    {
+        Idle,
+        Forward,
+        Backward,
+        Pain,
+    }
+    public enum PlayerJumpState
+    {
+        Idle,
+        Jump,
+        Fall,
+        Land,
+        Flying,
+    }
+    
     // Movement
-    private float m_Acceleration;
-    private Vector3 m_CurrentVelocity;
-    private Vector3 m_TargetVelocity;
-    private int m_JumpCount;
+    private float m_Acceleration = 0.5f;
+    private int m_JumpCount = 0;
+    private bool m_JustJumped = false; // Buffer for ground checking after jumping
     private bool m_OnGround;
-    private bool m_JustJumped; // Buffer for ground checking after jumping
-    private float m_CoyoteTimer;
+    private float m_CoyoteTimer = 0;
+    private float m_LandTimer = 0;
+    private PlayerState m_PlayerState = PlayerState.Idle;
+    private PlayerJumpState m_PlayerJumpState = PlayerJumpState.Idle;
+    private Vector3 m_CurrentVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+    private Vector3 m_TargetVelocity = new Vector3(0.0f, 0.0f, 0.0f);
     
     // Components
     private Collider m_col;
@@ -39,16 +59,10 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
-        this.m_JumpCount = 0;
-        this.m_Acceleration = 0.5f;
-        this.m_TargetVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-        this.m_CurrentVelocity = new Vector3(0.0f, 0.0f, 0.0f);
         this.m_col = this.GetComponent<Collider>();
         this.m_rb = this.GetComponent<Rigidbody>();
         this.m_rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         this.m_OnGround = IsGrounded();
-        this.m_JustJumped = false;
-        this.m_CoyoteTimer = 0;
     }
     
 
@@ -81,6 +95,9 @@ public class PlayerController : MonoBehaviour
         
         // Handle character movement
         HandleMovement();
+        
+        // Handle the player state
+        HandleState();
     }
     
     
@@ -94,7 +111,7 @@ public class PlayerController : MonoBehaviour
                  the ground, false if otherwise
     ==============================*/
     
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
         float xsize = this.m_col.bounds.size.x/2.0f-0.1f;
         float ysize = 0.01f;
@@ -136,6 +153,43 @@ public class PlayerController : MonoBehaviour
         
         // Actually apply the velocity
         this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_rb.velocity.y, this.m_CurrentVelocity.z);
+    }
+    
+    private void HandleState()
+    {
+        if (this.m_TargetVelocity.sqrMagnitude > 0 && this.m_OnGround)
+        {
+            GameObject fireattach = this.transform.Find("FireAttachment").gameObject;
+            if ((this.m_TargetVelocity.x >= 0 && fireattach.transform.localPosition.z >= 0) || (this.m_TargetVelocity.x < 0 && fireattach.transform.localPosition.z < 0))
+                this.m_PlayerState = PlayerState.Forward;
+            else
+                this.m_PlayerState = PlayerState.Backward;
+        }
+        else
+            this.m_PlayerState = PlayerState.Idle;
+        
+        if (this.m_rb.velocity.y > 2)
+            this.m_PlayerJumpState = PlayerJumpState.Jump;
+        else if (this.m_rb.velocity.y < -2)
+            this.m_PlayerJumpState = PlayerJumpState.Fall;
+        else if (this.m_PlayerJumpState == PlayerJumpState.Fall && this.m_OnGround)
+        {
+            this.m_PlayerJumpState = PlayerJumpState.Land;
+            this.m_LandTimer = Time.time + 0.5f*Time.timeScale;
+        }
+        else if (this.m_PlayerJumpState == PlayerJumpState.Land && this.m_OnGround && this.m_LandTimer < Time.time)
+            this.m_PlayerJumpState = PlayerJumpState.Idle;
+        Debug.Log(this.m_PlayerJumpState);
+    }
+    
+    public PlayerState GetPlayerState()
+    {
+        return this.m_PlayerState;
+    }
+    
+    public PlayerJumpState GetPlayerJumpState()
+    {
+        return this.m_PlayerJumpState;
     }
     
     
