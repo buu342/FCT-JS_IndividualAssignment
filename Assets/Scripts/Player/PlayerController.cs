@@ -11,7 +11,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private const bool  DebugOn    = true;
-    private const float Gravity    = -90.0f;    // Player gravity
+    private const float Gravity    = -80.0f;    // Player gravity
     private const float MoveSpeed  = 10.0f;     // Movement speed
     private const float JumpPower  = 1000.0f;   // Jump force
     private const int   MaxJumps   = 2;         // Maximum number of allowed jumps
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     {
         Idle,
         Jump,
+        Jump2,
         Fall,
         Land,
         Flying,
@@ -168,9 +169,11 @@ public class PlayerController : MonoBehaviour
         else
             this.m_PlayerState = PlayerState.Idle;
         
-        if (this.m_rb.velocity.y > 2)
+        if (this.m_rb.velocity.y > 2 && this.m_JumpCount < 2)
             this.m_PlayerJumpState = PlayerJumpState.Jump;
-        else if (this.m_rb.velocity.y < -2)
+        else if (this.m_rb.velocity.y > 2)
+            this.m_PlayerJumpState = PlayerJumpState.Jump2;
+        else if (this.m_rb.velocity.y < 0 && !this.m_OnGround)
             this.m_PlayerJumpState = PlayerJumpState.Fall;
         else if (this.m_PlayerJumpState == PlayerJumpState.Fall && this.m_OnGround)
         {
@@ -179,7 +182,6 @@ public class PlayerController : MonoBehaviour
         }
         else if (this.m_PlayerJumpState == PlayerJumpState.Land && this.m_OnGround && this.m_LandTimer < Time.time)
             this.m_PlayerJumpState = PlayerJumpState.Idle;
-        Debug.Log(this.m_PlayerJumpState);
     }
     
     public PlayerState GetPlayerState()

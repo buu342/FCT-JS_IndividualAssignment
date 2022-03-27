@@ -27,6 +27,7 @@ public class PlayerCombat : MonoBehaviour
     // Combat
     private Vector3 m_OriginalAimPos;
     private Quaternion m_OriginalAimAng;
+    private Vector3 m_AimDir;
     private float m_MouseHoldTime = 0;
     private float m_NextFire = 0;
     private float m_TargetTimeScale = 1.0f;
@@ -53,6 +54,7 @@ public class PlayerCombat : MonoBehaviour
         this.m_fireattachment = this.transform.Find("FireAttachment").gameObject;
         this.m_OriginalAimPos = this.m_fireattachment.transform.localPosition;
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
+        this.m_AimDir = Vector3.zero;
     }
 
 
@@ -105,18 +107,18 @@ public class PlayerCombat : MonoBehaviour
         Ray mouseray = Camera.main.ScreenPointToRay(Input.mousePosition);
         plane.Raycast(mouseray, out dist);
         Vector3 point = mouseray.GetPoint(dist);
-        Vector3 direction = point - this.m_shoulder.transform.position;
-        direction.Normalize();
+        this.m_AimDir = point - this.m_shoulder.transform.position;
+        this.m_AimDir.Normalize();
         
         // Now that the direction is calculated, point the weapon origin to face it
         this.m_fireattachment.transform.localPosition = this.m_OriginalAimPos;
         this.m_fireattachment.transform.localRotation = this.m_OriginalAimAng;
-        this.m_fireattachment.transform.RotateAround(this.m_shoulder.transform.position, Vector3.forward, Mathf.Atan2(direction.y, direction.x)*Mathf.Rad2Deg);
+        this.m_fireattachment.transform.RotateAround(this.m_shoulder.transform.position, Vector3.forward, Mathf.Atan2(this.m_AimDir.y, this.m_AimDir.x)*Mathf.Rad2Deg);
         
         // Debug the ray projection math
         if (PlayerCombat.DebugOn)
         {
-            Debug.DrawRay(this.m_shoulder.transform.position, direction*10, Color.green, 0, false);
+            Debug.DrawRay(this.m_shoulder.transform.position, this.m_AimDir*10, Color.green, 0, false);
             Debug.DrawRay(mouseray.origin, mouseray.direction*100, Color.blue, 0, false);
         }
         
@@ -141,6 +143,11 @@ public class PlayerCombat : MonoBehaviour
                 this.m_audio.Play("Gameplay/Slowmo_Out");
             this.m_TargetTimeScale = 1.0f;
         }
+    }
+    
+    public Vector3 GetAimDirection()
+    {
+        return this.m_AimDir;
     }
     
     

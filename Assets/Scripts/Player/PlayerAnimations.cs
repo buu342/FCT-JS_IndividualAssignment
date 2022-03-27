@@ -10,6 +10,12 @@ public class PlayerAnimations : MonoBehaviour
     private int LayerIndex_Aim3;
     private int LayerIndex_Aim4_5;
     private int LayerIndex_Aim6;
+    private int LayerIndex_AimLeft0;
+    private int LayerIndex_AimLeft1_2;
+    private int LayerIndex_AimLeft4_5;
+    private int LayerIndex_AimLeft6;
+    private float m_CurrentBodyRot = -179;
+    private float m_TargetBodyRot = -179;
     
     private PlayerController m_plycont;
     private PlayerCombat m_plycombat;
@@ -30,6 +36,10 @@ public class PlayerAnimations : MonoBehaviour
         this.LayerIndex_Aim3 = this.m_anim.GetLayerIndex("Aim_3");
         this.LayerIndex_Aim4_5 = this.m_anim.GetLayerIndex("Aim_4-5");
         this.LayerIndex_Aim6 = this.m_anim.GetLayerIndex("Aim_6");
+        this.LayerIndex_AimLeft0 = this.m_anim.GetLayerIndex("AimLeft_0");
+        this.LayerIndex_AimLeft1_2 = this.m_anim.GetLayerIndex("AimLeft_1-2");
+        this.LayerIndex_AimLeft4_5 = this.m_anim.GetLayerIndex("AimLeft_4-5");
+        this.LayerIndex_AimLeft6 = this.m_anim.GetLayerIndex("AimLeft_6");
     }
 
     // Update is called once per frame
@@ -39,44 +49,94 @@ public class PlayerAnimations : MonoBehaviour
         this.m_anim.SetFloat("AnimSpeed", Time.timeScale);
         
         // Set the base mesh angle depending whether we're facing left or right
-        if (this.m_fireattach.transform.position.x < this.transform.position.x)
-            this.transform.localEulerAngles = new Vector3(0, 0, 0);
-        else
-            this.transform.localEulerAngles = new Vector3(0, 180, 0);
-        
-        // Aiming layers based on mouse angles
-        float aimang = (this.m_fireattach.transform.localEulerAngles.x + 90)%360;
-        if (aimang < 45*1)
+        Vector3 aimdir = this.m_plycombat.GetAimDirection();
+        float aimang = Vector3.Angle(aimdir, Vector3.up);
+        float aimang2 = Vector3.Angle(aimdir, Vector3.right);
+        this.transform.localEulerAngles = new Vector3(0, this.m_CurrentBodyRot, 0);
+        this.m_CurrentBodyRot = Mathf.Lerp(this.m_CurrentBodyRot, this.m_TargetBodyRot, 0.1f);
+        if (aimang2 < 90.0f)
         {
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim0, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim1_2, (aimang%45)/45);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, 0.0f);
+            this.m_TargetBodyRot = -179;
+            
+            // Aiming layers based on mouse angles
+            if (aimang < 45.0f*1)
+            {
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim0, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim1_2, (aimang%45)/45);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, 0.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim4_5, 0.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim6, 0.0f);
+            }
+            else if (aimang < 45.0f*2)
+            {
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim0, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim1_2, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, (aimang%45)/45);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim4_5, 0.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim6, 0.0f);
+            }
+            else if (aimang < 45.0f*3)
+            {
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim0, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim1_2, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim4_5, (aimang%45)/45);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim6, 0.0f);
+            }
+            else
+            {
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim0, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim1_2, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim4_5, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim6, (aimang%45)/45);
+            }
+            this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft0, 0.0f);
+            this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft1_2, 0.0f);
+            this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft4_5, 0.0f);
+            this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft6, 0.0f);
+        }
+        else
+        {
+            this.m_TargetBodyRot = 0.0f;
+            
+            // Aiming layers based on mouse angles
+            if (aimang < 45.0f*1)
+            {
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft0, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft1_2, (aimang%45)/45);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, 0.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft4_5, 0.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft6, 0.0f);
+            }
+            else if (aimang < 45.0f*2)
+            {
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft0, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft1_2, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, (aimang%45)/45);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft4_5, 0.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft6, 0.0f);
+            }
+            else if (aimang < 45.0f*3)
+            {
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft0, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft1_2, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft4_5, (aimang%45)/45);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft6, 0.0f);
+            }
+            else
+            {
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft0, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft1_2, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft4_5, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft6, (aimang%45)/45);
+            }
+            this.m_anim.SetLayerWeight(this.LayerIndex_Aim0, 0.0f);
+            this.m_anim.SetLayerWeight(this.LayerIndex_Aim1_2, 0.0f);
             this.m_anim.SetLayerWeight(this.LayerIndex_Aim4_5, 0.0f);
             this.m_anim.SetLayerWeight(this.LayerIndex_Aim6, 0.0f);
-        }
-        else if (aimang < 45*2)
-        {
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim0, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim1_2, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, (aimang%45)/45);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim4_5, 0.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim6, 0.0f);
-        }
-        else if (aimang < 45*3)
-        {
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim0, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim1_2, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim4_5, (aimang%45)/45);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim6, 0.0f);
-        }
-        else
-        {
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim0, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim1_2, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim3, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim4_5, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_Aim6, (aimang%45)/45);
         }
         
         // Shooting animation
@@ -108,6 +168,10 @@ public class PlayerAnimations : MonoBehaviour
             this.m_anim.SetBool("IsJumping", true);
         else
             this.m_anim.SetBool("IsJumping", false);
+        if (this.m_plycont.GetPlayerJumpState() == PlayerController.PlayerJumpState.Jump2)
+            this.m_anim.SetBool("IsJumping2", true);
+        else
+            this.m_anim.SetBool("IsJumping2", false);
         if (this.m_plycont.GetPlayerJumpState() == PlayerController.PlayerJumpState.Fall)
             this.m_anim.SetBool("IsFalling", true);
         else
