@@ -21,6 +21,7 @@ public class PlayerCombat : MonoBehaviour
     {
         Idle,
         Melee,
+        Melee2,
         Shooting,
     }
     
@@ -192,7 +193,10 @@ public class PlayerCombat : MonoBehaviour
     {
         SwordLogic sword = Instantiate(this.m_swordprefab, this.m_fireattachment.transform.position, this.m_fireattachment.transform.rotation).GetComponent<SwordLogic>();
         sword.SetOwner(this.gameObject);
-        this.m_CombatState = CombatState.Melee;
+        if (this.m_CombatState != CombatState.Melee)
+            this.m_CombatState = CombatState.Melee;
+        else
+            this.m_CombatState = CombatState.Melee2;
         this.m_TimeToIdle = Time.time + PlayerCombat.MeleeIdleTime*Time.timeScale;
         this.m_audio.Play("Weapons/Sword_Swing");
     }
