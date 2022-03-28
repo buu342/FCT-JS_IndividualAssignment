@@ -44,8 +44,6 @@ public class MeshTrail : MonoBehaviour
     
     void LateUpdate()
     {
-        Debug.Log(this.m_TrailEnabled);
-        
         if (!this.m_TrailEnabled) 
             return;
         

@@ -1,3 +1,5 @@
+#define DEBUG
+
 using UnityEngine;
 
 public class ProjectileLogic : MonoBehaviour
@@ -7,6 +9,8 @@ public class ProjectileLogic : MonoBehaviour
     public GameObject m_Owner = null;
     public float m_Speed = 0;
     public float m_Damage = 10;
+    private Vector3 m_PrevPosition;
+    private int m_LayerMask;
     
     // Start is called before the first frame update
     void Start()
@@ -14,6 +18,24 @@ public class ProjectileLogic : MonoBehaviour
         this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed;
         if (this.m_Owner != null)
             Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+        this.m_PrevPosition = this.transform.position;
+        this.m_LayerMask = LayerMask.NameToLayer("Bullets");
+    }
+    
+    void Update()
+    {
+        Vector3 raydir = this.m_PrevPosition - this.transform.position;
+        RaycastHit hit;
+        
+        // Because projectiles move quickly, raycast from our previous position to check we hit something
+        #if DEBUG
+            Debug.DrawRay(this.transform.position, raydir.normalized*raydir.magnitude, Color.red, 0, false);
+        #endif
+        if (Physics.Raycast(this.transform.position, raydir.normalized, out hit, raydir.magnitude, this.m_LayerMask, QueryTriggerInteraction.Collide))
+            OnTriggerEnter(hit.collider);
+            
+        // Update our previous position
+        this.m_PrevPosition = this.transform.position;
     }
     
     public GameObject GetOwner()
@@ -51,7 +73,7 @@ public class ProjectileLogic : MonoBehaviour
                 return;
             case "Player":
                 // If we hit our owner, don't bother checking anything else
-                if (this.GetOwner() == other.gameObject)
+                if (this.GetOwner() == null || this.GetOwner() == other.gameObject)
                     return;
                 
                 // Check if the player was using a melee attack when we hit
@@ -73,10 +95,14 @@ public class ProjectileLogic : MonoBehaviour
                 break;
             case "Enemies":
                 // Ignore enemies if our owner is an enemy
-                if (this.GetOwner().tag == "Enemies")
+                if (this.GetOwner() == null || this.GetOwner().tag == "Enemies")
                     return;
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
                 enemy.TakeDamage((int)this.m_Damage);
+                break;
+            case "BreakableProp":
+                if (other.gameObject.GetComponent<BreakGlass>().Break(this.m_Speed, this.transform.position))
+                    return;
                 break;
             default:
                 break;

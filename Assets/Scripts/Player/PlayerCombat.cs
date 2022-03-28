@@ -5,11 +5,13 @@ This script handles the player combat logic (weapons, bullet
 time, etc...).
 ****************************************************************/
 
+//#define DEBUG
+
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    private const bool  DebugOn        = true;
+    
     private const float BulletTimeRate = 0.5f;
     private const float MeleeHoldTime  = 0.15f;
     private const float PistolFireRate = 0.2f;
@@ -117,11 +119,10 @@ public class PlayerCombat : MonoBehaviour
         this.m_fireattachment.transform.RotateAround(this.m_shoulder.transform.position, Vector3.forward, Mathf.Atan2(this.m_AimDir.y, this.m_AimDir.x)*Mathf.Rad2Deg);
         
         // Debug the ray projection math
-        if (PlayerCombat.DebugOn)
-        {
+        #if DEBUG 
             Debug.DrawRay(this.m_shoulder.transform.position, this.m_AimDir*10, Color.green, 0, false);
             Debug.DrawRay(mouseray.origin, mouseray.direction*100, Color.blue, 0, false);
-        }
+        #endif
         
         // Shooting and Melee
         if (Input.GetButton("Fire"))

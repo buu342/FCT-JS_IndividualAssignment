@@ -6,11 +6,12 @@ ahead and pretty much implemented all the physics myself, because
 Unity's default stuff is really awful. 
 ****************************************************************/
 
+#define DEBUG
+
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private const bool  DebugOn    = true;
     private const float Gravity    = -80.0f;    // Player gravity
     private const float MoveSpeed  = 10.0f;     // Movement speed
     private const float JumpPower  = 1000.0f;   // Jump force
@@ -114,16 +115,19 @@ public class PlayerController : MonoBehaviour
     
     public bool IsGrounded()
     {
-        float xsize = this.m_col.bounds.size.x/2.0f-0.1f;
+        float xsize = this.m_col.bounds.size.x/2.0f-0.01f;
         float ysize = 0.01f;
-        float zsize = this.m_col.bounds.size.z/2.0f-0.1f;
+        float zsize = this.m_col.bounds.size.z/2.0f-0.01f;
         float raylen = 0.1f;
         bool cast1 = Physics.Raycast(this.transform.position + (new Vector3( xsize, ysize, 0)), Vector3.down, raylen);
         bool cast2 = Physics.Raycast(this.transform.position + (new Vector3(-xsize, ysize, 0)), Vector3.down, raylen);
         bool cast3 = Physics.Raycast(this.transform.position + (new Vector3(0, ysize,  zsize)), Vector3.down, raylen); 
         bool cast4 = Physics.Raycast(this.transform.position + (new Vector3(0, ysize, -zsize)), Vector3.down, raylen);
-        if (PlayerController.DebugOn)
-            Debug.DrawRay(this.transform.position + (new Vector3(0, ysize, 0)), Vector3.down*raylen, Color.green, 0, false);
+        
+        Debug.Log(cast1 || cast2 || cast3 || cast4);
+        //#if DEBUG
+        //    Debug.DrawRay(this.transform.position + (new Vector3(0, ysize, 0)), Vector3.down*raylen, Color.green, 0, false); 
+        //#endif
         return cast1 || cast2 || cast3 || cast4;
     }
     
