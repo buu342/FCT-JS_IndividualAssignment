@@ -12,6 +12,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // Constants
     private const float Gravity    = -80.0f;    // Player gravity
     private const float MoveSpeed  = 10.0f;     // Movement speed
     private const float JumpPower  = 1000.0f;   // Jump force
@@ -51,7 +52,7 @@ public class PlayerController : MonoBehaviour
     // Components
     private Collider m_col;
     private Rigidbody m_rb;
-    private AudioManager m_audio; 
+    private AudioManager m_audio;
     
     
     /*==============================
@@ -124,10 +125,9 @@ public class PlayerController : MonoBehaviour
         bool cast3 = Physics.Raycast(this.transform.position + (new Vector3(0, ysize,  zsize)), Vector3.down, raylen); 
         bool cast4 = Physics.Raycast(this.transform.position + (new Vector3(0, ysize, -zsize)), Vector3.down, raylen);
         
-        Debug.Log(cast1 || cast2 || cast3 || cast4);
-        //#if DEBUG
-        //    Debug.DrawRay(this.transform.position + (new Vector3(0, ysize, 0)), Vector3.down*raylen, Color.green, 0, false); 
-        //#endif
+        #if DEBUG
+            Debug.DrawRay(this.transform.position + (new Vector3(0, ysize, 0)), Vector3.down*raylen, Color.green, 0, false); 
+        #endif
         return cast1 || cast2 || cast3 || cast4;
     }
     
@@ -160,8 +160,15 @@ public class PlayerController : MonoBehaviour
         this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_rb.velocity.y, this.m_CurrentVelocity.z);
     }
     
+    
+    /*==============================
+        HandleState
+        Handles movement state chanegs
+    ==============================*/
+    
     private void HandleState()
     {
+        // Handle Forward/Backward movement states
         if (this.m_TargetVelocity.sqrMagnitude > 0 && this.m_OnGround)
         {
             GameObject fireattach = this.transform.Find("FireAttachment").gameObject;
@@ -173,6 +180,7 @@ public class PlayerController : MonoBehaviour
         else
             this.m_PlayerState = PlayerState.Idle;
         
+        // Handle jump states
         if (this.m_rb.velocity.y > 2 && this.m_JumpCount < 2)
             this.m_PlayerJumpState = PlayerJumpState.Jump;
         else if (this.m_rb.velocity.y > 2)
@@ -187,11 +195,25 @@ public class PlayerController : MonoBehaviour
         else if (this.m_PlayerJumpState == PlayerJumpState.Land && this.m_OnGround && this.m_LandTimer < Time.time)
             this.m_PlayerJumpState = PlayerJumpState.Idle;
     }
+
+
+    /*==============================
+        GetPlayerState
+        Returns the player's current movement state
+        @returns The player's current movement state
+    ==============================*/
     
     public PlayerState GetPlayerState()
     {
         return this.m_PlayerState;
     }
+
+
+    /*==============================
+        GetPlayerJumpState
+        Returns the player's current jump state
+        @returns The player's current jump state
+    ==============================*/
     
     public PlayerJumpState GetPlayerJumpState()
     {
@@ -286,6 +308,8 @@ public class PlayerController : MonoBehaviour
     
     public void OnDuck()
     {
-        Camera.main.GetComponent<CameraLogic>().AddTrauma(0.1f);
+        #if DEBUG
+            Camera.main.GetComponent<CameraLogic>().AddTrauma(0.1f);
+        #endif
     }
 }

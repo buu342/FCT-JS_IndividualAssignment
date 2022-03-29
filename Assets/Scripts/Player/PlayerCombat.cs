@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    
+    // Constants
     private const float BulletTimeRate = 0.5f;
     private const float MeleeHoldTime  = 0.15f;
     private const float PistolFireRate = 0.2f;
@@ -70,7 +70,7 @@ public class PlayerCombat : MonoBehaviour
     {
         HandleControls();
         
-        // Handle combat state
+        // Handle going to idle state
         if (this.m_TimeToIdle != 0 && this.m_TimeToIdle < Time.time)
         {
             this.m_CombatState = CombatState.Idle;
@@ -80,15 +80,41 @@ public class PlayerCombat : MonoBehaviour
         // Handle bullet time
         Time.timeScale = Mathf.Lerp(Time.timeScale, this.m_TargetTimeScale, PlayerCombat.BulletTimeRate);
     }
+
+
+    /*==============================
+        GetCombatState
+        Returns the player's current combat state
+        @returns The player's current combat state
+    ==============================*/
     
     public CombatState GetCombatState()
     {
         return this.m_CombatState;
     }
+
+
+    /*==============================
+        GetFireAttachment
+        Returns a pointer to the player's fire attachment object
+        @returns The player's fire attachment object
+    ==============================*/
     
     public GameObject GetFireAttachment()
     {
         return this.m_fireattachment;
+    }
+
+
+    /*==============================
+        GetAimDirection
+        Returns a direction vector pointing where the player is aiming at
+        @returns The player's aim vector
+    ==============================*/
+    
+    public Vector3 GetAimDirection()
+    {
+        return this.m_AimDir;
     }
     
     
@@ -131,6 +157,7 @@ public class PlayerCombat : MonoBehaviour
         }
         else
         {
+            // Melee if we let go of the mouse quickly
             if (this.m_MouseHoldTime > Time.time)
                 OnMelee();
             this.m_MouseHoldTime = 0;
@@ -145,11 +172,6 @@ public class PlayerCombat : MonoBehaviour
                 this.m_audio.Play("Gameplay/Slowmo_Out");
             this.m_TargetTimeScale = 1.0f;
         }
-    }
-    
-    public Vector3 GetAimDirection()
-    {
-        return this.m_AimDir;
     }
     
     
@@ -194,10 +216,14 @@ public class PlayerCombat : MonoBehaviour
     {
         SwordLogic sword = Instantiate(this.m_swordprefab, this.m_fireattachment.transform.position, this.m_fireattachment.transform.rotation).GetComponent<SwordLogic>();
         sword.SetOwner(this.gameObject);
+        
+        // Set the player's combat state depending on the attack combo
         if (this.m_CombatState != CombatState.Melee)
             this.m_CombatState = CombatState.Melee;
         else
             this.m_CombatState = CombatState.Melee2;
+        
+        // Play the attack sound and set the time to idle
         this.m_TimeToIdle = Time.time + PlayerCombat.MeleeIdleTime*Time.timeScale;
         this.m_audio.Play("Weapons/Sword_Swing");
     }

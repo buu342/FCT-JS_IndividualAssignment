@@ -1,7 +1,14 @@
+/****************************************************************
+                       CameraLogic.cs
+    
+This script handles camera movement and logic
+****************************************************************/
+
 using UnityEngine;
 
 public class CameraLogic : MonoBehaviour
 {
+    // Constants
     private const float CameraHCorrectionSpeed = 0.05f;
     private const float CameraVCorrectionSpeed = 0.01f;
     private const float TraumaSpeed     = 25.0f;
@@ -9,22 +16,35 @@ public class CameraLogic : MonoBehaviour
     private const float MaxTraumaOffset = 1.0f;
     private float m_NoiseSeed;
     
+    // Public values
     public GameObject m_Player;
     public Vector3 m_PoI = Vector3.zero;
     public bool m_FollowPlayer = true;
+    
+    // Private values
     private Vector3 m_CurrentPlayerPos;
     private Vector3 m_TargetPlayerPos;
     private float m_Trauma = 0.0f;
     
-    // Start is called before the first frame update
+    
+    /*==============================
+        Start
+        Called when the camera is initialized
+    ==============================*/
+    
     void Start()
     {
         this.m_NoiseSeed = Random.value;
         this.m_CurrentPlayerPos = this.m_Player.transform.position;
         this.m_TargetPlayerPos = this.m_Player.transform.position;
     }
+    
 
-    // Update is called once per frame
+    /*==============================
+        Update
+        Called every frame
+    ==============================*/
+    
     void Update()
     {
         float shake = this.m_Trauma*this.m_Trauma;
@@ -50,6 +70,13 @@ public class CameraLogic : MonoBehaviour
         // Decrease screen shake over time
         this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime);
     }
+    
+
+    /*==============================
+        AddTrauma
+        Makes the camera shake
+        @param The amount to shake by (from 0 to 1)
+    ==============================*/
     
     public void AddTrauma(float amount)
     {

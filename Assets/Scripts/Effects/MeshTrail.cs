@@ -1,15 +1,24 @@
+/****************************************************************
+                          MeshTrail.cs
+    
+This script handles generating a mesh trail
+****************************************************************/
+
 using UnityEngine;
 
 public class MeshTrail : MonoBehaviour
 {
+    // Constants
     private const int VertCount = 12;
     private const int TrailLength = 10;
-     
+    
+    // Public values
     public GameObject m_Tip = null;
     public GameObject m_Base = null;
     public Material m_MeshMat = null;
+    public bool m_TrailEnabled = false;
 
-    private bool m_TrailEnabled = false;
+    // Private values
     private Mesh m_Mesh;
     private Vector3[] m_VertsList;
     private int[] m_TrisList;
@@ -17,7 +26,14 @@ public class MeshTrail : MonoBehaviour
     private Vector3 m_OldTipPos;
     private Vector3 m_OldBasePos;
     
+    // Components
     private SkinnedMeshRenderer m_meshrender;
+    
+    
+    /*==============================
+        Start
+        Called when the trail is initialized
+    ==============================*/
 
     void Start()
     {
@@ -42,8 +58,15 @@ public class MeshTrail : MonoBehaviour
         this.m_OldBasePos = this.m_Base.transform.position;
     }
     
+    
+    /*==============================
+        LateUpdate
+        Called after all updates have finished
+    ==============================*/
+    
     void LateUpdate()
     {
+        // Stop if the trail isn't enabled
         if (!this.m_TrailEnabled) 
             return;
         
@@ -84,22 +107,40 @@ public class MeshTrail : MonoBehaviour
             this.m_meshrender.enabled = true;
     }
     
+    
+    /*==============================
+        IsEnabled
+        Checks whether the trail is enabled
+        @returns Whether the trail is enabled
+    ==============================*/
+    
     public bool IsEnabled()
     {
         return this.m_TrailEnabled;
     }
     
+    
+    /*==============================
+        EnableTrail
+        Enables/Disables the trail
+        @param Whether the trail should be enabled
+    ==============================*/
+    
     public void EnableTrail(bool enable)
     {
+        // If we're enabling the trail
         if (enable && !this.m_TrailEnabled)
         {
+            // Reset all the vert and object positions
             for (int i=0; i<MeshTrail.TrailLength*MeshTrail.VertCount; i++)
                 this.m_VertsList[i] = this.m_Base.transform.position;
             this.m_OldTipPos = this.m_Tip.transform.position;
             this.m_OldBasePos = this.m_Base.transform.position;
         }
-        else if (!enable)
+        else if (!enable) // Otherwise just hide the trail
             this.m_meshrender.enabled = false;
+        
+        // Set the trail state to what was passed as an argument
         this.m_TrailEnabled = enable;
     }
 }

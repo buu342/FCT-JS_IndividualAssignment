@@ -1,3 +1,12 @@
+/****************************************************************
+               RenderReplacementShaderToTexture.cs
+
+Class to setup the shader which renders object normals to a 
+texture.
+Written by Erik Roystan: 
+https://github.com/IronWarrior/UnityOutlineShader
+****************************************************************/
+
 using UnityEngine;
 
 public class RenderReplacementShaderToTexture : MonoBehaviour
@@ -32,12 +41,12 @@ public class RenderReplacementShaderToTexture : MonoBehaviour
         {
             DestroyImmediate(t.gameObject);
         }
-
         Camera thisCamera = GetComponent<Camera>();
 
         // Create a render texture matching the main camera's current dimensions.
         renderTexture = new RenderTexture(thisCamera.pixelWidth, thisCamera.pixelHeight, renderTextureDepth, renderTextureFormat);
         renderTexture.filterMode = filterMode;
+        
         // Surface the render texture as a global variable, available to all shaders.
         Shader.SetGlobalTexture(targetTexture, renderTexture);
 

@@ -1,26 +1,49 @@
+/****************************************************************
+                       ProjectileLogic.cs
+    
+This script handles projectile logic
+****************************************************************/
+
 #define DEBUG
 
 using UnityEngine;
 
 public class ProjectileLogic : MonoBehaviour
 {
+    // Constants
     private const float MaxPlayerAngleDifference = 110.0f;
     
+    // Public values
     public GameObject m_Owner = null;
     public float m_Speed = 0;
     public float m_Damage = 10;
+    
+    // Private values
     private Vector3 m_PrevPosition;
     private int m_LayerMask;
     
-    // Start is called before the first frame update
+    
+    /*==============================
+        Start
+        Called when the projectile is initialized
+    ==============================*/
+    
     void Start()
     {
         this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed;
-        if (this.m_Owner != null)
-            Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
         this.m_PrevPosition = this.transform.position;
         this.m_LayerMask = LayerMask.NameToLayer("Bullets");
+        
+        // Disable collisions between self and the projectile's owner
+        if (this.m_Owner != null)
+            Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
     }
+    
+
+    /*==============================
+        Update
+        Called every frame
+    ==============================*/
     
     void Update()
     {
@@ -37,26 +60,57 @@ public class ProjectileLogic : MonoBehaviour
         // Update our previous position
         this.m_PrevPosition = this.transform.position;
     }
+
+
+    /*==============================
+        GetOwner
+        Retrieves the projectile's owner
+        @returns The projectile's owner
+    ==============================*/
     
     public GameObject GetOwner()
     {
         return this.m_Owner;
     }
+
+
+    /*==============================
+        SetOwner
+        Sets the projectile's owner
+        @param The gameobject to set as the owner
+    ==============================*/
     
     public void SetOwner(GameObject owner)
     {
+        // Collide with our previous owner
         if (this.m_Owner != null)
             Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), false);
+        
+        // Set the owner, and don't collide with him anymore
         this.m_Owner = owner;
         Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
     }
+
+
+    /*==============================
+        SetSpeed
+        Sets the projectile's speed
+        @param The new speed value
+    ==============================*/
     
     public void SetSpeed(float speed)
     {
         this.m_Speed = speed;
     }
+
+
+    /*==============================
+        OnTriggerEnter
+        Handles collision response
+        @param The object we collided with
+    ==============================*/
     
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         switch (other.tag)
         {
@@ -98,7 +152,7 @@ public class ProjectileLogic : MonoBehaviour
                 if (this.GetOwner() == null || this.GetOwner().tag == "Enemies")
                     return;
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
-                enemy.TakeDamage((int)this.m_Damage);
+                enemy.TakeDamage((int)this.m_Damage, this.m_PrevPosition);
                 break;
             case "BreakableProp":
                 if (other.gameObject.GetComponent<BreakGlass>().Break(this.m_Speed, this.transform.position))
@@ -109,6 +163,12 @@ public class ProjectileLogic : MonoBehaviour
         }
         Destroy(this.gameObject);
     }
+
+
+    /*==============================
+        OnBecameInvisible
+        Handles the projectile no longer being visible on camera
+    ==============================*/
     
     private void OnBecameInvisible()
     {

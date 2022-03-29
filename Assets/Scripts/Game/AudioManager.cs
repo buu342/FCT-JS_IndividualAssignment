@@ -13,9 +13,15 @@ public class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
     
-    // Awake is called before start
+    
+    /*==============================
+        Awake
+        Called before the audio manager is initialized
+    ==============================*/
+    
     void Awake()
     {
+        // Create an audio source for each registered sound effect
         foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
@@ -23,20 +29,38 @@ public class AudioManager : MonoBehaviour
             s.source.loop = s.loop;
         }
     }
+    
+    
+    /*==============================
+        Play
+        Plays a given sound
+        @param The name of the sound to play
+    ==============================*/
 
     public void Play(string name)
     {
+        // Find all sounds that have the given name
         Sound[] slist = Array.FindAll(sounds, sound => sound.name == name);
+        
+        // If no sound was found, throw a warning
         if (slist.Length == 0)
         {
             Debug.LogWarning("Sound: '"+name+"' not found!");
             return;
         }
+        
+        // Pick a random sound from the list and play it
         Sound s = slist[(new System.Random()).Next(0, slist.Length)];
         s.source.volume = s.volume;
         s.source.pitch = s.pitch;
         s.source.Play();
     }
+    
+
+    /*==============================
+        Update
+        Called every frame
+    ==============================*/
     
     public void Update()
     {
@@ -46,14 +70,27 @@ public class AudioManager : MonoBehaviour
                 s.source.pitch = s.pitch*Time.timeScale;
     }
     
+
+    /*==============================
+        StopPlaying
+        Stops a given sound from playing
+        @param The name of the sound to stop
+    ==============================*/
+    
     public void StopPlaying(string name)
     {
-        Sound s = Array.Find(sounds, item => item.name == name);
-        if (s == null)
+        // Find all sounds that have the given name
+        Sound[] slist = Array.FindAll(sounds, sound => sound.name == name);
+        
+        // If no sound was found, throw a warning
+        if (slist.Length == 0)
         {
             Debug.LogWarning("Sound: '"+name+"' not found!");
             return;
         }
-        s.source.Stop();
+        
+        // Stop all sounds with the given name from playing
+        foreach (Sound s in slist)
+            s.source.Stop();
     }
 }

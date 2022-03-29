@@ -1,3 +1,11 @@
+/****************************************************************
+                         Outline.shader
+
+Object outline shader.
+Written by Erik Roystan: 
+https://github.com/IronWarrior/UnityOutlineShader
+****************************************************************/
+
 Shader "Custom/Outline"
 {
     SubShader

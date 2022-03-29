@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class EnemyLogic : MonoBehaviour
 {
+    // Constants
     private const float DepthPerception = 18.7f;
     private const float BlasterFireRate = 0.5f;
     private const float TraumaSpeed     = 25.0f;
@@ -27,6 +28,8 @@ public class EnemyLogic : MonoBehaviour
     
     // Aim
     public AttackStyle m_AttackStyle = AttackStyle.Aiming;
+    public GameObject m_Ragdoll;
+    private Vector3 m_DamagePos;
     private Vector3 m_OriginalMeshPos;
     private Vector3 m_OriginalAimPos;
     private Quaternion m_OriginalAimAng;
@@ -51,12 +54,13 @@ public class EnemyLogic : MonoBehaviour
         this.m_NoiseSeed = Random.value;
         this.m_target = GameObject.Find("Player");
         this.m_audio = FindObjectOfType<AudioManager>();
-        this.m_mesh = this.transform.Find("Mesh").gameObject;
+        this.m_mesh = this.transform.Find("Model").gameObject;
         this.m_shoulder = this.transform.Find("Shoulder").gameObject;
         this.m_fireattachment = this.transform.Find("FireAttachment").gameObject;
         this.m_OriginalAimPos = this.m_fireattachment.transform.localPosition;
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
         this.m_OriginalMeshPos = this.m_mesh.transform.localPosition;
+        this.m_DamagePos = this.transform.position;
     }
 
 
@@ -69,6 +73,7 @@ public class EnemyLogic : MonoBehaviour
     {
         HandleTargeting();
         
+        // Calculate shake when hurt
         float shake = this.m_Trauma*this.m_Trauma;
         float traumaoffsetx = EnemyLogic.MaxTraumaOffset*shake*(Mathf.PerlinNoise(this.m_NoiseSeed, Time.time*EnemyLogic.TraumaSpeed)*2 - 1);
         float traumaoffsety = EnemyLogic.MaxTraumaOffset*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 1, Time.time*EnemyLogic.TraumaSpeed)*2 - 1);
@@ -80,15 +85,31 @@ public class EnemyLogic : MonoBehaviour
         // Decrease shake over time
         this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime);
         
+        // If we ran out of health, then commit sudoku
         if (this.m_Health <= 0)
-            Destroy(this.gameObject);
+            Die();
     }
+
+
+    /*==============================
+        TakeDamage
+        Makes the enemy take damage
+        @param The amount of damage to take
+        @param The coordinate where the damage came from
+    ==============================*/
     
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, Vector3 position)
     {
         this.m_Health -= amount;
         this.m_Trauma = Mathf.Min(0.5f, this.m_Trauma + ((float)amount)/30.0f);
+        this.m_DamagePos = position;
     }
+
+
+    /*==============================
+        HandleTargeting
+        Handles the enemy targeting
+    ==============================*/
     
     private void HandleTargeting()
     {
@@ -121,6 +142,12 @@ public class EnemyLogic : MonoBehaviour
                 break;
         }
     }
+
+
+    /*==============================
+        FireBullet
+        Makes the enemy fire a bullet
+    ==============================*/
     
     private void FireBullet()
     {
@@ -135,5 +162,26 @@ public class EnemyLogic : MonoBehaviour
             this.m_audio.Play("Weapons/Laser_Fire");
             this.m_NextFire = Time.time + EnemyLogic.BlasterFireRate;
         }
+    }
+
+
+    /*==============================
+        Die
+        Turns the enemy into a ragdoll
+    ==============================*/
+    
+    private void Die()
+    {
+        // Spawn a ragdoll prefab
+        GameObject ragdoll = Instantiate(this.m_Ragdoll, this.transform.position, this.transform.rotation);
+        
+        // Apply physics to the bones based on where the damage came from
+        Collider[] colliders = Physics.OverlapSphere(this.m_DamagePos, 10);
+        foreach (Collider hit in colliders)
+            if (hit.GetComponent<Rigidbody>())
+                hit.GetComponent<Rigidbody>().AddExplosionForce(500, this.m_DamagePos, 10, 0);
+            
+        // Destroy this object
+        Destroy(this.gameObject);
     }
 }

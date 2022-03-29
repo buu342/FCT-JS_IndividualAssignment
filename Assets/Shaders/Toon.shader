@@ -1,3 +1,13 @@
+/****************************************************************
+                           Toon.shader
+
+A cel shader, similar to Wind Waker. Modified to remove specular 
+reflections, rim lighting, and to be made compatible with the 
+outline shader.
+Original shader by Erik Roystan: 
+https://github.com/IronWarrior/UnityToonShader
+****************************************************************/
+
 Shader "Custom/Toon"
 {
     Properties

@@ -1,4 +1,13 @@
-Shader "Hidden/Roystan/Normals Texture"
+/****************************************************************
+                   HiddenNormalsShader.shader
+
+Renders a texture with object normal data. Used to generate the
+outlines on the inside of objects.
+Written by Erik Roystan: 
+https://github.com/IronWarrior/UnityOutlineShader
+****************************************************************/
+
+Shader "Custom/Normals Texture"
 {
     Properties
     {

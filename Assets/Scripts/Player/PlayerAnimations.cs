@@ -1,9 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+/****************************************************************
+                       PlayerAnimations.cs
+    
+This script handles the player model's animations
+****************************************************************/
+
 using UnityEngine;
 
 public class PlayerAnimations : MonoBehaviour
 {
+    // Animation layer indices
     private int LayerIndex_Shooting;
     private int LayerIndex_MeleeLeft;
     private int LayerIndex_MeleeRight;
@@ -11,18 +16,26 @@ public class PlayerAnimations : MonoBehaviour
     private int LayerIndex_Melee2Right;
     private int LayerIndex_AimRight;
     private int LayerIndex_AimLeft;
+    
+    // Player mesh angle
     private float m_CurrentBodyRot = -179;
     private float m_TargetBodyRot = -179;
     
+    // Components
+    public SkinnedMeshRenderer m_meshsword;
+    public SkinnedMeshRenderer m_meshguns;
+    public MeshTrail m_swordtrail;
     private PlayerController m_plycont;
     private PlayerCombat m_plycombat;
     private GameObject m_fireattach;
     private Animator m_anim;
-    public SkinnedMeshRenderer m_meshsword;
-    public SkinnedMeshRenderer m_meshguns;
-    public MeshTrail m_swordtrail;
     
-    // Start is called before the first frame update
+    
+    /*==============================
+        Start
+        Called when the player is initialized
+    ==============================*/
+    
     void Start()
     {
         this.m_plycont = this.transform.parent.gameObject.GetComponent<PlayerController>();
@@ -30,6 +43,7 @@ public class PlayerAnimations : MonoBehaviour
         this.m_fireattach = this.transform.parent.gameObject.transform.Find("FireAttachment").gameObject;
         this.m_anim = this.GetComponent<Animator>();
         
+        // Get all the layer indices so that this doesn't have to be done at runtime
         this.LayerIndex_Shooting = this.m_anim.GetLayerIndex("Shooting");
         this.LayerIndex_MeleeLeft = this.m_anim.GetLayerIndex("MeleeLeft");
         this.LayerIndex_MeleeRight = this.m_anim.GetLayerIndex("MeleeRight");
@@ -38,8 +52,13 @@ public class PlayerAnimations : MonoBehaviour
         this.LayerIndex_AimLeft = this.m_anim.GetLayerIndex("AimLeft");
         this.LayerIndex_AimRight = this.m_anim.GetLayerIndex("AimRight");
     }
+    
 
-    // Update is called once per frame
+    /*==============================
+        Update
+        Called every frame
+    ==============================*/
+    
     void Update()
     {
         // Set the animation speed based on the timescale
@@ -80,6 +99,7 @@ public class PlayerAnimations : MonoBehaviour
         // Melee animations
         if (this.m_plycombat.GetCombatState() == PlayerCombat.CombatState.Melee)
         {
+            // Set the left/right attack animations
             if (aimang < 90.0f)
             {
                 if (this.m_anim.GetLayerWeight(this.LayerIndex_MeleeRight) != 1.0f)
@@ -92,15 +112,20 @@ public class PlayerAnimations : MonoBehaviour
                     this.m_anim.Play("Melee", this.LayerIndex_MeleeLeft, 0f);
                 this.m_anim.SetLayerWeight(this.LayerIndex_MeleeLeft, 1.0f);
             }
-            this.m_meshsword.enabled = true;
-            this.m_meshguns.enabled = false;
+            
+            // Don't allow for the melee 2 layer to play
             this.m_anim.SetLayerWeight(this.LayerIndex_Melee2Right, 0.0f);
             this.m_anim.SetLayerWeight(this.LayerIndex_Melee2Left, 0.0f);
+            
+            // Hide the guns and show the sword, and enable the trail
+            this.m_meshsword.enabled = true;
+            this.m_meshguns.enabled = false;
             if (!this.m_swordtrail.IsEnabled())
                 this.m_swordtrail.EnableTrail(true);
         }
         else if (this.m_plycombat.GetCombatState() == PlayerCombat.CombatState.Melee2)
         {
+            // Set the left/right attack animations
             if (aimang < 90.0f)
             {
                 if (this.m_anim.GetLayerWeight(this.LayerIndex_Melee2Right) != 1.0f)
@@ -113,17 +138,19 @@ public class PlayerAnimations : MonoBehaviour
                     this.m_anim.Play("Melee", this.LayerIndex_Melee2Left, 0f);
                 this.m_anim.SetLayerWeight(this.LayerIndex_Melee2Left, 1.0f);
             }
-            this.m_meshsword.enabled = true;
-            this.m_meshguns.enabled = false;
+            // Don't allow for the melee 2 layer to play
             this.m_anim.SetLayerWeight(this.LayerIndex_MeleeRight, 0.0f);
             this.m_anim.SetLayerWeight(this.LayerIndex_MeleeLeft, 0.0f);
         }
         else
         {
+            // Disable all the melee layers
             this.m_anim.SetLayerWeight(this.LayerIndex_MeleeRight, 0.0f);
             this.m_anim.SetLayerWeight(this.LayerIndex_MeleeLeft, 0.0f);
             this.m_anim.SetLayerWeight(this.LayerIndex_Melee2Right, 0.0f);
             this.m_anim.SetLayerWeight(this.LayerIndex_Melee2Left, 0.0f);
+            
+            // Hide the sword, show the guns, and disable the weapon trail
             this.m_meshsword.enabled = false;
             this.m_meshguns.enabled = true;
             if (this.m_swordtrail.IsEnabled())
