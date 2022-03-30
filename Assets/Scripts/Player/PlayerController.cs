@@ -6,7 +6,7 @@ ahead and pretty much implemented all the physics myself, because
 Unity's default stuff is really awful. 
 ****************************************************************/
 
-#define DEBUG
+//#define DEBUG
 
 using UnityEngine;
 

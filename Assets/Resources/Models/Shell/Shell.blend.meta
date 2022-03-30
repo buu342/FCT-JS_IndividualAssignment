@@ -114,6 +114,16 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Shell_Mouth__Shell_Mouth
     second: {fileID: 2100000, guid: 8beafa51741de804d9603bbdff2f389e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sword_Blade__Sword_Blade
+    second: {fileID: 2100000, guid: 4799cdbca7f4f404aa1a35e302847fd9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sword_Handle__Sword_Handle
+    second: {fileID: 2100000, guid: e6b39c42a9571904ab6b690922f40cb6, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -130,55 +140,42 @@ ModelImporter:
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Firing' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Chest' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'Forearm_L' has scale
-      animation that will be discarded.\n\t'Hand_L' has scale animation that will
-      be discarded.\n\nClip 'Melee1_0' has import animation warnings that might lower
-      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
-      quality.\n\t'Chest' is inbetween humanoid transforms and has rotation animation
-      that will be discarded.\n\t'Forearm_L' has scale animation that will be discarded.\n\t'Hand_L'
-      has scale animation that will be discarded.\n\nClip 'Melee1_3' has import animation
-      warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'Chest' is inbetween humanoid
-      transforms and has rotation animation that will be discarded.\n\t'Forearm_L'
+      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
+      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
+      'Melee1_0' has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'Melee1_6' has import animation warnings that
+      that will be discarded.\n\nClip 'Melee1_3' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Chest' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'Forearm_L' has scale
-      animation that will be discarded.\n\t'Hand_L' has scale animation that will
-      be discarded.\n\nClip 'Melee2_0' has import animation warnings that might lower
-      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
-      quality.\n\t'Chest' is inbetween humanoid transforms and has rotation animation
-      that will be discarded.\n\t'Forearm_L' has scale animation that will be discarded.\n\t'Hand_L'
-      has scale animation that will be discarded.\n\nClip 'Melee2_3' has import animation
-      warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'Chest' is inbetween humanoid
-      transforms and has rotation animation that will be discarded.\n\t'Forearm_L'
+      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
+      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
+      'Melee1_6' has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
+      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
+      that will be discarded.\n\nClip 'Melee2_0' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
+      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
+      'Melee2_3' has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
       that will be discarded.\n\nClip 'Melee2_6' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Chest' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'Forearm_L' has scale
-      animation that will be discarded.\n\t'Hand_L' has scale animation that will
-      be discarded.\n\nClip 'MeleeLeft1_0' has import animation warnings that might
-      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'Chest' is inbetween humanoid transforms and has rotation
-      animation that will be discarded.\n\t'Forearm_L' has scale animation that will
+      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'MeleeLeft1_6' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Chest'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Forearm_L'
+      'MeleeLeft1_0' has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'MeleeLeft2_0' has import animation warnings
+      that will be discarded.\n\nClip 'MeleeLeft1_6' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Chest' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'Forearm_L' has scale
-      animation that will be discarded.\n\t'Hand_L' has scale animation that will
-      be discarded.\n\nClip 'MeleeLeft2_6' has import animation warnings that might
-      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'Chest' is inbetween humanoid transforms and has rotation
-      animation that will be discarded.\n\t'Forearm_L' has scale animation that will
+      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
+      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
+      'MeleeLeft2_0' has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
+      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
+      that will be discarded.\n\nClip 'MeleeLeft2_6' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
@@ -480,7 +477,7 @@ ModelImporter:
       takeName: Run_Foward
       internalID: 0
       firstFrame: -1
-      lastFrame: 14
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -625,7 +622,7 @@ ModelImporter:
       takeName: Run_Backwards
       internalID: 0
       firstFrame: -1
-      lastFrame: 14
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

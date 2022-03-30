@@ -37,7 +37,7 @@ public class BreakGlass : MonoBehaviour
             Collider[] colliders = Physics.OverlapSphere(hitpos, this.m_ExplodeRadius);
             foreach (Collider hit in colliders)
                 if (hit.GetComponent<Rigidbody>())
-                    hit.GetComponent<Rigidbody>().AddExplosionForce(this.m_ExplodePower*velocity, hitpos, this.m_ExplodeRadius, this.m_UpwardsForce);
+                    hit.GetComponent<Rigidbody>().AddExplosionForce(this.m_ExplodePower*velocity, hitpos, this.m_ExplodeRadius, this.m_UpwardsForce, ForceMode.Impulse);
                 
             // Return that we successfully broke
             return true;

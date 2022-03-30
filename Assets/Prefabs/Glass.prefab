@@ -99,7 +99,7 @@ MonoBehaviour:
   m_BreakForce: 10
   m_ExplodeRadius: 2
   m_ExplodePower: 10
-  m_UpwardsForce: 2
+  m_UpwardsForce: 0
 --- !u!65 &3982162058131325348
 BoxCollider:
   m_ObjectHideFlags: 0

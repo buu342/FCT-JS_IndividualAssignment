@@ -4,7 +4,7 @@
 This script handles projectile logic
 ****************************************************************/
 
-#define DEBUG
+//#define DEBUG
 
 using UnityEngine;
 
