@@ -11,6 +11,7 @@ public class CameraLogic : MonoBehaviour
     // Constants
     private const float CameraHCorrectionSpeed = 0.05f;
     private const float CameraVCorrectionSpeed = 0.01f;
+    private const float CameraPoISpeed = 0.01f;
     private const float TraumaSpeed     = 25.0f;
     private const float MaxTraumaAngle  = 10.0f;
     private const float MaxTraumaOffset = 1.0f;
@@ -18,13 +19,14 @@ public class CameraLogic : MonoBehaviour
     
     // Public values
     public GameObject m_Player;
-    public Vector3 m_PoI = Vector3.zero;
+    public Vector3 m_TargetPoI = Vector3.zero;
     public bool m_FollowPlayer = true;
     
     // Private values
     private Vector3 m_CurrentPlayerPos;
     private Vector3 m_TargetPlayerPos;
     private float m_Trauma = 0.0f;
+    private Vector3 m_CurrentPoI; 
     
     
     /*==============================
@@ -36,7 +38,8 @@ public class CameraLogic : MonoBehaviour
     {
         this.m_NoiseSeed = Random.value;
         this.m_CurrentPlayerPos = this.m_Player.transform.position;
-        this.m_TargetPlayerPos = this.m_Player.transform.position;
+        this.m_TargetPlayerPos = this.m_CurrentPlayerPos;
+        this.m_CurrentPoI = this.m_TargetPoI;
     }
     
 
@@ -60,9 +63,12 @@ public class CameraLogic : MonoBehaviour
             this.m_CurrentPlayerPos.y = Mathf.Lerp(this.m_CurrentPlayerPos.y, this.m_TargetPlayerPos.y, Time.deltaTime*200*(CameraLogic.CameraVCorrectionSpeed + Mathf.Max(0.0f, -this.m_Player.GetComponent<Rigidbody>().velocity.y/1000)));
         }
         
+        // Smoothly move the camera to go to our PoI
+        this.m_CurrentPoI = Vector3.Lerp(this.m_CurrentPoI, this.m_TargetPoI, CameraLogic.CameraPoISpeed);
+        
         // Calculate the camera position
-        this.transform.localPosition = new Vector3(this.m_CurrentPlayerPos.x, this.m_CurrentPlayerPos.y, this.transform.position.z);
-        this.transform.localPosition += new Vector3(this.m_PoI.x, this.m_PoI.y, 0);
+        this.transform.localPosition = new Vector3(this.m_CurrentPlayerPos.x, this.m_CurrentPlayerPos.y, 0);
+        this.transform.localPosition += this.m_CurrentPoI;
         this.transform.localPosition += new Vector3(traumaoffsetx, traumaoffsety, 0);
         this.transform.localRotation = Quaternion.identity;
         this.transform.localRotation *= Quaternion.Euler(0, 0, traumaang);

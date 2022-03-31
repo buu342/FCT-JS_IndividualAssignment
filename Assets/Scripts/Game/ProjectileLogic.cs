@@ -20,7 +20,8 @@ public class ProjectileLogic : MonoBehaviour
     
     // Private values
     private Vector3 m_PrevPosition;
-    private int m_LayerMask;
+    private int m_NoCollideLayer;
+    private int m_BulletLayer;
     
     
     /*==============================
@@ -32,30 +33,32 @@ public class ProjectileLogic : MonoBehaviour
     {
         this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed;
         this.m_PrevPosition = this.transform.position;
-        this.m_LayerMask = LayerMask.NameToLayer("Bullets");
         
         // Disable collisions between self and the projectile's owner
         if (this.m_Owner != null)
             Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+        this.m_NoCollideLayer = LayerMask.NameToLayer("NoCollide");
+        this.m_BulletLayer = LayerMask.NameToLayer("Bullet");
     }
     
 
     /*==============================
-        Update
-        Called every frame
+        FixedUpdate
+        Called every engine tick
     ==============================*/
-    
-    void Update()
+
+    void FixedUpdate()
     {
         Vector3 raydir = this.m_PrevPosition - this.transform.position;
-        RaycastHit hit;
         
         // Because projectiles move quickly, raycast from our previous position to check we hit something
         #if DEBUG
-            Debug.DrawRay(this.transform.position, raydir.normalized*raydir.magnitude, Color.red, 0, false);
+            Debug.DrawRay(this.transform.position, raydir.normalized*raydir.magnitude, Color.red, Time.deltaTime, false);
         #endif
-        if (Physics.Raycast(this.transform.position, raydir.normalized, out hit, raydir.magnitude, this.m_LayerMask, QueryTriggerInteraction.Collide))
-            OnTriggerEnter(hit.collider);
+        RaycastHit[] hitstuff = Physics.RaycastAll(this.transform.position, raydir.normalized, raydir.magnitude);
+        foreach (RaycastHit hit in hitstuff)
+            if (hit.collider.gameObject.layer != this.m_NoCollideLayer && hit.collider.gameObject.layer != this.m_BulletLayer)
+                OnTriggerEnter(hit.collider);
             
         // Update our previous position
         this.m_PrevPosition = this.transform.position;
@@ -158,6 +161,9 @@ public class ProjectileLogic : MonoBehaviour
                 if (other.gameObject.GetComponent<BreakGlass>().Break(this.m_Speed, this.transform.position))
                     return;
                 break;
+            case "Bullet":
+            case "NoCollide":
+                return;
             default:
                 break;
         }
