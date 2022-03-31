@@ -4,8 +4,10 @@
 This is a basic sound class, for the audio manager.
 ****************************************************************/
 
-using UnityEngine.Audio;
 using UnityEngine;
+using UnityEngine.Audio;
+using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Sound
@@ -20,7 +22,12 @@ public class Sound
     
     public bool pitchBulletTime = true;
     public bool loop = false;
+    public bool canStack = false;
+    public bool is3D = false;
+    public float maxDistance = 16.0f;
     
     [HideInInspector]
-    public AudioSource source;
+    public List<GameObject> sources;
+    [HideInInspector]
+    public float maxDistanceSqr;
 }

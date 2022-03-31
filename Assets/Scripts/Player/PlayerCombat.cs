@@ -42,7 +42,7 @@ public class PlayerCombat : MonoBehaviour
     public  GameObject m_swordprefab;
     private GameObject m_fireattachment;
     private GameObject m_shoulder;
-    private AudioManager m_audio; 
+    private AudioManager m_audio;
     
     
     /*==============================
@@ -168,7 +168,10 @@ public class PlayerCombat : MonoBehaviour
         else
         {
             if (this.m_TargetTimeScale != 1.0f)
+            {
                 this.m_audio.Play("Gameplay/Slowmo_Out");
+                this.m_audio.Stop("Gameplay/Slowmo_In");
+            }
             this.m_TargetTimeScale = 1.0f;
         }
     }
@@ -198,7 +201,7 @@ public class PlayerCombat : MonoBehaviour
             bullet.SetSpeed(30.0f);
             
             // Play the shooting sound and set the next fire time
-            this.m_audio.Play("Weapons/Pistol_Fire");
+            this.m_audio.Play("Weapons/Pistol_Fire", this.m_shoulder.transform.position);
             this.m_NextFire = Time.time + PlayerCombat.PistolFireRate;
             this.m_CombatState = CombatState.Shooting;
             this.m_TimeToIdle = Time.time + PlayerCombat.ShootIdleTime*Time.timeScale;
@@ -224,7 +227,7 @@ public class PlayerCombat : MonoBehaviour
         
         // Play the attack sound and set the time to idle
         this.m_TimeToIdle = Time.time + PlayerCombat.MeleeIdleTime*Time.timeScale;
-        this.m_audio.Play("Weapons/Sword_Swing");
+        this.m_audio.Play("Weapons/Sword_Swing", this.m_shoulder.transform.position);
     }
     
     
@@ -236,7 +239,10 @@ public class PlayerCombat : MonoBehaviour
     public void OnBulletTime()
     {
         if (this.m_TargetTimeScale != 0.5f)
+        {
             this.m_audio.Play("Gameplay/Slowmo_In");
+            this.m_audio.Stop("Gameplay/Slowmo_Out");
+        }
         this.m_TargetTimeScale = 0.5f;
     }
 }

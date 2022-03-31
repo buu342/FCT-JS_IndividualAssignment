@@ -23,7 +23,12 @@ public class EnemyAnimations : MonoBehaviour
     private GameObject m_fireattach;
     private Animator m_anim;
     
-    // Start is called before the first frame update
+    
+    /*==============================
+        Start
+        Called when the player is initialized
+    ==============================*/
+    
     void Start()
     {
         this.m_enemylogic = this.transform.parent.gameObject.GetComponent<EnemyLogic>();
@@ -39,7 +44,12 @@ public class EnemyAnimations : MonoBehaviour
         this.m_TargetBodyRot = this.m_CurrentBodyRot;
     }
 
-    // Update is called once per frame
+
+    /*==============================
+        Update
+        Called every frame
+    ==============================*/
+    
     void Update()
     {
         // Set the base mesh angle depending whether we're facing left or right
@@ -161,6 +171,12 @@ public class EnemyAnimations : MonoBehaviour
                 break;
         }
     }
+    
+
+    /*==============================
+        OnDrawGizmos
+        Draws extra debug stuff in the editor
+    ==============================*/
     
     public void PlayFireAnimation()
     {

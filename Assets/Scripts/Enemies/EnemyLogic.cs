@@ -136,25 +136,11 @@ public class EnemyLogic : MonoBehaviour
             return;
         }
         
-        // Cache whether the target is nearby
-        Vector3 distance = this.m_target.transform.Find("Shoulder").gameObject.transform.position - this.m_fireattachment.transform.position;
-        this.m_TargetNear = (distance.sqrMagnitude < this.m_DepthPerception*this.m_DepthPerception);
-        
         // Handle targeting
         HandleTargeting();
         
         // Handle patrolling
         HandlePatrolling();
-        
-        // Go to idle combat state
-        if (this.m_TimeToIdle != 0 && this.m_TimeToIdle < Time.time)
-        {
-            if (this.m_CombatState == CombatState.RemoveAim)
-                this.m_CombatState = CombatState.Idle;
-            else if (this.m_CombatState == CombatState.TakeAim)
-                this.m_CombatState = CombatState.Aiming;
-            this.m_TimeToIdle = 0;
-        }
         
         // Calculate shake when hurt
         float shake = this.m_Trauma*this.m_Trauma;
@@ -169,7 +155,38 @@ public class EnemyLogic : MonoBehaviour
         this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime);
     }
 
+    
+    /*==============================
+        FixedUpdate
+        Called every engine tick
+    ==============================*/
 
+    void FixedUpdate()
+    {
+        // If we're already dead, don't execute any code below
+        if (this.m_EnemyState == EnemyState.Dead)
+            return;
+        
+        // Cache whether the target is nearby
+        Vector3 distance = this.m_target.transform.Find("Shoulder").gameObject.transform.position - this.m_fireattachment.transform.position;
+        this.m_TargetNear = (distance.sqrMagnitude < this.m_DepthPerception*this.m_DepthPerception);
+        
+        // Move to the target
+        this.m_CurrentVelocity = Vector3.Lerp(this.m_CurrentVelocity, this.m_TargetVelocity, this.m_Acceleration);
+        this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_rb.velocity.y, this.m_CurrentVelocity.z);
+        
+        // Go to idle combat state
+        if (this.m_TimeToIdle != 0 && this.m_TimeToIdle < Time.time)
+        {
+            if (this.m_CombatState == CombatState.RemoveAim)
+                this.m_CombatState = CombatState.Idle;
+            else if (this.m_CombatState == CombatState.TakeAim)
+                this.m_CombatState = CombatState.Aiming;
+            this.m_TimeToIdle = 0;
+        }
+    }
+    
+    
     /*==============================
         TakeDamage
         Makes the enemy take damage
@@ -263,7 +280,7 @@ public class EnemyLogic : MonoBehaviour
             bullet.SetSpeed(15.0f);
             
             // Play the shooting sound and set the next fire time
-            this.m_audio.Play("Weapons/Laser_Fire");
+            this.m_audio.Play("Weapons/Laser_Fire", this.m_shoulder.transform.position);
             this.m_NextFire = Time.time + this.m_FireRate;
             this.m_anims.PlayFireAnimation();
         }
@@ -316,10 +333,6 @@ public class EnemyLogic : MonoBehaviour
                 }
                 break;
         }
-        
-        // Move to the target
-        this.m_CurrentVelocity = Vector3.Lerp(this.m_CurrentVelocity, this.m_TargetVelocity, this.m_Acceleration);
-        this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_rb.velocity.y, this.m_CurrentVelocity.z);
     }
 
 
