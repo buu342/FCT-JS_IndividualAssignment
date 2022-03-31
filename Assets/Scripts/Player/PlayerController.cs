@@ -46,8 +46,8 @@ public class PlayerController : MonoBehaviour
     private float m_LandTimer = 0;
     private PlayerState m_PlayerState = PlayerState.Idle;
     private PlayerJumpState m_PlayerJumpState = PlayerJumpState.Idle;
-    private Vector3 m_CurrentVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-    private Vector3 m_TargetVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+    private Vector3 m_CurrentVelocity = Vector3.zero;
+    private Vector3 m_TargetVelocity = Vector3.zero;
     
     // Components
     private Collider m_col;

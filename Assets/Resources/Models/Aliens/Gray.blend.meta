@@ -120,69 +120,66 @@ ModelImporter:
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: "Avatar Rig Configuration mis-match. Bone length in configuration
-      does not match position in animation file:\n\t'Toes_L' : position error = 20.370281
+      does not match position in animation file:\n\t'Toes_L' : position error = 20.370262
       mm\n\t'Toes_R' : position error = 20.370365 mm\n"
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Default Take' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
-      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'Idle_0' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
-      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'Idle_3' has import animation warnings that
+    animationImportWarnings: "\nClip 'Idle_0' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'Idle_6' has import animation warnings that might lower retargeting quality:\nNote:
+      'Idle_3' has import animation warnings that might lower retargeting quality:\nNote:
       Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'RemoveAimCare_0' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
-      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'RemoveAimCare_3' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
-      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'RemoveAimCare_6' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
-      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'RemoveAimFast_0' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
-      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'RemoveAimFast_3' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
-      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'Run_Forwards' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Thigh_R'
-      has scale animation that will be discarded.\n\t'Foot_R' has scale animation
-      that will be discarded.\n\nClip 'ShootCare' has import animation warnings that
+      that will be discarded.\n\nClip 'Idle_6' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'ShootFast' has import animation warnings that might lower retargeting quality:\nNote:
+      'RemoveAimCare_0' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
+      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
+      that will be discarded.\n\nClip 'RemoveAimCare_3' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
+      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
+      'RemoveAimCare_6' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
+      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
+      that will be discarded.\n\nClip 'RemoveAimFast_0' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
+      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
+      'RemoveAimFast_3' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
+      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
+      that will be discarded.\n\nClip 'Run_Forwards' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Thigh_R' has scale animation that will
+      be discarded.\n\t'Foot_R' has scale animation that will be discarded.\n\nClip
+      'ShootCare' has import animation warnings that might lower retargeting quality:\nNote:
       Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'TakeAimCare_0' has import animation warnings
+      that will be discarded.\n\nClip 'ShootFast' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
+      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
+      'TakeAimCare_0' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
+      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
+      that will be discarded.\n\nClip 'TakeAimCare_3' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'TakeAimCare_3' has import animation warnings that might lower retargeting
+      'TakeAimCare_6' has import animation warnings that might lower retargeting
       quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'TakeAimCare_6' has import animation warnings
+      that will be discarded.\n\nClip 'TakeAimFast_0' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'TakeAimFast_0' has import animation warnings that might lower retargeting
+      'TakeAimFast_3' has import animation warnings that might lower retargeting
       quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'TakeAimFast_3' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
-      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n"
+      that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -439,7 +436,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
@@ -468,7 +465,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
@@ -497,7 +494,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1

@@ -30,7 +30,7 @@ public class PlayerCombat : MonoBehaviour
     // Combat
     private Vector3 m_OriginalAimPos;
     private Quaternion m_OriginalAimAng;
-    private Vector3 m_AimDir;
+    private Vector3 m_AimDir = Vector3.zero;
     private float m_MouseHoldTime = 0;
     private float m_NextFire = 0;
     private float m_TargetTimeScale = 1.0f;
@@ -57,7 +57,6 @@ public class PlayerCombat : MonoBehaviour
         this.m_fireattachment = this.transform.Find("FireAttachment").gameObject;
         this.m_OriginalAimPos = this.m_fireattachment.transform.localPosition;
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
-        this.m_AimDir = Vector3.zero;
     }
 
 
