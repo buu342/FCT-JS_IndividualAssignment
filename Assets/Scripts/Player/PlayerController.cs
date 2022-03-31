@@ -9,6 +9,8 @@ Unity's default stuff is really awful.
 //#define DEBUG
 
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -48,6 +50,7 @@ public class PlayerController : MonoBehaviour
     private PlayerJumpState m_PlayerJumpState = PlayerJumpState.Idle;
     private Vector3 m_CurrentVelocity = Vector3.zero;
     private Vector3 m_TargetVelocity = Vector3.zero;
+    private GameObject m_CurrentFloor = null;
     
     // Components
     private Collider m_col;
@@ -116,19 +119,57 @@ public class PlayerController : MonoBehaviour
     
     public bool IsGrounded()
     {
+        int i = 0;
+        int highest = 0;
+        bool[] col = new bool[4];
+        RaycastHit[] hit = new RaycastHit[4];
+        Dictionary<GameObject, int> collisions = new Dictionary<GameObject, int>();
         float xsize = this.m_col.bounds.size.x/2.0f-0.01f;
         float ysize = 0.01f;
         float zsize = this.m_col.bounds.size.z/2.0f-0.01f;
         float raylen = 0.2f;
-        bool cast1 = Physics.Raycast(this.transform.position + (new Vector3( xsize, ysize, 0)), Vector3.down, raylen);
-        bool cast2 = Physics.Raycast(this.transform.position + (new Vector3(-xsize, ysize, 0)), Vector3.down, raylen);
-        bool cast3 = Physics.Raycast(this.transform.position + (new Vector3(0, ysize,  zsize)), Vector3.down, raylen); 
-        bool cast4 = Physics.Raycast(this.transform.position + (new Vector3(0, ysize, -zsize)), Vector3.down, raylen);
         
+        // Perform the raycasts
+        col[0] = Physics.Raycast(this.transform.position + (new Vector3( xsize, ysize, 0)), Vector3.down, out hit[0], raylen);
+        col[1] = Physics.Raycast(this.transform.position + (new Vector3(-xsize, ysize, 0)), Vector3.down, out hit[1], raylen);
+        col[2] = Physics.Raycast(this.transform.position + (new Vector3(0, ysize,  zsize)), Vector3.down, out hit[2], raylen); 
+        col[3] = Physics.Raycast(this.transform.position + (new Vector3(0, ysize, -zsize)), Vector3.down, out hit[3], raylen);
+        
+        // Draw a green ray for debugging where we're standing
         #if DEBUG
             Debug.DrawRay(this.transform.position + (new Vector3(0, ysize, 0)), Vector3.down*raylen, Color.green, 0, false); 
         #endif
-        return cast1 || cast2 || cast3 || cast4;
+        
+        // Count which entities were hit
+        foreach (RaycastHit h in hit)
+        {
+            if (col[i])
+            {
+                if (collisions.ContainsKey(hit[i].collider.gameObject))
+                    collisions[hit[i].collider.gameObject]++;
+                else
+                    collisions.Add(hit[i].collider.gameObject, 0);
+            }
+            i++;
+        }
+        
+        // Check we actually hit something
+        if (collisions.Count == 0)
+        {
+            this.m_CurrentFloor = null;
+            return false;
+        }
+        
+        // Get the entity which was hit the most
+        foreach (KeyValuePair<GameObject, int> entry in collisions)
+        {
+            if (entry.Value > highest)
+            {
+                this.m_CurrentFloor = entry.Key;
+                highest = entry.Value;
+            }
+        }
+        return true;
     }
     
     
@@ -159,6 +200,11 @@ public class PlayerController : MonoBehaviour
         
         // Actually apply the velocity
         this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_rb.velocity.y, this.m_CurrentVelocity.z);
+        if (this.m_CurrentFloor != null && this.m_CurrentFloor.GetComponent<Rigidbody>() != null)
+        {
+            Vector3 vel = this.m_CurrentFloor.GetComponent<Rigidbody>().velocity;
+            this.m_rb.velocity += new Vector3(vel.x, Mathf.Min(vel.y, 0.0f), vel.z);
+        }
     }
     
     
@@ -182,9 +228,9 @@ public class PlayerController : MonoBehaviour
             this.m_PlayerState = PlayerState.Idle;
         
         // Handle jump states
-        if (this.m_rb.velocity.y > 2 && this.m_JumpCount < 2 && this.m_JumpCount > 0)
+        if (this.m_rb.velocity.y > 2 && this.m_JumpCount < 2 && this.m_JumpCount > 0 && !this.m_OnGround)
             this.m_PlayerJumpState = PlayerJumpState.Jump;
-        else if (this.m_rb.velocity.y > 2)
+        else if (this.m_rb.velocity.y > 2 && this.m_JumpCount > 0 && !this.m_OnGround)
             this.m_PlayerJumpState = PlayerJumpState.Jump2;
         else if (this.m_rb.velocity.y < 0 && !this.m_OnGround)
             this.m_PlayerJumpState = PlayerJumpState.Fall;
