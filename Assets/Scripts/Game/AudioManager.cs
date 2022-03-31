@@ -197,16 +197,10 @@ public class AudioManager : MonoBehaviour
         Vector2 dist = listenerpos - srcpos;
         float distsqr = dist.sqrMagnitude;
         if (distsqr == maxdistsqr)
-        {
             return 0.0f;
-        }
         else if (listenerpos.x > srcpos.x)
-        {
             return -(1.0f - Mathf.Min((maxdistsqr - distsqr)/maxdistsqr, 1.0f));
-        }
         else
-        {
             return (1.0f - Mathf.Min((maxdistsqr - distsqr)/maxdistsqr, 1.0f));
-        }
     }
 }

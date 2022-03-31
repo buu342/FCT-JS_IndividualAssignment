@@ -199,6 +199,7 @@ public class PlayerCombat : MonoBehaviour
             ProjectileLogic bullet = Instantiate(this.m_bulletprefab, this.m_fireattachment.transform.position, this.m_fireattachment.transform.rotation).GetComponent<ProjectileLogic>();
             bullet.SetOwner(this.gameObject);
             bullet.SetSpeed(30.0f);
+            bullet.SetOrigin(this.m_shoulder.transform.position);
             
             // Play the shooting sound and set the next fire time
             this.m_audio.Play("Weapons/Pistol_Fire", this.m_shoulder.transform.position);

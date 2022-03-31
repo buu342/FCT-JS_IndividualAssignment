@@ -25,6 +25,8 @@ public class BreakGlass : MonoBehaviour
     
     public bool Break(float velocity, Vector3 hitpos)
     {
+        int BulletLayer = LayerMask.NameToLayer("Bullet");
+        
         // If the collider object was moving fast enough
         if (velocity >= this.m_BreakForce)
         {
@@ -36,7 +38,7 @@ public class BreakGlass : MonoBehaviour
             // Find all the glass shards near our hit position, and apply some push physics to all the pieces 
             Collider[] colliders = Physics.OverlapSphere(hitpos, this.m_ExplodeRadius);
             foreach (Collider hit in colliders)
-                if (hit.GetComponent<Rigidbody>())
+                if (hit.GetComponent<Rigidbody>() && hit.gameObject.layer != BulletLayer)
                     hit.GetComponent<Rigidbody>().AddExplosionForce(this.m_ExplodePower*velocity, hitpos, this.m_ExplodeRadius, this.m_UpwardsForce, ForceMode.Impulse);
                 
             // Return that we successfully broke

@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
         float xsize = this.m_col.bounds.size.x/2.0f-0.01f;
         float ysize = 0.01f;
         float zsize = this.m_col.bounds.size.z/2.0f-0.01f;
-        float raylen = 0.1f;
+        float raylen = 0.2f;
         bool cast1 = Physics.Raycast(this.transform.position + (new Vector3( xsize, ysize, 0)), Vector3.down, raylen);
         bool cast2 = Physics.Raycast(this.transform.position + (new Vector3(-xsize, ysize, 0)), Vector3.down, raylen);
         bool cast3 = Physics.Raycast(this.transform.position + (new Vector3(0, ysize,  zsize)), Vector3.down, raylen); 
@@ -143,15 +143,16 @@ public class PlayerController : MonoBehaviour
         if (!this.m_OnGround && this.m_JumpCount == 0 && this.m_CoyoteTimer == 0)
             this.m_CoyoteTimer = Time.time + PlayerController.CoyoteTime*Time.timeScale;
         
-        // If we're on the ground, reset our jump counter
+        // If we're on the ground
         if (this.m_OnGround)
         {
+            // Reset our jump counter
             this.m_JumpCount = 0;
             this.m_CoyoteTimer = 0;
-        }
     
-        // Add our own gravity as a downward force
-        this.m_rb.AddForce(0, PlayerController.Gravity, 0);
+        }
+        else // Otherwise, add gravity as a downward force
+            this.m_rb.AddForce(0, PlayerController.Gravity, 0);
         
         // Interpolate our current velocity to match our target
         this.m_CurrentVelocity = Vector3.Lerp(this.m_CurrentVelocity, this.m_TargetVelocity*(1/Time.timeScale), this.m_Acceleration);
@@ -181,7 +182,7 @@ public class PlayerController : MonoBehaviour
             this.m_PlayerState = PlayerState.Idle;
         
         // Handle jump states
-        if (this.m_rb.velocity.y > 2 && this.m_JumpCount < 2)
+        if (this.m_rb.velocity.y > 2 && this.m_JumpCount < 2 && this.m_JumpCount > 0)
             this.m_PlayerJumpState = PlayerJumpState.Jump;
         else if (this.m_rb.velocity.y > 2)
             this.m_PlayerJumpState = PlayerJumpState.Jump2;

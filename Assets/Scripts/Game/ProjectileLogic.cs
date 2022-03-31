@@ -20,8 +20,7 @@ public class ProjectileLogic : MonoBehaviour
     
     // Private values
     private Vector3 m_PrevPosition;
-    private int m_NoCollideLayer;
-    private int m_BulletLayer;
+    private int IgnoreLayers = 0;
     
     
     /*==============================
@@ -37,8 +36,9 @@ public class ProjectileLogic : MonoBehaviour
         // Disable collisions between self and the projectile's owner
         if (this.m_Owner != null)
             Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
-        this.m_NoCollideLayer = LayerMask.NameToLayer("NoCollide");
-        this.m_BulletLayer = LayerMask.NameToLayer("Bullet");
+        IgnoreLayers |= 1 << LayerMask.NameToLayer("NoCollide");
+        IgnoreLayers |= 1 << LayerMask.NameToLayer("Bullet");
+        IgnoreLayers |= 1 << LayerMask.NameToLayer("PlayerTrigger");
     }
     
 
@@ -57,7 +57,7 @@ public class ProjectileLogic : MonoBehaviour
         #endif
         RaycastHit[] hitstuff = Physics.RaycastAll(this.transform.position, raydir.normalized, raydir.magnitude);
         foreach (RaycastHit hit in hitstuff)
-            if (hit.collider.gameObject.layer != this.m_NoCollideLayer && hit.collider.gameObject.layer != this.m_BulletLayer)
+            if ((hit.collider.gameObject.layer & IgnoreLayers) > 0)
                 OnTriggerEnter(hit.collider);
             
         // Update our previous position
@@ -92,6 +92,18 @@ public class ProjectileLogic : MonoBehaviour
         // Set the owner, and don't collide with him anymore
         this.m_Owner = owner;
         Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+    }
+
+
+    /*==============================
+        SetOrigin
+        Sets the bullet origin (to prevent shooting through walls)
+        @param The origin vector
+    ==============================*/
+    
+    public void SetOrigin(Vector3 origin)
+    {
+        this.m_PrevPosition = origin;
     }
 
 

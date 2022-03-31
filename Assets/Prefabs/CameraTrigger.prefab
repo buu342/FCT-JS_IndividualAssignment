@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7133735492441399115}
   - component: {fileID: 7133735492441399113}
   - component: {fileID: 7133735492441399114}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: CameraTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,4 +58,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FollowPlayer: 1
-  m_TargetPoI: {x: 0, y: 0, z: 0}
+  m_TargetPoI: {x: 6, y: 2, z: -10}
+  DebugTrigger: 1

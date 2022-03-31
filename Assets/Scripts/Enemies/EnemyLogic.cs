@@ -101,7 +101,7 @@ public class EnemyLogic : MonoBehaviour
     {
         NoiseSeed = Random.value;
         NoCollideLayer = LayerMask.NameToLayer("NoCollide");
-        BulletLayer = LayerMask.NameToLayer("Bullets");
+        BulletLayer = LayerMask.NameToLayer("Bullet");
         this.m_target = GameObject.Find("Player");
         this.m_audio = FindObjectOfType<AudioManager>();
         this.m_mesh = this.transform.Find("Model").gameObject;
