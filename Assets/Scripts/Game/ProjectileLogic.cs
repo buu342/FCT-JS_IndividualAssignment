@@ -137,7 +137,7 @@ public class ProjectileLogic : MonoBehaviour
                 // If the owner of this bullet is different from the sword's, then reflect the projectile
                 if (sword.GetOwner() != this.m_Owner)
                 {
-                    this.m_Owner = sword.GetOwner();
+                    this.SetOwner(sword.GetOwner());
                     this.transform.rotation = other.gameObject.transform.rotation;
                     this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed*2;
                     if (sword.GetOwner().tag == "Player")
@@ -145,6 +145,7 @@ public class ProjectileLogic : MonoBehaviour
                 }
                 return;
             case "Player":
+            
                 // If we hit our owner, don't bother checking anything else
                 if (this.m_Owner == other.gameObject)
                     return;
@@ -170,6 +171,7 @@ public class ProjectileLogic : MonoBehaviour
                 ply.TakeDamage((int)this.m_Damage, this.m_PrevPosition);
                 break;
             case "Enemies":
+            
                 // Ignore enemies if our owner is an enemy
                 if (this.m_Owner.tag == "Enemies")
                     return;

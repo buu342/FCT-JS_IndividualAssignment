@@ -21,7 +21,7 @@ public class PlayerCombat : MonoBehaviour
     private const float InvulTime      = 0.3f;
     private const float StaminaGain    = 0.8f;
     private const float StaminaLose    = 1.0f;
-    private const int   StreakLose     = 2;
+    private const int   StreakLose     = 1;
     private const float StreakLoseTime = 10;
 
     // Combat states
@@ -233,7 +233,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (this.m_CombatState == PlayerCombat.CombatState.Pain || this.m_InvulTime > Time.unscaledTime)
             return;
-        this.m_Streak = Mathf.Min(0, this.m_Streak - 25);
+        this.m_Streak = Mathf.Max(0, this.m_Streak - 25);
         this.m_Health -= amount;
         this.m_CombatState = CombatState.Pain;
         this.m_TimeToIdle = Time.unscaledTime + PlayerCombat.PainIdleTime;
