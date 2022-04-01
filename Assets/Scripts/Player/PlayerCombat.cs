@@ -25,7 +25,16 @@ public class PlayerCombat : MonoBehaviour
         Melee,
         Melee2,
         Shooting,
+        Pain,
     }
+    
+    // States
+    private float m_Health = 100.0f;
+    private float m_Stamina = 100.0f;
+    private float m_StaminaRecovery = 0.0f;
+    private float m_Score = 0.0f;
+    private bool  m_CanLoseScore = true;
+    private float m_LastScoreTime = 0.0f;
     
     // Combat
     private Vector3 m_OriginalAimPos;
