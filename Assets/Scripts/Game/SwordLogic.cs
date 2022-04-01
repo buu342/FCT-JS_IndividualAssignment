@@ -9,6 +9,7 @@ using UnityEngine;
 public class SwordLogic : MonoBehaviour
 {
     // Constants
+    private const int KillScore = 50;
     private const float LifeTime = 0.3f;
     
     // Settings
@@ -101,6 +102,8 @@ public class SwordLogic : MonoBehaviour
                     return;
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
                 enemy.TakeDamage((int)this.m_Damage, this.transform.position);
+                if (this.m_Owner.tag == "Player")
+                    this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
                 break;
         }
     }

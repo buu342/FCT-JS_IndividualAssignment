@@ -15,11 +15,12 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
     // Constants
-    private const float Gravity    = -80.0f;    // Player gravity
-    private const float MoveSpeed  = 10.0f;     // Movement speed
-    private const float JumpPower  = 1000.0f;   // Jump force
-    private const int   MaxJumps   = 2;         // Maximum number of allowed jumps
-    private const float CoyoteTime = 0.1f;     // Coyote time (in seconds)
+    private const float Gravity     = -80.0f;  // Player gravity
+    private const float MoveSpeed   = 10.0f;   // Movement speed
+    private const float JumpPower   = 1000.0f; // Jump force
+    private const int   MaxJumps    = 2;       // Maximum number of allowed jumps
+    private const float CoyoteTime  = 0.1f;    // Coyote time (in seconds)
+    private const float DamageForce = 4.0f;    // Force to apply when taking damage
     
     // Player state
     public enum PlayerState
@@ -56,6 +57,7 @@ public class PlayerController : MonoBehaviour
     private Collider m_col;
     private Rigidbody m_rb;
     private AudioManager m_audio;
+    private PlayerCombat m_plycombat;
     
     
     /*==============================
@@ -69,6 +71,7 @@ public class PlayerController : MonoBehaviour
         this.m_rb = this.GetComponent<Rigidbody>();
         this.m_rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         this.m_OnGround = IsGrounded();
+        this.m_plycombat = this.GetComponent<PlayerCombat>();
     }
     
 
@@ -79,7 +82,8 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        HandleControls();
+        if (this.m_plycombat.GetCombatState() != PlayerCombat.CombatState.Pain)
+            HandleControls();
     }
     
     
@@ -97,7 +101,8 @@ public class PlayerController : MonoBehaviour
             this.m_OnGround = IsGrounded();
         
         // Handle controls
-        HandleFixedControls();
+        if (this.m_plycombat.GetCombatState() != PlayerCombat.CombatState.Pain)
+            HandleFixedControls();
         
         // Handle character movement
         HandleMovement();
@@ -182,7 +187,7 @@ public class PlayerController : MonoBehaviour
     {
         // Handle Coyote time
         if (!this.m_OnGround && this.m_JumpCount == 0 && this.m_CoyoteTimer == 0)
-            this.m_CoyoteTimer = Time.time + PlayerController.CoyoteTime*Time.timeScale;
+            this.m_CoyoteTimer = Time.unscaledTime + PlayerController.CoyoteTime;
         
         // If we're on the ground
         if (this.m_OnGround)
@@ -200,6 +205,8 @@ public class PlayerController : MonoBehaviour
         
         // Actually apply the velocity
         this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_rb.velocity.y, this.m_CurrentVelocity.z);
+        
+        // If we're on a moving platform, move along with the floor
         if (this.m_CurrentFloor != null && this.m_CurrentFloor.GetComponent<Rigidbody>() != null)
         {
             Vector3 vel = this.m_CurrentFloor.GetComponent<Rigidbody>().velocity;
@@ -237,9 +244,9 @@ public class PlayerController : MonoBehaviour
         else if (this.m_PlayerJumpState == PlayerJumpState.Fall && this.m_OnGround)
         {
             this.m_PlayerJumpState = PlayerJumpState.Land;
-            this.m_LandTimer = Time.time + 0.5f*Time.timeScale;
+            this.m_LandTimer = Time.unscaledTime + 0.5f;
         }
-        else if (this.m_PlayerJumpState == PlayerJumpState.Land && this.m_OnGround && this.m_LandTimer < Time.time)
+        else if (this.m_PlayerJumpState == PlayerJumpState.Land && this.m_OnGround && this.m_LandTimer < Time.unscaledTime)
             this.m_PlayerJumpState = PlayerJumpState.Idle;
     }
 
@@ -265,6 +272,24 @@ public class PlayerController : MonoBehaviour
     public PlayerJumpState GetPlayerJumpState()
     {
         return this.m_PlayerJumpState;
+    }
+
+
+    /*==============================
+        OnTakeDamage
+        Handle player movement when taking damage
+        @param Where the damage was received from
+    ==============================*/
+    
+    public void OnTakeDamage(Vector3 dmgpos)
+    {
+        this.m_CurrentVelocity = Vector3.zero;
+        this.m_rb.velocity = Vector3.zero;
+        if (dmgpos.x > this.transform.position.x)
+            this.m_TargetVelocity = -Vector3.right*PlayerController.DamageForce;
+        else
+            this.m_TargetVelocity = Vector3.right*PlayerController.DamageForce;
+        this.m_rb.AddForce(Vector3.up*PlayerController.DamageForce*100.0f);
     }
     
     
@@ -300,7 +325,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetButton("Backward"))
             OnBackward();
         else
-            this.m_TargetVelocity = new Vector3(0, 0, 0);
+            this.m_TargetVelocity = Vector3.zero;
         
         // Crouching
         if (Input.GetButton("Duck"))
@@ -338,7 +363,7 @@ public class PlayerController : MonoBehaviour
     public void OnJump()
     {
         // Check if we didn't start by falling and that we haven't reached the jump limit
-        if ((!this.m_OnGround && this.m_JumpCount == 0 && this.m_CoyoteTimer < Time.time) || (this.m_JumpCount >= PlayerController.MaxJumps))
+        if ((!this.m_OnGround && this.m_JumpCount == 0 && this.m_CoyoteTimer < Time.unscaledTime) || (this.m_JumpCount >= PlayerController.MaxJumps))
             return;
         this.m_JumpCount++;
         this.m_JustJumped = true;

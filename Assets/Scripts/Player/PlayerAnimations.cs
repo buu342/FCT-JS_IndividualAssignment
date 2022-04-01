@@ -16,6 +16,7 @@ public class PlayerAnimations : MonoBehaviour
     private int LayerIndex_Melee2Right;
     private int LayerIndex_AimRight;
     private int LayerIndex_AimLeft;
+    private int LayerIndex_Pain;
     
     // Player mesh angle
     private float m_CurrentBodyRot = -179;
@@ -51,6 +52,7 @@ public class PlayerAnimations : MonoBehaviour
         this.LayerIndex_Melee2Right = this.m_anim.GetLayerIndex("Melee2Right");
         this.LayerIndex_AimLeft = this.m_anim.GetLayerIndex("AimLeft");
         this.LayerIndex_AimRight = this.m_anim.GetLayerIndex("AimRight");
+        this.LayerIndex_Pain = this.m_anim.GetLayerIndex("Pain");
     }
     
 
@@ -156,6 +158,12 @@ public class PlayerAnimations : MonoBehaviour
             if (this.m_swordtrail.IsEnabled())
                 this.m_swordtrail.EnableTrail(false);
         }
+        
+        // Pain animation
+        if (this.m_plycombat.GetCombatState() == PlayerCombat.CombatState.Pain)
+            this.m_anim.SetLayerWeight(this.LayerIndex_Pain, 1.0f);
+        else
+            this.m_anim.SetLayerWeight(this.LayerIndex_Pain, 0.0f);
         
         // Running animations
         if (this.m_plycont.GetPlayerState() == PlayerController.PlayerState.Forward)

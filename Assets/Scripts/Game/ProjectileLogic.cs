@@ -11,6 +11,8 @@ using UnityEngine;
 public class ProjectileLogic : MonoBehaviour
 {
     // Constants
+    private const int KillScore = 30;
+    private const int ReflectScore = 10;
     private const float MaxPlayerAngleDifference = 110.0f;
     
     // Public values
@@ -133,19 +135,21 @@ public class ProjectileLogic : MonoBehaviour
                 SwordLogic sword = other.gameObject.GetComponent<SwordLogic>();
                 
                 // If the owner of this bullet is different from the sword's, then reflect the projectile
-                if (sword.GetOwner() != this.GetOwner())
+                if (sword.GetOwner() != this.m_Owner)
                 {
-                    this.SetOwner(sword.GetOwner());
+                    this.m_Owner = sword.GetOwner();
                     this.transform.rotation = other.gameObject.transform.rotation;
                     this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed*2;
+                    if (sword.GetOwner().tag == "Player")
+                        sword.GetOwner().gameObject.GetComponent<PlayerCombat>().GiveScore(ReflectScore);
                 }
                 return;
             case "Player":
                 // If we hit our owner, don't bother checking anything else
-                if (this.GetOwner() == null || this.GetOwner() == other.gameObject)
+                if (this.m_Owner == other.gameObject)
                     return;
                 
-                // Check if the player was using a melee attack when we hit
+                // Check if the player was using a melee attack when we hit, if not then take damage
                 PlayerCombat ply = other.gameObject.GetComponent<PlayerCombat>();
                 if (ply.GetCombatState() == PlayerCombat.CombatState.Melee)
                 {
@@ -161,16 +165,21 @@ public class ProjectileLogic : MonoBehaviour
                         return;
                     }
                 }
+
+                // Take damage otherwise
+                ply.TakeDamage((int)this.m_Damage, this.m_PrevPosition);
                 break;
             case "Enemies":
                 // Ignore enemies if our owner is an enemy
-                if (this.GetOwner() == null || this.GetOwner().tag == "Enemies")
+                if (this.m_Owner.tag == "Enemies")
                     return;
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
                 enemy.TakeDamage((int)this.m_Damage, this.m_PrevPosition);
+                if (this.m_Owner.tag == "Player")
+                    this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
                 break;
             case "BreakableProp":
-                if (other.gameObject.GetComponent<BreakGlass>().Break(this.m_Speed, this.transform.position))
+                if (other.gameObject.GetComponent<BreakGlass>().Break(this.m_Speed, this.m_PrevPosition))
                     return;
                 break;
             case "Bullet":
