@@ -52,6 +52,9 @@ public class EnemyAnimations : MonoBehaviour
     
     void Update()
     {
+        if (this.m_enemylogic.GetEnemyState() == EnemyLogic.EnemyState.Dead)
+            return;
+        
         // Set the base mesh angle depending whether we're facing left or right
         this.transform.localEulerAngles = new Vector3(0, this.m_CurrentBodyRot, 0);
         this.m_CurrentBodyRot = Mathf.Lerp(this.m_CurrentBodyRot, this.m_TargetBodyRot, 0.1f);
@@ -118,6 +121,7 @@ public class EnemyAnimations : MonoBehaviour
         }
         
         // Handle movement
+        this.m_anim.SetBool("IsFlying", this.m_enemylogic.IsFlying());
         switch (this.m_enemylogic.GetEnemyState())
         {
             case EnemyLogic.EnemyState.Idle:

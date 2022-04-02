@@ -166,6 +166,8 @@ public class PlayerAnimations : MonoBehaviour
             this.m_anim.SetLayerWeight(this.LayerIndex_Pain, 0.0f);
         
         // Running animations
+        this.m_anim.SetBool("IsFlying", this.m_plycont.IsFlying());
+        Debug.Log(this.m_plycont.GetPlayerState());
         if (this.m_plycont.GetPlayerState() == PlayerController.PlayerState.Forward)
         {
             this.m_anim.SetBool("RunningForwards", true);

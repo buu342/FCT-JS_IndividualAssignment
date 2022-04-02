@@ -39,10 +39,10 @@ public class PlayerController : MonoBehaviour
         Jump2,
         Fall,
         Land,
-        Flying,
     }
     
     // Movement
+    public bool m_IsFlying = false;
     private float m_Acceleration = 0.5f;
     private int m_JumpCount = 0;
     private bool m_JustJumped = false; // Buffer for ground checking after jumping
@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
     // Components
     private Collider m_col;
     private Rigidbody m_rb;
+    private GameObject m_mesh;
     private AudioManager m_audio;
     private PlayerCombat m_plycombat;
     
@@ -71,6 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         this.m_col = this.GetComponent<Collider>();
         this.m_rb = this.GetComponent<Rigidbody>();
+        this.m_mesh = this.transform.Find("Model").gameObject;
         this.m_rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         this.m_OnGround = IsGrounded();
         this.m_plycombat = this.GetComponent<PlayerCombat>();
@@ -86,6 +88,12 @@ public class PlayerController : MonoBehaviour
     {
         if (this.m_plycombat.GetCombatState() != PlayerCombat.CombatState.Pain)
             HandleControls();
+        
+        // Bob up and down when flying
+        if (this.m_IsFlying)
+            this.m_mesh.transform.position = this.transform.position + (new Vector3(0, Mathf.Sin(Time.time*3)/8, 0)); 
+        else
+            this.m_mesh.transform.position = this.transform.position + Vector3.zero; 
     }
     
     
@@ -191,22 +199,21 @@ public class PlayerController : MonoBehaviour
         if (!this.m_OnGround && this.m_JumpCount == 0 && this.m_CoyoteTimer == 0)
             this.m_CoyoteTimer = Time.unscaledTime + PlayerController.CoyoteTime;
         
-        // If we're on the ground
+        // If we're on the ground, reset out jump counter
         if (this.m_OnGround)
         {
-            // Reset our jump counter
             this.m_JumpCount = 0;
             this.m_CoyoteTimer = 0;
-    
         }
-        else // Otherwise, add gravity as a downward force
+        else if (!this.m_IsFlying) // Otherwise, add gravity as a downward force if we're not flying
             this.m_rb.AddForce(0, PlayerController.Gravity, 0);
         
-        // Interpolate our current velocity to match our target
+        // Interpolate our current velocity to match our target, and then apply the velocity
         this.m_CurrentVelocity = Vector3.Lerp(this.m_CurrentVelocity, this.m_TargetVelocity*(1/Time.timeScale), this.m_Acceleration);
-        
-        // Actually apply the velocity
-        this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_rb.velocity.y, this.m_CurrentVelocity.z);
+        if (!this.m_IsFlying)
+            this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_rb.velocity.y, this.m_CurrentVelocity.z);
+        else
+            this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_CurrentVelocity.y, this.m_CurrentVelocity.z);
         
         // If we're on a moving platform, move along with the floor
         if (this.m_CurrentFloor != null && this.m_CurrentFloor.GetComponent<Rigidbody>() != null)
@@ -219,7 +226,7 @@ public class PlayerController : MonoBehaviour
     
     /*==============================
         HandleState
-        Handles movement state chanegs
+        Handles movement state changes
     ==============================*/
     
     private void HandleState()
@@ -295,6 +302,18 @@ public class PlayerController : MonoBehaviour
     }
     
     
+    /*==============================
+        IsFlying
+        Returns whether we're flying
+        @returns Whether we're flying
+    ==============================*/
+    
+    public bool IsFlying()
+    {
+        return this.m_IsFlying;
+    }
+    
+    
     /*********************************
              Control Handling
     *********************************/
@@ -308,7 +327,7 @@ public class PlayerController : MonoBehaviour
     private void HandleControls()
     {
         // Jumping
-        if (Input.GetButtonDown("Jump"))
+        if (!this.m_IsFlying && Input.GetButtonDown("Jump"))
             OnJump();
     }
     
@@ -328,6 +347,10 @@ public class PlayerController : MonoBehaviour
             OnBackward();
         else
             this.m_TargetVelocity = Vector3.zero;
+        
+        // Flying up
+        if (this.m_IsFlying && Input.GetButton("Jump"))
+            OnJump();
         
         // Crouching
         if (Input.GetButton("Duck"))
@@ -364,7 +387,14 @@ public class PlayerController : MonoBehaviour
     
     public void OnJump()
     {
-        // Check if we didn't start by falling and that we haven't reached the jump limit
+        // If we're flying, then just move upwards
+        if (this.m_IsFlying)
+        {
+            this.m_TargetVelocity += this.transform.up*PlayerController.MoveSpeed;
+            return;
+        }
+        
+        // Otherwise, check if we didn't start by falling and that we haven't reached the jump limit
         if ((!this.m_OnGround && this.m_JumpCount == 0 && this.m_CoyoteTimer < Time.unscaledTime) || (this.m_JumpCount >= PlayerController.MaxJumps))
             return;
         this.m_JumpCount++;
@@ -377,11 +407,19 @@ public class PlayerController : MonoBehaviour
     
     /*==============================
         OnDuck
-        Handle crouching
+        Handle crouching (unused)
     ==============================*/
     
     public void OnDuck()
     {
+        // If we're flying, then just move downwards
+        if (this.m_IsFlying)
+        {
+            this.m_TargetVelocity -= this.transform.up*PlayerController.MoveSpeed;
+            return;
+        }
+        
+        // Debug camera shake
         #if DEBUG
             Camera.main.GetComponent<CameraLogic>().AddTrauma(0.1f);
         #endif

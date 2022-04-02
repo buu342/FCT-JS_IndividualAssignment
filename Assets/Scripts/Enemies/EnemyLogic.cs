@@ -23,7 +23,6 @@ public class EnemyLogic : MonoBehaviour
     {
         Idle,
         Running,
-        Flying,
         Dead,
     }
     
@@ -67,6 +66,7 @@ public class EnemyLogic : MonoBehaviour
     public float m_FireRate = 0.5f;
     
     // Patrolling
+    public bool m_IsFlying = false;
     public float m_MovementSpeed = 5;
     public List<GameObject> m_PatrolPoints;
     public float m_PatrolWaitTime = 0;
@@ -137,9 +137,6 @@ public class EnemyLogic : MonoBehaviour
             return;
         }
         
-        // Add gravity
-        this.m_rb.AddForce(0, EnemyLogic.Gravity, 0);
-        
         // Handle targeting
         HandleTargeting();
         
@@ -154,6 +151,8 @@ public class EnemyLogic : MonoBehaviour
         // Calculate the shake position
         this.m_mesh.transform.localPosition = this.m_OriginalMeshPos;
         this.m_mesh.transform.localPosition += new Vector3(traumaoffsetx, traumaoffsety, 0);
+        if (this.m_IsFlying)
+            this.m_mesh.transform.localPosition += new Vector3(0, Mathf.Sin(Time.time*5)/5, 0); 
         
         // Decrease shake over time
         this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime);
@@ -177,7 +176,11 @@ public class EnemyLogic : MonoBehaviour
         
         // Move to the target
         this.m_CurrentVelocity = Vector3.Lerp(this.m_CurrentVelocity, this.m_TargetVelocity, this.m_Acceleration);
-        this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_rb.velocity.y, this.m_CurrentVelocity.z);
+        this.m_rb.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_CurrentVelocity.y, this.m_CurrentVelocity.z);
+        
+        // Add gravity
+        if (!this.m_IsFlying)
+            this.m_rb.AddForce(0, EnemyLogic.Gravity, 0);
         
         // Go to idle combat state
         if (this.m_TimeToIdle != 0 && this.m_TimeToIdle < Time.time)
@@ -216,7 +219,7 @@ public class EnemyLogic : MonoBehaviour
         Vector3 targetpos = Vector3.zero;
         
         // Calculate the direction to face the target
-        if (this.m_AttackStyle == AttackStyle.Aiming)
+        if (this.m_TargetNear && this.m_AttackStyle == AttackStyle.Aiming)
         {
             targetpos = this.m_target.transform.Find("Shoulder").gameObject.transform.position;
             this.m_AimDir = this.m_fireattachment.transform.position - targetpos;
@@ -224,9 +227,12 @@ public class EnemyLogic : MonoBehaviour
         this.m_AimDir.Normalize();
         
         // Rotate the firing attachment to point at the player
-        this.m_fireattachment.transform.localPosition = this.m_OriginalAimPos;
-        this.m_fireattachment.transform.localRotation = this.m_OriginalAimAng;
-        this.m_fireattachment.transform.RotateAround(this.m_shoulder.transform.position, Vector3.forward, Mathf.Atan2(this.m_AimDir.y, this.m_AimDir.x)*Mathf.Rad2Deg);
+        if (this.m_TargetNear)
+        {
+            this.m_fireattachment.transform.localPosition = this.m_OriginalAimPos;
+            this.m_fireattachment.transform.localRotation = this.m_OriginalAimAng;
+            this.m_fireattachment.transform.RotateAround(this.m_shoulder.transform.position, Vector3.forward, Mathf.Atan2(this.m_AimDir.y, this.m_AimDir.x)*Mathf.Rad2Deg);
+        }
         
         // Attack based on the style
         switch (this.m_AttackStyle)
@@ -327,13 +333,10 @@ public class EnemyLogic : MonoBehaviour
                     this.m_EnemyState = EnemyState.Idle;
                     this.m_TargetVelocity = new Vector3(0, 0, 0);
                 }
-                else if (this.m_TargetVelocity.x == 0)
+                else
                 {
                     // Set the speed based on whether the patrol point is to the left or right of us
-                    if (distance.x > 0)
-                        this.m_TargetVelocity = new Vector3(this.m_MovementSpeed, 0, 0);
-                    else
-                        this.m_TargetVelocity = new Vector3(-this.m_MovementSpeed, 0, 0);
+                    this.m_TargetVelocity = this.m_MovementSpeed*distance.normalized;
                 }
                 break;
         }
@@ -408,7 +411,7 @@ public class EnemyLogic : MonoBehaviour
     
     public GameObject GetPatrolPoint()
     {
-        if (this.m_NextPatrolTarget == -1 || (!this.m_ShootWhileMoving && this.m_TargetNear))
+        if (this.m_NextPatrolTarget == -1)
             return null;
         return this.m_PatrolPoints[this.m_NextPatrolTarget];
     }
@@ -423,6 +426,18 @@ public class EnemyLogic : MonoBehaviour
     public bool GetTargetNear()
     {
         return this.m_TargetNear;
+    }
+    
+    
+    /*==============================
+        IsFlying
+        Returns whether we're flying
+        @returns Whether we're flying
+    ==============================*/
+    
+    public bool IsFlying()
+    {
+        return this.m_IsFlying;
     }
     
 

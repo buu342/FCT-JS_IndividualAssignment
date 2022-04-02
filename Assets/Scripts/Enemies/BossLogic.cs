@@ -61,7 +61,7 @@ public class BossLogic : MonoBehaviour
     private bool m_OnGround;
     
     // Combat
-    private CombatState m_NextAction = CombatState.Idle;
+    //private CombatState m_NextAction = CombatState.Idle;
     private CombatState m_CombatState = CombatState.Idle;
     private Vector3 m_OriginalMeshPos;
     private Vector3 m_OriginalAimPos;
@@ -212,6 +212,7 @@ public class BossLogic : MonoBehaviour
                         this.m_MovementStep++;
                         this.m_TimeToIdle = Time.time + 7.0f/60.0f;
                         this.m_TargetVelocity = Vector3.zero;
+                        Camera.main.GetComponent<CameraLogic>().AddTrauma(0.3f);
                     }
                     break;
                 case 2:
@@ -228,6 +229,7 @@ public class BossLogic : MonoBehaviour
                         this.m_MovementStep++;
                         this.m_TimeToIdle = Time.time + 7.0f/60.0f;
                         this.m_TargetVelocity = Vector3.zero;
+                        Camera.main.GetComponent<CameraLogic>().AddTrauma(0.3f);
                     }
                     break;
                 case 4:
