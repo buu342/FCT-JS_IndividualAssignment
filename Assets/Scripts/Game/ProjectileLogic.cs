@@ -13,14 +13,16 @@ public class ProjectileLogic : MonoBehaviour
     // Constants
     private const int KillScore = 30;
     private const int ReflectScore = 10;
+    private const float DestroyTime = 3.0f;
     private const float MaxPlayerAngleDifference = 110.0f;
     
     // Public values
     public GameObject m_Owner = null;
-    public float m_Speed = 0;
-    public float m_Damage = 10;
+    public float m_Speed = 0.0f;
+    public float m_Damage = 10.0f;
     
     // Private values
+    private float m_DestroyTime = 0.0f;
     private Vector3 m_PrevPosition;
     private int IgnoreLayers = 0;
     
@@ -52,6 +54,10 @@ public class ProjectileLogic : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 raydir = this.m_PrevPosition - this.transform.position;
+        
+        // Destroy ourselves if we're off camera for too long
+        if (this.m_DestroyTime != 0 && this.m_DestroyTime < Time.unscaledTime)
+            Destroy(this.gameObject);
         
         // Because projectiles move quickly, raycast from our previous position to check we hit something
         #if DEBUG
@@ -211,6 +217,17 @@ public class ProjectileLogic : MonoBehaviour
     
     private void OnBecameInvisible()
     {
-        Destroy(this.gameObject);
+        this.m_DestroyTime = Time.unscaledTime + ProjectileLogic.DestroyTime;
+    }
+
+
+    /*==============================
+        OnBecameVisible
+        Handles the projectile suddenly being visible on camera
+    ==============================*/
+    
+    private void OnBecameVisible()
+    {
+        this.m_DestroyTime = 0.0f;
     }
 }

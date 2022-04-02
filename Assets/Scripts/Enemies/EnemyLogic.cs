@@ -11,6 +11,7 @@ using System.Collections.Generic;
 public class EnemyLogic : MonoBehaviour
 {
     // Constants
+    private const float Gravity         = -80.0f;
     private const float TraumaSpeed     = 25.0f;
     private const float MaxTraumaOffset = 2.0f;
     private float NoiseSeed;
@@ -135,6 +136,9 @@ public class EnemyLogic : MonoBehaviour
             Die();
             return;
         }
+        
+        // Add gravity
+        this.m_rb.AddForce(0, EnemyLogic.Gravity, 0);
         
         // Handle targeting
         HandleTargeting();
