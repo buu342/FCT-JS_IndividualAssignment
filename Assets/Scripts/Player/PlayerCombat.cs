@@ -16,7 +16,6 @@ public class PlayerCombat : MonoBehaviour
     private const float MeleeHoldTime  = 0.15f;
     private const float PistolFireRate = 0.2f;
     private const float MeleeIdleTime  = 0.4f;
-    private const float ShootIdleTime  = PistolFireRate + 0.1f;
     private const float PainIdleTime   = 0.3f;
     private const float InvulTime      = 0.3f;
     private const float StaminaGain    = 0.8f;
@@ -110,41 +109,24 @@ public class PlayerCombat : MonoBehaviour
         if (this.m_Streak > 0 && this.m_LastStreakTime < Time.unscaledTime)
             this.m_Streak = Mathf.Max(0, this.m_Streak - PlayerCombat.StreakLose);
     }
-
-
+    
+    
     /*==============================
-        GetCombatState
-        Returns the player's current combat state
-        @returns The player's current combat state
+        OnCollisionEnter
+        Handles collision response
+        @param The collision data
     ==============================*/
     
-    public CombatState GetCombatState()
+    void OnCollisionEnter(Collision col)
     {
-        return this.m_CombatState;
-    }
-
-
-    /*==============================
-        GetFireAttachment
-        Returns a pointer to the player's fire attachment object
-        @returns The player's fire attachment object
-    ==============================*/
-    
-    public GameObject GetFireAttachment()
-    {
-        return this.m_fireattachment;
-    }
-
-
-    /*==============================
-        GetAimDirection
-        Returns a direction vector pointing where the player is aiming at
-        @returns The player's aim vector
-    ==============================*/
-    
-    public Vector3 GetAimDirection()
-    {
-        return this.m_AimDir;
+        Collider other = col.collider;
+        switch (other.tag)
+        {
+            case "Enemies":
+            case "Boss":
+                this.TakeDamage(10, other.gameObject.transform.position);
+                break;
+        }
     }
     
     
@@ -270,7 +252,9 @@ public class PlayerCombat : MonoBehaviour
             this.m_audio.Play("Weapons/Pistol_Fire", this.m_shoulder.transform.position);
             this.m_NextFire = Time.time + PlayerCombat.PistolFireRate;
             this.m_CombatState = CombatState.Shooting;
-            this.m_TimeToIdle = Time.unscaledTime + PlayerCombat.ShootIdleTime;
+            this.m_TimeToIdle = Time.unscaledTime + PlayerCombat.PistolFireRate;
+            if (this.m_TargetTimeScale != 1.0f) // Fixes a small animation bug I'm too lazy to fix proper
+                this.m_TimeToIdle += 0.2f;
         }
     }
     
@@ -322,6 +306,42 @@ public class PlayerCombat : MonoBehaviour
     /*********************************
              Getters/Setters
     *********************************/
+
+    /*==============================
+        GetCombatState
+        Returns the player's current combat state
+        @returns The player's current combat state
+    ==============================*/
+    
+    public CombatState GetCombatState()
+    {
+        return this.m_CombatState;
+    }
+
+
+    /*==============================
+        GetFireAttachment
+        Returns a pointer to the player's fire attachment object
+        @returns The player's fire attachment object
+    ==============================*/
+    
+    public GameObject GetFireAttachment()
+    {
+        return this.m_fireattachment;
+    }
+
+
+    /*==============================
+        GetAimDirection
+        Returns a direction vector pointing where the player is aiming at
+        @returns The player's aim vector
+    ==============================*/
+    
+    public Vector3 GetAimDirection()
+    {
+        return this.m_AimDir;
+    }
+    
     
     /*==============================
         GetHealth
@@ -391,7 +411,7 @@ public class PlayerCombat : MonoBehaviour
     
     public void GiveScore(int score)
     {
-        this.m_Streak += score/10;
+        this.m_Streak = Mathf.Min(100, this.m_Streak + score/10);
         this.m_LastStreakTime = Time.unscaledTime + PlayerCombat.StreakLoseTime;
         this.m_Score += score*Mathf.Min(1 + this.m_Streak/20, 5);
     }

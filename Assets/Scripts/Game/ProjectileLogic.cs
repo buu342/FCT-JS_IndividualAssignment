@@ -180,6 +180,16 @@ public class ProjectileLogic : MonoBehaviour
                 if (this.m_Owner.tag == "Player")
                     this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
                 break;
+            case "Boss":
+            
+                // Ignore bosses if our owner is the boss
+                if (this.m_Owner.tag == "Boss")
+                    return;
+                BossLogic boss = other.gameObject.transform.root.GetComponent<BossLogic>();
+                boss.TakeDamage((int)this.m_Damage);
+                if (this.m_Owner.tag == "Player")
+                    this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
+                break;
             case "BreakableProp":
                 if (other.gameObject.GetComponent<BreakGlass>().Break(this.m_Speed, this.m_PrevPosition))
                     return;

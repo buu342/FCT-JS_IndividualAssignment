@@ -18,8 +18,10 @@ public class HUD : MonoBehaviour
     public Image m_StaminaBar;
     public Image m_ScoreBar;
     public Image m_ScoreIcon;
+    public Image m_BossHealthBar;
     public GameObject m_Player;
     public Sprite[] StreakSprite = new Sprite[6];
+    public GameObject m_Boss;
     
     // Useful color values
     private Color32 HealthColor          = new Color32(255, 0, 0, 255);
@@ -36,8 +38,11 @@ public class HUD : MonoBehaviour
     private int   m_CurrentStreak = 0;
     private float m_CurrentHealth;
     private float m_TargetHealth;
+    private float m_CurrentBossHealth;
+    private float m_TargetBossHealth;
     private float m_StreakSize = 1.0f;
     private PlayerCombat m_plycombat;
+    private BossLogic m_bosslogic;
     
     
     /*==============================
@@ -50,6 +55,12 @@ public class HUD : MonoBehaviour
         this.m_plycombat = this.m_Player.GetComponent<PlayerCombat>();
         this.m_CurrentHealth = this.m_plycombat.GetHealth();
         this.m_TargetHealth = this.m_CurrentHealth;
+        if (this.m_Boss != null)
+        {
+            this.m_bosslogic = this.m_Boss.GetComponent<BossLogic>();
+            this.m_CurrentBossHealth = this.m_bosslogic.GetHealth();
+            this.m_TargetBossHealth = this.m_CurrentBossHealth;
+        }
     }
 
 
@@ -59,7 +70,7 @@ public class HUD : MonoBehaviour
     ==============================*/
     
     void Update()
-    {        
+    {
         // Health bar
         this.m_TargetHealth = this.m_plycombat.GetHealth();
         this.m_CurrentHealth = Mathf.Lerp(this.m_CurrentHealth, this.m_TargetHealth, HUD.HealthTime);
@@ -77,8 +88,11 @@ public class HUD : MonoBehaviour
         this.m_ScoreBar.rectTransform.localScale  = new Vector3(this.m_plycombat.GetStreak()/100.0f, 1.0f, 1.0f);
         Vector3 barscale = this.m_ScoreBar.rectTransform.localScale;
         if (barscale.x == 1.0f)
+        {
             this.m_CurrentStreak = 5;
-        if (barscale.x >= 4.0f/5.0f) // Why am I not doing this in a loop? Because like this, the compiler can precalculate the divisions. It's faster.
+            this.m_ScoreBar.GetComponent<Image>().color = StreakColor6;
+        }
+        else if (barscale.x >= 4.0f/5.0f) // Why am I not doing this in a loop? Because like this, the compiler can precalculate the divisions. It's faster.
         {
             this.m_CurrentStreak = 4;
             this.m_ScoreBar.GetComponent<Image>().color = Color.Lerp(StreakColor5, StreakColor6, (barscale.x - 4.0f/5.0f)/(1.0f/5.0f));
@@ -111,5 +125,20 @@ public class HUD : MonoBehaviour
         this.m_ScoreIcon.rectTransform.localScale = new Vector3(-this.m_StreakSize, this.m_StreakSize, 1.0f);
         if (this.m_CurrentStreak > laststreak)
             this.m_StreakSize = 1.5f;
+        
+        // Boss health bar
+        if (this.m_Boss != null && this.m_CurrentBossHealth > 0)
+        {
+            this.m_TargetBossHealth = this.m_bosslogic.GetHealth();
+            this.m_CurrentBossHealth = Mathf.Lerp(this.m_CurrentBossHealth, this.m_TargetBossHealth, HUD.HealthTime);
+            this.m_BossHealthBar.rectTransform.localScale = new Vector3(this.m_CurrentBossHealth/this.m_bosslogic.GetMaxHealth(), 1.0f, 1.0f);
+            
+            // Boss is dead, move the bar down
+            if (this.m_CurrentBossHealth < 1)
+            {
+                Vector2 curpos = this.m_BossHealthBar.transform.parent.position;
+                this.m_BossHealthBar.transform.parent.position = new Vector2(curpos.x, Mathf.Lerp(curpos.y, -4, 0.1f));
+            }
+        }
     }
 }

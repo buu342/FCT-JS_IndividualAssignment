@@ -105,6 +105,16 @@ public class SwordLogic : MonoBehaviour
                 if (this.m_Owner.tag == "Player")
                     this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
                 break;
+            case "Boss":
+                // Ignore bosses if our owner is a boss
+                if (this.GetOwner().tag == "Boss")
+                    return;
+                BossLogic boss = other.gameObject.transform.root.GetComponent<BossLogic>();
+                boss.TakeDamage((int)this.m_Damage);
+                if (this.m_Owner.tag == "Player")
+                    this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
+                Physics.IgnoreCollision(boss.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+                break;
         }
     }
 }

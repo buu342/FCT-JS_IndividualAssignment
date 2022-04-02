@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
         Backward,
         Pain,
     }
+    
+    // Jump state
     public enum PlayerJumpState
     {
         Idle,

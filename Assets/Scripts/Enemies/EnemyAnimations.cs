@@ -174,8 +174,8 @@ public class EnemyAnimations : MonoBehaviour
     
 
     /*==============================
-        OnDrawGizmos
-        Draws extra debug stuff in the editor
+        PlayFireAnimation
+        Plays the shooting animation
     ==============================*/
     
     public void PlayFireAnimation()

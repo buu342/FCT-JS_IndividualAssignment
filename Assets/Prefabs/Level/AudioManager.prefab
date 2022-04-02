@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6138796699223636659
 Transform:
@@ -43,25 +43,81 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd71bf8382bd6734c92cc401b20a53d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds:
-  - name: Weapons/PistolFire
-    clip: {fileID: 8300000, guid: b29165ec287ce81428bd4221a6a3f07b, type: 3}
-    volume: 1
-    pitch: 1
-    pitchBulletTime: 1
-    loop: 0
-    source: {fileID: 0}
+  m_RegisteredSoundsList:
   - name: Gameplay/Slowmo_In
     clip: {fileID: 8300000, guid: 1cd001c0abbb1414ea4fd89102bf2f0e, type: 3}
     volume: 1
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    source: {fileID: 0}
+    canStack: 0
+    is3D: 0
+    maxDistance: 0
+    sources: []
+    maxDistanceSqr: 0
   - name: Gameplay/Slowmo_Out
     clip: {fileID: 8300000, guid: 3b781a6e49fbcbe488cae914e2175982, type: 3}
     volume: 1
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    source: {fileID: 0}
+    canStack: 0
+    is3D: 0
+    maxDistance: 0
+    sources: []
+    maxDistanceSqr: 0
+  - name: Weapons/Laser_Fire
+    clip: {fileID: 8300000, guid: f1c4983c545dab34bbf55b84ea14d689, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 1
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Weapons/Pistol_Fire
+    clip: {fileID: 8300000, guid: b29165ec287ce81428bd4221a6a3f07b, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Weapons/Sword_Swing
+    clip: {fileID: 8300000, guid: 5cd7f9a6fa245714a89a5ed4c99a9876, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Weapons/Sword_Swing
+    clip: {fileID: 8300000, guid: d705ab11c5a6341499853746d0ad9a7a, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Weapons/Sword_Swing
+    clip: {fileID: 8300000, guid: cbf79ba82d7a57945a44ef8152ddb6f6, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0

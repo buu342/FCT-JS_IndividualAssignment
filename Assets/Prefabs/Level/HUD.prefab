@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 2712008353472161584}
   - component: {fileID: 2712008353472161599}
   m_Layer: 5
-  m_Name: StaminaBar_Item
+  m_Name: StaminaBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,9 +187,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -128, y: 32}
+  m_AnchoredPosition: {x: -96, y: 0}
   m_SizeDelta: {x: 64, y: 64}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2712008353540865643
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -419,9 +419,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HealthBar: {fileID: 2712008354812971222}
+  m_HealthIcon: {fileID: 2712008354111072747}
   m_StaminaBar: {fileID: 2712008353784318857}
   m_ScoreBar: {fileID: 2712008354851547234}
   m_ScoreIcon: {fileID: 2712008353540865642}
+  m_Player: {fileID: 0}
+  StreakSprite:
+  - {fileID: 21300000, guid: 34e403a17a700f443af1dbaba262c942, type: 3}
+  - {fileID: 21300000, guid: 84595d7463f6f5144808b4cd79e244cf, type: 3}
+  - {fileID: 21300000, guid: 7ca03eb3af3e625458fd84d2db11c3e2, type: 3}
+  - {fileID: 21300000, guid: 8895701d8a6fe574e859b5c19d4fc6d1, type: 3}
+  - {fileID: 21300000, guid: a1ed06564a995b348bee32a6714b9c9e, type: 3}
+  - {fileID: 21300000, guid: 709b32615b3a2904caf26890252e5029, type: 3}
 --- !u!1 &2712008354111072745
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,9 +465,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -128, y: 32}
+  m_AnchoredPosition: {x: -96, y: 0}
   m_SizeDelta: {x: 64, y: 64}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2712008354111072748
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -831,9 +840,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -128, y: 32}
+  m_AnchoredPosition: {x: -96, y: 0}
   m_SizeDelta: {x: 64, y: 64}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2712008355152031517
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -884,7 +893,7 @@ GameObject:
   - component: {fileID: 2712008355167947059}
   - component: {fileID: 2712008355167947058}
   m_Layer: 5
-  m_Name: HealthBar_Item
+  m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -962,7 +971,7 @@ GameObject:
   - component: {fileID: 2712008355393070378}
   - component: {fileID: 2712008355393070377}
   m_Layer: 5
-  m_Name: StreakBar_Item
+  m_Name: StreakBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

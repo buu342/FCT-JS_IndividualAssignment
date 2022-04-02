@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BossAvatarMask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature
+    m_Weight: 1
+  - m_Path: Armature/LowerBody
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_L
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_L/LegBot_L
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_L/LegBot_L/Foot_L
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_L/LegBot_L/Foot_L/ToeBack_L
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_L/LegBot_L/Foot_L/ToeFront_L
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_L/LegBot_L/Foot_L/ToeIn_L
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_L/LegBot_L/Foot_L/ToeOut_L
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_R
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_R/LegBot_R
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_R/LegBot_R/Foot_R
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_R/LegBot_R/Foot_R/ToeBack_R
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_R/LegBot_R/Foot_R/ToeFront_R
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_R/LegBot_R/Foot_R/ToeIn_R
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/LegTop_R/LegBot_R/Foot_R/ToeOut_R
+    m_Weight: 0
+  - m_Path: Armature/LowerBody/UpperBody
+    m_Weight: 1
+  - m_Path: Armature/LowerBody/UpperBody/Arm_L
+    m_Weight: 1
+  - m_Path: Armature/LowerBody/UpperBody/Arm_R
+    m_Weight: 1
+  - m_Path: Boss
+    m_Weight: 1
