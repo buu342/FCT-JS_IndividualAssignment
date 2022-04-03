@@ -60,6 +60,7 @@ public class BossAnimations : MonoBehaviour
     {
         int oldaim = this.m_LastAim;
         
+        // Play the death animation if we died
         if (this.m_bosslogic.GetBossState() == BossLogic.BossState.Dead || this.m_bosslogic.GetBossState() == BossLogic.BossState.Dying)
         {
             if (this.m_bosslogic.GetBossState() == BossLogic.BossState.Dead && this.m_anim.GetLayerWeight(this.LayerIndex_Death) != 1.0f)
@@ -71,37 +72,40 @@ public class BossAnimations : MonoBehaviour
         }
         
         // Set the directional aim blending
-        Vector3 aimdir = this.m_bosslogic.GetAimDirection();
-        float aimang = Vector3.Angle(aimdir, Vector3.right);
-        this.m_anim.SetFloat("AimX", aimdir.x);
-        this.m_anim.SetFloat("AimY", -aimdir.y);
-        if (aimang < 90.0f)
+        if (this.m_bosslogic.GetBossCombatState() != BossLogic.CombatState.Rocket)
         {
-            this.m_LastAim = -1;
-            this.m_anim.SetLayerWeight(this.LayerIndex_AimRight, 1.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft, 0.0f);
-        }
-        else
-        {
-            this.m_LastAim = 1;
-            this.m_anim.SetLayerWeight(this.LayerIndex_AimRight, 0.0f);
-            this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft, 1.0f);
-        }
-
-        // Turn the upper body to face the target
-        if (oldaim != this.m_LastAim)
-        {
-            if (this.m_LastAim == -1)
+            Vector3 aimdir = this.m_bosslogic.GetAimDirection();
+            float aimang = Vector3.Angle(aimdir, Vector3.right);
+            this.m_anim.SetFloat("AimX", aimdir.x);
+            this.m_anim.SetFloat("AimY", -aimdir.y);
+            if (aimang < 90.0f)
             {
-                this.m_anim.SetLayerWeight(this.LayerIndex_TurnRight, 1.0f);
-                this.m_anim.SetLayerWeight(this.LayerIndex_TurnLeft, 0.0f);
-                this.m_anim.Play("Turn", this.LayerIndex_TurnRight, 0f);
+                this.m_LastAim = -1;
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimRight, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft, 0.0f);
             }
             else
             {
-                this.m_anim.SetLayerWeight(this.LayerIndex_TurnRight, 0.0f);
-                this.m_anim.SetLayerWeight(this.LayerIndex_TurnLeft, 1.0f);
-                this.m_anim.Play("Turn", this.LayerIndex_TurnLeft, 0f);
+                this.m_LastAim = 1;
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimRight, 0.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_AimLeft, 1.0f);
+            }
+
+            // Turn the upper body to face the target
+            if (oldaim != this.m_LastAim)
+            {
+                if (this.m_LastAim == -1)
+                {
+                    this.m_anim.SetLayerWeight(this.LayerIndex_TurnRight, 1.0f);
+                    this.m_anim.SetLayerWeight(this.LayerIndex_TurnLeft, 0.0f);
+                    this.m_anim.Play("Turn", this.LayerIndex_TurnRight, 0f);
+                }
+                else
+                {
+                    this.m_anim.SetLayerWeight(this.LayerIndex_TurnRight, 0.0f);
+                    this.m_anim.SetLayerWeight(this.LayerIndex_TurnLeft, 1.0f);
+                    this.m_anim.Play("Turn", this.LayerIndex_TurnLeft, 0f);
+                }
             }
         }
         
@@ -121,6 +125,45 @@ public class BossAnimations : MonoBehaviour
                 this.m_anim.SetBool("MovingBackwards", true);
                 break;
         }
+        
+        // Jumping animations
+        if (this.m_bosslogic.GetBossJumpState() != BossLogic.BossJumpState.Idle && this.m_bosslogic.GetBossJumpState() != BossLogic.BossJumpState.Land)
+            this.m_anim.SetBool("IsJumping", true);
+        else
+            this.m_anim.SetBool("IsJumping", false);
+        if (this.m_bosslogic.GetBossJumpState() == BossLogic.BossJumpState.Land)
+            this.m_anim.SetBool("IsGrounded", true);
+        else
+            this.m_anim.SetBool("IsGrounded", false);
+        
+        // Rocket attack animation
+        if (this.m_bosslogic.GetBossCombatState() == BossLogic.CombatState.Rocket)
+        {
+            switch (this.m_LastAim)
+            {
+                case 1:
+                    if (this.m_anim.GetLayerWeight(this.LayerIndex_RocketLeft) != 1.0f)
+                    {
+                        this.m_anim.SetLayerWeight(this.LayerIndex_RocketRight, 0.0f);
+                        this.m_anim.SetLayerWeight(this.LayerIndex_RocketLeft, 1.0f);
+                        this.m_anim.Play("Rocket", this.LayerIndex_RocketLeft, 0.0f);
+                    }
+                    break;
+                case -1:
+                    if (this.m_anim.GetLayerWeight(this.LayerIndex_RocketRight) != 1.0f)
+                    {
+                        this.m_anim.SetLayerWeight(this.LayerIndex_RocketRight, 1.0f);
+                        this.m_anim.SetLayerWeight(this.LayerIndex_RocketLeft, 0.0f);
+                        this.m_anim.Play("Rocket", this.LayerIndex_RocketRight, 0.0f);
+                    }
+                    break;
+            }
+        }
+        else
+        {
+            this.m_anim.SetLayerWeight(this.LayerIndex_RocketRight, 0.0f);
+            this.m_anim.SetLayerWeight(this.LayerIndex_RocketLeft, 0.0f);
+        }
     }
     
 
@@ -134,14 +177,16 @@ public class BossAnimations : MonoBehaviour
         switch (this.m_LastArmShot)
         {
             case 0:
-                this.m_anim.SetLayerWeight(this.LayerIndex_ShootRight, 1.0f);
-                this.m_anim.SetLayerWeight(this.LayerIndex_ShootLeft, 0.0f);
-                this.m_anim.Play("Shoot", this.LayerIndex_ShootLeft, 0f);
-                break;
-            case 1:
                 this.m_anim.SetLayerWeight(this.LayerIndex_ShootRight, 0.0f);
                 this.m_anim.SetLayerWeight(this.LayerIndex_ShootLeft, 1.0f);
-                this.m_anim.Play("Shoot", this.LayerIndex_ShootRight, 0f);
+                this.m_anim.Play("Shoot", this.LayerIndex_ShootLeft, 0.0f);
+                this.m_LastArmShot = 1;
+                break;
+            case 1:
+                this.m_anim.SetLayerWeight(this.LayerIndex_ShootRight, 1.0f);
+                this.m_anim.SetLayerWeight(this.LayerIndex_ShootLeft, 0.0f);
+                this.m_anim.Play("Shoot", this.LayerIndex_ShootRight, 0.0f);
+                this.m_LastArmShot = 0;
                 break;
         }
     }

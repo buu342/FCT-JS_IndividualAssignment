@@ -2703,6 +2703,10 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: -0.4137226
       objectReference: {fileID: 0}
+    - target: {fileID: 5835630512401526782, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
+      propertyPath: m_IsFlying
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6790844229941013836, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
       propertyPath: m_RootOrder
       value: 0
