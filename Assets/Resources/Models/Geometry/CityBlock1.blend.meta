@@ -6,7 +6,12 @@ ModelImporter:
   - first:
       74: 1989289236423521904
     second: Default Take
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CityWall1__BILDING5_png
+    second: {fileID: 2100000, guid: 07f7167a0661cbc41afa322abc94a638, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

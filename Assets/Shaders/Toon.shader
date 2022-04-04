@@ -1,9 +1,9 @@
 /****************************************************************
                            Toon.shader
 
-A cel shader, similar to Wind Waker. Modified to remove specular 
-reflections, rim lighting, and to be made compatible with the 
-outline shader.
+A cel shader, similar to Wind Waker. Modified to add color 
+masking, remove specular reflections, rim lighting, and to be 
+made compatible with the outline shader.
 Original shader by Erik Roystan: 
 https://github.com/IronWarrior/UnityToonShader
 ****************************************************************/
@@ -14,6 +14,7 @@ Shader "Custom/Toon"
 	{
 		_Color("Color", Color) = (1,1,1,1)
 		_MainTex("Main Texture", 2D) = "white" {}
+		_ColorMaskTex("Color Mask Texture", 2D) = "white" {}
 		// Ambient light is applied uniformly to all surfaces on the object.
 		[HDR]
 		_AmbientColor("Ambient Color", Color) = (0.5,0.5,0.5,1)
@@ -65,6 +66,7 @@ Shader "Custom/Toon"
 			};
 
 			sampler2D _MainTex;
+			sampler2D _ColorMaskTex;
 			float4 _MainTex_ST;
 			
 			v2f vert (appdata v)
@@ -108,8 +110,9 @@ Shader "Custom/Toon"
 				float4 light = lightIntensity * _LightColor0;
                 
 				float4 sample = tex2D(_MainTex, i.uv);
+				float4 mask = tex2D(_ColorMaskTex, i.uv);
 
-				return (light + _AmbientColor) * _Color * sample;
+				return (light + _AmbientColor) * sample * lerp(1, _Color, mask);
 			}
 			ENDCG
 		}
