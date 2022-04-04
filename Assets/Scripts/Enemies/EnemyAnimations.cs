@@ -15,6 +15,7 @@ public class EnemyAnimations : MonoBehaviour
     private int LayerIndex_ShootCare;
     
     // Enemy mesh angle
+    private float m_OriginalBodyRot;
     private float m_CurrentBodyRot;
     private float m_TargetBodyRot;
     
@@ -40,8 +41,9 @@ public class EnemyAnimations : MonoBehaviour
         this.LayerIndex_Aim = this.m_anim.GetLayerIndex("Aim");
         this.LayerIndex_ShootFast = this.m_anim.GetLayerIndex("ShootFast");
         this.LayerIndex_ShootCare = this.m_anim.GetLayerIndex("ShootCare");
-        this.m_CurrentBodyRot = -this.transform.localEulerAngles.y;
-        this.m_TargetBodyRot = this.m_CurrentBodyRot;
+        this.m_OriginalBodyRot = this.transform.localEulerAngles.y;
+        this.m_CurrentBodyRot = this.m_OriginalBodyRot;
+        this.m_TargetBodyRot = this.m_OriginalBodyRot;
     }
 
 
@@ -73,25 +75,16 @@ public class EnemyAnimations : MonoBehaviour
             {
                 float patroldir = (this.transform.parent.transform.position.x - this.m_enemylogic.GetPatrolPoint().transform.position.x);
                 if (patroldir >= 0)
-                {
-                    this.m_TargetBodyRot = -179;
-                }
+                    this.m_TargetBodyRot = this.m_OriginalBodyRot;
                 else
-                {
                     this.m_TargetBodyRot = 0.0f;
-                }
             }
             else // Otherwise, turn to face the target
             {
                 if (aimang < 90.0f)
-                {
-                    this.m_TargetBodyRot = -179;
-                }
+                    this.m_TargetBodyRot = this.m_OriginalBodyRot;
                 else
-                {
                     this.m_TargetBodyRot = 0.0f;
-                }
-                
             }
         }
         

@@ -217,6 +217,11 @@ public class ProjectileLogic : MonoBehaviour
     
     private void OnBecameInvisible()
     {
+        if (this.m_Owner != null && this.m_Owner.tag == "Player")
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         this.m_DestroyTime = Time.unscaledTime + ProjectileLogic.DestroyTime;
     }
 

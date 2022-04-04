@@ -113,4 +113,16 @@ public class CameraLogic : MonoBehaviour
     {
         this.m_TargetPoI = poi;
     }
+    
+
+    /*==============================
+        GetFollowPlayer
+        Checks whether the camera is following the player
+        @returns Whether we're following the player
+    ==============================*/
+    
+    public bool GetFollowPlayer()
+    {
+        return this.m_FollowPlayer;
+    }
 }

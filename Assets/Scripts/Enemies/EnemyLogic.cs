@@ -171,8 +171,22 @@ public class EnemyLogic : MonoBehaviour
             return;
         
         // Cache whether the target is nearby
-        Vector3 distance = this.m_target.transform.Find("Shoulder").gameObject.transform.position - this.m_fireattachment.transform.position;
+        Vector3 distance = this.m_target.transform.Find("Shoulder").gameObject.transform.position - this.m_shoulder.transform.position;
         this.m_TargetNear = (distance.sqrMagnitude < this.m_DepthPerception*this.m_DepthPerception);
+        
+        // Aiming enemies can't see through walls
+        if (this.m_AttackStyle == AttackStyle.Aiming)
+        {
+            RaycastHit[] rays = Physics.RaycastAll(this.m_shoulder.transform.position, distance.normalized, distance.magnitude);
+            foreach (RaycastHit rh in rays)
+            {
+                if (rh.collider.tag == "MapCollision")
+                {
+                    this.m_TargetNear = false;
+                    break;
+                }
+            }
+        }
         
         // Move to the target
         this.m_CurrentVelocity = Vector3.Lerp(this.m_CurrentVelocity, this.m_TargetVelocity, this.m_Acceleration);
@@ -220,10 +234,7 @@ public class EnemyLogic : MonoBehaviour
         
         // Calculate the direction to face the target
         if (this.m_TargetNear && this.m_AttackStyle == AttackStyle.Aiming)
-        {
-            targetpos = this.m_target.transform.Find("Shoulder").gameObject.transform.position;
-            this.m_AimDir = this.m_fireattachment.transform.position - targetpos;
-        }
+            this.m_AimDir = this.m_shoulder.transform.position - this.m_target.transform.Find("Shoulder").gameObject.transform.position;
         this.m_AimDir.Normalize();
         
         // Rotate the firing attachment to point at the player
@@ -493,6 +504,7 @@ public class EnemyLogic : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(this.transform.position, this.m_DepthPerception);
+            Gizmos.DrawRay(this.transform.Find("Shoulder").position, -this.m_AimDir*5);
         }
     }
 }

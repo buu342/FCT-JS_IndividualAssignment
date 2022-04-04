@@ -9,6 +9,7 @@ TagManager:
   - BreakableProp
   - Bullet
   - Boss
+  - MapCollision
   layers:
   - Default
   - TransparentFX

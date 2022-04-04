@@ -32,14 +32,14 @@ public class BreakGlass : MonoBehaviour
         {
             // Destroy the glass object and replace it with the broken glass shards
             Destroy(this.gameObject);
-            Instantiate(this.m_BrokenObject, this.transform.position, this.transform.rotation);
-            this.m_BrokenObject.localScale = this.transform.localScale;
+            GameObject shards = Instantiate(this.m_BrokenObject, this.transform.position, this.transform.rotation).gameObject;
+            shards.transform.localScale = this.transform.localScale;
             
             // Find all the glass shards near our hit position, and apply some push physics to all the pieces 
             Collider[] colliders = Physics.OverlapSphere(hitpos, this.m_ExplodeRadius);
             foreach (Collider hit in colliders)
                 if (hit.GetComponent<Rigidbody>() && hit.gameObject.layer != BulletLayer)
-                    hit.GetComponent<Rigidbody>().AddExplosionForce(this.m_ExplodePower*velocity, hitpos, this.m_ExplodeRadius, this.m_UpwardsForce, ForceMode.Impulse);
+                    hit.GetComponent<Rigidbody>().AddExplosionForce(-this.m_ExplodePower*velocity, hitpos, this.m_ExplodeRadius, this.m_UpwardsForce, ForceMode.Impulse);
                 
             // Return that we successfully broke
             return true;
