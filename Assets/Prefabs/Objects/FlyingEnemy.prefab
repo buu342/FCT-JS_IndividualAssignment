@@ -149,7 +149,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 7d48cc96b2cd3e7418d8628f9a40394d, type: 2}
     - target: {fileID: 2769216023808508479, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_Name
-      value: FlyingEnemy Variant
+      value: FlyingEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 2885109883777391554, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_IsKinematic
@@ -400,8 +400,16 @@ PrefabInstance:
       value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7750120099861008806, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
+      propertyPath: m_MovementSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7750120099861008806, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_DepthPerception
-      value: 3
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7750120099861008806, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
+      propertyPath: m_ShootWhileMoving
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7808151150518329664, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_Layer

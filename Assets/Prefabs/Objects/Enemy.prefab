@@ -118,7 +118,7 @@ MonoBehaviour:
   m_MovementSpeed: 3
   m_PatrolPoints: []
   m_PatrolWaitTime: 0
-  m_ShootWhileMoving: 0
+  m_ShootWhileMoving: 1
   m_bulletprefab: {fileID: 3857339146775360389, guid: a0df20100e846ee4fafcacf3a0e21d2a, type: 3}
 --- !u!1 &3810750213413037032
 GameObject:

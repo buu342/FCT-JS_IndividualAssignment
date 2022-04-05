@@ -48,11 +48,11 @@ public class MovingPlatform : MonoBehaviour
 
 
     /*==============================
-        Update
-        Called every frame
+        FixedUpdate
+        Called every engine tick
     ==============================*/
-    
-    void Update()
+
+    void FixedUpdate()
     {
         Vector3 distance;
         
@@ -63,6 +63,9 @@ public class MovingPlatform : MonoBehaviour
         // Move to the target
         this.m_CurrentVelocity = Vector3.Lerp(this.m_CurrentVelocity, this.m_TargetVelocity, this.m_Acceleration);
         this.m_rb.velocity = this.m_CurrentVelocity;
+        foreach(Transform child in transform)
+            if (child.GetComponent<Rigidbody>() != null)
+                child.GetComponent<Rigidbody>().velocity = this.m_CurrentVelocity;
         
         // Decide what to do based on the platform state
         switch (this.m_State)
@@ -78,7 +81,11 @@ public class MovingPlatform : MonoBehaviour
                     this.m_NextPatrolTarget++;
                     if (!this.m_LoopPatrol && this.m_NextPatrolTarget == this.m_PatrolPoints.Count)
                     {
+                        this.m_rb.velocity = Vector3.zero;
                         this.m_Activated = false;
+                        foreach(Transform child in transform)
+                            if (child.GetComponent<Rigidbody>() != null)
+                                child.GetComponent<Rigidbody>().velocity = Vector3.zero;
                         break;
                     }
                     
@@ -101,5 +108,17 @@ public class MovingPlatform : MonoBehaviour
                 }
                 break;
         }
+    }
+
+
+    /*==============================
+        SetActivated
+        Enables/Disables the moving platform
+        @param Whether or not to activate the platform
+    ==============================*/
+    
+    public void SetActivated(bool active)
+    {
+        this.m_Activated = active;
     }
 }

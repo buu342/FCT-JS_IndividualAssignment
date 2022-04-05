@@ -1,17 +1,15 @@
 /****************************************************************
-                        CameraTrigger.cs
+                     HotelElevatorTrigger.cs
     
-This script handles camera triggers, which are used to reposition
-the camera focus points during certain sections of the level.
+This script turns on the elevator in the hotel lobby section
 ****************************************************************/
 
 using UnityEngine;
 
-public class CameraTrigger : MonoBehaviour
+public class HotelElevatorTrigger : MonoBehaviour
 {
-    public bool m_FollowPlayer = true;
-    public Vector3 m_TargetPoI = Vector3.zero;
-    public bool m_OnlyIfNotFollowing = true;
+    public GameObject m_Elevator = null;
+    public GameObject m_PlayerClip = null;
     private int PlayerLayer;
     
     // Debug stuff
@@ -30,7 +28,7 @@ public class CameraTrigger : MonoBehaviour
     {
         PlayerLayer = LayerMask.NameToLayer("Player");
     }
-
+    
 
     /*==============================
         OnTriggerEnter
@@ -42,13 +40,13 @@ public class CameraTrigger : MonoBehaviour
     {
         if (other.gameObject.layer == PlayerLayer)
         {
-            CameraLogic cam =  Camera.main.GetComponent<CameraLogic>();
-            if (!this.m_FollowPlayer && this.m_OnlyIfNotFollowing && !cam.GetFollowPlayer())
-                return;
-            cam.SetFollowPlayer(this.m_FollowPlayer, this.transform.position);
-            cam.SetPoI(this.m_TargetPoI);
+            this.m_Elevator.GetComponent<MovingPlatform>().SetActivated(true);
+            this.m_PlayerClip.GetComponent<BoxCollider>().enabled = true;
+            GameObject.Find("SceneController").GetComponent<SceneController>().LoadScene("Level1_2");
+            Destroy(this.gameObject);
         }
     }
+    
     
     /*==============================
         OnDrawGizmos

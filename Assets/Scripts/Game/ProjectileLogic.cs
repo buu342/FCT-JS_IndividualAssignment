@@ -201,6 +201,7 @@ public class ProjectileLogic : MonoBehaviour
                     return;
                 break;
             case "Bullet":
+            case "EntityClip":
             case "NoCollide":
                 return;
             default:

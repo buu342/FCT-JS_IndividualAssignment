@@ -1,8 +1,8 @@
 /****************************************************************
                        PlayerController.cs
     
-This script handles the player combat logic (weapons, bullet 
-time, etc...).
+This script handles the player combat logic (health, weapons, 
+bullet time, etc...).
 ****************************************************************/
 
 //#define DEBUG
@@ -108,6 +108,10 @@ public class PlayerCombat : MonoBehaviour
         // Handle streak losing
         if (this.m_Streak > 0 && this.m_LastStreakTime < Time.unscaledTime)
             this.m_Streak = Mathf.Max(0, this.m_Streak - PlayerCombat.StreakLose);
+        
+        // Handle death
+        if (this.m_Health <= 0)
+            GameObject.Find("SceneController").GetComponent<SceneController>().RestartCurrentScene();
     }
     
     

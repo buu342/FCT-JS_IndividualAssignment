@@ -13,6 +13,7 @@ Shader "Custom/Toon"
     Properties
 	{
 		_Color("Color", Color) = (1,1,1,1)
+        _Mode ("__mode", Float) = 0.0
 		_MainTex("Main Texture", 2D) = "white" {}
 		_ColorMaskTex("Color Mask Texture", 2D) = "white" {}
 		// Ambient light is applied uniformly to all surfaces on the object.

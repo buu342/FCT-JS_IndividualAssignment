@@ -1,12 +1,14 @@
 /****************************************************************
-                           CoinLogic.cs
+                         JetpackLogic.cs
     
-This script handles the coin pickup logic
+This script handles the jetpack pickup logic
 ****************************************************************/
 
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class CoinLogic : MonoBehaviour
+public class JetpackLogic : MonoBehaviour
 {
     private int angle;
     private int PlayerLayer;
@@ -47,6 +49,9 @@ public class CoinLogic : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == PlayerLayer)
+        {
             Destroy(this.gameObject);
+            GameObject.Find("SceneController").GetComponent<SceneController>().StartNextScene();
+        }
     }
 }

@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
         float xsize = this.m_col.bounds.size.x/2.0f-0.01f;
         float ysize = 0.01f;
         float zsize = this.m_col.bounds.size.z/2.0f-0.01f;
-        float raylen = 0.1f;
+        float raylen = 0.2f;
         
         // Perform the raycasts
         col[0] = Physics.Raycast(this.transform.position + (new Vector3( xsize, ysize, 0)), Vector3.down, out hit[0], raylen);
@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour
             this.m_JumpCount = 0;
             this.m_CoyoteTimer = 0;
         }
-        else if (!this.m_IsFlying) // Otherwise, add gravity as a downward force if we're not flying
+        else if (!this.m_IsFlying && !this.m_OnGround) // Otherwise, add gravity as a downward force if we're not flying
             this.m_rb.AddForce(0, PlayerController.Gravity, 0);
         
         // Interpolate our current velocity to match our target, and then apply the velocity

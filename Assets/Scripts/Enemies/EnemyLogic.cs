@@ -71,6 +71,7 @@ public class EnemyLogic : MonoBehaviour
     public List<GameObject> m_PatrolPoints;
     public float m_PatrolWaitTime = 0;
     public bool m_ShootWhileMoving = false;
+    public bool m_RemoveOnFinishPatrol = false;
     private int m_NextPatrolTarget = -1;
     private float m_NextPatrolTime = 0;
     private float m_Acceleration = 0.5f;
@@ -114,8 +115,6 @@ public class EnemyLogic : MonoBehaviour
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
         this.m_OriginalMeshPos = this.m_mesh.transform.localPosition;
         this.m_DamagePos = this.transform.position;
-        if (this.m_PatrolPoints.Count > 0)
-            this.m_NextPatrolTarget = 0;
     }
 
 
@@ -316,7 +315,7 @@ public class EnemyLogic : MonoBehaviour
     private void HandlePatrolling()
     {
         // If we have no patrol target stop
-        if (this.m_NextPatrolTarget == -1)
+        if (this.m_PatrolPoints.Count <= 0)
             return;
         
         // Decide what to do based on the enemy state
@@ -331,6 +330,8 @@ public class EnemyLogic : MonoBehaviour
                 else if (this.m_NextPatrolTime < Time.time) // Otherwise, if we're done waiting at this patrol point, then move to the next point
                 {
                     this.m_EnemyState = EnemyState.Running;
+                    if (this.m_RemoveOnFinishPatrol && (this.m_NextPatrolTarget + 1) == this.m_PatrolPoints.Count)
+                        Destroy(this.gameObject);
                     this.m_NextPatrolTarget = (this.m_NextPatrolTarget + 1) % this.m_PatrolPoints.Count;
                 }
                 break;
@@ -351,6 +352,58 @@ public class EnemyLogic : MonoBehaviour
                 }
                 break;
         }
+    }
+
+
+    /*==============================
+        AddPatrolPoint
+        Adds a patrol point for this enemy
+        @param The patrol point to add
+    ==============================*/
+    
+    public void AddPatrolPoint(GameObject point)
+    {
+        this.m_PatrolPoints.Add(point);
+    }
+
+
+    /*==============================
+        SetEnemyRemoveOnPatrolFinish
+        Sets whether the enemy gets removed
+        at the end of their patrol path
+        @param Whether to remove the enemy 
+               at the end of their patrol
+    ==============================*/
+    
+    public void SetEnemyRemoveOnPatrolFinish(bool enable)
+    {
+        this.m_RemoveOnFinishPatrol = enable;
+    }
+
+
+    /*==============================
+        SetEnemyAttackStyle
+        Sets the enemy's attack style
+        @Param The attack style
+    ==============================*/
+    
+    public void SetEnemyAttackStyle(AttackStyle attackstyle)
+    {
+        this.m_AttackStyle = attackstyle;
+    }
+
+
+    /*==============================
+        SetEnemyAimDir
+        Sets the enemy's aim direction
+        @Param The aim direction vector
+    ==============================*/
+    
+    public void SetEnemyAimDir(Vector3 aimdir)
+    {
+        this.m_AimDir = aimdir;
+        if (aimdir != Vector3.zero)
+            this.transform.Find("Model").transform.rotation = Quaternion.Euler(0, -90, 0);
     }
 
 
@@ -480,7 +533,7 @@ public class EnemyLogic : MonoBehaviour
         // Apply physics to the bones based on where the damage came from
         Collider[] colliders = Physics.OverlapSphere(this.m_DamagePos, 3);
         foreach (Collider hit in colliders)
-            if (hit.GetComponent<Rigidbody>() && hit.gameObject.layer != BulletLayer)
+            if (hit.GetComponent<Rigidbody>() && hit.gameObject.layer != BulletLayer && hit.gameObject.tag != "Pickup")
                 hit.GetComponent<Rigidbody>().AddExplosionForce(75, this.m_DamagePos, 3, 0, ForceMode.Impulse);
             
         // Stop animating
