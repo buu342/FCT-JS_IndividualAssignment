@@ -415,7 +415,7 @@ public class PlayerCombat : MonoBehaviour
     
     public void GiveScore(int score)
     {
-        this.m_Streak = Mathf.Min(100, this.m_Streak + score/10);
+        this.m_Streak = Mathf.Min(100, this.m_Streak + score/5);
         this.m_LastStreakTime = Time.unscaledTime + PlayerCombat.StreakLoseTime;
         this.m_Score += score*Mathf.Min(1 + this.m_Streak/20, 5);
     }

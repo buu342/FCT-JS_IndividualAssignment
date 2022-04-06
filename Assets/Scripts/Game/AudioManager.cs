@@ -77,7 +77,7 @@ public class AudioManager : MonoBehaviour
             Vector2 srcpos = new Vector2(position.x, position.y);
             Vector2 listenerpos = new Vector2(this.m_listener.transform.position.x, this.m_listener.transform.position.y);
             sndobj.transform.position = position;
-            source.volume = Calc3DSoundVolume(s.maxDistanceSqr, listenerpos, srcpos);
+            source.volume = s.volume*Calc3DSoundVolume(s.maxDistanceSqr, listenerpos, srcpos);
             source.panStereo = Calc3DSoundPan(s.maxDistanceSqr, listenerpos, srcpos);
         }
         else
@@ -125,7 +125,7 @@ public class AudioManager : MonoBehaviour
                 if (s.is3D)
                 {
                     Vector2 srcpos = new Vector2(sndobj.transform.position.x, sndobj.transform.position.y);
-                    source.volume = Calc3DSoundVolume(s.maxDistanceSqr, listenerpos, srcpos);
+                    source.volume = s.volume*Calc3DSoundVolume(s.maxDistanceSqr, listenerpos, srcpos);
                     source.panStereo = Calc3DSoundPan(s.maxDistanceSqr, listenerpos, srcpos);
                 }
             }

@@ -546,18 +546,20 @@ public class EnemyLogic : MonoBehaviour
     }
 
 
-    /*==============================
-        OnDrawGizmos
-        Draws extra debug stuff in the editor
-    ==============================*/
-    
-    public virtual void OnDrawGizmos()
-    {
-        if (DebugDepth)
+    #if UNITY_EDITOR
+        /*==============================
+            OnDrawGizmos
+            Draws extra debug stuff in the editor
+        ==============================*/
+        
+        public virtual void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(this.transform.position, this.m_DepthPerception);
-            Gizmos.DrawRay(this.transform.Find("Shoulder").position, -this.m_AimDir*5);
+            if (DebugDepth)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(this.transform.position, this.m_DepthPerception);
+                Gizmos.DrawRay(this.transform.Find("Shoulder").position, -this.m_AimDir*5);
+            }
         }
-    }
+    #endif
 }

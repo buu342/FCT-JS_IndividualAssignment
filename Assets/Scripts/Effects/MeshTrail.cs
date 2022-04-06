@@ -47,7 +47,7 @@ public class MeshTrail : MonoBehaviour
         meshfilter.mesh = this.m_Mesh;
         this.m_meshrender.sharedMesh = this.m_Mesh;
         this.m_meshrender.material = this.m_MeshMat;
-        this.m_meshrender.localBounds = new Bounds(new Vector3(0, 0, 0), new Vector3(float.MaxValue, float.MaxValue, float.MaxValue));
+        this.m_meshrender.localBounds = new Bounds(new Vector3(0, 0, 0), new Vector3(1000, 1000, 1000));
         
         // Initialize the arrays where we'll keep our mesh data
         this.m_VertsList = new Vector3[MeshTrail.TrailLength*MeshTrail.VertCount];

@@ -10,7 +10,10 @@ Shader "Custom/Outline"
 {
     SubShader
     {
-        Cull Off ZWrite Off ZTest Always
+        Tags {"Queue"="Transparent" "RenderType"="Transparent" }
+        Cull Off 
+        ZWrite Off 
+        ZTest Always
 
         Pass
         {

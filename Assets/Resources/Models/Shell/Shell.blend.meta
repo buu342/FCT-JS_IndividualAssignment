@@ -105,6 +105,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Jetpack__Jetpack
+    second: {fileID: 2100000, guid: d3c82277ecf3fbd4ea09495518679e6c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Shell_Body__Shell_Body
     second: {fileID: 2100000, guid: a5b518b75c5869c40bd32dddcc6ddd27, type: 2}
   - first:

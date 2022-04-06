@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ed8aa370e10054b963e0b285af6bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsFlying: 0
 --- !u!114 &3846356530667822708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,5 +393,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Tip: {fileID: 4744120091839087242}
   m_Base: {fileID: 1172978313720010870}
-  m_MeshMat: {fileID: 0}
+  m_MeshMat: {fileID: 2100000, guid: 9a83a3a391e86ec4aa7690e97cccf145, type: 2}
   m_TrailEnabled: 0

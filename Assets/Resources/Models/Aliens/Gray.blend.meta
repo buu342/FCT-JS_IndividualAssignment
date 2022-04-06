@@ -108,6 +108,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Jetpack__Jetpack
+    second: {fileID: 2100000, guid: d3c82277ecf3fbd4ea09495518679e6c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Raygun__Raygun
     second: {fileID: 2100000, guid: 77ac19ae988385c41ae9359443b28909, type: 2}
   materials:

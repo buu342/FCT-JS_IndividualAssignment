@@ -48,17 +48,19 @@ public class HotelElevatorTrigger : MonoBehaviour
     }
     
     
-    /*==============================
-        OnDrawGizmos
-        Draws extra debug stuff in the editor
-    ==============================*/
-    
-    public virtual void OnDrawGizmos()
-    {
-        if (DebugTrigger)
+    #if UNITY_EDITOR
+        /*==============================
+            OnDrawGizmos
+            Draws extra debug stuff in the editor
+        ==============================*/
+        
+        public virtual void OnDrawGizmos()
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(this.transform.position, this.transform.localScale);
+            if (DebugTrigger)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireCube(this.transform.position, this.transform.localScale);
+            }
         }
-    }
+    #endif
 }

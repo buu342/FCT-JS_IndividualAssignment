@@ -13,7 +13,6 @@ Shader "Custom/Toon"
     Properties
 	{
 		_Color("Color", Color) = (1,1,1,1)
-        _Mode ("__mode", Float) = 0.0
 		_MainTex("Main Texture", 2D) = "white" {}
 		_ColorMaskTex("Color Mask Texture", 2D) = "white" {}
 		// Ambient light is applied uniformly to all surfaces on the object.
@@ -22,7 +21,8 @@ Shader "Custom/Toon"
 	}
 	SubShader
 	{
-        Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
+        Tags {"RenderType"="Opaque" "PerformanceChecks"="False" }
+        Blend SrcAlpha OneMinusSrcAlpha
         LOD 300
     
 		Pass
@@ -108,12 +108,13 @@ Shader "Custom/Toon"
 				// between the two to avoid a jagged break.
 				float lightIntensity = smoothstep(0, 0.01, NdotL * shadow);	
 				// Multiply by the main directional light's intensity and color.
-				float4 light = lightIntensity * _LightColor0;
+				float3 light = lightIntensity * _LightColor0;
                 
 				float4 sample = tex2D(_MainTex, i.uv);
 				float4 mask = tex2D(_ColorMaskTex, i.uv);
+				float4 lightcolor = float4(light + _AmbientColor, 1.0);
 
-				return (light + _AmbientColor) * sample * lerp(1, _Color, mask);
+				return lightcolor * sample * lerp(1, _Color, mask);
 			}
 			ENDCG
 		}

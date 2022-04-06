@@ -24,16 +24,16 @@ MonoBehaviour:
     value: {r: 0, g: 0, b: 0, a: 1}
   depthThreshold:
     overrideState: 0
-    value: 1.5
+    value: 4
   depthNormalThreshold:
     overrideState: 0
-    value: 0.5
+    value: 0.158
   depthNormalThresholdScale:
     overrideState: 0
-    value: 7
+    value: 3
   normalThreshold:
     overrideState: 0
-    value: 0.4
+    value: 0.827
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

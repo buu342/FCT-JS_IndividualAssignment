@@ -10,6 +10,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: ElevatorPlatform__ElevatorPlatform_png
+    second: {fileID: 2100000, guid: 973bc857a75becf428dd4bd47c088fb6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Glass
     second: {fileID: 2100000, guid: 5a5445c04b727094fbf357180a7dda65, type: 2}
   - first:
@@ -17,6 +22,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Glass__FANCYRUG_png
     second: {fileID: 2100000, guid: 5a5445c04b727094fbf357180a7dda65, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sheen__Sheen_png
+    second: {fileID: 2100000, guid: 709826af7e9db814ca9b2d9a968f9c71, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
