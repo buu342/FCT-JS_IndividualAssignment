@@ -484,6 +484,7 @@ public class BossLogic : MonoBehaviour
         if (this.m_Health <= 0 && !isdead)
         {
             this.m_TargetVelocity = Vector3.zero;
+            this.m_target.GetComponent<PlayerCombat>().SetPlayerInvulTime(15.0f);
             this.m_rb.velocity = Vector3.zero;
             this.m_BossState = BossState.Dying;
             this.m_TimeToIdle = Time.time + 3.0f;

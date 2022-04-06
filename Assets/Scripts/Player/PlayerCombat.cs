@@ -21,7 +21,7 @@ public class PlayerCombat : MonoBehaviour
     private const float StaminaGain    = 0.8f;
     private const float StaminaLose    = 1.0f;
     private const int   StreakLose     = 1;
-    private const float StreakLoseTime = 10;
+    public  const float StreakLoseTime = 10;
 
     // Combat states
     public enum CombatState
@@ -55,6 +55,7 @@ public class PlayerCombat : MonoBehaviour
     // Components
     public  GameObject m_bulletprefab;
     public  GameObject m_swordprefab;
+    public  GameObject m_shellmesh;
     private GameObject m_fireattachment;
     private GameObject m_shoulder;
     private PlayerController m_plycont;
@@ -68,12 +69,14 @@ public class PlayerCombat : MonoBehaviour
     
     void Start()
     {
+        FindObjectOfType<SceneController>().SetupPlayer(this.gameObject);
         this.m_audio = FindObjectOfType<AudioManager>();
         this.m_shoulder = this.transform.Find("Shoulder").gameObject;
         this.m_fireattachment = this.transform.Find("FireAttachment").gameObject;
         this.m_OriginalAimPos = this.m_fireattachment.transform.localPosition;
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
         this.m_plycont = this.GetComponent<PlayerController>();
+        this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0] = new Material(this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0]);
     }
 
 
@@ -95,6 +98,13 @@ public class PlayerCombat : MonoBehaviour
         
         // Handle bullet time
         Time.timeScale = Mathf.Lerp(Time.timeScale, this.m_TargetTimeScale, PlayerCombat.BulletTimeRate);
+        
+        // Handle powered up material
+        // I tried storing "this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0]" as a variable, but that doesn't let this work because reasons????
+        if (this.m_Streak >= 80.0f)
+            this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color, Color.red, 0.1f);
+        else
+            this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color, Color.white, 0.1f);
     }
 
     
@@ -252,8 +262,18 @@ public class PlayerCombat : MonoBehaviour
             bullet.SetSpeed(30.0f);
             bullet.SetOrigin(this.m_shoulder.transform.position);
             
+            // Make the bullet penetrate stuff if we have a high enough streak
+            if (this.m_Streak >= 80.0f)
+            {
+                bullet.SetDamage(bullet.GetDamage()*2);
+                bullet.SetPenetrating(true);
+            }
+            
             // Play the shooting sound and set the next fire time
-            this.m_audio.Play("Weapons/Pistol_Fire", this.m_shoulder.transform.position);
+            if (this.m_Streak >= 80.0f)
+                this.m_audio.Play("Weapons/Pistol_FireHeavy", this.m_shoulder.transform.position);
+            else
+                this.m_audio.Play("Weapons/Pistol_Fire", this.m_shoulder.transform.position);
             this.m_NextFire = Time.time + PlayerCombat.PistolFireRate;
             this.m_CombatState = CombatState.Shooting;
             this.m_TimeToIdle = Time.unscaledTime + PlayerCombat.PistolFireRate;
@@ -418,5 +438,77 @@ public class PlayerCombat : MonoBehaviour
         this.m_Streak = Mathf.Min(100, this.m_Streak + score/5);
         this.m_LastStreakTime = Time.unscaledTime + PlayerCombat.StreakLoseTime;
         this.m_Score += score*Mathf.Min(1 + this.m_Streak/20, 5);
+    }
+    
+    
+    /*==============================
+        SetHealth
+        Sets the player's health
+        @param The amount of health to set
+    ==============================*/
+    
+    public void SetHealth(int health)
+    {
+        this.m_Health = health;
+    }
+    
+    
+    /*==============================
+        SetStamina
+        Sets the player's stamina
+        @param The amount of stamina to set
+    ==============================*/
+    
+    public void SetStamina(float stamina)
+    {
+        this.m_Stamina = stamina;
+    }
+    
+    
+    /*==============================
+        SetStreak
+        Sets the player's streak
+        @param The amount of streak to set
+    ==============================*/
+    
+    public void SetStreak(int streak)
+    {
+        this.m_Streak = streak;
+    }
+    
+    
+    /*==============================
+        SetScore
+        Sets the player's score
+        @param The amount of score to set
+    ==============================*/
+    
+    public void SetScore(int score)
+    {
+        this.m_Score = score;
+    }
+
+
+    /*==============================
+        SetPlayerInvulTime
+        Makes the player invulnerable for the given time
+        @param The time (in seconds) to set invulnerability for
+    ==============================*/
+    
+    public void SetPlayerInvulTime(float time)
+    {
+        this.m_InvulTime = Time.unscaledTime + time;
+    }
+
+
+    /*==============================
+        SetPlayerLastStreakTime
+        Sets the player's last streak time to the given time
+        @param The time (in seconds) until the player's streak starts decreasing
+    ==============================*/
+    
+    public void SetPlayerLastStreakTime(float time)
+    {
+        this.m_LastStreakTime = Time.unscaledTime + time;
     }
 }

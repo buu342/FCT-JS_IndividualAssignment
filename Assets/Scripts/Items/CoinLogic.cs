@@ -20,6 +20,14 @@ public class CoinLogic : MonoBehaviour
     
     void Start()
     {
+        // Destroy ourselves if we have been collected already
+        if (FindObjectOfType<SceneController>().IsTokenCollected(this.gameObject.name))
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        
+        // Setup our data
         PlayerLayer = LayerMask.NameToLayer("Player");
         this.m_mesh = this.transform.Find("Mesh").gameObject;
     }
@@ -47,6 +55,9 @@ public class CoinLogic : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == PlayerLayer)
+        {
+            FindObjectOfType<SceneController>().CollectToken(this.gameObject.name);
             Destroy(this.gameObject);
+        }
     }
 }

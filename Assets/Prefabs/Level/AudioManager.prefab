@@ -77,8 +77,30 @@ MonoBehaviour:
     maxDistance: 16
     sources: []
     maxDistanceSqr: 0
+  - name: Weapons/Laser_FireHeavy
+    clip: {fileID: 8300000, guid: 91e9f879d58e6894ebcc38a1ee6a2700, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
   - name: Weapons/Pistol_Fire
     clip: {fileID: 8300000, guid: b29165ec287ce81428bd4221a6a3f07b, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Weapons/Pistol_FireHeavy
+    clip: {fileID: 8300000, guid: 2f667c5ccf1719647872a4de8ced59f9, type: 3}
     volume: 1
     pitch: 1
     pitchBulletTime: 1

@@ -53,8 +53,8 @@ public class HUD : MonoBehaviour
     void Start()
     {
         this.m_plycombat = this.m_Player.GetComponent<PlayerCombat>();
-        this.m_CurrentHealth = this.m_plycombat.GetHealth();
-        this.m_TargetHealth = this.m_CurrentHealth;
+        this.m_TargetHealth = this.m_plycombat.GetHealth();
+        this.m_CurrentHealth = this.m_TargetHealth;
         if (this.m_Boss != null)
         {
             this.m_bosslogic = this.m_Boss.GetComponent<BossLogic>();
@@ -72,7 +72,7 @@ public class HUD : MonoBehaviour
     void Update()
     {
         // Health bar
-        this.m_TargetHealth = this.m_plycombat.GetHealth();
+        this.m_TargetHealth = Mathf.Max(0.0f, this.m_plycombat.GetHealth());
         this.m_CurrentHealth = Mathf.Lerp(this.m_CurrentHealth, this.m_TargetHealth, HUD.HealthTime);
         this.m_HealthBar.rectTransform.localScale = new Vector3(this.m_CurrentHealth/100.0f, 1.0f, 1.0f);
 

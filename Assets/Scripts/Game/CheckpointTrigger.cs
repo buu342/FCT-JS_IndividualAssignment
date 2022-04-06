@@ -1,15 +1,18 @@
 /****************************************************************
-                     HotelElevatorTrigger.cs
+                         CheckpointTrigger.cs
     
-This script turns on the elevator in the hotel lobby section
+This script handles a checkpoint trigger
 ****************************************************************/
 
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class HotelElevatorTrigger : MonoBehaviour
+public class CheckpointTrigger : MonoBehaviour
 {
-    public GameObject m_Elevator = null;
-    public GameObject m_PlayerClip = null;
+    public List<GameObject> m_RemoveOnLoad;
     private int PlayerLayer;
     
     // Debug stuff
@@ -28,7 +31,7 @@ public class HotelElevatorTrigger : MonoBehaviour
     {
         PlayerLayer = LayerMask.NameToLayer("Player");
     }
-    
+
 
     /*==============================
         OnTriggerEnter
@@ -40,10 +43,7 @@ public class HotelElevatorTrigger : MonoBehaviour
     {
         if (other.gameObject.layer == PlayerLayer)
         {
-            other.gameObject.GetComponent<PlayerCombat>().SetPlayerLastStreakTime(PlayerCombat.StreakLoseTime);
-            this.m_Elevator.GetComponent<MovingPlatform>().SetActivated(true);
-            this.m_PlayerClip.GetComponent<BoxCollider>().enabled = true;
-            GameObject.Find("SceneController").GetComponent<SceneController>().LoadScene("Level1_2");
+            FindObjectOfType<SceneController>().CheckpointCrossed(this.gameObject.name, other.gameObject, this.m_RemoveOnLoad);
             Destroy(this.gameObject);
         }
     }
@@ -59,7 +59,7 @@ public class HotelElevatorTrigger : MonoBehaviour
         {
             if (DebugTrigger)
             {
-                Gizmos.color = Color.yellow;
+                Gizmos.color = Color.cyan;
                 Gizmos.DrawWireCube(this.transform.position, this.transform.localScale);
             }
         }

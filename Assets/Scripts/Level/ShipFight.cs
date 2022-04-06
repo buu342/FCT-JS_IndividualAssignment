@@ -122,6 +122,7 @@ public class ShipFight : MonoBehaviour
             EnemyLogic enemy = Instantiate(this.m_EnemyPrefab, this.m_Spawns[this.m_CurrentSpawn].Item4[0].transform.position, Quaternion.Euler(0, -90, 0)).gameObject.GetComponent<EnemyLogic>();
             enemy.SetEnemyAttackStyle(this.m_Spawns[this.m_CurrentSpawn].Item2);
             enemy.SetEnemyAimDir(this.m_Spawns[this.m_CurrentSpawn].Item3);
+            enemy.SetEnemyDepthPerception(14.0f);
             foreach (GameObject point in this.m_Spawns[this.m_CurrentSpawn].Item4)
                 enemy.AddPatrolPoint(point);
             enemy.SetEnemyRemoveOnPatrolFinish(true);

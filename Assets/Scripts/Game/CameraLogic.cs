@@ -125,4 +125,16 @@ public class CameraLogic : MonoBehaviour
     {
         return this.m_FollowPlayer;
     }
+    
+
+    /*==============================
+        UpdatePlayerPosition
+        Updates the camera to lock onto the player position
+    ==============================*/
+    
+    public void UpdatePlayerPosition()
+    {
+        this.m_CurrentPlayerPos = this.m_Player.transform.position;
+        this.m_TargetPlayerPos = this.m_CurrentPlayerPos;
+    }
 }

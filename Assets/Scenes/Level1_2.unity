@@ -1900,6 +1900,10 @@ PrefabInstance:
       propertyPath: m_bulletprefab
       value: 
       objectReference: {fileID: 3857339146775360389, guid: a0df20100e846ee4fafcacf3a0e21d2a, type: 3}
+    - target: {fileID: 3846356530667822708, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
+      propertyPath: m_shellbodymat
+      value: 
+      objectReference: {fileID: 2100000, guid: a5b518b75c5869c40bd32dddcc6ddd27, type: 2}
     - target: {fileID: 4650716274526648337, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
       propertyPath: m_Enabled
       value: 1

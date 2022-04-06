@@ -384,7 +384,7 @@ public class EnemyLogic : MonoBehaviour
     /*==============================
         SetEnemyAttackStyle
         Sets the enemy's attack style
-        @Param The attack style
+        @param The attack style
     ==============================*/
     
     public void SetEnemyAttackStyle(AttackStyle attackstyle)
@@ -396,7 +396,7 @@ public class EnemyLogic : MonoBehaviour
     /*==============================
         SetEnemyAimDir
         Sets the enemy's aim direction
-        @Param The aim direction vector
+        @param The aim direction vector
     ==============================*/
     
     public void SetEnemyAimDir(Vector3 aimdir)
@@ -404,6 +404,18 @@ public class EnemyLogic : MonoBehaviour
         this.m_AimDir = aimdir;
         if (aimdir.x < 0)
             this.transform.Find("Model").transform.rotation = Quaternion.Euler(0, -90, 0);
+    }
+
+
+    /*==============================
+        SetEnemyDepthPerception
+        Sets the enemy's depth perception
+        @param The enemy's targeting distance
+    ==============================*/
+    
+    public void SetEnemyDepthPerception(float depthperception)
+    {
+        this.m_DepthPerception = depthperception;
     }
 
 

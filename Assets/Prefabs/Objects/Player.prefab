@@ -213,6 +213,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bulletprefab: {fileID: 3857339146775360389, guid: a0df20100e846ee4fafcacf3a0e21d2a, type: 3}
   m_swordprefab: {fileID: 8520885132815801230, guid: 0061eb8df822ee945b97e9e81bfd2e02, type: 3}
+  m_shellmesh: {fileID: 6750764239768134769}
+  m_shellbodymat: {fileID: 2100000, guid: a5b518b75c5869c40bd32dddcc6ddd27, type: 2}
 --- !u!1001 &6464729955058600615
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -327,6 +329,11 @@ Transform:
 --- !u!137 &4650716274526648337 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1818887364682035894, guid: 2f5c64c99f43e8e4d91a8b67b022ae3a, type: 3}
+  m_PrefabInstance: {fileID: 6464729955058600615}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6750764239768134769 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8928142258166665514, guid: 2f5c64c99f43e8e4d91a8b67b022ae3a, type: 3}
   m_PrefabInstance: {fileID: 6464729955058600615}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7428695472075715890 stripped

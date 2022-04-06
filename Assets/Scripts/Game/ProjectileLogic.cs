@@ -22,6 +22,7 @@ public class ProjectileLogic : MonoBehaviour
     public float m_Damage = 10.0f;
     
     // Private values
+    private bool m_Penetrating = false;
     private float m_DestroyTime = 0.0f;
     private Vector3 m_PrevPosition;
     private int IgnoreLayers = 0;
@@ -86,6 +87,18 @@ public class ProjectileLogic : MonoBehaviour
 
 
     /*==============================
+        GetDamage
+        Retrieves the projectile's damage
+        @returns The projectile's damage
+    ==============================*/
+    
+    public float GetDamage()
+    {
+        return this.m_Damage;
+    }
+
+
+    /*==============================
         SetOwner
         Sets the projectile's owner
         @param The gameobject to set as the owner
@@ -124,6 +137,30 @@ public class ProjectileLogic : MonoBehaviour
     public void SetSpeed(float speed)
     {
         this.m_Speed = speed;
+    }
+
+
+    /*==============================
+        SetDamage
+        Sets the projectile damage
+        @param The new damage value
+    ==============================*/
+    
+    public void SetDamage(float damage)
+    {
+        this.m_Damage = damage;
+    }
+
+
+    /*==============================
+        SetPenetrating
+        Enables/Disables projectile penetration
+        @param The new penetration value
+    ==============================*/
+    
+    public void SetPenetrating(bool enable)
+    {
+        this.m_Penetrating = enable;
     }
 
 
@@ -179,22 +216,32 @@ public class ProjectileLogic : MonoBehaviour
             case "Enemies":
             
                 // Ignore enemies if our owner is an enemy
-                if (this.m_Owner.tag == "Enemies")
+                if (this.m_Owner != null && this.m_Owner.tag == "Enemies")
                     return;
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
                 enemy.TakeDamage((int)this.m_Damage, this.m_PrevPosition);
-                if (this.m_Owner.tag == "Player")
+                if (this.m_Owner != null && this.m_Owner.tag == "Player")
                     this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
+                if (this.m_Penetrating)
+                {
+                    Physics.IgnoreCollision(other.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+                    return;
+                }
                 break;
             case "Boss":
             
                 // Ignore bosses if our owner is the boss
-                if (this.m_Owner.tag == "Boss")
+                if (this.m_Owner != null && this.m_Owner.tag == "Boss")
                     return;
                 BossLogic boss = other.gameObject.transform.root.GetComponent<BossLogic>();
                 boss.TakeDamage((int)this.m_Damage);
-                if (this.m_Owner.tag == "Player")
+                if (this.m_Owner != null && this.m_Owner.tag == "Player")
                     this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
+                if (this.m_Penetrating)
+                {
+                    Physics.IgnoreCollision(other.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+                    return;
+                }
                 break;
             case "BreakableProp":
                 if (other.gameObject.GetComponent<BreakGlass>().Break(this.m_Speed, this.m_PrevPosition))
