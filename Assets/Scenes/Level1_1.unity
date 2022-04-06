@@ -2977,7 +2977,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3102937133693053471, guid: 39724df11c9eee5428bb913a7e637acf, type: 3}
       propertyPath: m_Name
-      value: Enemy(F)_Hotel_9
+      value: Enemy(FA)_Hotel_9
       objectReference: {fileID: 0}
     - target: {fileID: 3628931565637732790, guid: 39724df11c9eee5428bb913a7e637acf, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -3690,7 +3690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2769216023808508479, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_Name
-      value: Enemy(F)_Hotel_10
+      value: Enemy(A)_Hotel_10
       objectReference: {fileID: 0}
     - target: {fileID: 3536319782129998682, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -7482,7 +7482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2769216023808508479, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_Name
-      value: Enemy(P)_Const2_4
+      value: Enemy(PS)_Const2_4
       objectReference: {fileID: 0}
     - target: {fileID: 3536319782129998682, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -10790,7 +10790,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2769216023808508479, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_Name
-      value: Enemy(P)_Roof2
+      value: Enemy(PS)_Roof2
       objectReference: {fileID: 0}
     - target: {fileID: 3536319782129998682, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -11948,7 +11948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2769216023808508479, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_Name
-      value: Enemy(P)_Hotel_3
+      value: Enemy(PA)_Hotel_3
       objectReference: {fileID: 0}
     - target: {fileID: 3536319782129998682, guid: 0e93e421bfdac064cb6fac289878708a, type: 3}
       propertyPath: m_ConnectedAnchor.x

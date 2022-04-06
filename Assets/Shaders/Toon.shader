@@ -2,8 +2,8 @@
                            Toon.shader
 
 A cel shader, similar to Wind Waker. Modified to add color 
-masking, remove specular reflections, rim lighting, and to be 
-made compatible with the outline shader.
+masking, vertex colors, remove specular reflections, rim 
+lighting, and to be made compatible with the outline shader.
 Original shader by Erik Roystan: 
 https://github.com/IronWarrior/UnityToonShader
 ****************************************************************/
@@ -52,6 +52,7 @@ Shader "Custom/Toon"
 				float4 vertex : POSITION;				
 				float4 uv : TEXCOORD0;
 				float3 normal : NORMAL;
+                fixed4 color : COLOR0;
 			};
 
 			struct v2f
@@ -60,6 +61,7 @@ Shader "Custom/Toon"
 				float3 worldNormal : NORMAL;
 				float2 uv : TEXCOORD0;
 				float3 viewDir : TEXCOORD1;	
+                fixed4 color : COLOR0;
 				// Macro found in Autolight.cginc. Declares a vector4
 				// into the TEXCOORD2 semantic with varying precision 
 				// depending on platform target.
@@ -77,6 +79,7 @@ Shader "Custom/Toon"
 				o.worldNormal = UnityObjectToWorldNormal(v.normal);		
 				o.viewDir = WorldSpaceViewDir(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.color = v.color;
 				// Defined in Autolight.cginc. Assigns the above shadow coordinate
 				// by transforming the vertex from world space to shadow-map space.
 				TRANSFER_SHADOW(o)
@@ -104,17 +107,20 @@ Shader "Custom/Toon"
 				// Samples the shadow map, returning a value in the 0...1 range,
 				// where 0 is in the shadow, and 1 is not.
 				float shadow = SHADOW_ATTENUATION(i);
+                
 				// Partition the intensity into light and dark, smoothly interpolated
 				// between the two to avoid a jagged break.
 				float lightIntensity = smoothstep(0, 0.01, NdotL * shadow);	
+                
 				// Multiply by the main directional light's intensity and color.
 				float3 light = lightIntensity * _LightColor0;
+				float4 lightcolor = float4(light + _AmbientColor, 1.0);
                 
+                // Texture color
 				float4 sample = tex2D(_MainTex, i.uv);
 				float4 mask = tex2D(_ColorMaskTex, i.uv);
-				float4 lightcolor = float4(light + _AmbientColor, 1.0);
 
-				return lightcolor * sample * lerp(1, _Color, mask);
+				return lightcolor * sample * lerp(1, _Color, mask) * i.color;
 			}
 			ENDCG
 		}

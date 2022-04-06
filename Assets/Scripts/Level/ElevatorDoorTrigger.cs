@@ -38,12 +38,11 @@ public class ElevatorDoorTrigger : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == PlayerLayer)
-        {
-            this.m_DoorLeft.GetComponent<MovingPlatform>().SetActivated(true);
-            this.m_DoorRight.GetComponent<MovingPlatform>().SetActivated(true);
-            Destroy(this.gameObject);
-        }
+        if (other.gameObject.layer != PlayerLayer)
+            return;
+        this.m_DoorLeft.GetComponent<MovingPlatform>().SetActivated(true);
+        this.m_DoorRight.GetComponent<MovingPlatform>().SetActivated(true);
+        Destroy(this.gameObject);
     }
     
     

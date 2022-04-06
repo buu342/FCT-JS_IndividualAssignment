@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6fb73594cfef88448b07d7d067ccf760
+guid: ed7a29136ee321445a3d3cec4663867a
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
@@ -7,11 +7,6 @@ ModelImporter:
       74: 1989289236423521904
     second: Default Take
   externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Exhaust__Exhaust
-    second: {fileID: 2100000, guid: dd7ca21ef232a954bbae55a509edbf0e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -31,11 +26,6 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: ShipMetal__ShipMetal_png
-    second: {fileID: 2100000, guid: 22ba8a9929c5fa747b318feceecfcff0, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ship__FLOOR0_3_png
     second: {fileID: 2100000, guid: 22ba8a9929c5fa747b318feceecfcff0, type: 2}
   materials:
     materialImportMode: 2

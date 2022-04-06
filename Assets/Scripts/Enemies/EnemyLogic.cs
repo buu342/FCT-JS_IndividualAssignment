@@ -402,7 +402,7 @@ public class EnemyLogic : MonoBehaviour
     public void SetEnemyAimDir(Vector3 aimdir)
     {
         this.m_AimDir = aimdir;
-        if (aimdir != Vector3.zero)
+        if (aimdir.x < 0)
             this.transform.Find("Model").transform.rotation = Quaternion.Euler(0, -90, 0);
     }
 

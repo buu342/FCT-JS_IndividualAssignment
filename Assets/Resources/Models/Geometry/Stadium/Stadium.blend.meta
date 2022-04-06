@@ -6,7 +6,37 @@ ModelImporter:
   - first:
       74: 1989289236423521904
     second: Default Take
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StadiumAds__StadiumAds_png
+    second: {fileID: 2100000, guid: be05c6b14f8833a48b931f132a4cde53, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StadiumBars__Stadiumbars_png_001
+    second: {fileID: 2100000, guid: daf7fa8593433a14589ba59ce458a6ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StadiumCeiling__StadiumCeiling_png_001
+    second: {fileID: 2100000, guid: 2a78957c433bba542b0356d123f42b68, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StadiumCrowd__StadiumCrowd_png_001
+    second: {fileID: 2100000, guid: 7fff54917afecd845966d589a273da5d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StadiumGrass__StadiumGrass_png
+    second: {fileID: 2100000, guid: d3c7750ce0326814fb0c7c570d6999d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StadiumWall__StadiumWall_png_001
+    second: {fileID: 2100000, guid: 0f34481a33deb9348b8da6bb166a111e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -76,7 +106,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
@@ -95,7 +125,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
