@@ -21,7 +21,7 @@ public class FadeoutDestroy : MonoBehaviour
     
     /*==============================
         Start
-        Called when the projectile is initialized
+        Called when the object is initialized
     ==============================*/
     
     void Start()

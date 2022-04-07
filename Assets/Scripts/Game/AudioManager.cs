@@ -5,9 +5,9 @@ A custom audio manager, which abstracts away the need to add all
 sounds as objects in the scene. Unity's audio system is weird...
 ****************************************************************/
 
-using System;
 using UnityEngine.Audio;
 using UnityEngine;
+using System;
 
 public class AudioManager : MonoBehaviour
 {

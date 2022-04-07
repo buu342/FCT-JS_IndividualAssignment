@@ -230,4 +230,35 @@ public class SceneController : MonoBehaviour
         PlyData.DestroyOnLoad = null;
         this.m_GoToNextScene = true;
     }
+    
+    
+    /*==============================
+        FixedUpdate
+        Called every engine tick
+    ==============================*/
+
+    void FixedUpdate()
+    {
+        // Level skipping feature that the teachers asked for
+        if (Input.GetButton("JumpLevel1_1"))
+        {
+            LoadScene("Level1_1");
+            StartNextScene();
+        }
+        if (Input.GetButton("JumpLevel1_2"))
+        {
+            LoadScene("Level1_2");
+            StartNextScene();
+        }
+        if (Input.GetButton("JumpLevel1_3"))
+        {
+            LoadScene("Level1_3");
+            StartNextScene();
+        }
+        if (Input.GetButton("JumpLevel1_Boss"))
+        {
+            LoadScene("Level1_Boss");
+            StartNextScene();
+        }
+    }
 }
