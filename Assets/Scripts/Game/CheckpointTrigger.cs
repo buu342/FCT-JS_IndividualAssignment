@@ -13,6 +13,7 @@ using UnityEngine;
 public class CheckpointTrigger : MonoBehaviour
 {
     public List<GameObject> m_RemoveOnLoad;
+    private List<string> m_RemoveOnLoadNames = new List<string>();
     private int PlayerLayer;
     
     // Debug stuff
@@ -30,6 +31,8 @@ public class CheckpointTrigger : MonoBehaviour
     void Start()
     {
         PlayerLayer = LayerMask.NameToLayer("Player");
+        foreach (GameObject obj in this.m_RemoveOnLoad)
+            this.m_RemoveOnLoadNames.Add(obj.name);
     }
 
 
@@ -43,7 +46,7 @@ public class CheckpointTrigger : MonoBehaviour
     {
         if (other.gameObject.layer == PlayerLayer)
         {
-            FindObjectOfType<SceneController>().CheckpointCrossed(this.gameObject.name, other.gameObject, this.m_RemoveOnLoad);
+            FindObjectOfType<SceneController>().CheckpointCrossed(this.gameObject.name, other.gameObject, this.m_RemoveOnLoadNames);
             Destroy(this.gameObject);
         }
     }

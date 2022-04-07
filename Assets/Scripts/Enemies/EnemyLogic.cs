@@ -552,7 +552,7 @@ public class EnemyLogic : MonoBehaviour
         this.m_mesh.GetComponent<Animator>().enabled = false;
             
         // Make this object fade out after some time
-        FadeoutDestroy fade = this.gameObject.AddComponent<FadeoutDestroy>();
+        FadeoutDestroy fade = this.transform.Find("Model").gameObject.AddComponent<FadeoutDestroy>();
         fade.m_LifeTime = 10;
         fade.m_FadeTime = 1;
     }

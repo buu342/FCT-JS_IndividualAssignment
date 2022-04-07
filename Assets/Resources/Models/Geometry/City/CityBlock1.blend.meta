@@ -10,6 +10,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Chimney__Brick_png
+    second: {fileID: 2100000, guid: 5d6c626eefa14a9468d3cddde51223d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Chimney__RW41_4_png
     second: {fileID: 2100000, guid: 5d6c626eefa14a9468d3cddde51223d4, type: 2}
   - first:
@@ -20,12 +25,27 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: CityRoof1__Shillings_png
+    second: {fileID: 2100000, guid: 53503eeda0b2fd4459ef92b8f896a69e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CitySkyGlass__CitySkyGlass_png
+    second: {fileID: 2100000, guid: 7f7d08d90d27a734689ecd19148d1ab3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: CitySkyGlass__RW31_4_png
     second: {fileID: 2100000, guid: 7f7d08d90d27a734689ecd19148d1ab3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: CityWall1__BILDING5_png
+    second: {fileID: 2100000, guid: ba59397c2fb3de34db9d4080e2ca32c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CityWall1__CityWall2_png
     second: {fileID: 2100000, guid: ba59397c2fb3de34db9d4080e2ca32c5, type: 2}
   - first:
       type: UnityEngine:Material
@@ -40,8 +60,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: CityWall3__CityWall3_png
+    second: {fileID: 2100000, guid: 42d28cad4836bc640af4deacb46c4e60, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Debris__Debris_png
+    second: {fileID: 2100000, guid: db389413649a97846b25b91d9f43c79c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Debris__dirbri2_png
     second: {fileID: 2100000, guid: db389413649a97846b25b91d9f43c79c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fan__Fan_png
+    second: {fileID: 2100000, guid: 84bf794a51cad4f46b99645d3e2f5c58, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -60,6 +95,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: GrayFlat__GrayHard_png
+    second: {fileID: 2100000, guid: 42cea287cf30bbf4286e2b99367d9929, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GrayGeneric__GrayOutline_png
+    second: {fileID: 2100000, guid: f068b7a42181b9b4690c88a48ade71ae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: GrayGeneric__W31_1_png
     second: {fileID: 2100000, guid: f068b7a42181b9b4690c88a48ade71ae, type: 2}
   - first:
@@ -70,8 +115,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: SheenDoor__SheenDoor_png
+    second: {fileID: 2100000, guid: ba974cc6ccefdd249a1143e95644950d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Sheen__AG128_1_png
     second: {fileID: 2100000, guid: e722a19bcd91cbb4b8c6700cb4057a52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sheen__Sheen_png
+    second: {fileID: 2100000, guid: e722a19bcd91cbb4b8c6700cb4057a52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Void__void_png
+    second: {fileID: 2100000, guid: 204358c953a34ef4784e4a8254166bfa, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -80,7 +80,7 @@ public class SceneController : MonoBehaviour
         @param The list of objects to destroy next load
     ==============================*/
  
-    public void CheckpointCrossed(String checkpointname, GameObject ply, List<GameObject> destroyonload)
+    public void CheckpointCrossed(String checkpointname, GameObject ply, List<string> destroyonload)
     {
         if (PlyData.LastCheckpointName == checkpointname)
             return;
@@ -88,16 +88,16 @@ public class SceneController : MonoBehaviour
         PlyData.LastCheckpointName = checkpointname;
         PlyData.Score = plycombat.GetScore();
         PlyData.Position = ply.transform.position;
-        foreach (GameObject obj in destroyonload)
+        foreach (string obj in destroyonload)
         {
             #if DEBUG
-                if (PlyData.DestroyOnLoad.Contains(obj.name))
+                if (PlyData.DestroyOnLoad.Contains(obj))
                 {
-                    Debug.LogWarning("Object "+obj.name+" duplicated in this checkpoint!");
+                    Debug.LogWarning("Object "+obj+" duplicated in this checkpoint!");
                     continue;
                 }
             #endif
-            PlyData.DestroyOnLoad.Add(obj.name);
+            PlyData.DestroyOnLoad.Add(obj);
         }
     }
     

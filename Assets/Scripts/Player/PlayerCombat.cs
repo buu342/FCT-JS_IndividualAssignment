@@ -100,11 +100,11 @@ public class PlayerCombat : MonoBehaviour
         Time.timeScale = Mathf.Lerp(Time.timeScale, this.m_TargetTimeScale, PlayerCombat.BulletTimeRate);
         
         // Handle powered up material
-        // I tried storing "this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0]" as a variable, but that doesn't let this work because reasons????
+        Color prevcol = this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color;
         if (this.m_Streak >= 80.0f)
-            this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color, Color.red, 0.1f);
+            this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(prevcol, Color.red, 0.1f);
         else
-            this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color, Color.white, 0.1f);
+            this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(prevcol, Color.white, 0.1f);
     }
 
     
