@@ -64,6 +64,7 @@ public class EnemyLogic : MonoBehaviour
         private bool DebugDepth = false;
     #endif
     public float m_FireRate = 0.5f;
+    private GameObject m_Attacker;
     
     // Patrolling
     public bool m_IsFlying = false;
@@ -166,8 +167,15 @@ public class EnemyLogic : MonoBehaviour
     void FixedUpdate()
     {
         // If we're already dead, don't execute any code below
-        if (this.m_EnemyState == EnemyState.Dead)
+        if (this.m_EnemyState == EnemyState.Dead || this.m_target == null)
+        {
+            if (this.m_target == null)
+            {
+                this.m_target = GameObject.Find("Player");
+                this.m_TargetNear = false;
+            }
             return;
+        }
         
         // Cache whether the target is nearby
         Vector3 distance = this.m_target.transform.Find("Shoulder").gameObject.transform.position - this.m_shoulder.transform.position;
@@ -214,11 +222,12 @@ public class EnemyLogic : MonoBehaviour
         @param The coordinate where the damage came from
     ==============================*/
     
-    public void TakeDamage(int amount, Vector3 position)
+    public void TakeDamage(int amount, Vector3 position, GameObject attacker)
     {
         this.m_Health -= amount;
         this.m_Trauma = Mathf.Min(0.5f, this.m_Trauma + ((float)amount)/30.0f);
         this.m_DamagePos = position;
+        this.m_Attacker = attacker;
     }
 
 
@@ -550,6 +559,11 @@ public class EnemyLogic : MonoBehaviour
             
         // Stop animating
         this.m_mesh.GetComponent<Animator>().enabled = false;
+        
+        // Make shell say some quip
+        if (this.m_Attacker != null && this.m_Attacker.GetComponent<PlayerCombat>() != null)
+            if (this.m_Attacker.GetComponent<PlayerCombat>().CanQuip())
+                this.m_Attacker.GetComponent<PlayerCombat>().SayLine("Voice/Shell/Kill", true);
             
         // Make this object fade out after some time
         FadeoutDestroy fade = this.transform.Find("Model").gameObject.AddComponent<FadeoutDestroy>();

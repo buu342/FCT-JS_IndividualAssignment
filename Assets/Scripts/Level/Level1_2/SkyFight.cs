@@ -22,10 +22,12 @@ public class SkyFight : MonoBehaviour
     public GameObject m_PatrolPointCenterRight;
     public GameObject m_PatrolPointCenterLeft;
     public GameObject m_EnemyPrefab;
+    public HUD m_hud;
     
     private int m_CurrentSpawn = 0;
     private List<Tuple<float, EnemyLogic.AttackStyle, Vector3, GameObject[]>> m_Spawns;
     private float m_NextSpawn = 0.0f;
+    private float m_Fade = 0.0f;
     
     
     /*==============================
@@ -73,7 +75,7 @@ public class SkyFight : MonoBehaviour
                     m_PatrolPoint11, 
                 }
             ),
-            Tuple.Create(5.0f, EnemyLogic.AttackStyle.Aiming, Vector3.zero, new GameObject[]{null}),
+            Tuple.Create(4.0f, EnemyLogic.AttackStyle.Aiming, Vector3.zero, new GameObject[]{null}),
         };
         this.m_NextSpawn = Time.time + this.m_Spawns[0].Item1;
     }
@@ -92,7 +94,6 @@ public class SkyFight : MonoBehaviour
             // If we finished our spawns, then load the next level
             if (this.m_CurrentSpawn+1 == this.m_Spawns.Count)
             {
-                GameObject.Find("SceneController").GetComponent<SceneController>().StartNextScene();
                 this.m_NextSpawn = 0;
                 return;
             }
@@ -112,6 +113,24 @@ public class SkyFight : MonoBehaviour
             // Start loading the next scene if we're on the last guy
             if (this.m_CurrentSpawn+1 == this.m_Spawns.Count)
                 GameObject.Find("SceneController").GetComponent<SceneController>().LoadScene("Level1_3");
+        }
+    }
+    
+
+    /*==============================
+        Update
+        Called every frame
+    ==============================*/
+    
+    void Update()
+    {
+        // If we finished our spawns, fade the screen to white
+        if (this.m_NextSpawn == 0)
+        {
+            this.m_Fade = Mathf.Lerp(this.m_Fade, 1.0f, Time.deltaTime*3);
+            this.m_hud.SetFade(this.m_Fade);
+            if (this.m_Fade > 0.99f)
+                GameObject.Find("SceneController").GetComponent<SceneController>().StartNextScene();
         }
     }
 }

@@ -143,3 +143,355 @@ MonoBehaviour:
     maxDistance: 16
     sources: []
     maxDistanceSqr: 0
+  - name: Voice/Shell/BossKill
+    clip: {fileID: 8300000, guid: a9c7ac9c1384550498ee0217fbf67b21, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Die
+    clip: {fileID: 8300000, guid: 62cf8660450a1d04cbb3af1f6330d713, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Die
+    clip: {fileID: 8300000, guid: 6b3cfa3d5cca3ab4186faf6fc96bfee1, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Die
+    clip: {fileID: 8300000, guid: ac54b4b8e0416544ba8f9818f8b087c6, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Hurt
+    clip: {fileID: 8300000, guid: 159b7e72ae5c8e54a8d38577d8f237d1, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Hurt
+    clip: {fileID: 8300000, guid: eaa71bb19849a954e82c37c0fd6779fe, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Hurt
+    clip: {fileID: 8300000, guid: 87947f65e334f544e87cd5c716acf959, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Hurt
+    clip: {fileID: 8300000, guid: 3420c510ebd339841badcc77a3de0960, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Hurt
+    clip: {fileID: 8300000, guid: 178d007be8409404bb63e12a8175b65d, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Intro1
+    clip: {fileID: 8300000, guid: 8ff903acae6fb1c4286ba9028f055e5c, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Intro2
+    clip: {fileID: 8300000, guid: d0056ae31ce516149bdce251ec5a7da9, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Jump
+    clip: {fileID: 8300000, guid: 717d930fe6b224a4b9f37cb4c7a59697, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Jump
+    clip: {fileID: 8300000, guid: 470fc25a3f4e2de4c966e163b85caa46, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Jump
+    clip: {fileID: 8300000, guid: 09a0262506b023345ae03cdbb8cdca43, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Jump
+    clip: {fileID: 8300000, guid: 4fca25e26114c1f40a90956b9ea9b0d9, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Jump
+    clip: {fileID: 8300000, guid: e6f5f587722937140a131d99aef917ec, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Jump
+    clip: {fileID: 8300000, guid: 666df384f5017e645b4bc46c4929d3af, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Kill
+    clip: {fileID: 8300000, guid: 1c18b8b764718ff42bed1ce5474836fb, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Kill
+    clip: {fileID: 8300000, guid: e0d9665e3e85e074397311de1dd02172, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Kill
+    clip: {fileID: 8300000, guid: 9a802f52290af784ea4d468c95014c95, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Kill
+    clip: {fileID: 8300000, guid: 16b69ca5e59a2fc41b5ae80cd0371e06, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Kill
+    clip: {fileID: 8300000, guid: f10fea9989df61c49a961d12e8c28453, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Kill
+    clip: {fileID: 8300000, guid: 1fe00e2daa66ffb44a1cc16a51fa715a, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Kill
+    clip: {fileID: 8300000, guid: e087842598057064092fb16ac28723d7, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Kill
+    clip: {fileID: 8300000, guid: 630c92d836874094cb7856bddf6bfce2, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Melee
+    clip: {fileID: 8300000, guid: cafbb26c0bba9a84a8c84796db047637, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Melee
+    clip: {fileID: 8300000, guid: 293d680e263faa54e93c953f38d2953b, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Melee
+    clip: {fileID: 8300000, guid: 8c2ca41d9d2e59c4e9dc09bbc63e3fd0, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Pickup_Coin
+    clip: {fileID: 8300000, guid: c5507c42497a97545a1f84708990900a, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Pickup_Coin
+    clip: {fileID: 8300000, guid: b8873aedf71acd240953d769a48b870b, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Pickup_Coin
+    clip: {fileID: 8300000, guid: 07a207e3c56785e4da5d11d6b0e6c0e4, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Shell/Pickup_Jetpack
+    clip: {fileID: 8300000, guid: 1dbe7be05f678d64d9a35d9524b83e1b, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0

@@ -10,8 +10,63 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Concrete__Concrete_png
+    second: {fileID: 2100000, guid: 2c174420ccff79e4cb6925270756f6ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Couch__Couch_png
+    second: {fileID: 2100000, guid: ba920aea4c669e942915f9f08bb9a3a1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Floor__Floor_png
+    second: {fileID: 2100000, guid: 832f4654a86c737439ad952596143c9e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Frame1__Frame1_png
+    second: {fileID: 2100000, guid: 5ba08c44c129a5f4d819948d1a77a9bc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Frame2__Frame2_png
+    second: {fileID: 2100000, guid: 1d8dd91abb56bf14ca08b339d4db6614, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Frame3__Frame3_png
+    second: {fileID: 2100000, guid: 83c50d9d97dc34941b70274e4b0bd8bf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Frame4__Frame4_png
+    second: {fileID: 2100000, guid: e96fd8b467cd7ba44bd2ab55af444541, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Glass__Floor_png
     second: {fileID: 2100000, guid: 5a5445c04b727094fbf357180a7dda65, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass__void_png
+    second: {fileID: 2100000, guid: 5a5445c04b727094fbf357180a7dda65, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TV__TV
+    second: {fileID: 2100000, guid: a8bb2187555f6764abec558aeeefa6c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Table__wood_png
+    second: {fileID: 2100000, guid: 1a1ef5fd5c881874e9dd181d9a40498e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wall__Wall_png
+    second: {fileID: 2100000, guid: 9b9d1f02ef7cded4b9ca6c5d16224a29, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

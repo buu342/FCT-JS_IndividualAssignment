@@ -25,7 +25,7 @@ public class MouseCursor : MonoBehaviour
     
     /*==============================
         Start
-        Called when the trigger is initialized
+        Called when the cursor is initialized
     ==============================*/
     
     void Start()

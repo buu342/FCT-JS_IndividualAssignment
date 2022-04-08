@@ -203,4 +203,29 @@ public class AudioManager : MonoBehaviour
         else
             return (1.0f - Mathf.Min((maxdistsqr - distsqr)/maxdistsqr, 1.0f));
     }
+    
+
+    /*==============================
+        GetAudioClipFromName
+        Gets a registered sound's AudioClip from the given name
+        @param The name of the sound
+        @returns The sound's corresponding audio clip object
+    ==============================*/
+    
+    public AudioClip GetAudioClipFromName(string name)
+    {
+        // Find all sounds that have the given name
+        Sound[] slist = Array.FindAll(this.m_RegisteredSoundsList, sound => sound.name == name);
+        
+        // If no sound was found, throw a warning
+        if (slist.Length == 0)
+        {
+            Debug.LogWarning("Sound: '"+name+"' not found!");
+            return null;
+        }
+        
+        // Pick a random sound from the list and set it up
+        Sound s = slist[(new System.Random()).Next(0, slist.Length)];
+        return s.clip;
+    }        
 }

@@ -57,6 +57,9 @@ public class EnemyAnimations : MonoBehaviour
         if (this.m_enemylogic.GetEnemyState() == EnemyLogic.EnemyState.Dead)
             return;
         
+        // Set animation speed
+        this.m_anim.speed = Time.timeScale;
+        
         // Set the base mesh angle depending whether we're facing left or right
         this.transform.localEulerAngles = new Vector3(0, this.m_CurrentBodyRot, 0);
         this.m_CurrentBodyRot = Mathf.Lerp(this.m_CurrentBodyRot, this.m_TargetBodyRot, 0.1f);

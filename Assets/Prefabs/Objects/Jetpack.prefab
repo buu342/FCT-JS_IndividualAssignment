@@ -90,6 +90,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42addb2be8c022441a7c4fa9f45b1d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_KillOnPickup:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &5349797745561856680
 GameObject:
   m_ObjectHideFlags: 0

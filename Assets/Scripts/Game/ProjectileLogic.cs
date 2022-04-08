@@ -219,7 +219,7 @@ public class ProjectileLogic : MonoBehaviour
                 if (this.m_Owner != null && this.m_Owner.tag == "Enemies")
                     return;
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
-                enemy.TakeDamage((int)this.m_Damage, this.m_PrevPosition);
+                enemy.TakeDamage((int)this.m_Damage, this.m_PrevPosition, this.m_Owner);
                 if (this.m_Owner != null && this.m_Owner.tag == "Player")
                     this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
                 if (this.m_Penetrating)
@@ -236,7 +236,7 @@ public class ProjectileLogic : MonoBehaviour
                 BossLogic boss = other.gameObject.transform.root.GetComponent<BossLogic>();
                 boss.TakeDamage((int)this.m_Damage);
                 if (this.m_Owner != null && this.m_Owner.tag == "Player")
-                    this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
+                    this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore/3);
                 if (this.m_Penetrating)
                 {
                     Physics.IgnoreCollision(other.GetComponent<Collider>(), this.GetComponent<Collider>(), true);

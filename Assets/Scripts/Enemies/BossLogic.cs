@@ -52,6 +52,7 @@ public class BossLogic : MonoBehaviour
     private float m_Trauma = 0.0f;
     
     // Movement
+    private bool  m_Enabled = true;
     private int   m_MovementStep = 0;
     private float m_TimeToIdle = 0;
     private float m_NextMoveAction = 0;
@@ -117,7 +118,7 @@ public class BossLogic : MonoBehaviour
     
     void Update()
     {
-        if (this.m_BossState == BossState.Dead)
+        if (this.m_BossState == BossState.Dead )
             return;
         
         // Calculate shake when hurt
@@ -137,7 +138,7 @@ public class BossLogic : MonoBehaviour
             return;
         
         // Calculate the direction to face the target
-        Vector3 targetpos =targetpos = this.m_target.transform.Find("Shoulder").gameObject.transform.position;
+        Vector3 targetpos = targetpos = this.m_target.transform.Find("Shoulder").gameObject.transform.position;
         this.m_AimDir = this.m_fireattachment.transform.position - targetpos;
         this.m_AimDir.Normalize();
         
@@ -162,6 +163,10 @@ public class BossLogic : MonoBehaviour
         this.m_OnGround = IsGrounded();
         if (!this.m_OnGround)
             this.m_rb.AddForce(0, BossLogic.Gravity, 0, ForceMode.Acceleration);
+        
+        // If we're not enabled, don't do anything else
+        if (!this.m_Enabled)
+            return;
         
         // Handle death
         if (HandleDeath())
@@ -463,7 +468,7 @@ public class BossLogic : MonoBehaviour
         // Create the rocket object
         RocketLogic rocket = Instantiate(this.m_rocketprefab, r.transform.position + r.transform.forward*0.1f, r.transform.rotation).GetComponent<RocketLogic>();
         rocket.SetOwner(this.gameObject);
-        rocket.SetTarget(this.m_target);
+        rocket.SetTarget(this.m_target.transform.Find("Shoulder").gameObject);
         
         // Play the shooting sound and set the next fire time
         this.m_audio.Play("Weapons/Laser_FireHeavy", this.m_shoulder.transform.position);
@@ -483,6 +488,7 @@ public class BossLogic : MonoBehaviour
         // Die if we're out of HP
         if (this.m_Health <= 0 && !isdead)
         {
+            this.m_target.GetComponent<PlayerCombat>().SayLine("Voice/Shell/BossKill", true);
             this.m_TargetVelocity = Vector3.zero;
             this.m_target.GetComponent<PlayerCombat>().SetPlayerInvulTime(15.0f);
             this.m_rb.velocity = Vector3.zero;
@@ -505,7 +511,11 @@ public class BossLogic : MonoBehaviour
         
         // Actually become dead once the timer has run out
         if (this.m_BossState == BossState.Dying && this.m_TimeToIdle != 0 && this.m_TimeToIdle < Time.time)
+        {
             this.m_BossState = BossState.Dead;
+            FindObjectOfType<MusicManager>().StopMusic();
+            FindObjectOfType<Level_FinishAnim>().SetLevelFinished();
+        }
         else if (this.m_BossState == BossState.Dying)
             this.m_Trauma = 0.3f;
         return isdead;
@@ -594,5 +604,43 @@ public class BossLogic : MonoBehaviour
     {
         this.m_Health = Mathf.Max(0, this.m_Health - amount);
         this.m_Trauma = Mathf.Min(0.5f, this.m_Trauma + ((float)amount)/50.0f);
+    }
+
+
+    /*==============================
+        SetBossJumpState
+        Sets the boss' current jump state
+        @param The boss' jump state
+    ==============================*/
+    
+    public void SetBossJumpState(BossJumpState state)
+    {
+        this.m_BossJumpState = state;
+    }
+    
+    
+    /*==============================
+        SetEnabled
+        Sets the boss' enable state
+        @param The enable state to set
+    ==============================*/
+    
+    public void SetEnabled(bool enabled)
+    {
+        this.m_Enabled = enabled;
+        if (enabled)
+            this.m_NextAttackTime = Time.time + 1.0f;
+    }
+    
+    
+    /*==============================
+        GetEnabled
+        Gets whether the boss is enabled or not
+        @returns Whether the boss is enabled
+    ==============================*/
+    
+    public bool GetEnabled()
+    {
+        return this.m_Enabled;
     }
 }

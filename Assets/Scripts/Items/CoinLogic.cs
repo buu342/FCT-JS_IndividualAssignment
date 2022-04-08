@@ -56,7 +56,8 @@ public class CoinLogic : MonoBehaviour
     {
         if (other.gameObject.layer == PlayerLayer)
         {
-            FindObjectOfType<SceneController>().CollectToken(this.gameObject.name);
+            GameObject.Find("SceneController").GetComponent<SceneController>().CollectToken(this.gameObject.name);
+            other.gameObject.GetComponent<PlayerCombat>().SayLine("Voice/Shell/Pickup_Coin", true);
             Destroy(this.gameObject);
         }
     }

@@ -98,7 +98,7 @@ public class MusicManager : MonoBehaviour
         }
 
         // If we having a looping song, and one of the sources isn't playing, then queue the next loop of this song
-        if (this.m_LoopSong && m_MusicQueue.Count < 2)
+        if (this.m_CurrentSong != null && this.m_LoopSong && m_MusicQueue.Count < 2)
             QueueSong(this.m_CurrentSong.SongTracks[this.m_CurrentTrack], this.m_CurrentSong.volume);
     }
     
@@ -194,6 +194,10 @@ public class MusicManager : MonoBehaviour
         m_src[0].Stop();
         m_src[1].Stop();
         m_MusicQueue.Clear();
+        this.m_CurrentSong = null;
+        this.m_TargetMuffle = 0;
+        this.m_CurrentMuffle = 0;
+        this.m_filter.cutoffFrequency = 22000.0f;
     }
     
     

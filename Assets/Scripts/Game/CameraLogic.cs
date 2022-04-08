@@ -21,12 +21,15 @@ public class CameraLogic : MonoBehaviour
     public GameObject m_Player;
     public Vector3 m_TargetPoI = Vector3.zero;
     public bool m_FollowPlayer = true;
+    public float m_SkyboxRotateSpeed = 0.0f;
     
     // Private values
-    private Vector3 m_CurrentPlayerPos;
+    private float m_CurrentSkyboxRotation = 0.0f;
+    private Vector3 m_CurrentPlayerPos = Vector3.zero;
     private Vector3 m_TargetPlayerPos;
     private float m_Trauma = 0.0f;
     private Vector3 m_CurrentPoI; 
+    private Quaternion m_OriginalRotation; 
     
     
     /*==============================
@@ -37,9 +40,11 @@ public class CameraLogic : MonoBehaviour
     void Start()
     {
         this.m_NoiseSeed = Random.value;
-        this.m_CurrentPlayerPos = this.m_Player.transform.position;
+        if (this.m_FollowPlayer && this.m_Player != null)
+            this.m_CurrentPlayerPos = this.m_Player.transform.position;
         this.m_TargetPlayerPos = this.m_CurrentPlayerPos;
         this.m_CurrentPoI = this.m_TargetPoI;
+        this.m_OriginalRotation = this.transform.rotation;
     }
     
 
@@ -55,11 +60,18 @@ public class CameraLogic : MonoBehaviour
         float traumaoffsetx = CameraLogic.MaxTraumaOffset*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 1, Time.time*CameraLogic.TraumaSpeed)*2 - 1);
         float traumaoffsety = CameraLogic.MaxTraumaOffset*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 2, Time.time*CameraLogic.TraumaSpeed)*2 - 1);
         
+        // Fake parallax by rotating the skybox
+        this.m_CurrentSkyboxRotation += this.m_SkyboxRotateSpeed;
+        RenderSettings.skybox.SetFloat("_Rotation", this.transform.position.x/5.0f + this.m_CurrentSkyboxRotation);
+        
         // Smoothly move the camera to go to the player
-        if (this.m_FollowPlayer)
-            this.m_TargetPlayerPos = this.m_Player.transform.position;
-        this.m_CurrentPlayerPos.x = Mathf.Lerp(this.m_CurrentPlayerPos.x, this.m_TargetPlayerPos.x, Time.deltaTime*200*CameraLogic.CameraHCorrectionSpeed);
-        this.m_CurrentPlayerPos.y = Mathf.Lerp(this.m_CurrentPlayerPos.y, this.m_TargetPlayerPos.y, Time.deltaTime*200*(CameraLogic.CameraVCorrectionSpeed + Mathf.Max(0.0f, -this.m_Player.GetComponent<Rigidbody>().velocity.y/1000)));
+        if (this.m_Player != null)
+        {
+            if (this.m_FollowPlayer)
+                this.m_TargetPlayerPos = this.m_Player.transform.position;
+            this.m_CurrentPlayerPos.x = Mathf.Lerp(this.m_CurrentPlayerPos.x, this.m_TargetPlayerPos.x, Time.deltaTime*200*CameraLogic.CameraHCorrectionSpeed);
+            this.m_CurrentPlayerPos.y = Mathf.Lerp(this.m_CurrentPlayerPos.y, this.m_TargetPlayerPos.y, Time.deltaTime*200*(CameraLogic.CameraVCorrectionSpeed + Mathf.Max(0.0f, -this.m_Player.GetComponent<Rigidbody>().velocity.y/1000)));
+        }
         
         // Smoothly move the camera to go to our PoI
         this.m_CurrentPoI = Vector3.Lerp(this.m_CurrentPoI, this.m_TargetPoI, CameraLogic.CameraPoISpeed);
@@ -68,7 +80,7 @@ public class CameraLogic : MonoBehaviour
         this.transform.localPosition = new Vector3(this.m_CurrentPlayerPos.x, this.m_CurrentPlayerPos.y, 0);
         this.transform.localPosition += this.m_CurrentPoI;
         this.transform.localPosition += new Vector3(traumaoffsetx, traumaoffsety, 0);
-        this.transform.localRotation = Quaternion.identity;
+        this.transform.localRotation = this.m_OriginalRotation;
         this.transform.localRotation *= Quaternion.Euler(0, 0, traumaang);
         
         // Decrease screen shake over time
@@ -134,7 +146,20 @@ public class CameraLogic : MonoBehaviour
     
     public void UpdatePlayerPosition()
     {
+        if (this.m_Player == null)
+            return;
         this.m_CurrentPlayerPos = this.m_Player.transform.position;
         this.m_TargetPlayerPos = this.m_CurrentPlayerPos;
+    }
+    
+
+    /*==============================
+        SetPlayer
+        TODO
+    ==============================*/
+    
+    public void SetPlayer(GameObject player)
+    {
+        this.m_Player = player;
     }
 }

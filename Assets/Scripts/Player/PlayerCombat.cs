@@ -22,6 +22,8 @@ public class PlayerCombat : MonoBehaviour
     private const float StaminaLose    = 1.0f;
     private const int   StreakLose     = 1;
     public  const float StreakLoseTime = 10;
+    public  const int   MinKillsForQuips = 5;
+    public  const int   MaxKillsForQuips = 10;
 
     // Combat states
     public enum CombatState
@@ -51,6 +53,8 @@ public class PlayerCombat : MonoBehaviour
     private float m_TargetTimeScale = 1.0f;
     private float m_TimeToIdle = 0.0f;
     private CombatState m_CombatState = CombatState.Idle;
+    private int m_NextQuip;
+    private float m_TimeScaleOverride = -1;
     
     // Components
     public  GameObject m_bulletprefab;
@@ -58,8 +62,10 @@ public class PlayerCombat : MonoBehaviour
     public  GameObject m_shellmesh;
     private GameObject m_fireattachment;
     private GameObject m_shoulder;
+    private AudioSource m_audiosrc;
     private PlayerController m_plycont;
-    private AudioManager m_audio;
+    private AudioManager m_audiomngr;
+    private SceneController m_scenectrl;
     
     
     /*==============================
@@ -69,14 +75,17 @@ public class PlayerCombat : MonoBehaviour
     
     void Start()
     {
-        FindObjectOfType<SceneController>().SetupPlayer(this.gameObject);
-        this.m_audio = FindObjectOfType<AudioManager>();
+        this.m_scenectrl = FindObjectOfType<SceneController>();
+        this.m_scenectrl.SetupPlayer(this.gameObject);
+        this.m_audiomngr = FindObjectOfType<AudioManager>();
         this.m_shoulder = this.transform.Find("Shoulder").gameObject;
         this.m_fireattachment = this.transform.Find("FireAttachment").gameObject;
         this.m_OriginalAimPos = this.m_fireattachment.transform.localPosition;
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
         this.m_plycont = this.GetComponent<PlayerController>();
         this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0] = new Material(this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0]);
+        this.m_audiosrc = this.GetComponent<AudioSource>();
+        this.m_NextQuip = Random.Range(PlayerCombat.MinKillsForQuips, PlayerCombat.MaxKillsForQuips);
     }
 
 
@@ -86,7 +95,7 @@ public class PlayerCombat : MonoBehaviour
     ==============================*/
     
     void Update()
-    {        
+    {
         HandleControls();
         
         // Handle going to idle state
@@ -97,6 +106,8 @@ public class PlayerCombat : MonoBehaviour
         }
         
         // Handle bullet time
+        if (this.m_TimeScaleOverride != -1.0f)
+            this.m_TargetTimeScale = this.m_TimeScaleOverride;
         Time.timeScale = Mathf.Lerp(Time.timeScale, this.m_TargetTimeScale, PlayerCombat.BulletTimeRate);
         
         // Handle powered up material
@@ -121,7 +132,10 @@ public class PlayerCombat : MonoBehaviour
         
         // Handle death
         if (this.m_Health <= 0)
+        {
+            SayLine("Voice/Shell/Die", true);
             GameObject.Find("SceneController").GetComponent<SceneController>().RestartCurrentScene();
+        }
     }
     
     
@@ -176,8 +190,10 @@ public class PlayerCombat : MonoBehaviour
             Debug.DrawRay(mouseray.origin, mouseray.direction*100, Color.blue, 0, false);
         #endif
         
+        // Don't allow for any more controls if they're disabled
+        
         // Shooting and Melee
-        if (this.m_CombatState != CombatState.Pain)
+        if (this.m_CombatState != CombatState.Pain && this.m_plycont.GetControlsEnabled())
         {
             if (Input.GetButton("Fire"))
             {
@@ -193,17 +209,17 @@ public class PlayerCombat : MonoBehaviour
         }
         
         // Bullet time
-        if (Input.GetButton("BulletTime") && this.m_Stamina > 0 && !this.m_StaminaRecovering)
+        if (Input.GetButton("BulletTime") && this.m_Stamina > 0 && !this.m_StaminaRecovering && this.m_plycont.GetControlsEnabled())
         {
             OnBulletTime();
         }
         else
         {
             // Stop bullet time
-            if (this.m_TargetTimeScale != 1.0f)
+            if (this.m_plycont.GetControlsEnabled() && this.m_TargetTimeScale != 1.0f)
             {
-                this.m_audio.Play("Gameplay/Slowmo_Out");
-                this.m_audio.Stop("Gameplay/Slowmo_In");
+                this.m_audiomngr.Play("Gameplay/Slowmo_Out");
+                this.m_audiomngr.Stop("Gameplay/Slowmo_In");
             }
             this.m_TargetTimeScale = 1.0f;
             
@@ -230,11 +246,15 @@ public class PlayerCombat : MonoBehaviour
         if (this.m_CombatState == PlayerCombat.CombatState.Pain || this.m_InvulTime > Time.unscaledTime)
             return;
         this.m_Streak = Mathf.Max(0, this.m_Streak - 25);
-        this.m_Health -= amount;
+        if (this.m_scenectrl.GetDifficulty() == SceneController.Difficulty.Hard)
+            this.m_Health -= amount*2;
+        else
+            this.m_Health -= amount;
         this.m_CombatState = CombatState.Pain;
         this.m_TimeToIdle = Time.unscaledTime + PlayerCombat.PainIdleTime;
         this.m_plycont.OnTakeDamage(position);
         this.m_InvulTime = this.m_TimeToIdle + PlayerCombat.InvulTime;
+        SayLine("Voice/Shell/Hurt", true);
     }
     
     
@@ -271,9 +291,9 @@ public class PlayerCombat : MonoBehaviour
             
             // Play the shooting sound and set the next fire time
             if (this.m_Streak >= 80.0f)
-                this.m_audio.Play("Weapons/Pistol_FireHeavy", this.m_shoulder.transform.position);
+                this.m_audiomngr.Play("Weapons/Pistol_FireHeavy", this.m_shoulder.transform.position);
             else
-                this.m_audio.Play("Weapons/Pistol_Fire", this.m_shoulder.transform.position);
+                this.m_audiomngr.Play("Weapons/Pistol_Fire", this.m_shoulder.transform.position);
             this.m_NextFire = Time.time + PlayerCombat.PistolFireRate;
             this.m_CombatState = CombatState.Shooting;
             this.m_TimeToIdle = Time.unscaledTime + PlayerCombat.PistolFireRate;
@@ -301,7 +321,8 @@ public class PlayerCombat : MonoBehaviour
         
         // Play the attack sound and set the time to idle
         this.m_TimeToIdle = Time.unscaledTime + PlayerCombat.MeleeIdleTime;
-        this.m_audio.Play("Weapons/Sword_Swing", this.m_shoulder.transform.position);
+        this.m_audiomngr.Play("Weapons/Sword_Swing", this.m_shoulder.transform.position);
+        SayLine("Voice/Shell/Melee");
     }
     
     
@@ -315,8 +336,8 @@ public class PlayerCombat : MonoBehaviour
         // Start bullet time
         if (this.m_TargetTimeScale != 0.5f)
         {
-            this.m_audio.Play("Gameplay/Slowmo_In");
-            this.m_audio.Stop("Gameplay/Slowmo_Out");
+            this.m_audiomngr.Play("Gameplay/Slowmo_In");
+            this.m_audiomngr.Stop("Gameplay/Slowmo_Out");
         }
         this.m_TargetTimeScale = 0.5f;
         
@@ -435,7 +456,10 @@ public class PlayerCombat : MonoBehaviour
     
     public void GiveScore(int score)
     {
-        this.m_Streak = Mathf.Min(100, this.m_Streak + score/5);
+        if (this.m_scenectrl.GetDifficulty() == SceneController.Difficulty.Hard)
+            this.m_Streak = Mathf.Min(100, this.m_Streak + ((int)(((float)score)/5.0f)));
+        else
+            this.m_Streak = Mathf.Min(100, this.m_Streak + ((int)(((float)score)/2.5f)));
         this.m_LastStreakTime = Time.unscaledTime + PlayerCombat.StreakLoseTime;
         this.m_Score += score*Mathf.Min(1 + this.m_Streak/20, 5);
     }
@@ -510,5 +534,58 @@ public class PlayerCombat : MonoBehaviour
     public void SetPlayerLastStreakTime(float time)
     {
         this.m_LastStreakTime = Time.unscaledTime + time;
+    }
+
+
+    /*==============================
+        CanQuip 
+        Checks whether Shell can say a quip
+        @returns Whether Shell can be annoying
+    ==============================*/
+    
+    public bool CanQuip()
+    {
+        bool canquip = ((--this.m_NextQuip) == 0);
+        if (this.m_NextQuip == 0)
+            this.m_NextQuip = Random.Range(PlayerCombat.MinKillsForQuips, PlayerCombat.MaxKillsForQuips);
+        return canquip;
+    }
+
+
+    /*==============================
+        SayLine 
+        Makes Shell speak a given line
+        @param The registered sound path
+        @param Whether to replace the current playing sound
+    ==============================*/
+    
+    public void SayLine(string name, bool replace=false)
+    {
+        if (!replace && this.m_audiosrc.isPlaying)
+            return;
+        this.m_audiosrc.clip = this.m_audiomngr.GetAudioClipFromName(name);
+        this.m_audiosrc.Play();
+    }
+    
+
+    /*==============================
+        SetTimeScaleOverride
+        TODO
+    ==============================*/
+    
+    public void SetTimeScaleOverride(float amount)
+    {
+        this.m_TimeScaleOverride = amount;
+    }
+    
+
+    /*==============================
+        GetTimeScaleOverride
+        TODO
+    ==============================*/
+    
+    public float GetTimeScaleOverride()
+    {
+        return this.m_TimeScaleOverride;
     }
 }

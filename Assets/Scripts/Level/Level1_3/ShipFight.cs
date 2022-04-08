@@ -18,11 +18,14 @@ public class ShipFight : MonoBehaviour
     public GameObject m_EnemyPrefab;
     public GameObject m_PlayerCollider;
     
+    private float m_CameraEndY = 3;
+    private int m_CurrentEndScene = 0;
     private bool m_Activated = false;
     private int m_CurrentSpawn = 0;
     private List<Tuple<float, EnemyLogic.AttackStyle, Vector3, GameObject[]>> m_Spawns;
     private float m_NextSpawn = 0.0f;
     private int PlayerLayer;
+    private GameObject m_player;
     
     // Debug stuff
     #if UNITY_EDITOR
@@ -94,6 +97,7 @@ public class ShipFight : MonoBehaviour
         this.m_Activated = true;
         this.m_PlayerCollider.GetComponent<BoxCollider>().enabled = true;
         this.m_NextSpawn = Time.time + this.m_Spawns[0].Item1;
+        this.m_player = other.gameObject;
     }
 
     
@@ -108,13 +112,12 @@ public class ShipFight : MonoBehaviour
             return;
         
         // If the spawn timer ran out
-        if (this.m_NextSpawn != 0 && this.m_NextSpawn < Time.time)
+        if (this.m_CurrentEndScene == 0 && this.m_NextSpawn < Time.time)
         {
-            // If we finished our spawns, then load the next level
+            // If we finished our spawns, then do the level outro
             if (this.m_CurrentSpawn+1 == this.m_Spawns.Count)
             {
-                GameObject.Find("SceneController").GetComponent<SceneController>().StartNextScene();
-                this.m_NextSpawn = 0;
+                this.m_CurrentEndScene++;
                 return;
             }
             
@@ -134,6 +137,54 @@ public class ShipFight : MonoBehaviour
             // Start loading the next scene if we're on the last guy
             if (this.m_CurrentSpawn+1 == this.m_Spawns.Count)
                 GameObject.Find("SceneController").GetComponent<SceneController>().LoadScene("Level1_Boss");
+        }
+    }
+    
+
+    /*==============================
+        Update
+        Called every frame
+    ==============================*/
+    
+    void Update()
+    {
+        // If we finished our spawns, play the ending sequence
+        if (this.m_CurrentEndScene > 0)
+        {
+            if (this.m_NextSpawn < Time.time)
+            {
+                switch (this.m_CurrentEndScene)
+                {
+                    case 1:
+                        FindObjectOfType<MusicManager>().FadeMusic();
+                        this.m_NextSpawn = Time.time + 2.0f;
+                        break;
+                    case 2:
+                        this.m_NextSpawn = Time.time + 1.0f;
+                        break;
+                    case 3:
+                        this.m_NextSpawn = Time.time + 3.0f;
+                        break;
+                    case 4:
+                        GameObject.Find("SceneController").GetComponent<SceneController>().StartNextScene();
+                        break;
+                }
+                this.m_CurrentEndScene++;
+            }
+            
+            // Don't allow the player's streak to decrease
+            this.m_player.GetComponent<PlayerCombat>().SetPlayerLastStreakTime(10.0f);
+        
+            // Shake the camera
+            if (this.m_CurrentEndScene > 2)
+                Camera.main.GetComponent<CameraLogic>().AddTrauma(0.1f);
+            
+            // Move the camera down
+            if (this.m_CurrentEndScene > 3)
+            {
+                this.m_CameraEndY = Mathf.Lerp(this.m_CameraEndY, 13.0f, 1.0f*Time.deltaTime);
+                Camera.main.GetComponent<CameraLogic>().SetPoI(new Vector3(0, this.m_CameraEndY, -8));
+            }
         }
     }
     

@@ -49,7 +49,7 @@ public class HurtTrigger : MonoBehaviour
                 break;
             case "Enemies":
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
-                enemy.TakeDamage(this.m_Damage,  this.transform.position);
+                enemy.TakeDamage(this.m_Damage,  this.transform.position, this.m_Owner);
                 break;
             case "Boss":
                 BossLogic boss = other.gameObject.transform.root.GetComponent<BossLogic>();

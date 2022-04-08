@@ -13,6 +13,13 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
+    // Game difficulty enums
+    public enum Difficulty
+    {
+        Easy,
+        Hard
+    }
+    
     // Player data struct
     struct PlayerData
     {
@@ -21,8 +28,10 @@ public class SceneController : MonoBehaviour
         public float Stamina;
         public int Streak;
         public int Score;
+        public int Deaths;
         public List<string> CollectedTokens;
         public string LastCheckpointName;
+        public string LastSceneName;
         public Vector3 Position;
         public List<string> DestroyOnLoad;
     }
@@ -31,6 +40,7 @@ public class SceneController : MonoBehaviour
     private static SceneController Instance = null;  
     private bool m_GoToNextScene = false;
     private static PlayerData PlyData;
+    private static Difficulty GameDifficulty = Difficulty.Hard;
 
     
     /*==============================
@@ -58,6 +68,41 @@ public class SceneController : MonoBehaviour
     
     
     /*==============================
+        FixedUpdate
+        Called every engine tick
+    ==============================*/
+
+    void FixedUpdate()
+    {
+        // Level skipping feature that the professors asked for
+        if (Input.GetButtonDown("JumpLevel1_1"))
+        {
+            LoadScene("Level1_1");
+            this.GetComponent<MusicManager>().StopMusic();
+            StartNextScene();
+        }
+        if (Input.GetButtonDown("JumpLevel1_2"))
+        {
+            LoadScene("Level1_2");
+            this.GetComponent<MusicManager>().StopMusic();
+            StartNextScene();
+        }
+        if (Input.GetButtonDown("JumpLevel1_3"))
+        {
+            LoadScene("Level1_3");
+            this.GetComponent<MusicManager>().StopMusic();
+            StartNextScene();
+        }
+        if (Input.GetButtonDown("JumpLevel1_Boss"))
+        {
+            LoadScene("Level1_Boss");
+            this.GetComponent<MusicManager>().StopMusic();
+            StartNextScene();
+        }
+    }
+    
+    
+    /*==============================
         StartingNewLevel
         Signals that we're starting a new level.
     ==============================*/
@@ -70,6 +115,8 @@ public class SceneController : MonoBehaviour
         PlyData.CollectedTokens = new List<string>();
         PlyData.DestroyOnLoad = new List<string>();
         PlyData.Position = Vector3.zero;
+        PlyData.LastSceneName = "";
+        PlyData.Deaths = 0;
     }
     
     
@@ -111,7 +158,32 @@ public class SceneController : MonoBehaviour
     public void CollectToken(string name)
     {
         if (!IsTokenCollected(name))
+        {
             PlyData.CollectedTokens.Add(name);
+            GameObject.Find("HUD").GetComponent<HUD>().CollectedToken(PlyData.CollectedTokens.Count);
+        }
+    }
+    
+    
+    /*==============================
+        GetCollectedTokenCount
+        TODO
+    ==============================*/
+    
+    public int GetCollectedTokenCount()
+    {
+        return PlyData.CollectedTokens.Count;
+    }
+    
+    
+    /*==============================
+        GetDeathCount
+        TODO
+    ==============================*/
+    
+    public int GetDeathCount()
+    {
+        return PlyData.Deaths;
     }
     
     
@@ -125,6 +197,18 @@ public class SceneController : MonoBehaviour
     public bool IsTokenCollected(string name)
     {
         return PlyData.CollectedTokens.Contains(name);
+    }
+    
+    
+    /*==============================
+        IsRespawning
+        Checks whether the player is respawning
+        @returns Whether the player is respawning
+    ==============================*/
+ 
+    public bool IsRespawning()
+    {
+        return (PlyData.LastSceneName == SceneManager.GetActiveScene().name);
     }
     
     
@@ -164,6 +248,30 @@ public class SceneController : MonoBehaviour
     
     
     /*==============================
+        SetDifficulty
+        Sets the game's difficulty level
+        @Param The difficulty level to set
+    ==============================*/
+ 
+    public void SetDifficulty(Difficulty difficulty)
+    {
+        GameDifficulty = difficulty;
+    }
+    
+    
+    /*==============================
+        GetDifficulty
+        Retrieves the current difficulty level
+        @returns The current difficulty
+    ==============================*/
+ 
+    public Difficulty GetDifficulty()
+    {
+        return GameDifficulty;
+    }
+    
+    
+    /*==============================
         LoadAsyncScene
         An asynchronous coroutine that loads
         a given scene
@@ -196,6 +304,8 @@ public class SceneController : MonoBehaviour
     
     public void RestartCurrentScene()
     {
+        PlyData.LastSceneName = SceneManager.GetActiveScene().name;
+        PlyData.Deaths++;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     
@@ -221,44 +331,17 @@ public class SceneController : MonoBehaviour
     public void StartNextScene()
     {
         PlayerCombat plycombat = FindObjectOfType<PlayerCombat>();
-        PlyData.Health = plycombat.GetHealth();
-        PlyData.Stamina = plycombat.GetStamina();
-        PlyData.Score = plycombat.GetScore();
-        PlyData.Streak = plycombat.GetStreak();
-        PlyData.Persist = true;
-        PlyData.Position = Vector3.zero;
-        PlyData.DestroyOnLoad = null;
+        if (plycombat != null)
+        {
+            PlyData.Health = plycombat.GetHealth();
+            PlyData.Stamina = plycombat.GetStamina();
+            PlyData.Score = plycombat.GetScore();
+            PlyData.Streak = plycombat.GetStreak();
+            PlyData.Persist = true;
+            PlyData.Position = Vector3.zero;
+            PlyData.DestroyOnLoad = null;
+        }
+        PlyData.LastSceneName = SceneManager.GetActiveScene().name;
         this.m_GoToNextScene = true;
-    }
-    
-    
-    /*==============================
-        FixedUpdate
-        Called every engine tick
-    ==============================*/
-
-    void FixedUpdate()
-    {
-        // Level skipping feature that the teachers asked for
-        if (Input.GetButton("JumpLevel1_1"))
-        {
-            LoadScene("Level1_1");
-            StartNextScene();
-        }
-        if (Input.GetButton("JumpLevel1_2"))
-        {
-            LoadScene("Level1_2");
-            StartNextScene();
-        }
-        if (Input.GetButton("JumpLevel1_3"))
-        {
-            LoadScene("Level1_3");
-            StartNextScene();
-        }
-        if (Input.GetButton("JumpLevel1_Boss"))
-        {
-            LoadScene("Level1_Boss");
-            StartNextScene();
-        }
     }
 }

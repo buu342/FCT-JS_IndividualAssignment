@@ -9,8 +9,12 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    private const float HealthTime = 0.1f;
-    private const float StreakTime = 0.1f;
+    private const float HealthTime = 10.0f;
+    private const float StreakTime = 10.0f;
+    private const float TextScaleTime = 10.0f;
+    private const float TextFadeTime = 10.0f;
+    private const float BossTextScaleTime = 10.0f;
+    private const float BossTextFadeTime = 10.0f;
     
     // Public values
     public Image m_HealthBar;
@@ -19,6 +23,9 @@ public class HUD : MonoBehaviour
     public Image m_ScoreBar;
     public Image m_ScoreIcon;
     public Image m_BossHealthBar;
+    public Text  m_BossTitle;
+    public Image m_Fade;
+    public Text m_TokenText;
     public GameObject m_Player;
     public Sprite[] StreakSprite = new Sprite[6];
     public GameObject m_Boss;
@@ -41,6 +48,8 @@ public class HUD : MonoBehaviour
     private float m_CurrentBossHealth;
     private float m_TargetBossHealth;
     private float m_StreakSize = 1.0f;
+    private float m_TokenTime;
+    private float m_FadeBossName = 0.0f;
     private PlayerCombat m_plycombat;
     private BossLogic m_bosslogic;
     
@@ -73,7 +82,7 @@ public class HUD : MonoBehaviour
     {
         // Health bar
         this.m_TargetHealth = Mathf.Max(0.0f, this.m_plycombat.GetHealth());
-        this.m_CurrentHealth = Mathf.Lerp(this.m_CurrentHealth, this.m_TargetHealth, HUD.HealthTime);
+        this.m_CurrentHealth = Mathf.Lerp(this.m_CurrentHealth, this.m_TargetHealth, HUD.HealthTime*Time.deltaTime);
         this.m_HealthBar.rectTransform.localScale = new Vector3(this.m_CurrentHealth/100.0f, 1.0f, 1.0f);
 
         // Stamina bar
@@ -121,24 +130,83 @@ public class HUD : MonoBehaviour
         // Kill streak icon
         this.m_ScoreIcon.sprite = StreakSprite[this.m_CurrentStreak];
         if (this.m_StreakSize > 1.0f)
-            this.m_StreakSize = Mathf.Lerp(this.m_StreakSize, 1.0f, StreakTime);
+            this.m_StreakSize = Mathf.Lerp(this.m_StreakSize, 1.0f, HUD.StreakTime*Time.deltaTime);
         this.m_ScoreIcon.rectTransform.localScale = new Vector3(-this.m_StreakSize, this.m_StreakSize, 1.0f);
         if (this.m_CurrentStreak > laststreak)
             this.m_StreakSize = 1.5f;
+        
+        // Fade out token text
+        if (this.m_TokenTime < Time.unscaledTime)
+        {
+            Color col = this.m_TokenText.color;
+            this.m_TokenText.color = Color.Lerp(col, new Color(1.0f, 1.0f, 1.0f, 0.0f), HUD.TextFadeTime*Time.deltaTime);
+        }
+        else
+        {
+            this.m_TokenText.rectTransform.localScale = Vector2.Lerp(this.m_TokenText.rectTransform.localScale, new Vector2(1.0f, 1.0f), HUD.TextScaleTime*Time.deltaTime);
+        }
+        
+        // Boss name
+        if (this.m_Boss != null && this.m_bosslogic.GetEnabled())
+        {
+            this.m_BossTitle.gameObject.SetActive(true);
+            this.m_BossHealthBar.transform.parent.gameObject.SetActive(true);
+            if (this.m_BossTitle.rectTransform.localScale.x > 1.1f)
+            {
+                this.m_BossTitle.rectTransform.localScale = Vector2.Lerp(this.m_BossTitle.rectTransform.localScale, new Vector2(1.0f, 1.0f), HUD.BossTextScaleTime*Time.deltaTime);
+            }
+            else
+            {
+                if (this.m_FadeBossName == 0.0f)
+                    this.m_FadeBossName = Time.unscaledTime + 0.5f;
+                if (this.m_FadeBossName != 0.0f && this.m_FadeBossName < Time.unscaledTime)
+                {
+                    this.m_BossTitle.color = Color.Lerp(this.m_BossTitle.color, new Color(1.0f, 1.0f, 1.0f, 0.0f), HUD.BossTextFadeTime*Time.deltaTime);
+                    this.m_BossTitle.transform.GetChild(0).GetComponent<Text>().color = this.m_BossTitle.color;
+                }
+            }
+        }
         
         // Boss health bar
         if (this.m_Boss != null && this.m_CurrentBossHealth > 0)
         {
             this.m_TargetBossHealth = this.m_bosslogic.GetHealth();
-            this.m_CurrentBossHealth = Mathf.Lerp(this.m_CurrentBossHealth, this.m_TargetBossHealth, HUD.HealthTime);
+            this.m_CurrentBossHealth = Mathf.Lerp(this.m_CurrentBossHealth, this.m_TargetBossHealth, HUD.HealthTime*Time.deltaTime);
             this.m_BossHealthBar.rectTransform.localScale = new Vector3(this.m_CurrentBossHealth/this.m_bosslogic.GetMaxHealth(), 1.0f, 1.0f);
             
             // Boss is dead, move the bar down
             if (this.m_CurrentBossHealth < 1)
             {
                 Vector2 curpos = this.m_BossHealthBar.transform.parent.position;
-                this.m_BossHealthBar.transform.parent.position = new Vector2(curpos.x, Mathf.Lerp(curpos.y, -4, 0.1f));
+                this.m_BossHealthBar.transform.parent.position = new Vector2(curpos.x, Mathf.Lerp(curpos.y, -32*this.GetComponent<Canvas>().scaleFactor, 10.0f*Time.deltaTime));
             }
         }
+    }
+
+
+    /*==============================
+        CollectedToken
+        Signals that a token was just collected
+        @param The current number of collected tokens
+    ==============================*/
+    
+    public void CollectedToken(int tokencount)
+    {
+        this.m_TokenText.text = "Token Collected\n"+tokencount+" out of 3";
+        this.m_TokenText.rectTransform.localScale = Vector2.zero;
+        this.m_TokenText.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        this.m_TokenTime = Time.unscaledTime + 2.0f;
+    }
+
+
+    /*==============================
+        SetFade
+        Set's the fade alpha
+        @param the fade amount
+    ==============================*/
+    
+    public void SetFade(float amount)
+    {
+        this.m_Fade.color = new Color(this.m_Fade.color.r, this.m_Fade.color.g, this.m_Fade.color.b, amount);
     }
 }

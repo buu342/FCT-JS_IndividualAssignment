@@ -8,6 +8,11 @@ using UnityEngine;
 
 public class PlayerAnimations : MonoBehaviour
 {
+    public Texture m_PainEyes;
+    public Texture m_PainMouth;
+    public Texture m_GrinEyes;
+    public Texture m_GrinMouth;
+    
     // Animation layer indices
     private int LayerIndex_Shooting;
     private int LayerIndex_MeleeLeft;
@@ -17,15 +22,17 @@ public class PlayerAnimations : MonoBehaviour
     private int LayerIndex_AimRight;
     private int LayerIndex_AimLeft;
     private int LayerIndex_Pain;
+    private int LayerIndex_Pickup;
     
     // Player mesh angle
     private float m_CurrentBodyRot = -179;
     private float m_TargetBodyRot = -179;
     
     // Components
-    public SkinnedMeshRenderer m_meshsword;
-    public SkinnedMeshRenderer m_meshguns;
     public MeshTrail m_swordtrail;
+    private SkinnedMeshRenderer m_meshsword;
+    private SkinnedMeshRenderer m_meshguns;
+    private SkinnedMeshRenderer m_body;
     private PlayerController m_plycont;
     private PlayerCombat m_plycombat;
     private GameObject m_fireattach;
@@ -43,6 +50,13 @@ public class PlayerAnimations : MonoBehaviour
         this.m_plycombat = this.transform.parent.gameObject.GetComponent<PlayerCombat>();
         this.m_fireattach = this.transform.parent.gameObject.transform.Find("FireAttachment").gameObject;
         this.m_anim = this.GetComponent<Animator>();
+        this.m_meshsword = this.transform.Find("Sword").GetComponent<SkinnedMeshRenderer>();
+        this.m_meshguns = this.transform.Find("Gun").GetComponent<SkinnedMeshRenderer>();
+        this.m_body = this.transform.Find("Shell").GetComponent<SkinnedMeshRenderer>();
+        this.m_body.materials[1] = new Material(this.m_body.materials[1]);
+        this.m_body.materials[2] = new Material(this.m_body.materials[2]);
+        this.m_body.materials[1].SetTexture("_MainTex", this.m_GrinEyes);
+        this.m_body.materials[2].SetTexture("_MainTex", this.m_GrinMouth);
         
         // Get all the layer indices so that this doesn't have to be done at runtime
         this.LayerIndex_Shooting = this.m_anim.GetLayerIndex("Shooting");
@@ -53,6 +67,7 @@ public class PlayerAnimations : MonoBehaviour
         this.LayerIndex_AimLeft = this.m_anim.GetLayerIndex("AimLeft");
         this.LayerIndex_AimRight = this.m_anim.GetLayerIndex("AimRight");
         this.LayerIndex_Pain = this.m_anim.GetLayerIndex("Pain");
+        this.LayerIndex_Pickup = this.m_anim.GetLayerIndex("Pickup");
     }
     
 
@@ -67,7 +82,10 @@ public class PlayerAnimations : MonoBehaviour
         this.m_anim.SetFloat("AnimSpeed", Time.timeScale);
         
         // Set the base mesh angle depending whether we're facing left or right
-        this.transform.localEulerAngles = new Vector3(0, this.m_CurrentBodyRot, 0);
+        if (this.m_anim.GetLayerWeight(LayerIndex_Pickup) != 1.0f)
+            this.transform.localEulerAngles = new Vector3(0, this.m_CurrentBodyRot, 0);
+        else
+            this.transform.localEulerAngles = new Vector3(0, 90, 0);
         this.m_CurrentBodyRot = Mathf.Lerp(this.m_CurrentBodyRot, this.m_TargetBodyRot, 0.1f);
         
         // Set the directional aim blending
@@ -161,9 +179,17 @@ public class PlayerAnimations : MonoBehaviour
         
         // Pain animation
         if (this.m_plycombat.GetCombatState() == PlayerCombat.CombatState.Pain)
+        {
             this.m_anim.SetLayerWeight(this.LayerIndex_Pain, 1.0f);
+            this.m_body.materials[1].SetTexture("_MainTex", this.m_PainEyes);
+            this.m_body.materials[2].SetTexture("_MainTex", this.m_PainMouth);
+        }
         else
+        {
             this.m_anim.SetLayerWeight(this.LayerIndex_Pain, 0.0f);
+            this.m_body.materials[1].SetTexture("_MainTex", this.m_GrinEyes);
+            this.m_body.materials[2].SetTexture("_MainTex", this.m_GrinMouth);
+        }
         
         // Running animations
         this.m_anim.SetBool("IsFlying", this.m_plycont.IsFlying());

@@ -101,7 +101,7 @@ public class SwordLogic : MonoBehaviour
                 if (this.GetOwner().tag == "Enemies")
                     return;
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();
-                enemy.TakeDamage((int)this.m_Damage, this.transform.position);
+                enemy.TakeDamage((int)this.m_Damage, this.transform.position, this.m_Owner);
                 if (this.m_Owner.tag == "Player")
                     this.m_Owner.gameObject.GetComponent<PlayerCombat>().GiveScore(KillScore);
                 break;
