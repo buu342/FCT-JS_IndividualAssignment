@@ -20,6 +20,9 @@ public class ProjectileLogic : MonoBehaviour
     public GameObject m_Owner = null;
     public float m_Speed = 0.0f;
     public float m_Damage = 10.0f;
+    public Material m_AlienMat;
+    public Material m_PlayerMat;
+    public Material m_PlayerSuperMat;
     
     // Private values
     private bool m_Penetrating = false;
@@ -113,6 +116,11 @@ public class ProjectileLogic : MonoBehaviour
         // Set the owner, and don't collide with him anymore
         this.m_Owner = owner;
         Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+        
+        if (this.m_Owner.GetComponent<PlayerCombat>() != null)
+            this.GetComponent<MeshRenderer>().material = m_PlayerMat;
+        else
+            this.GetComponent<MeshRenderer>().material = m_AlienMat;
     }
 
 
@@ -161,6 +169,8 @@ public class ProjectileLogic : MonoBehaviour
     public void SetPenetrating(bool enable)
     {
         this.m_Penetrating = enable;
+        if (enable)
+            this.GetComponent<MeshRenderer>().material = m_PlayerSuperMat;
     }
 
 

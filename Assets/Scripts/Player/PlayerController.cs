@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
         {
             if (col[i])
             {
-                if (collisions.ContainsKey(hit[i].collider.gameObject))
+                if (collisions.ContainsKey(hit[i].collider.gameObject) && hit[i].collider.gameObject.layer != LayerMask.NameToLayer("PlayerTrigger"))
                     collisions[hit[i].collider.gameObject]++;
                 else
                     collisions.Add(hit[i].collider.gameObject, 0);

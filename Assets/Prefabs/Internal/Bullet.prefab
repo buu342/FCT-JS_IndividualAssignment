@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9a83a3a391e86ec4aa7690e97cccf145, type: 2}
+  - {fileID: 2100000, guid: 71f25619b9c07cf4995f8b2773114ad0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128,3 +128,6 @@ MonoBehaviour:
   m_Owner: {fileID: 0}
   m_Speed: 1
   m_Damage: 10
+  m_AlienMat: {fileID: 2100000, guid: 71f25619b9c07cf4995f8b2773114ad0, type: 2}
+  m_PlayerMat: {fileID: 2100000, guid: 0763e5ce46cbf0f4fa8921a9f27c32c3, type: 2}
+  m_PlayerSuperMat: {fileID: 2100000, guid: 03de7fd3090121e418e1deef16c58ea3, type: 2}

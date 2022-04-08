@@ -17,6 +17,7 @@ public class ShipFight : MonoBehaviour
     public GameObject m_PatrolPoint10;
     public GameObject m_EnemyPrefab;
     public GameObject m_PlayerCollider;
+    public GameObject m_Explosions;
     
     private float m_CameraEndY = 3;
     private int m_CurrentEndScene = 0;
@@ -160,6 +161,7 @@ public class ShipFight : MonoBehaviour
                         this.m_NextSpawn = Time.time + 2.0f;
                         break;
                     case 2:
+                        this.m_Explosions.SetActive(true);
                         this.m_NextSpawn = Time.time + 1.0f;
                         break;
                     case 3:
