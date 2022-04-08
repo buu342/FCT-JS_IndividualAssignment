@@ -29,6 +29,8 @@ public class HUD : MonoBehaviour
     public GameObject m_Player;
     public Sprite[] StreakSprite = new Sprite[6];
     public GameObject m_Boss;
+    public Image m_BlackBarTop;
+    public Image m_BlackBarBottom;
     
     // Useful color values
     private Color32 HealthColor          = new Color32(255, 0, 0, 255);
@@ -42,6 +44,8 @@ public class HUD : MonoBehaviour
     private Color32 StreakColor6         = new Color32(228, 0, 0, 255);
     
     // Private values
+    private bool  m_PlayerRespawned = false;
+    private float m_PlayerDieTime = 0;
     private int   m_CurrentStreak = 0;
     private float m_CurrentHealth;
     private float m_TargetHealth;
@@ -181,6 +185,20 @@ public class HUD : MonoBehaviour
                 this.m_BossHealthBar.transform.parent.position = new Vector2(curpos.x, Mathf.Lerp(curpos.y, -32*this.GetComponent<Canvas>().scaleFactor, 10.0f*Time.deltaTime));
             }
         }
+        
+        // Death bar effect
+        if (this.m_PlayerDieTime != 0 && this.m_PlayerDieTime < Time.unscaledTime)
+        {
+            this.m_BlackBarTop.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarTop.rectTransform.localPosition.y, 0.0f, 5.0f*Time.unscaledDeltaTime));
+            this.m_BlackBarBottom.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarBottom.rectTransform.localPosition.y, 0.0f, 5.0f*Time.unscaledDeltaTime));
+        }
+        
+        // Respawn bar effect
+        if (this.m_PlayerRespawned)
+        {
+            this.m_BlackBarTop.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarTop.rectTransform.localPosition.y, 1024.0f, 5.0f*Time.unscaledDeltaTime));
+            this.m_BlackBarBottom.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarBottom.rectTransform.localPosition.y, -1024.0f, 5.0f*Time.unscaledDeltaTime));
+        }
     }
 
 
@@ -208,5 +226,35 @@ public class HUD : MonoBehaviour
     public void SetFade(float amount)
     {
         this.m_Fade.color = new Color(this.m_Fade.color.r, this.m_Fade.color.g, this.m_Fade.color.b, amount);
+    }
+    
+
+    /*==============================
+        PlayerDied
+        TODO
+    ==============================*/
+    
+    public void PlayerDied()
+    {
+        this.gameObject.transform.Find("HealthBar").gameObject.SetActive(false);
+        this.gameObject.transform.Find("StaminaBar").gameObject.SetActive(false);
+        this.gameObject.transform.Find("StreakBar").gameObject.SetActive(false);
+        this.gameObject.transform.Find("TokenCollected").gameObject.SetActive(false);
+        this.gameObject.transform.Find("Cursor").gameObject.SetActive(false);
+        this.m_PlayerDieTime = Time.unscaledTime + 0.5f;
+        this.m_PlayerRespawned = false;
+    }
+    
+
+    /*==============================
+        PlayerRespawned
+        TODO
+    ==============================*/
+    
+    public void PlayerRespawned()
+    {
+        this.m_PlayerRespawned = true;
+        this.m_BlackBarTop.rectTransform.anchoredPosition = Vector2.zero;
+        this.m_BlackBarBottom.rectTransform.anchoredPosition = Vector2.zero;
     }
 }

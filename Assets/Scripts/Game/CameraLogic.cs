@@ -61,7 +61,7 @@ public class CameraLogic : MonoBehaviour
         float traumaoffsety = CameraLogic.MaxTraumaOffset*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 2, Time.time*CameraLogic.TraumaSpeed)*2 - 1);
         
         // Fake parallax by rotating the skybox
-        this.m_CurrentSkyboxRotation += this.m_SkyboxRotateSpeed;
+        this.m_CurrentSkyboxRotation += this.m_SkyboxRotateSpeed*Time.timeScale;
         RenderSettings.skybox.SetFloat("_Rotation", this.transform.position.x/5.0f + this.m_CurrentSkyboxRotation);
         
         // Smoothly move the camera to go to the player

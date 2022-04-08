@@ -55,6 +55,7 @@ public class PlayerCombat : MonoBehaviour
     private CombatState m_CombatState = CombatState.Idle;
     private int m_NextQuip;
     private float m_TimeScaleOverride = -1;
+    private float m_DeathTimer = 0.0f;
     
     // Components
     public  GameObject m_bulletprefab;
@@ -98,8 +99,12 @@ public class PlayerCombat : MonoBehaviour
     {
         HandleControls();
         
+        // Handle death
+        if (this.m_DeathTimer != 0 && this.m_DeathTimer < Time.unscaledTime)
+            GameObject.Find("SceneController").GetComponent<SceneController>().RestartCurrentScene();
+        
         // Handle going to idle state
-        if (this.m_TimeToIdle != 0 && this.m_TimeToIdle < Time.unscaledTime )
+        if (this.m_TimeToIdle != 0 && this.m_TimeToIdle < Time.unscaledTime)
         {
             this.m_CombatState = CombatState.Idle;
             this.m_TimeToIdle = 0;
@@ -131,10 +136,16 @@ public class PlayerCombat : MonoBehaviour
             this.m_Streak = Mathf.Max(0, this.m_Streak - PlayerCombat.StreakLose);
         
         // Handle death
-        if (this.m_Health <= 0)
+        if (this.m_Health <= 0 && this.m_DeathTimer == 0.0f)
         {
             SayLine("Voice/Shell/Die", true);
-            GameObject.Find("SceneController").GetComponent<SceneController>().RestartCurrentScene();
+            this.m_DeathTimer = Time.unscaledTime + 2.0f;
+            this.m_TargetTimeScale = 0.0f;
+            this.m_TimeScaleOverride = 0.0f;
+            this.m_plycont.SetControlsEnabled(false);
+            this.m_TimeToIdle = Time.unscaledTime + 100.0f;
+            FindObjectOfType<MusicManager>().StopMusic();
+            FindObjectOfType<HUD>().PlayerDied();
         }
     }
     

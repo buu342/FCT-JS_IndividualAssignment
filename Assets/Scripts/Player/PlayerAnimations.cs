@@ -82,10 +82,13 @@ public class PlayerAnimations : MonoBehaviour
         this.m_anim.SetFloat("AnimSpeed", Time.timeScale);
         
         // Set the base mesh angle depending whether we're facing left or right
-        if (this.m_anim.GetLayerWeight(LayerIndex_Pickup) != 1.0f)
-            this.transform.localEulerAngles = new Vector3(0, this.m_CurrentBodyRot, 0);
-        else
-            this.transform.localEulerAngles = new Vector3(0, 90, 0);
+        if (this.m_plycombat.GetCombatState() != PlayerCombat.CombatState.Pain)
+        {
+            if (this.m_anim.GetLayerWeight(LayerIndex_Pickup) != 1.0f)
+                this.transform.localEulerAngles = new Vector3(0, this.m_CurrentBodyRot, 0);
+            else
+                this.transform.localEulerAngles = new Vector3(0, 90, 0);
+        }
         this.m_CurrentBodyRot = Mathf.Lerp(this.m_CurrentBodyRot, this.m_TargetBodyRot, 0.1f);
         
         // Set the directional aim blending

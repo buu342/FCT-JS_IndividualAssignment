@@ -25,6 +25,8 @@ public class Init_Level1_1 : MonoBehaviour
             this.m_Glass.GetComponent<BreakGlass>().Break(5, this.m_Glass.transform.position + this.m_Glass.transform.forward*0.01f);
             this.m_Player.AddComponent<Sequence_ShellSpawn_Level1_1>();
         }
+        if (FindObjectOfType<SceneController>().IsRespawning())
+            FindObjectOfType<HUD>().PlayerRespawned();
         Destroy(this);
     }
 }

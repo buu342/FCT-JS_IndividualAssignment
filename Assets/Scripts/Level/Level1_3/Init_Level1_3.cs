@@ -40,6 +40,7 @@ public class Init_Level1_3 : MonoBehaviour
             Camera.main.GetComponent<CameraLogic>().SetPlayer(this.m_Player);
             Camera.main.GetComponent<CameraLogic>().SetFollowPlayer(true);
             Camera.main.GetComponent<CameraLogic>().SetPoI(new Vector3(4, 2, -8));
+            FindObjectOfType<HUD>().PlayerRespawned();
             Destroy(this.m_Jetpack);
             Destroy(this.gameObject);
         }

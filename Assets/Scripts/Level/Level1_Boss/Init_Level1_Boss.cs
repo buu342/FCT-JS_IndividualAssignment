@@ -36,6 +36,7 @@ public class Init_Level1_Boss : MonoBehaviour
             this.m_Boss.GetComponent<BossLogic>().SetEnabled(true);
             this.m_Player.SetActive(true);
             this.m_Boss.SetActive(true);
+            FindObjectOfType<HUD>().PlayerRespawned();
             foreach (MusicManager mm in FindObjectsOfType<MusicManager>())
                 mm.PlaySong("Music/Level1_Boss", true, false);
             Destroy(this);

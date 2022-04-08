@@ -21,6 +21,8 @@ public class Init_Level1_2 : MonoBehaviour
     {
         foreach (MusicManager mm in FindObjectsOfType<MusicManager>())
             mm.PlaySong("Music/Level1", true, false, 1);
+        if (FindObjectOfType<SceneController>().IsRespawning())
+            FindObjectOfType<HUD>().PlayerRespawned();
     }
 
 
