@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5023025, g: 0.5540601, b: 0.6643631, a: 1}
+  m_IndirectSpecularColor: {r: 0.5024146, g: 0.554205, b: 0.6645784, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3163,6 +3163,22 @@ PrefabInstance:
       propertyPath: m_RegisteredMusicList.Array.data[2].SongIntro
       value: 
       objectReference: {fileID: 8300000, guid: 6b99004ca78520d4a8e56d987fed8624, type: 3}
+    - target: {fileID: 2955383303319034569, guid: 4147f03e76cef3f4eaeafe0710484d7a, type: 3}
+      propertyPath: m_RegisteredMusicList.Array.data[0].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955383303319034569, guid: 4147f03e76cef3f4eaeafe0710484d7a, type: 3}
+      propertyPath: m_RegisteredMusicList.Array.data[1].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955383303319034569, guid: 4147f03e76cef3f4eaeafe0710484d7a, type: 3}
+      propertyPath: m_RegisteredMusicList.Array.data[2].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955383303319034569, guid: 4147f03e76cef3f4eaeafe0710484d7a, type: 3}
+      propertyPath: m_RegisteredMusicList.Array.data[3].volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3328612266147617852, guid: 4147f03e76cef3f4eaeafe0710484d7a, type: 3}
       propertyPath: m_Volume
       value: 1
@@ -17252,11 +17268,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6927007439697431386, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.4
+      value: -1.105
       objectReference: {fileID: 0}
     - target: {fileID: 6927007439697431386, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.76
+      value: 1.044
       objectReference: {fileID: 0}
     - target: {fileID: 6927007439697431386, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
       propertyPath: m_LocalPosition.z

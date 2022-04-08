@@ -1,5 +1,5 @@
 /****************************************************************
-                 Sequence_ShellSpawn_Level1_1.cs
+                 Sequence_ShellExit_Level1_1.cs
     
 This script handles the level1_1 exit scene
 ****************************************************************/

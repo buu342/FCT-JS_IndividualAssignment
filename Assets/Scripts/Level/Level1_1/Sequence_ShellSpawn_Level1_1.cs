@@ -31,6 +31,7 @@ public class Sequence_ShellSpawn_Level1_1 : MonoBehaviour
         this.GetComponent<PlayerController>().SetControlsEnabled(false);
         this.GetComponent<Rigidbody>().AddForce(1, 15, 0, ForceMode.Impulse);
         this.m_NextSequenceTime = Time.unscaledTime + 0.7f;
+        this.GetComponent<PlayerController>().SetPlayerJumpState(PlayerController.PlayerJumpState.Jump);
     }
     
 
