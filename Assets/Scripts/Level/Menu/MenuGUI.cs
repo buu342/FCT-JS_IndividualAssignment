@@ -156,7 +156,7 @@ public class MenuGUI : MonoBehaviour
             switch (this.m_CurrSequence)
             {
                 case 0:
-                    this.m_TargetTextScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    this.m_TargetTextScale = Vector3.one;
                     this.m_TopText.text = "A GAME BY";
                     this.m_BottomText.text = "Lourenço Soares";
                     this.m_NextSequenceTime = Time.unscaledTime + 2.479f;
@@ -166,7 +166,7 @@ public class MenuGUI : MonoBehaviour
                     this.m_NextSequenceTime = Time.unscaledTime + 0.163f;
                     break;
                 case 2:
-                    this.m_TargetTextScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    this.m_TargetTextScale = Vector3.one;
                     this.m_TopText.text = "ASSETS BY";
                     this.m_BottomText.text = "Lourenço Soares";
                     this.m_NextSequenceTime = Time.unscaledTime + 2.579f;
@@ -176,7 +176,7 @@ public class MenuGUI : MonoBehaviour
                     this.m_NextSequenceTime = Time.unscaledTime + 0.163f;
                     break;
                 case 4:
-                    this.m_TargetTextScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    this.m_TargetTextScale = Vector3.one;
                     this.m_TopText.text = "FEATURING THE VOICE OF";
                     this.m_BottomText.text = "Maria Brigida";
                     this.m_NextSequenceTime = Time.unscaledTime + 2.513f;
@@ -186,7 +186,7 @@ public class MenuGUI : MonoBehaviour
                     this.m_NextSequenceTime = Time.unscaledTime + 0.189f;
                     break;
                 case 6:
-                    this.m_TargetTextScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    this.m_TargetTextScale = Vector3.one;
                     this.m_TopText.text = "MUSIC BY";
                     this.m_BottomText.text = "Hidenori Shoji";
                     this.m_NextSequenceTime = Time.unscaledTime + 2.136f;

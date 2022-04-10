@@ -7,6 +7,7 @@ This script handles projectile logic
 //#define DEBUG
 
 using UnityEngine;
+using System.Collections;
 
 public class ProjectileLogic : MonoBehaviour
 {
@@ -20,33 +21,44 @@ public class ProjectileLogic : MonoBehaviour
     public GameObject m_Owner = null;
     public float m_Speed = 0.0f;
     public float m_Damage = 10.0f;
-    public Material m_AlienMat;
-    public Material m_PlayerMat;
-    public Material m_PlayerSuperMat;
+    public GameObject m_AlienParticle;
+    public GameObject m_ExplodeParticle;
+    public GameObject m_Mesh;
+    public GameObject m_SuperMesh;
     
     // Private values
     private bool m_Penetrating = false;
     private float m_DestroyTime = 0.0f;
     private Vector3 m_PrevPosition;
     private int IgnoreLayers = 0;
+    private Rigidbody m_rb;
     
     
     /*==============================
-        Start
-        Called when the projectile is initialized
+        Awake
+        Called before the projectile is initialized
     ==============================*/
     
-    void Start()
+    void Awake()
     {
-        this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed;
+        this.m_rb = this.GetComponent<Rigidbody>();
         this.m_PrevPosition = this.transform.position;
-        
-        // Disable collisions between self and the projectile's owner
-        if (this.m_Owner != null)
-            Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
-        IgnoreLayers |= 1 << LayerMask.NameToLayer("NoCollide");
-        IgnoreLayers |= 1 << LayerMask.NameToLayer("Bullet");
-        IgnoreLayers |= 1 << LayerMask.NameToLayer("PlayerTrigger");
+    }
+    
+
+    /*==============================
+        Update
+        Called every frame
+    ==============================*/
+    
+    void Update()
+    {
+        // Make the bullet spin if the player owns it
+        if (this.m_Owner != null && this.m_Owner.tag == "Player")
+        {
+            this.m_Mesh.transform.localRotation *= Quaternion.Euler(0, 0, 5*Time.timeScale);
+            this.m_SuperMesh.transform.localRotation *= Quaternion.Euler(0, 0, 5*Time.timeScale);
+        }
     }
     
 
@@ -117,10 +129,30 @@ public class ProjectileLogic : MonoBehaviour
         this.m_Owner = owner;
         Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
         
-        if (this.m_Owner.GetComponent<PlayerCombat>() != null)
-            this.GetComponent<MeshRenderer>().material = m_PlayerMat;
-        else
-            this.GetComponent<MeshRenderer>().material = m_AlienMat;
+        // Disable collisions between self and the projectile's owner
+        if (this.m_Owner != null)
+            Physics.IgnoreCollision(this.m_Owner.GetComponent<Collider>(), this.GetComponent<Collider>(), true);
+        IgnoreLayers |= 1 << LayerMask.NameToLayer("NoCollide");
+        IgnoreLayers |= 1 << LayerMask.NameToLayer("Bullet");
+        IgnoreLayers |= 1 << LayerMask.NameToLayer("PlayerTrigger");
+        
+        // Set the bullet model
+        switch (owner.tag)
+        {
+            case "Player":
+                this.m_Mesh.transform.localRotation *= Quaternion.Euler(0, 0, Random.Range(0, 360));
+                this.m_Mesh.SetActive(true);
+                this.m_AlienParticle.SetActive(false);
+                break;
+            case "Boss":
+            case "Enemies":
+                this.m_Mesh.SetActive(false);
+                this.m_AlienParticle.SetActive(true);
+                ParticleSystem.MainModule mm = this.m_AlienParticle.GetComponent<ParticleSystem>().main;
+                mm.startRotation = Vector3.SignedAngle(this.m_rb.velocity, Vector3.left, Vector3.forward)*Mathf.Deg2Rad;
+                this.m_AlienParticle.GetComponent<ParticleSystem>().TriggerSubEmitter(0);
+                break;
+        }
     }
 
 
@@ -145,6 +177,7 @@ public class ProjectileLogic : MonoBehaviour
     public void SetSpeed(float speed)
     {
         this.m_Speed = speed;
+        this.m_rb.velocity = this.transform.forward*speed;
     }
 
 
@@ -170,7 +203,10 @@ public class ProjectileLogic : MonoBehaviour
     {
         this.m_Penetrating = enable;
         if (enable)
-            this.GetComponent<MeshRenderer>().material = m_PlayerSuperMat;
+        {
+            this.m_Mesh.SetActive(false);
+            this.m_SuperMesh.SetActive(true);
+        }
     }
 
 
@@ -192,7 +228,7 @@ public class ProjectileLogic : MonoBehaviour
                 {
                     this.SetOwner(sword.GetOwner());
                     this.transform.rotation = other.gameObject.transform.rotation;
-                    this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed*2;
+                    this.m_rb.velocity = this.transform.forward*m_Speed*2;
                     if (sword.GetOwner().tag == "Player")
                         sword.GetOwner().gameObject.GetComponent<PlayerCombat>().GiveScore(ReflectScore);
                 }
@@ -215,7 +251,7 @@ public class ProjectileLogic : MonoBehaviour
                     {
                         this.SetOwner(other.gameObject);
                         this.transform.rotation = ply.GetFireAttachment().transform.rotation;
-                        this.GetComponent<Rigidbody>().velocity = this.transform.forward*m_Speed*2;
+                        this.m_rb.velocity = this.transform.forward*m_Speed*2;
                         return;
                     }
                 }
@@ -264,6 +300,8 @@ public class ProjectileLogic : MonoBehaviour
             default:
                 break;
         }
+        if (this.m_Owner.tag == "Enemies" || this.m_Owner.tag == "Boss")
+            Instantiate(this.m_ExplodeParticle, this.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 

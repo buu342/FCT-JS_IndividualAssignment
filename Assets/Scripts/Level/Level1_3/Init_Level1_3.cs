@@ -32,6 +32,8 @@ public class Init_Level1_3 : MonoBehaviour
             this.m_Player.SetActive(false);
             this.m_Player.GetComponent<PlayerController>().SetControlsEnabled(false);
             this.m_SequenceTime = Time.time + 1.5f;
+            Camera.main.GetComponent<CameraLogic>().ForcePosition(new Vector3(-2, 5, -8));
+            Camera.main.GetComponent<CameraLogic>().SetPoI(new Vector3(4, -3, -8));
         }
         else
         {
@@ -89,10 +91,10 @@ public class Init_Level1_3 : MonoBehaviour
             this.m_Jetpack.transform.position += new Vector3(0.5f, 1.0f, 0.0f)*10.0f*Time.deltaTime;
         
         // Push the clouds down
-        if (this.m_Clouds.rectTransform.position.y > -1024)
+        if (this.m_Clouds != null && this.m_Clouds.rectTransform.position.y > -1024)
         {
             this.m_Clouds.rectTransform.localPosition = Vector3.Lerp(this.m_Clouds.rectTransform.localPosition, new Vector3(0, -1024-256, 0), Time.deltaTime/2.0f);
-            this.m_Clouds.uvRect = new Rect(Time.time/5.0f, 0, 1, 1);
+            this.m_Clouds.uvRect = new Rect(Time.time/5.0f, 0, 1, 0.995f);
         }
         else
             Destroy(this.m_Clouds);

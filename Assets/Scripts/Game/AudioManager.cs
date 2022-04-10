@@ -158,6 +158,7 @@ public class AudioManager : MonoBehaviour
             {
                 AudioSource source = s.sources[i].GetComponent<AudioSource>();
                 source.Stop();
+                Destroy(s.sources[i]);
                 s.sources.RemoveAt(i);
             }
         }
@@ -206,13 +207,13 @@ public class AudioManager : MonoBehaviour
     
 
     /*==============================
-        GetAudioClipFromName
-        Gets a registered sound's AudioClip from the given name
+        GetSoundFromName
+        Gets a registered sound data from the given name
         @param The name of the sound
-        @returns The sound's corresponding audio clip object
+        @returns The sound's corresponding data
     ==============================*/
     
-    public AudioClip GetAudioClipFromName(string name)
+    public Sound GetSoundFromName(string name)
     {
         // Find all sounds that have the given name
         Sound[] slist = Array.FindAll(this.m_RegisteredSoundsList, sound => sound.name == name);
@@ -226,6 +227,6 @@ public class AudioManager : MonoBehaviour
         
         // Pick a random sound from the list and set it up
         Sound s = slist[(new System.Random()).Next(0, slist.Length)];
-        return s.clip;
+        return s;
     }        
 }

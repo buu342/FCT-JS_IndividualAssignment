@@ -56,11 +56,20 @@ public class PlayerCombat : MonoBehaviour
     private int m_NextQuip;
     private float m_TimeScaleOverride = -1;
     private float m_DeathTimer = 0.0f;
+    private bool m_BulletRight = true;
     
     // Components
     public  GameObject m_bulletprefab;
     public  GameObject m_swordprefab;
     public  GameObject m_shellmesh;
+    public  GameObject m_powerup;
+    public  GameObject m_powerdown;
+    public  GameObject m_muzzler;
+    public  GameObject m_muzzlel;
+    public  GameObject m_muzzleeffect;
+    public  GameObject m_slider;
+    public  GameObject m_slidel;
+    public  GameObject m_casingeffect;
     private GameObject m_fireattachment;
     private GameObject m_shoulder;
     private AudioSource m_audiosrc;
@@ -216,6 +225,7 @@ public class PlayerCombat : MonoBehaviour
                 if (this.m_MouseHoldTime > Time.unscaledTime)
                     OnMelee();
                 this.m_MouseHoldTime = 0;
+                this.m_BulletRight = true;
             }
         }
         
@@ -250,17 +260,24 @@ public class PlayerCombat : MonoBehaviour
         Makes the player take damage
         @param The amount of damage to take
         @param The coordinate where the damage came from
+        @param Forcefully take damage?
     ==============================*/
     
-    public void TakeDamage(int amount, Vector3 position)
+    public void TakeDamage(int amount, Vector3 position, bool forcedamage=false)
     {
-        if (this.m_CombatState == PlayerCombat.CombatState.Pain || this.m_InvulTime > Time.unscaledTime)
+        int prevstreak = this.m_Streak;
+        if (!forcedamage && (this.m_CombatState == PlayerCombat.CombatState.Pain || this.m_InvulTime > Time.unscaledTime))
             return;
         this.m_Streak = Mathf.Max(0, this.m_Streak - 25);
         if (this.m_scenectrl.GetDifficulty() == SceneController.Difficulty.Hard)
             this.m_Health -= amount*2;
         else
             this.m_Health -= amount;
+        if (this.m_Health > 0 && prevstreak >= 80 && this.m_Streak < 80)
+        {
+            this.m_audiomngr.Play("Gameplay/PowerDown", this.transform.position);
+            Instantiate(this.m_powerdown, this.transform.position, Quaternion.identity);
+        }
         this.m_CombatState = CombatState.Pain;
         this.m_TimeToIdle = Time.unscaledTime + PlayerCombat.PainIdleTime;
         this.m_plycont.OnTakeDamage(position);
@@ -287,24 +304,53 @@ public class PlayerCombat : MonoBehaviour
         // If we held the shoot button for too long, then we want to fire.
         if (this.m_MouseHoldTime < Time.unscaledTime && this.m_NextFire < Time.time)
         {
+            GameObject part;
+            ParticleSystem.MainModule mm;
+            
             // Create the bullet object
             ProjectileLogic bullet = Instantiate(this.m_bulletprefab, this.m_fireattachment.transform.position, this.m_fireattachment.transform.rotation).GetComponent<ProjectileLogic>();
-            bullet.SetOwner(this.gameObject);
             bullet.SetSpeed(30.0f);
+            bullet.SetOwner(this.gameObject);
             bullet.SetOrigin(this.m_shoulder.transform.position);
+            
+            // Make the bullet casing effect
+            if (this.m_BulletRight)
+                Instantiate(this.m_casingeffect, this.m_slider.transform.position, this.m_slidel.transform.rotation);
+            else
+                Instantiate(this.m_casingeffect, this.m_slidel.transform.position, this.m_slidel.transform.rotation);
+            
+            // Make the muzzleflash effect
+            if (this.m_BulletRight)
+            {
+                part = Instantiate(this.m_muzzleeffect, this.m_muzzler.transform.position, Quaternion.identity);
+                part.transform.parent = this.m_muzzler.transform;
+                part.transform.localScale = Vector3.one;
+            }
+            else
+            {
+                part = Instantiate(this.m_muzzleeffect, this.m_muzzlel.transform.position, Quaternion.identity);
+                part.transform.parent = this.m_muzzlel.transform;
+                part.transform.localScale = Vector3.one;
+            }
+            mm = part.GetComponent<ParticleSystem>().main;
+            mm.startRotation = Vector3.SignedAngle(this.m_AimDir, Vector3.right, Vector3.forward)*Mathf.Deg2Rad;
+            
+            // Switch which gun to emit the next effect from
+            this.m_BulletRight = !this.m_BulletRight;
             
             // Make the bullet penetrate stuff if we have a high enough streak
             if (this.m_Streak >= 80.0f)
             {
+                mm.startColor = Color.red;
                 bullet.SetDamage(bullet.GetDamage()*2);
                 bullet.SetPenetrating(true);
             }
             
             // Play the shooting sound and set the next fire time
             if (this.m_Streak >= 80.0f)
-                this.m_audiomngr.Play("Weapons/Pistol_FireHeavy", this.m_shoulder.transform.position);
+                this.m_audiomngr.Play("Weapons/Pistol_FireHeavy", this.m_fireattachment.transform.position);
             else
-                this.m_audiomngr.Play("Weapons/Pistol_Fire", this.m_shoulder.transform.position);
+                this.m_audiomngr.Play("Weapons/Pistol_Fire", this.m_fireattachment.transform.position);
             this.m_NextFire = Time.time + PlayerCombat.PistolFireRate;
             this.m_CombatState = CombatState.Shooting;
             this.m_TimeToIdle = Time.unscaledTime + PlayerCombat.PistolFireRate;
@@ -467,10 +513,16 @@ public class PlayerCombat : MonoBehaviour
     
     public void GiveScore(int score)
     {
+        int prevstreak = this.m_Streak;
         if (this.m_scenectrl.GetDifficulty() == SceneController.Difficulty.Hard)
             this.m_Streak = Mathf.Min(100, this.m_Streak + ((int)(((float)score)/5.0f)));
         else
             this.m_Streak = Mathf.Min(100, this.m_Streak + ((int)(((float)score)/2.5f)));
+        if (prevstreak < 80 && this.m_Streak >= 80)
+        {
+            this.m_audiomngr.Play("Gameplay/PowerUp", this.transform.position);
+            Instantiate(this.m_powerup, this.transform.position, Quaternion.identity);
+        }
         this.m_LastStreakTime = Time.unscaledTime + PlayerCombat.StreakLoseTime;
         this.m_Score += score*Mathf.Min(1 + this.m_Streak/20, 5);
     }
@@ -574,7 +626,9 @@ public class PlayerCombat : MonoBehaviour
     {
         if (!replace && this.m_audiosrc.isPlaying)
             return;
-        this.m_audiosrc.clip = this.m_audiomngr.GetAudioClipFromName(name);
+        Sound s = this.m_audiomngr.GetSoundFromName(name);
+        this.m_audiosrc.clip = s.clip;
+        this.m_audiosrc.volume = s.volume;
         this.m_audiosrc.Play();
     }
     

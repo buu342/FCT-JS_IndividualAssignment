@@ -10,6 +10,7 @@ using System.Collections;
 public class BreakGlass : MonoBehaviour
 {
     // Public fields
+    public string m_Sound;
     public Transform m_BrokenObject;
     public float m_BreakForce;
     public float m_ExplodeRadius;
@@ -40,8 +41,10 @@ public class BreakGlass : MonoBehaviour
             foreach (Collider hit in colliders)
                 if (hit.GetComponent<Rigidbody>() && hit.gameObject.layer != BulletLayer && hit.gameObject.tag != "Pickup")
                     hit.GetComponent<Rigidbody>().AddExplosionForce(-this.m_ExplodePower*velocity, hitpos, this.m_ExplodeRadius, this.m_UpwardsForce, ForceMode.Impulse);
-                
+            
             // Return that we successfully broke
+            if (this.m_Sound != "")
+                FindObjectOfType<AudioManager>().Play(this.m_Sound, this.transform.position);
             return true;
         }
         

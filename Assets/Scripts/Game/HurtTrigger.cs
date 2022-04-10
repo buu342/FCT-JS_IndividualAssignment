@@ -45,7 +45,10 @@ public class HurtTrigger : MonoBehaviour
         {
             case "Player":
                 PlayerCombat ply = other.gameObject.GetComponent<PlayerCombat>();
-                ply.TakeDamage(this.m_Damage, this.transform.position);
+                if (this.m_Damage >= 100)
+                    ply.TakeDamage(this.m_Damage, this.transform.position, true);
+                else
+                    ply.TakeDamage(this.m_Damage, this.transform.position);
                 break;
             case "Enemies":
                 EnemyLogic enemy = other.gameObject.GetComponent<EnemyLogic>();

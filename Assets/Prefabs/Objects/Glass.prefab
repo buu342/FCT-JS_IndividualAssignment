@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32e26340f4d3c184386fc0ca50ba1248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Sound: Physics/WindowShatter
   m_BrokenObject: {fileID: 7485843599971585030, guid: b04b597c1b951aa4d9c266626a34ab19, type: 3}
   m_BreakForce: 10
   m_ExplodeRadius: 2

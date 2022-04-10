@@ -154,6 +154,18 @@ public class CameraLogic : MonoBehaviour
     
 
     /*==============================
+        ForcePosition
+        TODO
+    ==============================*/
+    
+    public void ForcePosition(Vector3 pos)
+    {
+        this.transform.localPosition = pos;
+        this.m_CurrentPlayerPos = pos;
+    }
+    
+
+    /*==============================
         SetPlayer
         TODO
     ==============================*/

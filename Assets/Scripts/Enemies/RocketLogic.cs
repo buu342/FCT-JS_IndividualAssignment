@@ -17,6 +17,7 @@ public class RocketLogic : MonoBehaviour
     public float m_Speed = 5.0f;
     public int m_Damage = 20;
     public int m_Health = 20;
+    public GameObject m_ExplodeEffect;
     
     private Rigidbody m_rb;
     private AudioManager m_audio; 
@@ -109,7 +110,8 @@ public class RocketLogic : MonoBehaviour
         explosion.SetDamage(this.m_Damage);
         explosion.SetRadius(this.m_ExplodeRadius);
         explosion.SetDieTime(0.1f);
-        this.m_audio.Play("Weapons/Laser_FireHeavy", this.transform.position);
+        Instantiate(this.m_ExplodeEffect, this.transform.position, Quaternion.identity);
+        this.m_audio.Play("Effects/Explosion_Big", this.transform.position);
         Destroy(this.gameObject);
     }
 }

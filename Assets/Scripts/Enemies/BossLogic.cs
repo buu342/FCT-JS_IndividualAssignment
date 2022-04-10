@@ -77,6 +77,10 @@ public class BossLogic : MonoBehaviour
     public  GameObject m_bulletprefab;
     public  GameObject m_rocketprefab;
     public  GameObject m_rocketattachment;
+    public  GameObject m_explosionbig;
+    public  GameObject m_explosionsmall;
+    public  GameObject m_dustjump;
+    public  GameObject m_dustland;
     private GameObject m_mesh;
     private GameObject m_target;
     private GameObject m_fireattachment;
@@ -318,6 +322,7 @@ public class BossLogic : MonoBehaviour
                 float timetoland = ((BossLogic.JumpPower*Time.fixedDeltaTime)/(-BossLogic.Gravity*Time.fixedDeltaTime))*2*Time.fixedDeltaTime;
                 float distancetoplayer = this.transform.position.x - this.m_target.transform.position.x;
                 this.m_BossJumpState = BossJumpState.Jump;
+                Instantiate(this.m_dustjump, this.transform.position, Quaternion.identity);
                 this.m_OnGround = false;
                 this.m_rb.velocity = Vector3.zero;
                 this.m_rb.AddForce(this.transform.up*BossLogic.JumpPower, ForceMode.Acceleration);
@@ -330,6 +335,7 @@ public class BossLogic : MonoBehaviour
             else if (this.m_BossJumpState == BossJumpState.Fall && this.m_OnGround)
             {
                 Camera.main.GetComponent<CameraLogic>().AddTrauma(0.5f);
+                Instantiate(this.m_dustland, this.transform.position, Quaternion.identity);
                 this.m_BossJumpState = BossJumpState.Land;
                 this.m_NextFire = Time.time + 1.0f;
             }
@@ -353,6 +359,7 @@ public class BossLogic : MonoBehaviour
                     else
                         this.m_NextFire = Time.time + 0.8f;
                     FireBullet();
+                    this.m_audio.Play("Weapons/Laser_FireHeavy1", this.m_shoulder.transform.position);
                     this.m_AttackState++;
                     
                     // Stop shooting once this pattern is finished
@@ -368,6 +375,7 @@ public class BossLogic : MonoBehaviour
                     this.m_NextFire = Time.time + 0.7f;
                     for (float i=-20.0f; i<=20.0f; i+= 10.0f)
                         FireBullet(i);
+                    this.m_audio.Play("Weapons/Laser_FireHeavy2", this.m_shoulder.transform.position);
                     this.m_AttackState++;
                     
                     // Stop shooting once this pattern is finished
@@ -382,6 +390,7 @@ public class BossLogic : MonoBehaviour
                     // Shoot at a given firerate
                     this.m_NextFire = Time.time + 0.1f;
                     FireBullet(Random.Range(-3.0f, 3.0f));
+                    this.m_audio.Play("Weapons/Laser_FireHeavy3", this.m_shoulder.transform.position);
                     this.m_AttackState++;
                     
                     // Stop shooting once this pattern is finished
@@ -447,11 +456,10 @@ public class BossLogic : MonoBehaviour
         
         // Create the bullet object
         ProjectileLogic bullet = Instantiate(this.m_bulletprefab, this.m_fireattachment.transform.position, shootangle).GetComponent<ProjectileLogic>();
-        bullet.SetOwner(this.gameObject);
         bullet.SetSpeed(8.0f);
+        bullet.SetOwner(this.gameObject);
         
         // Play the shooting sound and set the next fire time
-        this.m_audio.Play("Weapons/Laser_FireHeavy", this.m_shoulder.transform.position);
         this.m_anims.PlayFireAnimation();
     }
     
@@ -471,7 +479,7 @@ public class BossLogic : MonoBehaviour
         rocket.SetTarget(this.m_target.transform.Find("Shoulder").gameObject);
         
         // Play the shooting sound and set the next fire time
-        this.m_audio.Play("Weapons/Laser_FireHeavy", this.m_shoulder.transform.position);
+        this.m_audio.Play("Weapons/Rocket_Fire", this.m_shoulder.transform.position);
     }
     
     
@@ -488,6 +496,7 @@ public class BossLogic : MonoBehaviour
         // Die if we're out of HP
         if (this.m_Health <= 0 && !isdead)
         {
+            this.m_explosionsmall.SetActive(true);
             this.m_target.GetComponent<PlayerCombat>().SayLine("Voice/Shell/BossKill", true);
             this.m_TargetVelocity = Vector3.zero;
             this.m_target.GetComponent<PlayerCombat>().SetPlayerInvulTime(15.0f);
@@ -513,6 +522,9 @@ public class BossLogic : MonoBehaviour
         if (this.m_BossState == BossState.Dying && this.m_TimeToIdle != 0 && this.m_TimeToIdle < Time.time)
         {
             this.m_BossState = BossState.Dead;
+            this.m_audio.Play("Effects/Explosion_Huge", this.m_shoulder.transform.position);
+            this.m_explosionsmall.SetActive(false);
+            this.m_explosionbig.SetActive(true);
             FindObjectOfType<MusicManager>().StopMusic();
             FindObjectOfType<Level_FinishAnim>().SetLevelFinished();
         }

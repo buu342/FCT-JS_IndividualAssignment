@@ -86,6 +86,7 @@ public class EnemyLogic : MonoBehaviour
     
     // Components
     public  GameObject m_bulletprefab;
+    public  GameObject m_jetpackeffect;
     private GameObject m_mesh;
     private GameObject m_target;
     private GameObject m_fireattachment;
@@ -305,8 +306,8 @@ public class EnemyLogic : MonoBehaviour
         {
             // Create the bullet object
             ProjectileLogic bullet = Instantiate(this.m_bulletprefab, this.m_fireattachment.transform.position, this.m_fireattachment.transform.rotation).GetComponent<ProjectileLogic>();
-            bullet.SetOwner(this.gameObject);
             bullet.SetSpeed(15.0f);
+            bullet.SetOwner(this.gameObject);
             
             // Play the shooting sound and set the next fire time
             this.m_audio.Play("Weapons/Laser_Fire", this.m_shoulder.transform.position);
@@ -559,6 +560,8 @@ public class EnemyLogic : MonoBehaviour
             
         // Stop animating
         this.m_mesh.GetComponent<Animator>().enabled = false;
+        if (this.m_jetpackeffect != null)
+            this.m_jetpackeffect.GetComponent<ParticleSystem>().Stop();
         
         // Make shell say some quip
         if (this.m_Attacker != null && this.m_Attacker.GetComponent<PlayerCombat>() != null)

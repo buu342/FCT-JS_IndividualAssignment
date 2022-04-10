@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     
     // Movement
     public bool m_IsFlying = false;
+    public GameObject m_JetpackExhaust;
     private float m_Acceleration = 0.5f;
     private int m_JumpCount = 0;
     private bool m_JustJumped = false; // Buffer for ground checking after jumping
@@ -160,9 +161,9 @@ public class PlayerController : MonoBehaviour
         // Count which entities were hit
         foreach (RaycastHit h in hit)
         {
-            if (col[i])
+            if (col[i] && hit[i].collider.gameObject.layer != LayerMask.NameToLayer("PlayerTrigger"))
             {
-                if (collisions.ContainsKey(hit[i].collider.gameObject) && hit[i].collider.gameObject.layer != LayerMask.NameToLayer("PlayerTrigger"))
+                if (collisions.ContainsKey(hit[i].collider.gameObject))
                     collisions[hit[i].collider.gameObject]++;
                 else
                     collisions.Add(hit[i].collider.gameObject, 0);
@@ -484,5 +485,6 @@ public class PlayerController : MonoBehaviour
     public void SetPlayerFlying(bool enable)
     {
         this.m_IsFlying = enable;
+        this.m_JetpackExhaust.SetActive(true);
     }
 }

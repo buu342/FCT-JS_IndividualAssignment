@@ -12,6 +12,7 @@ public class CameraTrigger : MonoBehaviour
     public bool m_FollowPlayer = true;
     public Vector3 m_TargetPoI = Vector3.zero;
     public bool m_OnlyIfNotFollowing = true;
+    public string m_TriggerSound = "";
     private int PlayerLayer;
     
     // Debug stuff
@@ -47,6 +48,8 @@ public class CameraTrigger : MonoBehaviour
                 return;
             cam.SetFollowPlayer(this.m_FollowPlayer, this.transform.position);
             cam.SetPoI(this.m_TargetPoI);
+            if (this.m_TriggerSound != "")
+                FindObjectOfType<AudioManager>().Play(this.m_TriggerSound, this.transform.position);
         }
     }
     

@@ -10,6 +10,7 @@ public class Init_Level1_Boss : MonoBehaviour
 {
     public GameObject m_Player;
     public GameObject m_Boss;
+    public GameObject m_dustland;
     private int m_CurrentSequence = 0;
     private float m_NextSequenceTime;
     
@@ -75,6 +76,7 @@ public class Init_Level1_Boss : MonoBehaviour
                     this.m_Boss.GetComponent<BossLogic>().SetBossJumpState(BossLogic.BossJumpState.Land);
                     this.m_NextSequenceTime = Time.unscaledTime + 0.5f;
                     Camera.main.GetComponent<CameraLogic>().AddTrauma(0.5f);
+                    Instantiate(this.m_dustland, this.m_Boss.transform.position, Quaternion.identity);
                     break;
                 case 4:
                     this.m_Boss.GetComponent<BossLogic>().SetEnabled(true);

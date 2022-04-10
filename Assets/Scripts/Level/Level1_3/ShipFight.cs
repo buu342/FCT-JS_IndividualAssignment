@@ -185,7 +185,7 @@ public class ShipFight : MonoBehaviour
             if (this.m_CurrentEndScene > 3)
             {
                 this.m_CameraEndY = Mathf.Lerp(this.m_CameraEndY, 13.0f, 1.0f*Time.deltaTime);
-                Camera.main.GetComponent<CameraLogic>().SetPoI(new Vector3(0, this.m_CameraEndY, -8));
+                Camera.main.GetComponent<CameraLogic>().SetPoI(new Vector3(3, this.m_CameraEndY, -8));
             }
         }
     }
