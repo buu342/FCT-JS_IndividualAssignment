@@ -29,6 +29,7 @@ public class Init_Level1_3 : MonoBehaviour
             mm.PlaySong("Music/Level1", true, false, 1);
         if (!FindObjectOfType<SceneController>().IsRespawning())
         {
+            FindObjectOfType<SceneController>().SetupPlayer(this.m_Player);
             this.m_Player.SetActive(false);
             this.m_Player.GetComponent<PlayerController>().SetControlsEnabled(false);
             this.m_SequenceTime = Time.time + 1.5f;
@@ -37,7 +38,7 @@ public class Init_Level1_3 : MonoBehaviour
         }
         else
         {
-            this.m_Clouds.rectTransform.position = new Vector2(0.0f, -1024.0f);
+            this.m_Clouds.gameObject.SetActive(false);
             this.m_Player.transform.position = this.m_TargetPoint;
             Camera.main.GetComponent<CameraLogic>().SetPlayer(this.m_Player);
             Camera.main.GetComponent<CameraLogic>().SetFollowPlayer(true);

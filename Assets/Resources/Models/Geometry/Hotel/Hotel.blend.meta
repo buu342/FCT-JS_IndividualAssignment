@@ -20,6 +20,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Concrete__Concrete_png
+    second: {fileID: 2100000, guid: 2c174420ccff79e4cb6925270756f6ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Concrete__FLAT19_png
     second: {fileID: 2100000, guid: 2c174420ccff79e4cb6925270756f6ce, type: 2}
   - first:
@@ -30,8 +35,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Debris__Debris_png
+    second: {fileID: 2100000, guid: db389413649a97846b25b91d9f43c79c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Debris__dirbri2_png
     second: {fileID: 2100000, guid: db389413649a97846b25b91d9f43c79c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Door__Door_png
+    second: {fileID: 2100000, guid: 5f48445939e3ee641ac800c39ae7ab15, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -50,7 +65,17 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: HotelCarpet__HotelFloor_png
+    second: {fileID: 2100000, guid: fb3ca045cbdfb7e408348d69fc833f3e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: HotelCeiling__HotelCeiling_png
+    second: {fileID: 2100000, guid: 123a556e02c1f2f44868e23bfe8db7eb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HotelCeiling__HotelCeiling_png_001
     second: {fileID: 2100000, guid: 123a556e02c1f2f44868e23bfe8db7eb, type: 2}
   - first:
       type: UnityEngine:Material
@@ -90,7 +115,22 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: HotelRailing__Sheen_png
+    second: {fileID: 2100000, guid: e722a19bcd91cbb4b8c6700cb4057a52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HotelWall2__HotelLobbyWall_png
+    second: {fileID: 2100000, guid: 201c98e89209dfd43b159fbb5de819b3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: HotelWall2__RW20_2_png
+    second: {fileID: 2100000, guid: 07afbb0ede6c60b42bb0ba6463c08c3c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HotelWall3__HotelLobbyWall_png
     second: {fileID: 2100000, guid: 07afbb0ede6c60b42bb0ba6463c08c3c, type: 2}
   - first:
       type: UnityEngine:Material
@@ -100,8 +140,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: HotelWall4__HotelLobbyWall_png
+    second: {fileID: 2100000, guid: 0191eb75edd611f48985713513a4303d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: HotelWall4__RW20_2_png
     second: {fileID: 2100000, guid: 0191eb75edd611f48985713513a4303d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HotelWall__HotelLobbyWall_png
+    second: {fileID: 2100000, guid: 562dbd6402e616242a989ce3ec5eac0b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -115,13 +165,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Hotel__Hotel_png
+    second: {fileID: 2100000, guid: 173f240c17805714bba5780ba0183aa6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: JanitorCart__JanitorCart
     second: {fileID: 2100000, guid: 4813c63bd02300c458f54cc47a847ff0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: RoomCarpet__HotelRoomCarpet_png
+    second: {fileID: 2100000, guid: 5ad72ae1e71b89641a180da3fbadb665, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: RoomCarpet__RW32_2_png
     second: {fileID: 2100000, guid: 5ad72ae1e71b89641a180da3fbadb665, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RoomCeiling__Concrete_png
+    second: {fileID: 2100000, guid: 2c174420ccff79e4cb6925270756f6ce, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -131,6 +196,11 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: RoomWall__HotelRoomWall_png
+    second: {fileID: 2100000, guid: 52374d45144be2e4592d04bb765c7649, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RoomWall__HotelRoomWall_png_001
     second: {fileID: 2100000, guid: 52374d45144be2e4592d04bb765c7649, type: 2}
   - first:
       type: UnityEngine:Material

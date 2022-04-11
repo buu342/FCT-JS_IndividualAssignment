@@ -301,7 +301,7 @@ public class ProjectileLogic : MonoBehaviour
             default:
                 break;
         }
-        if (this.m_Owner.tag == "Enemies" || this.m_Owner.tag == "Boss")
+        if (this.m_Owner != null && (this.m_Owner.tag == "Enemies" || this.m_Owner.tag == "Boss"))
             Instantiate(this.m_ExplodeParticle, this.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }

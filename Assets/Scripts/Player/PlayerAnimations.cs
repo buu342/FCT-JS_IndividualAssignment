@@ -23,10 +23,14 @@ public class PlayerAnimations : MonoBehaviour
     private int LayerIndex_AimLeft;
     private int LayerIndex_Pain;
     private int LayerIndex_Pickup;
+    private int LayerIndex_HardLanding;
     
     // Player mesh angle
     private float m_CurrentBodyRot = -179;
     private float m_TargetBodyRot = -179;
+    
+    // Other
+    private bool m_BigDrop = false;
     
     // Components
     public MeshTrail m_swordtrail;
@@ -68,6 +72,7 @@ public class PlayerAnimations : MonoBehaviour
         this.LayerIndex_AimRight = this.m_anim.GetLayerIndex("AimRight");
         this.LayerIndex_Pain = this.m_anim.GetLayerIndex("Pain");
         this.LayerIndex_Pickup = this.m_anim.GetLayerIndex("Pickup");
+        this.LayerIndex_HardLanding = this.m_anim.GetLayerIndex("HardLanding");
     }
     
 
@@ -82,7 +87,7 @@ public class PlayerAnimations : MonoBehaviour
         this.m_anim.SetFloat("AnimSpeed", Time.timeScale);
         
         // Set the base mesh angle depending whether we're facing left or right
-        if (this.m_plycombat.GetCombatState() != PlayerCombat.CombatState.Pain)
+        if (this.m_plycombat.GetCombatState() != PlayerCombat.CombatState.Pain && this.m_anim.GetLayerWeight(LayerIndex_HardLanding) != 1.0f)
         {
             if (this.m_anim.GetLayerWeight(LayerIndex_Pickup) != 1.0f)
                 this.transform.localEulerAngles = new Vector3(0, this.m_CurrentBodyRot, 0);
@@ -227,8 +232,32 @@ public class PlayerAnimations : MonoBehaviour
         else
             this.m_anim.SetBool("IsFalling", false);
         if (this.m_plycont.GetPlayerJumpState() == PlayerController.PlayerJumpState.Land || this.m_plycont.GetPlayerJumpState() == PlayerController.PlayerJumpState.Idle)
+        {
+            // Perform a stronger landing animation if we hit the ground hard
+            if (this.m_BigDrop)
+            {
+                this.m_anim.SetLayerWeight(this.LayerIndex_HardLanding, 1.0f);
+                this.m_anim.Play("HardLanding", this.LayerIndex_HardLanding, 0f);
+                this.m_BigDrop = false;
+                FindObjectOfType<AudioManager>().Play("Physics/HardLanding", this.transform.position);
+            }
+            if (this.m_anim.GetLayerWeight(this.LayerIndex_HardLanding) == 1.0f && this.m_anim.GetCurrentAnimatorStateInfo(this.LayerIndex_HardLanding).normalizedTime > 1)
+                this.m_anim.SetLayerWeight(this.LayerIndex_HardLanding, 0.0f);
             this.m_anim.SetBool("IsGrounded", true);
+        }
         else
             this.m_anim.SetBool("IsGrounded", false);
+    }
+    
+
+    /*==============================
+        BigDrop
+        Set the current fall as a big one
+        @param Whether or not to set the fall as a big one
+    ==============================*/
+    
+    public void BigDrop(bool enable)
+    {
+        this.m_BigDrop = enable;
     }
 }

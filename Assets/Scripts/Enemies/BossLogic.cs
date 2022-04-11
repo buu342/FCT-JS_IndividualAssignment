@@ -506,7 +506,6 @@ public class BossLogic : MonoBehaviour
         {
             this.m_explosionsmall.SetActive(true);
             this.m_audio.Play("Voice/Boss/Dying", this.m_shoulder.transform.position);
-            this.m_target.GetComponent<PlayerCombat>().SayLine("Voice/Shell/BossKill", true);
             this.m_TargetVelocity = Vector3.zero;
             this.m_target.GetComponent<PlayerCombat>().SetPlayerInvulTime(15.0f);
             this.m_rb.velocity = Vector3.zero;

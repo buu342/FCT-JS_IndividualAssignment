@@ -78,7 +78,6 @@ public class MenuGUI : MonoBehaviour
         this.m_casualmesh.materials[2] = new Material(this.m_casualmesh.materials[2]);
         this.m_casualmesh.materials[1].SetTexture("_MainTex", this.m_TiredEyes);
         this.m_casualmesh.materials[2].SetTexture("_MainTex", this.m_TiredMouth);
-        GameObject.Find("SceneController").GetComponent<SceneController>().LoadScene("Level1_1");
     }
 
 

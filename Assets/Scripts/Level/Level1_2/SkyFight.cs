@@ -40,14 +40,14 @@ public class SkyFight : MonoBehaviour
         this.m_Spawns = new List<Tuple<float, EnemyLogic.AttackStyle, Vector3, GameObject[]>>{
             Tuple.Create(
                 3.0f, EnemyLogic.AttackStyle.Aiming, Vector3.zero, new GameObject[]{
-                    m_PatrolPoint2, 
-                    m_PatrolPoint10, 
+                    m_PatrolPoint8, 
+                    m_PatrolPoint4, 
                 }
             ),
             Tuple.Create(
                 2.0f, EnemyLogic.AttackStyle.Aiming, Vector3.zero, new GameObject[]{
-                    m_PatrolPoint8, 
-                    m_PatrolPoint4, 
+                    m_PatrolPoint2, 
+                    m_PatrolPoint10, 
                 }
             ),
             Tuple.Create(
@@ -73,6 +73,50 @@ public class SkyFight : MonoBehaviour
                 0.0f, EnemyLogic.AttackStyle.Straight, new Vector3(-1.0f, 0.0f, 0.0f), new GameObject[]{
                     m_PatrolPoint7, 
                     m_PatrolPoint11, 
+                }
+            ),
+            Tuple.Create(
+                3.0f, EnemyLogic.AttackStyle.Aiming, Vector3.zero, new GameObject[]{
+                    m_PatrolPoint8, 
+                    m_PatrolPoint4, 
+                }
+            ),
+            Tuple.Create(
+                3.0f, EnemyLogic.AttackStyle.Straight, Vector3.zero, new GameObject[]{
+                    m_PatrolPoint2, 
+                    m_PatrolPointCenterRight, 
+                    m_PatrolPoint4, 
+                }
+            ),
+            Tuple.Create(
+                0.0f, EnemyLogic.AttackStyle.Straight, new Vector3(-1.0f, 0.0f, 0.0f), new GameObject[]{
+                    m_PatrolPoint10, 
+                    m_PatrolPointCenterLeft, 
+                    m_PatrolPoint8, 
+                }
+            ),
+            Tuple.Create(
+                3.0f, EnemyLogic.AttackStyle.Aiming, new Vector3(0.0f, -1.0f, 0.0f), new GameObject[]{
+                    m_PatrolPoint11, 
+                    m_PatrolPoint5, 
+                }
+            ),
+            Tuple.Create(
+                1.0f, EnemyLogic.AttackStyle.Aiming, new Vector3(0.0f, -1.0f, 0.0f), new GameObject[]{
+                    m_PatrolPoint10, 
+                    m_PatrolPoint2, 
+                }
+            ),
+            Tuple.Create(
+                3.0f, EnemyLogic.AttackStyle.Straight, new Vector3(0.0f, 1.0f, 0.0f), new GameObject[]{
+                    m_PatrolPoint10, 
+                    m_PatrolPoint2, 
+                }
+            ),
+            Tuple.Create(
+                0.0f, EnemyLogic.AttackStyle.Straight, new Vector3(0.0f, -1.0f, 0.0f), new GameObject[]{
+                    m_PatrolPoint4, 
+                    m_PatrolPoint8, 
                 }
             ),
             Tuple.Create(4.0f, EnemyLogic.AttackStyle.Aiming, Vector3.zero, new GameObject[]{null}),

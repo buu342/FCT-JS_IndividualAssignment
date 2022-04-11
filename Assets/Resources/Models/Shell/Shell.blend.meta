@@ -102,6 +102,9 @@ ModelImporter:
   - first:
       74: 6133556061716467314
     second: Pickup
+  - first:
+      74: 1535547211355375753
+    second: HardLanding
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -156,45 +159,49 @@ ModelImporter:
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'Intro2' has import animation warnings that might lower retargeting quality:\nNote:
+      'HardLanding' has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'Thigh_L'
+      has scale animation that will be discarded.\n\t'Foot_L' has scale animation
+      that will be discarded.\n\t'Forearm_L' has scale animation that will be discarded.\n\t'Hand_L'
+      has scale animation that will be discarded.\n\nClip 'Intro2' has import animation
+      warnings that might lower retargeting quality:\nNote: Activate translation
+      DOF on avatar to improve retargeting quality.\n\t'Forearm_L' has scale animation
+      that will be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
+      'Melee1_0' has import animation warnings that might lower retargeting quality:\nNote:
       Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'Melee1_0' has import animation warnings that
+      that will be discarded.\n\nClip 'Melee1_3' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'Melee1_3' has import animation warnings that might lower retargeting quality:\nNote:
+      'Melee1_6' has import animation warnings that might lower retargeting quality:\nNote:
       Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'Melee1_6' has import animation warnings that
+      that will be discarded.\n\nClip 'Melee2_0' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'Melee2_0' has import animation warnings that might lower retargeting quality:\nNote:
+      'Melee2_3' has import animation warnings that might lower retargeting quality:\nNote:
       Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'Melee2_3' has import animation warnings that
+      that will be discarded.\n\nClip 'Melee2_6' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'Melee2_6' has import animation warnings that might lower retargeting quality:\nNote:
+      'MeleeLeft1_0' has import animation warnings that might lower retargeting quality:\nNote:
       Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'MeleeLeft1_0' has import animation warnings
+      that will be discarded.\n\nClip 'MeleeLeft1_6' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
       be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'MeleeLeft1_6' has import animation warnings that might lower retargeting quality:\nNote:
+      'MeleeLeft2_0' has import animation warnings that might lower retargeting quality:\nNote:
       Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
       has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n\nClip 'MeleeLeft2_0' has import animation warnings
+      that will be discarded.\n\nClip 'MeleeLeft2_6' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'Forearm_L' has scale animation that will
-      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n\nClip
-      'MeleeLeft2_6' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'Forearm_L'
-      has scale animation that will be discarded.\n\t'Hand_L' has scale animation
-      that will be discarded.\n"
+      be discarded.\n\t'Hand_L' has scale animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -1177,6 +1184,35 @@ ModelImporter:
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: HardLanding
+      takeName: HardLanding
+      internalID: 0
+      firstFrame: -1
+      lastFrame: 74
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000

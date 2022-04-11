@@ -158,9 +158,11 @@ public class AudioManager : MonoBehaviour
         Stop
         Stops a given sound from playing
         @param The name of the sound to stop
+        @param The object to stop emitting said sound 
+               If null, stops all sounds with the given name.
     ==============================*/
     
-    public void Stop(string name)
+    public void Stop(string name, GameObject emitter=null)
     {
         // Find all sounds that have the given name
         Sound[] slist = Array.FindAll(this.m_RegisteredSoundsList, s => s.name == name);
@@ -177,10 +179,13 @@ public class AudioManager : MonoBehaviour
         {
             for (int i=s.sources.Count-1; i>=0; i--)
             {
-                AudioSource source = s.sources[i].GetComponent<AudioSource>();
-                source.Stop();
-                Destroy(s.sources[i]);
-                s.sources.RemoveAt(i);
+                if (emitter == null || s.sources[i].transform.parent == emitter)
+                {
+                    AudioSource source = s.sources[i].GetComponent<AudioSource>();
+                    source.Stop();
+                    Destroy(s.sources[i]);
+                    s.sources.RemoveAt(i);
+                }
             }
         }
     }
@@ -214,7 +219,7 @@ public class AudioManager : MonoBehaviour
         @returns The panning, ranging from -1 to 1
     ==============================*/
     
-    private float Calc3DSoundPan(float maxdistsqr, Vector2 listenerpos, Vector2 srcpos)
+    public float Calc3DSoundPan(float maxdistsqr, Vector2 listenerpos, Vector2 srcpos)
     {
         Vector2 dist = listenerpos - srcpos;
         float distsqr = dist.sqrMagnitude;

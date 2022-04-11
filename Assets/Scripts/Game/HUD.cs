@@ -70,8 +70,6 @@ public class HUD : MonoBehaviour
     {
         this.m_audio = FindObjectOfType<AudioManager>();
         this.m_plycombat = this.m_Player.GetComponent<PlayerCombat>();
-        this.m_TargetHealth = this.m_plycombat.GetHealth();
-        this.m_CurrentHealth = this.m_TargetHealth;
         if (this.m_Boss != null)
         {
             this.m_bosslogic = this.m_Boss.GetComponent<BossLogic>();
@@ -247,7 +245,7 @@ public class HUD : MonoBehaviour
 
     /*==============================
         PlayerDied
-        TODO
+        Plays the death animation
     ==============================*/
     
     public void PlayerDied()
@@ -265,7 +263,7 @@ public class HUD : MonoBehaviour
 
     /*==============================
         PlayerRespawned
-        TODO
+        Plays the respawn animation
     ==============================*/
     
     public void PlayerRespawned()
@@ -273,9 +271,24 @@ public class HUD : MonoBehaviour
         PostProcessOutline outline;
         Camera.main.GetComponent<PostProcessVolume>().profile.TryGetSettings(out outline);
         outline.videoGlitch.value = new Vector2(0.0f, 0.0f);
+        if (this.m_audio == null)
+            Start();
         this.m_audio.Play("Gameplay/Respawn");
         this.m_PlayerRespawned = true;
         this.m_BlackBarTop.rectTransform.localPosition = Vector2.zero;
         this.m_BlackBarBottom.rectTransform.localPosition = Vector2.zero;
+    }
+    
+    /*==============================
+        InitializePlayerData
+        Initializes the HUD with the player data
+    ==============================*/
+    
+    public void InitializePlayerData()
+    {
+        this.m_plycombat = this.m_Player.GetComponent<PlayerCombat>();
+        this.m_TargetHealth = this.m_plycombat.GetHealth();
+        this.m_CurrentHealth = this.m_TargetHealth;
+        this.m_CurrentStreak = (int)(this.m_plycombat.GetStreak()/20);
     }
 }

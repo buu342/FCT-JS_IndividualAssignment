@@ -341,6 +341,17 @@ MonoBehaviour:
     maxDistance: 16
     sources: []
     maxDistanceSqr: 0
+  - name: Physics/HardLanding
+    clip: {fileID: 8300000, guid: 8c7637b35c493274eb3d7faeb2d49dfb, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
   - name: Physics/WindowShatter
     clip: {fileID: 8300000, guid: 2139444716af8e54c9d9d40b16ccff31, type: 3}
     volume: 1
@@ -508,7 +519,7 @@ MonoBehaviour:
     maxDistanceSqr: 0
   - name: Voice/Boss/Dying
     clip: {fileID: 8300000, guid: dfc81ff48bc8ff349ab74912ccd8bd72, type: 3}
-    volume: 0.3
+    volume: 0.4
     pitch: 1
     pitchBulletTime: 1
     loop: 0
@@ -596,6 +607,105 @@ MonoBehaviour:
     maxDistanceSqr: 0
   - name: Voice/Boss/Step
     clip: {fileID: 8300000, guid: 97e2e672ca117e144a75c2674faa697a, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Gray/Die
+    clip: {fileID: 8300000, guid: 02df63214c9e3a94e87836a53e03895e, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Gray/Die
+    clip: {fileID: 8300000, guid: 7a68b642c742c1341ab103ffde4422ad, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Gray/Die
+    clip: {fileID: 8300000, guid: 1a71f0c6beafb714a8a3b765ffb1f1f3, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Gray/Die
+    clip: {fileID: 8300000, guid: 38f5a02f13b2c1746b3fe591dd043ec2, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Gray/Spot
+    clip: {fileID: 8300000, guid: 66721c9fe1007904d808e7862c388106, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Gray/Spot
+    clip: {fileID: 8300000, guid: d18e2ab6da221af4993ca7d4dff5202b, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Gray/Spot
+    clip: {fileID: 8300000, guid: 51badb4bbf9a72d4a989508665f52378, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Gray/Spot
+    clip: {fileID: 8300000, guid: 956991d29a97c364c9c55c4b39e54b62, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Gray/Spot
+    clip: {fileID: 8300000, guid: 706a2bba5e3886b448e891e90ffc46bd, type: 3}
     volume: 1
     pitch: 1
     pitchBulletTime: 1

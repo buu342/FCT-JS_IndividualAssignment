@@ -155,7 +155,8 @@ public class CameraLogic : MonoBehaviour
 
     /*==============================
         ForcePosition
-        TODO
+        Forces the camera to a specific position
+        @param The position to force
     ==============================*/
     
     public void ForcePosition(Vector3 pos)
@@ -167,7 +168,8 @@ public class CameraLogic : MonoBehaviour
 
     /*==============================
         SetPlayer
-        TODO
+        Sets the Camera's player object
+        @param The player game object
     ==============================*/
     
     public void SetPlayer(GameObject player)

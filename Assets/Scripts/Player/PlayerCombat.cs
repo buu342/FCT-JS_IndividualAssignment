@@ -125,11 +125,18 @@ public class PlayerCombat : MonoBehaviour
         Time.timeScale = Mathf.Lerp(Time.timeScale, this.m_TargetTimeScale, PlayerCombat.BulletTimeRate);
         
         // Handle powered up material
-        Color prevcol = this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color;
-        if (this.m_Streak >= 80.0f)
-            this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(prevcol, Color.red, 0.1f);
-        else
-            this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(prevcol, Color.white, 0.1f);
+        if (this.m_DeathTimer == 0)
+        {
+            Color prevcol = this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color;
+            if (this.m_Streak >= 80.0f)
+                this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(prevcol, Color.red, 0.1f);
+            else
+                this.m_shellmesh.GetComponent<SkinnedMeshRenderer>().materials[0].color = Color.Lerp(prevcol, Color.white, 0.1f);
+        }
+        
+        // Voice line panning
+        if (this.m_audiosrc.isPlaying)
+            this.m_audiosrc.panStereo = this.m_audiomngr.Calc3DSoundPan(16, Camera.main.transform.position, this.transform.position);
     }
 
     
@@ -635,7 +642,8 @@ public class PlayerCombat : MonoBehaviour
 
     /*==============================
         SetTimeScaleOverride
-        TODO
+        Overrides the player's timescale
+        @param The override amount
     ==============================*/
     
     public void SetTimeScaleOverride(float amount)
@@ -646,7 +654,8 @@ public class PlayerCombat : MonoBehaviour
 
     /*==============================
         GetTimeScaleOverride
-        TODO
+        Gets the current timescale override
+        @returns The current override
     ==============================*/
     
     public float GetTimeScaleOverride()

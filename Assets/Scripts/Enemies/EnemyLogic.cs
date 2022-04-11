@@ -94,7 +94,7 @@ public class EnemyLogic : MonoBehaviour
     private Rigidbody m_rb;
     private AudioManager m_audio; 
     private EnemyAnimations m_anims;
-    private SceneController m_scenectrl;
+    public SceneController m_scenectrl;
     
     
     /*==============================
@@ -108,13 +108,12 @@ public class EnemyLogic : MonoBehaviour
         NoCollideLayer = LayerMask.NameToLayer("NoCollide");
         BulletLayer = LayerMask.NameToLayer("Bullet");
         this.m_target = GameObject.Find("Player");
-        this.m_audio = FindObjectOfType<AudioManager>();
         this.m_mesh = this.transform.Find("Model").gameObject;
         this.m_anims = this.m_mesh.GetComponent<EnemyAnimations>();
         this.m_rb = this.GetComponent<Rigidbody>();
         this.m_shoulder = this.transform.Find("Shoulder").gameObject;
         this.m_fireattachment = this.transform.Find("FireAttachment").gameObject;
-        this.m_scenectrl = FindObjectOfType<SceneController>();
+        this.m_audio = FindObjectOfType<AudioManager>();
         this.m_OriginalAimPos = this.m_fireattachment.transform.localPosition;
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
         this.m_OriginalMeshPos = this.m_mesh.transform.localPosition;
@@ -266,6 +265,7 @@ public class EnemyLogic : MonoBehaviour
                     // If we're idling, start aiming at the player
                     if (this.m_CombatState == CombatState.Idle || this.m_CombatState == CombatState.RemoveAim)
                     {
+                        this.m_audio.Play("Voice/Gray/Spot", this.gameObject);
                         this.m_CombatState = CombatState.TakeAim;
                         if (this.m_scenectrl.GetDifficulty() == SceneController.Difficulty.Easy)
                             this.m_TimeToIdle = Time.time + this.m_ReactionTime*1.2f;
@@ -553,6 +553,10 @@ public class EnemyLogic : MonoBehaviour
             rb.isKinematic = false;
         foreach (Collider rc in ragdollcolliders)
             rc.enabled = true;
+            
+        // Stop talking, and scream
+        this.m_audio.Stop("Voice/Gray/Spot", this.gameObject);
+        this.m_audio.Play("Voice/Gray/Die", this.gameObject);
             
         // Disable collisions
         this.GetComponent<BoxCollider>().enabled = false;

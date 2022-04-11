@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.61883485, g: 0.7214328, b: 0.87642163, a: 1}
+  m_IndirectSpecularColor: {r: 0.6188351, g: 0.7214329, b: 0.8764217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1080,6 +1080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc798785e130f4f47876f66a80cb27aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_audio: {fileID: 6138796698810567799}
   m_Sound: Items/Jetpack_Loop
 --- !u!1 &624040928
 GameObject:
@@ -3109,6 +3110,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6358b3e9055140448bc447b49e8064a, type: 3}
+--- !u!114 &6138796698810567799 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6138796699223636658, guid: d6358b3e9055140448bc447b49e8064a, type: 3}
+  m_PrefabInstance: {fileID: 6138796698810567798}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd71bf8382bd6734c92cc401b20a53d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6167832288439336328
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -167,7 +167,8 @@ public class SceneController : MonoBehaviour
     
     /*==============================
         GetCollectedTokenCount
-        TODO
+        Gets the number of collected tokens in this level
+        @returns The number of collected tokens
     ==============================*/
     
     public int GetCollectedTokenCount()
@@ -178,7 +179,8 @@ public class SceneController : MonoBehaviour
     
     /*==============================
         GetDeathCount
-        TODO
+        Returns the total death count in this level
+        @returns The number of deaths
     ==============================*/
     
     public int GetDeathCount()
@@ -241,6 +243,7 @@ public class SceneController : MonoBehaviour
         plycombat.SetStamina(PlyData.Stamina);
         plycombat.SetStreak(PlyData.Streak);
         plycombat.SetPlayerLastStreakTime(Time.time + PlayerCombat.StreakLoseTime);
+        FindObjectOfType<HUD>().InitializePlayerData();
         PlyData.Persist = false;
         PlyData.LastCheckpointName = "";
         PlyData.DestroyOnLoad = new List<string>();

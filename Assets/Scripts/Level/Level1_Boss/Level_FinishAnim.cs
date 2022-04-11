@@ -91,11 +91,13 @@ public class Level_FinishAnim : MonoBehaviour
 
     /*==============================
         SetLevelFinished
-        TODO
+        Marks the level as finished, so that 
+        we can play the level complete transition
     ==============================*/
     
     public void SetLevelFinished()
     {
-        this.m_NextSequenceTime = Time.unscaledTime + 2.0f;
+        FindObjectOfType<PlayerCombat>().SayLine("Voice/Shell/BossKill", true);
+        this.m_NextSequenceTime = Time.unscaledTime + 3.0f;
     }
 }

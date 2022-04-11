@@ -280,7 +280,8 @@ public class PlayerController : MonoBehaviour
 
     /*==============================
         SetPlayerState
-        TODO
+        Forcefully sets a player state
+        @param The player state to set to
     ==============================*/
     
     public void SetPlayerState(PlayerState state)
@@ -479,7 +480,8 @@ public class PlayerController : MonoBehaviour
     
     /*==============================
         SetPlayerFlying
-        TODO
+        Sets whether or not the player is flying
+        @param The value to set
     ==============================*/
     
     public void SetPlayerFlying(bool enable)

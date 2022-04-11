@@ -34,6 +34,7 @@ public class Init_Menu : MonoBehaviour
         {
             this.m_GUI.StartCreditsAnimation();
             FindObjectOfType<MusicManager>().PlaySong("Music/Menu", true, true);
+            GameObject.Find("SceneController").GetComponent<SceneController>().LoadScene("Level1_1");
             Destroy(this);
         }
     }

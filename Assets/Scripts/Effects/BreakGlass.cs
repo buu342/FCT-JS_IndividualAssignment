@@ -55,7 +55,7 @@ public class BreakGlass : MonoBehaviour
 
     /*==============================
         OnTriggerEnter
-        Handles collision response
+        Handles trigger collision response
         @param The object we collided with
     ==============================*/
     
@@ -63,5 +63,18 @@ public class BreakGlass : MonoBehaviour
     {
         if (other.tag == "Sword")
             Break(this.m_BreakForce, other.gameObject.transform.position);
+    }
+
+
+    /*==============================
+        OnCollisionEnter
+        Handles collision response
+        @param The object we collided with
+    ==============================*/
+    
+    private void OnCollisionEnter(Collision col)
+    {
+        if (col.collider.tag == "Player")
+            Break(col.collider.gameObject.GetComponent<Rigidbody>().velocity.magnitude, col.collider.gameObject.transform.position);
     }
 }

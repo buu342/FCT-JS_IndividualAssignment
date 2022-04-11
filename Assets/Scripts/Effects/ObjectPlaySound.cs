@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class ObjectPlaySound : MonoBehaviour
 {
+    public AudioManager m_audio;
     public string m_Sound;
     
     
@@ -18,6 +19,6 @@ public class ObjectPlaySound : MonoBehaviour
     
     void Start()
     {
-        FindObjectOfType<AudioManager>().Play(this.m_Sound, this.gameObject);
+        m_audio.Play(this.m_Sound, this.gameObject);
     }
 }
