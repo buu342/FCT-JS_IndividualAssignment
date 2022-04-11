@@ -4897,6 +4897,7 @@ GameObject:
   - component: {fileID: 8552927618730121750}
   - component: {fileID: 8552927618730121751}
   - component: {fileID: -2274780721648996023}
+  - component: {fileID: 7942727122157729239}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Bullet
@@ -4971,6 +4972,19 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &7942727122157729239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8823523137867245401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc798785e130f4f47876f66a80cb27aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Sound: Weapons/Rocket_Loop
 --- !u!1001 &4970739705624461204
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -70,12 +70,12 @@ MonoBehaviour:
     SongTracks:
     - {fileID: 8300000, guid: 74f0aafe9f33c4b4cbaae376b3d7f795, type: 3}
     - {fileID: 8300000, guid: 1048d6d848ffe8f4dbb47a5efc229c8d, type: 3}
-    volume: 0.5
+    volume: 0.4
   - name: Music/Level1_Boss
     SongIntro: {fileID: 8300000, guid: 6b99004ca78520d4a8e56d987fed8624, type: 3}
     SongTracks:
     - {fileID: 8300000, guid: e33ad7e54b5b0cb4f986e1d84f21a5fd, type: 3}
-    volume: 0.5
+    volume: 0.75
   - name: Music/LevelComplete
     SongIntro: {fileID: 0}
     SongTracks:

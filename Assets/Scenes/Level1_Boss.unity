@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5043067, g: 0.55629843, b: 0.66691375, a: 1}
+  m_IndirectSpecularColor: {r: 0.5043064, g: 0.5562947, b: 0.6669163, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1959,10 +1959,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6138796699223636658, guid: d6358b3e9055140448bc447b49e8064a, type: 3}
-      propertyPath: m_RegisteredSoundsList.Array.data[12].volume
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6138796699223636659, guid: d6358b3e9055140448bc447b49e8064a, type: 3}
       propertyPath: m_RootOrder
       value: 2

@@ -24,6 +24,7 @@ public class BossAnimations : MonoBehaviour
     private BossLogic m_bosslogic;
     private GameObject m_fireattach;
     private Animator m_anim;
+    private AudioManager m_audio;
     
     
     /*==============================
@@ -36,6 +37,7 @@ public class BossAnimations : MonoBehaviour
         this.m_bosslogic = this.transform.parent.gameObject.GetComponent<BossLogic>();
         this.m_fireattach = this.transform.parent.gameObject.transform.Find("FireAttachment").gameObject;
         this.m_anim = this.GetComponent<Animator>();
+        this.m_audio = FindObjectOfType<AudioManager>();
         
         // Get all the layer indices so that this doesn't have to be done at runtime
         this.LayerIndex_Legs = this.m_anim.GetLayerIndex("Legs");
@@ -99,12 +101,14 @@ public class BossAnimations : MonoBehaviour
                     this.m_anim.SetLayerWeight(this.LayerIndex_TurnRight, 1.0f);
                     this.m_anim.SetLayerWeight(this.LayerIndex_TurnLeft, 0.0f);
                     this.m_anim.Play("Turn", this.LayerIndex_TurnRight, 0f);
+                    this.m_audio.Play("Voice/Boss/Move", this.transform.position);
                 }
                 else
                 {
                     this.m_anim.SetLayerWeight(this.LayerIndex_TurnRight, 0.0f);
                     this.m_anim.SetLayerWeight(this.LayerIndex_TurnLeft, 1.0f);
                     this.m_anim.Play("Turn", this.LayerIndex_TurnLeft, 0f);
+                    this.m_audio.Play("Voice/Boss/Move", this.transform.position);
                 }
             }
         }

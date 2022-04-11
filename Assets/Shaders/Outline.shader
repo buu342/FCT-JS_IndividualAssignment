@@ -1,9 +1,11 @@
 /****************************************************************
                          Outline.shader
 
-Object outline shader.
-Written by Erik Roystan: 
+Object outline shader, modified to also allow for video glitching.
+Original outline shader written by Erik Roystan: 
 https://github.com/IronWarrior/UnityOutlineShader
+The video glitching is based off Keijiro Takahashi's work:
+https://github.com/keijiro/KinoGlitch
 ****************************************************************/
 
 Shader "Custom/Outline"
@@ -46,6 +48,9 @@ Shader "Custom/Outline"
 
 			// This matrix is populated in PostProcessOutline.cs.
 			float4x4 _ClipToView;
+            
+            float2 _ScanLineJitter;
+            float2 _ColorDrift;
 
 			// Combines the top and bottom colors using normal blending.
 			// https://en.wikipedia.org/wiki/Blend_modes#Normal_blend_mode
@@ -88,11 +93,22 @@ Shader "Custom/Outline"
 
 				return o;
 			}
+            
+            
+
+            float nrand(float x, float y)
+            {
+                return frac(sin(dot(float2(x, y), float2(12.9898, 78.233))) * 43758.5453);
+            }
 
 			float4 Frag(Varyings i) : SV_Target
 			{
 				float halfScaleFloor = floor(_Scale * 0.5);
 				float halfScaleCeil = ceil(_Scale * 0.5);
+
+                float jitter = nrand(i.texcoord.y, _Time.x) * 2 - 1;
+                jitter *= step(_ScanLineJitter.y, abs(jitter)) * _ScanLineJitter.x;
+                float drift = sin( _ColorDrift.y) * _ColorDrift.x;
 
 				// Sample the pixels in an X shape, roughly centered around i.texcoord.
 				// As the _CameraDepthTexture and _CameraNormalsTexture default samplers
@@ -103,15 +119,15 @@ Shader "Custom/Outline"
 				float2 bottomRightUV = i.texcoord + float2(_MainTex_TexelSize.x * halfScaleCeil, -_MainTex_TexelSize.y * halfScaleFloor);
 				float2 topLeftUV = i.texcoord + float2(-_MainTex_TexelSize.x * halfScaleFloor, _MainTex_TexelSize.y * halfScaleCeil);
 
-				float3 normal0 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, bottomLeftUV).rgb;
-				float3 normal1 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, topRightUV).rgb;
-				float3 normal2 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, bottomRightUV).rgb;
-				float3 normal3 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, topLeftUV).rgb;
+				float3 normal0 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, float2(bottomLeftUV.x + jitter, bottomLeftUV.y)).rgb;
+				float3 normal1 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, float2(topRightUV.x + jitter, topRightUV.y)).rgb;
+				float3 normal2 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, float2(bottomRightUV.x + jitter, bottomRightUV.y)).rgb;
+				float3 normal3 = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, float2(topLeftUV.x + jitter, topLeftUV.y)).rgb;
 
-				float depth0 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, bottomLeftUV).r;
-				float depth1 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, topRightUV).r;
-				float depth2 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, bottomRightUV).r;
-				float depth3 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, topLeftUV).r;
+				float depth0 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, float2(bottomLeftUV.x + jitter, bottomLeftUV.y)).r;
+				float depth1 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, float2(topRightUV.x + jitter, topRightUV.y)).r;
+				float depth2 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, float2(bottomRightUV.x + jitter, bottomRightUV.y)).r;
+				float depth3 = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, float2(topLeftUV.x + jitter, topLeftUV.y)).r;
 
 				// Transform the view normal from the 0...1 range to the -1...1 range.
 				float3 viewNormal = normal0 * 2 - 1;
@@ -144,11 +160,10 @@ Shader "Custom/Outline"
 				edgeNormal = edgeNormal > _NormalThreshold ? 1 : 0;
 
 				float edge = max(edgeDepth, edgeNormal);
-
 				float4 edgeColor = float4(_Color.rgb, _Color.a * edge);
-
-				float4 color = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.texcoord);
-
+				float4 color1 = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, float2(i.texcoord.x + jitter, i.texcoord.y));
+				float4 color2 = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, float2(i.texcoord.x + jitter + drift, i.texcoord.y));
+                float4 color = half4(color1.r, color2.g, color1.b, 1);
 				return alphaBlend(edgeColor, color);
 			}
             ENDHLSL

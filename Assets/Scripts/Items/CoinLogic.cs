@@ -58,6 +58,7 @@ public class CoinLogic : MonoBehaviour
         {
             GameObject.Find("SceneController").GetComponent<SceneController>().CollectToken(this.gameObject.name);
             other.gameObject.GetComponent<PlayerCombat>().SayLine("Voice/Shell/Pickup_Coin", true);
+            FindObjectOfType<AudioManager>().Play("Items/Coin_Pickup");
             Destroy(this.gameObject);
         }
     }

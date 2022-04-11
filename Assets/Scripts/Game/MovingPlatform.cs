@@ -23,6 +23,7 @@ public class MovingPlatform : MonoBehaviour
     public float m_PatrolWaitTime = 0.0f;
     public bool m_LoopPatrol = true;
     public bool m_Activated = true;
+    public string m_Sound;
     
     // Private variables
     private PatrolState m_State = PatrolState.Idle;
@@ -86,6 +87,8 @@ public class MovingPlatform : MonoBehaviour
                         foreach(Transform child in transform)
                             if (child.GetComponent<Rigidbody>() != null)
                                 child.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        if (this.m_Sound != "")
+                            FindObjectOfType<AudioManager>().Stop(this.m_Sound);
                         break;
                     }
                     
@@ -120,5 +123,7 @@ public class MovingPlatform : MonoBehaviour
     public void SetActivated(bool active)
     {
         this.m_Activated = active;
+        if (this.m_Sound != "")
+            FindObjectOfType<AudioManager>().Play(this.m_Sound, this.gameObject);
     }
 }

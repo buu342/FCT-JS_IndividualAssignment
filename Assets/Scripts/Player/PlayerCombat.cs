@@ -148,7 +148,7 @@ public class PlayerCombat : MonoBehaviour
         if (this.m_Health <= 0 && this.m_DeathTimer == 0.0f)
         {
             SayLine("Voice/Shell/Die", true);
-            this.m_DeathTimer = Time.unscaledTime + 2.0f;
+            this.m_DeathTimer = Time.unscaledTime + 3.0f;
             this.m_TargetTimeScale = 0.0f;
             this.m_TimeScaleOverride = 0.0f;
             this.m_plycont.SetControlsEnabled(false);

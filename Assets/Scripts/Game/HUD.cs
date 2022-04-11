@@ -6,6 +6,7 @@ This script handles the heads up display logic.
 
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class HUD : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class HUD : MonoBehaviour
     private const float TextFadeTime = 10.0f;
     private const float BossTextScaleTime = 10.0f;
     private const float BossTextFadeTime = 10.0f;
+    private const float DeathFadeTime = 0.8f;
     
     // Public values
     public Image m_HealthBar;
@@ -54,6 +56,7 @@ public class HUD : MonoBehaviour
     private float m_StreakSize = 1.0f;
     private float m_TokenTime;
     private float m_FadeBossName = 0.0f;
+    private AudioManager m_audio;
     private PlayerCombat m_plycombat;
     private BossLogic m_bosslogic;
     
@@ -65,6 +68,7 @@ public class HUD : MonoBehaviour
     
     void Start()
     {
+        this.m_audio = FindObjectOfType<AudioManager>();
         this.m_plycombat = this.m_Player.GetComponent<PlayerCombat>();
         this.m_TargetHealth = this.m_plycombat.GetHealth();
         this.m_CurrentHealth = this.m_TargetHealth;
@@ -137,7 +141,10 @@ public class HUD : MonoBehaviour
             this.m_StreakSize = Mathf.Lerp(this.m_StreakSize, 1.0f, HUD.StreakTime*Time.deltaTime);
         this.m_ScoreIcon.rectTransform.localScale = new Vector3(-this.m_StreakSize, this.m_StreakSize, 1.0f);
         if (this.m_CurrentStreak > laststreak)
+        {
+            this.m_audio.Play("Gameplay/StreakUp"+this.m_CurrentStreak);
             this.m_StreakSize = 1.5f;
+        }
         
         // Fade out token text
         if (this.m_TokenTime < Time.unscaledTime)
@@ -186,18 +193,27 @@ public class HUD : MonoBehaviour
             }
         }
         
-        // Death bar effect
-        if (this.m_PlayerDieTime != 0 && this.m_PlayerDieTime < Time.unscaledTime)
+        // Death effect
+        if (this.m_PlayerDieTime != 0)
         {
-            this.m_BlackBarTop.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarTop.rectTransform.localPosition.y, 0.0f, 5.0f*Time.unscaledDeltaTime));
-            this.m_BlackBarBottom.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarBottom.rectTransform.localPosition.y, 0.0f, 5.0f*Time.unscaledDeltaTime));
+            float amount = Mathf.Min(1.0f, 1.0f - (this.m_PlayerDieTime - Time.unscaledTime));
+            PostProcessOutline outline;
+            Camera.main.GetComponent<PostProcessVolume>().profile.TryGetSettings(out outline);
+            outline.videoGlitch.value = new Vector2(amount, amount);
+            
+            // Black bars
+            if (this.m_PlayerDieTime < Time.unscaledTime)
+            {
+                this.m_BlackBarTop.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarTop.rectTransform.localPosition.y, 0.0f, 5.0f*Time.unscaledDeltaTime));
+                this.m_BlackBarBottom.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarBottom.rectTransform.localPosition.y, 0.0f, 5.0f*Time.unscaledDeltaTime));
+            }
         }
         
         // Respawn bar effect
         if (this.m_PlayerRespawned)
         {
-            this.m_BlackBarTop.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarTop.rectTransform.localPosition.y, 1024.0f, 5.0f*Time.unscaledDeltaTime));
-            this.m_BlackBarBottom.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarBottom.rectTransform.localPosition.y, -1024.0f, 5.0f*Time.unscaledDeltaTime));
+            this.m_BlackBarTop.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarTop.rectTransform.localPosition.y, 1024.0f, 2.5f*Time.unscaledDeltaTime));
+            this.m_BlackBarBottom.rectTransform.localPosition = new Vector2(0.0f, Mathf.Lerp(this.m_BlackBarBottom.rectTransform.localPosition.y, -1024.0f, 2.5f*Time.unscaledDeltaTime));
         }
     }
 
@@ -236,12 +252,13 @@ public class HUD : MonoBehaviour
     
     public void PlayerDied()
     {
+        this.m_audio.Play("Gameplay/Death");
         this.gameObject.transform.Find("HealthBar").gameObject.SetActive(false);
         this.gameObject.transform.Find("StaminaBar").gameObject.SetActive(false);
         this.gameObject.transform.Find("StreakBar").gameObject.SetActive(false);
         this.gameObject.transform.Find("TokenCollected").gameObject.SetActive(false);
         this.gameObject.transform.Find("Cursor").gameObject.SetActive(false);
-        this.m_PlayerDieTime = Time.unscaledTime + 0.5f;
+        this.m_PlayerDieTime = Time.unscaledTime + HUD.DeathFadeTime;
         this.m_PlayerRespawned = false;
     }
     
@@ -253,8 +270,12 @@ public class HUD : MonoBehaviour
     
     public void PlayerRespawned()
     {
+        PostProcessOutline outline;
+        Camera.main.GetComponent<PostProcessVolume>().profile.TryGetSettings(out outline);
+        outline.videoGlitch.value = new Vector2(0.0f, 0.0f);
+        this.m_audio.Play("Gameplay/Respawn");
         this.m_PlayerRespawned = true;
-        this.m_BlackBarTop.rectTransform.anchoredPosition = Vector2.zero;
-        this.m_BlackBarBottom.rectTransform.anchoredPosition = Vector2.zero;
+        this.m_BlackBarTop.rectTransform.localPosition = Vector2.zero;
+        this.m_BlackBarBottom.rectTransform.localPosition = Vector2.zero;
     }
 }

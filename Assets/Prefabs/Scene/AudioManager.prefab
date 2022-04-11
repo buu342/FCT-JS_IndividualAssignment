@@ -46,7 +46,7 @@ MonoBehaviour:
   m_RegisteredSoundsList:
   - name: Effects/Explosion_Small
     clip: {fileID: 8300000, guid: 03c171c5fba90724582846dd878af7ba, type: 3}
-    volume: 0.5
+    volume: 0.2
     pitch: 1
     pitchBulletTime: 1
     loop: 0
@@ -57,7 +57,7 @@ MonoBehaviour:
     maxDistanceSqr: 0
   - name: Effects/Explosion_Small
     clip: {fileID: 8300000, guid: df3ddf2fb6ac16d40a05f35e74e804f8, type: 3}
-    volume: 0.5
+    volume: 0.2
     pitch: 1
     pitchBulletTime: 1
     loop: 0
@@ -88,9 +88,9 @@ MonoBehaviour:
     maxDistance: 16
     sources: []
     maxDistanceSqr: 0
-  - name: Gameplay/Elevator_Start
-    clip: {fileID: 8300000, guid: d1043744b8c36a941a1d08899f515e7a, type: 3}
-    volume: 0.5
+  - name: Effects/Explosion_Intro
+    clip: {fileID: 8300000, guid: 50a1734c8f9cd1049bbf03c79416f40e, type: 3}
+    volume: 0.8
     pitch: 1
     pitchBulletTime: 1
     loop: 0
@@ -99,14 +99,69 @@ MonoBehaviour:
     maxDistance: 16
     sources: []
     maxDistanceSqr: 0
-  - name: Gameplay/Elevator_End
-    clip: {fileID: 8300000, guid: 8b98f32816e89724f93ed4dd23880b13, type: 3}
+  - name: Gameplay/Death
+    clip: {fileID: 8300000, guid: 369bcebcf8b836646bcb8771c1865352, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 1
+    pitchBulletTime: 0
     loop: 0
     canStack: 0
-    is3D: 1
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Gameplay/Respawn
+    clip: {fileID: 8300000, guid: 355cc199938e71a4b8b462f6fedce0ee, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Gameplay/Menu_Highlight
+    clip: {fileID: 8300000, guid: 2abad663f311fa44496e92beb95c50a8, type: 3}
+    volume: 0.5
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Gameplay/Menu_Select
+    clip: {fileID: 8300000, guid: f0630ee2e436ab146b0664df7b26d5d4, type: 3}
+    volume: 0.5
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Gameplay/Level_Info
+    clip: {fileID: 8300000, guid: d3bfa66493feea249a19a9eb1efb6322, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Gameplay/Logo
+    clip: {fileID: 8300000, guid: 5af4178b970502942b2f6a99f8c49168, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
     maxDistance: 16
     sources: []
     maxDistanceSqr: 0
@@ -154,6 +209,138 @@ MonoBehaviour:
     maxDistance: 0
     sources: []
     maxDistanceSqr: 0
+  - name: Gameplay/StreakUp1
+    clip: {fileID: 8300000, guid: 83c0ad2ef6a972c4084659adfcdcf486, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Gameplay/StreakUp2
+    clip: {fileID: 8300000, guid: 8168af2dccf6f92458eaf0f2b84500ca, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Gameplay/StreakUp3
+    clip: {fileID: 8300000, guid: 0e09c500f48777c43be998ed6318c1eb, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Gameplay/StreakUp4
+    clip: {fileID: 8300000, guid: a63922f5f1d10f6418d5c19192c9a295, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Gameplay/StreakUp5
+    clip: {fileID: 8300000, guid: 04308f77ef4fcba4faea62aad1b75037, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Items/Coin_Pickup
+    clip: {fileID: 8300000, guid: 098c1b2a7e8334a4782779aa33e77821, type: 3}
+    volume: 0.25
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    is3D: 0
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Items/Jetpack_Launch
+    clip: {fileID: 8300000, guid: a629faaa2455d4f4daf0958790f45b4f, type: 3}
+    volume: 0.5
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Items/Jetpack_Loop
+    clip: {fileID: 8300000, guid: 0f59e482eab4e4b44aa8764c5064dd0f, type: 3}
+    volume: 0.35
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 1
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Level/Elevator_Start
+    clip: {fileID: 8300000, guid: d1043744b8c36a941a1d08899f515e7a, type: 3}
+    volume: 0.5
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Level/Elevator_Loop
+    clip: {fileID: 8300000, guid: d1f93dd56af9fc14c9f0d519d96e8a27, type: 3}
+    volume: 0.8
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 1
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Level/Elevator_End
+    clip: {fileID: 8300000, guid: 8b98f32816e89724f93ed4dd23880b13, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Physics/FireLoop
+    clip: {fileID: 8300000, guid: 6fadfc707672ce24c88a6aa8415c0101, type: 3}
+    volume: 0.25
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 1
+    canStack: 1
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
   - name: Physics/WindowShatter
     clip: {fileID: 8300000, guid: 2139444716af8e54c9d9d40b16ccff31, type: 3}
     volume: 1
@@ -161,6 +348,17 @@ MonoBehaviour:
     pitchBulletTime: 1
     loop: 0
     canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Weapons/Bullet_Reflect
+    clip: {fileID: 8300000, guid: 9ff18ee5412fbae489d112e280f1d60f, type: 3}
+    volume: 0.75
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 1
     is3D: 1
     maxDistance: 16
     sources: []
@@ -264,9 +462,20 @@ MonoBehaviour:
     maxDistance: 16
     sources: []
     maxDistanceSqr: 0
+  - name: Weapons/Rocket_Loop
+    clip: {fileID: 8300000, guid: a2f1f850df7a19748a3e3dce9347ea41, type: 3}
+    volume: 0.5
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 1
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
   - name: Weapons/Sword_Swing
-    clip: {fileID: 8300000, guid: 5cd7f9a6fa245714a89a5ed4c99a9876, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: a083b43e97102ad459db093a8c3ee250, type: 3}
+    volume: 0.7
     pitch: 1
     pitchBulletTime: 1
     loop: 0
@@ -276,8 +485,8 @@ MonoBehaviour:
     sources: []
     maxDistanceSqr: 0
   - name: Weapons/Sword_Swing
-    clip: {fileID: 8300000, guid: d705ab11c5a6341499853746d0ad9a7a, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: d3bf3e3a0759f954d81dcccfd632590c, type: 3}
+    volume: 0.7
     pitch: 1
     pitchBulletTime: 1
     loop: 0
@@ -287,7 +496,106 @@ MonoBehaviour:
     sources: []
     maxDistanceSqr: 0
   - name: Weapons/Sword_Swing
-    clip: {fileID: 8300000, guid: cbf79ba82d7a57945a44ef8152ddb6f6, type: 3}
+    clip: {fileID: 8300000, guid: 860b089f0ec1b474bae8ff30ff43f0f9, type: 3}
+    volume: 0.7
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Boss/Dying
+    clip: {fileID: 8300000, guid: dfc81ff48bc8ff349ab74912ccd8bd72, type: 3}
+    volume: 0.3
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Boss/Jump
+    clip: {fileID: 8300000, guid: 9975c1590dd642f4da84e75e2004c5e3, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Boss/Land
+    clip: {fileID: 8300000, guid: 1927f424ffdd03c4b86420938645d450, type: 3}
+    volume: 0.5
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Boss/Move
+    clip: {fileID: 8300000, guid: fa56493c39470df45817aa9ebbb1532d, type: 3}
+    volume: 0.7
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Boss/Rotate
+    clip: {fileID: 8300000, guid: 3f0cbccaa8177ae48990a7dd7dd6ea65, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Boss/StartRocket
+    clip: {fileID: 8300000, guid: 99c275ac7cdbafc48ba2984f81c57a40, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Boss/EndRocket
+    clip: {fileID: 8300000, guid: 5170d61167cdb3943ba04da4b9df1649, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Boss/Step
+    clip: {fileID: 8300000, guid: 6689070a3dbd4c440905ef424ae15a06, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    is3D: 1
+    maxDistance: 16
+    sources: []
+    maxDistanceSqr: 0
+  - name: Voice/Boss/Step
+    clip: {fileID: 8300000, guid: 97e2e672ca117e144a75c2674faa697a, type: 3}
     volume: 1
     pitch: 1
     pitchBulletTime: 1

@@ -225,6 +225,7 @@ public class MenuGUI : MonoBehaviour
             if (this.m_LogoTop.rectTransform.position.x < (MenuGUI.LogoTopPos+2.0f)*this.m_ScaleFactor)
             {
                 this.m_Fade.color = Color.white;
+                this.m_audiomngr.Play("Gameplay/Logo");
                 this.m_CurrSequence++;
                 this.m_Cursor.SetActive(true);
             }
@@ -264,6 +265,17 @@ public class MenuGUI : MonoBehaviour
 
 
     /*==============================
+        ButtonHighlighted
+        Plays a sound when the menu button is highlighted
+    ==============================*/
+    
+    public void ButtonHighlighted()
+    {
+        this.m_audiomngr.Play("Gameplay/Menu_Highlight");
+    }
+
+
+    /*==============================
         PressPlay
         Shows the difficulty buttons
     ==============================*/
@@ -272,6 +284,7 @@ public class MenuGUI : MonoBehaviour
     {
         if (this.m_CurrentMenu != MenuButton.Main)
             return;
+        this.m_audiomngr.Play("Gameplay/Menu_Select");
         this.m_CurrentMenu = MenuButton.Difficulty;
     }
 
@@ -285,6 +298,7 @@ public class MenuGUI : MonoBehaviour
     {
         if (this.m_CurrentMenu != MenuButton.Main)
             return;
+        this.m_audiomngr.Play("Gameplay/Menu_Select");
         Application.Quit();
     }
 
@@ -300,6 +314,7 @@ public class MenuGUI : MonoBehaviour
             return;
         GameObject.Find("SceneController").GetComponent<SceneController>().SetDifficulty(SceneController.Difficulty.Easy);
         this.m_CurrentMenu = MenuButton.Game;
+        this.m_audiomngr.Play("Gameplay/Menu_Select");
         StartIntroScene();
     }
 
@@ -347,6 +362,7 @@ public class MenuGUI : MonoBehaviour
         this.m_TargetLogoBotX = -187*this.m_ScaleFactor;
         GameObject.Find("SceneController").GetComponent<SceneController>().StartingNewLevel();
         Camera.main.GetComponent<CameraLogic>().AddTrauma(0.5f);
+        this.m_audiomngr.Play("Effects/Explosion_Intro");
         this.m_NextSequenceTime = Time.unscaledTime + 1.0f;
         FindObjectOfType<MusicManager>().PlaySong("Music/Level1", true, true);
         this.m_casualmesh.materials[1].SetTexture("_MainTex", this.m_ShockedEyes);

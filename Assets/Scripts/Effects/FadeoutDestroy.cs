@@ -65,7 +65,11 @@ public class FadeoutDestroy : MonoBehaviour
             // Perform the fade out, and destroy if the alpha is close to zero
             this.m_Alpha -= 255*(1/this.m_FadeTime)*Time.deltaTime;
             if (this.m_Alpha < 1)
+            {
                 Destroy(this.gameObject);
+                if (this.transform.parent != null)
+                    Destroy(this.transform.parent.gameObject);
+            }
             
             // Update the alpha on all the mesh renderers
             if (this.GetComponent<MeshRenderer>() != null)

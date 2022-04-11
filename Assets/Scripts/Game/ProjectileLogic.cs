@@ -229,6 +229,7 @@ public class ProjectileLogic : MonoBehaviour
                     this.SetOwner(sword.GetOwner());
                     this.transform.rotation = other.gameObject.transform.rotation;
                     this.m_rb.velocity = this.transform.forward*m_Speed*2;
+                    FindObjectOfType<AudioManager>().Play("Weapons/Bullet_Reflect", this.transform.position);
                     if (sword.GetOwner().tag == "Player")
                         sword.GetOwner().gameObject.GetComponent<PlayerCombat>().GiveScore(ReflectScore);
                 }

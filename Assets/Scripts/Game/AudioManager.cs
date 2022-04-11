@@ -32,10 +32,25 @@ public class AudioManager : MonoBehaviour
         Play
         Plays a given sound
         @param The name of the sound to play
-        @param The position where the sound was played
+        @param The object that played the sound
     ==============================*/
 
-    public void Play(string name, Vector3 position = default(Vector3))
+    public void Play(string name, GameObject obj)
+    {
+        GameObject ret = Play(name, obj.transform.position);
+        ret.transform.SetParent(obj.transform);
+    }
+    
+    
+    /*==============================
+        Play
+        Plays a given sound
+        @param The name of the sound to play
+        @param The position where the sound was played
+        @returns The created sound object
+    ==============================*/
+
+    public GameObject Play(string name, Vector3 position = default(Vector3))
     {
         // Find all sounds that have the given name
         Sound[] slist = Array.FindAll(this.m_RegisteredSoundsList, sound => sound.name == name);
@@ -44,7 +59,7 @@ public class AudioManager : MonoBehaviour
         if (slist.Length == 0)
         {
             Debug.LogWarning("Sound: '"+name+"' not found!");
-            return;
+            return null;
         }
         
         // If this sound isn't allowed to stack, kill all of the ones that are already playing
@@ -89,6 +104,7 @@ public class AudioManager : MonoBehaviour
         source.pitch = s.pitch;
         source.Play();
         s.sources.Add(sndobj);
+        return sndobj;
     }
     
 
@@ -107,9 +123,14 @@ public class AudioManager : MonoBehaviour
             for (int i=s.sources.Count-1; i>=0; i--)
             {
                 GameObject sndobj = s.sources[i];
-                AudioSource source = sndobj.GetComponent<AudioSource>();
+                if (sndobj == null)
+                {
+                    s.sources.RemoveAt(i);
+                    continue;
+                }
                 
                 // If the sound is done playing, remove the object
+                AudioSource source = sndobj.GetComponent<AudioSource>();
                 if (!source.isPlaying)
                 {
                     Destroy(sndobj);

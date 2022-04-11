@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3812452, g: 0.41208473, b: 0.5078565, a: 1}
+  m_IndirectSpecularColor: {r: 0.544207, g: 0.5826346, b: 0.6689248, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3702,6 +3702,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 782725145}
+  - component: {fileID: 782725146}
   m_Layer: 0
   m_Name: JetpackFake
   m_TagString: Untagged
@@ -3725,6 +3726,19 @@ Transform:
   m_Father: {fileID: 1426198636}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &782725146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782725144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc798785e130f4f47876f66a80cb27aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Sound: Items/Jetpack_Loop
 --- !u!1 &786233952
 GameObject:
   m_ObjectHideFlags: 0
@@ -8803,6 +8817,10 @@ PrefabInstance:
     - target: {fileID: 5718257818964714882, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718257818964714885, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5835630512401526782, guid: 2440cd40778de6b4eb30b2bb671086ff, type: 3}
       propertyPath: m_IsFlying

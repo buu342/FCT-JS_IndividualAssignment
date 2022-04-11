@@ -9,14 +9,17 @@ using UnityEngine.UI;
 
 public class Sequence_ShellExit_Level1_1 : MonoBehaviour
 {
+    // Constants
     private int LayerIndex_Pickup;
     
+    // Private values
     private Animator m_plyanim;
     private SkinnedMeshRenderer m_plymesh;
     private SkinnedMeshRenderer m_jetpack;
     private float m_SequenceTime;
     private int m_CurrentSequence = 0;
     private RawImage m_Clouds;
+    
     
     /*==============================
         Start
@@ -54,6 +57,7 @@ public class Sequence_ShellExit_Level1_1 : MonoBehaviour
                 case 0:
                     this.m_SequenceTime = Time.time + 0.2f;
                     this.m_plyanim.SetLayerWeight(LayerIndex_Pickup, 0.0f);
+                    FindObjectOfType<AudioManager>().Play("Items/Jetpack_Launch", this.gameObject);
                     this.GetComponent<PlayerCombat>().SayLine("Voice/Shell/Jump", true);
                     this.GetComponent<PlayerController>().SetPlayerJumpState(PlayerController.PlayerJumpState.Jump);
                     this.GetComponent<Rigidbody>().AddForce(this.transform.up*PlayerController.JumpPower);

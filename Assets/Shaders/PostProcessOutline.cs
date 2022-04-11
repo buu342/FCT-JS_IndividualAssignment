@@ -31,6 +31,9 @@ public sealed class PostProcessOutline : PostProcessEffectSettings
     
     [Range(0, 1), Tooltip("Larger values will require the difference between normals to be greater to draw an edge.")]
     public FloatParameter normalThreshold = new FloatParameter { value = 0.4f };    
+    
+    [Range(0, 1), Tooltip("The amount of video glitching. X is horizontal jitter, Y is color drifting")]
+    public Vector2Parameter videoGlitch = new Vector2Parameter { value = new Vector2(0.0f, 0.0f) };    
 }
 
 public sealed class PostProcessOutlineRenderer : PostProcessEffectRenderer<PostProcessOutline>
@@ -45,6 +48,11 @@ public sealed class PostProcessOutlineRenderer : PostProcessEffectRenderer<PostP
         sheet.properties.SetFloat("_DepthNormalThresholdScale", settings.depthNormalThresholdScale);
         sheet.properties.SetFloat("_NormalThreshold", settings.normalThreshold);
         sheet.properties.SetColor("_Color", settings.color);
+        var sl_thresh = Mathf.Clamp01(1.0f - settings.videoGlitch.value.x*1.2f);
+        var sl_disp = Mathf.Pow(settings.videoGlitch.value.x, 3)*0.05f;
+        sheet.properties.SetVector("_ScanLineJitter", new Vector2(sl_disp, sl_thresh));
+        var cd = new Vector2(settings.videoGlitch.value.y*0.04f, Time.unscaledTime*606.11f);
+        sheet.properties.SetVector("_ColorDrift", cd);
 
         Matrix4x4 clipToView = GL.GetGPUProjectionMatrix(context.camera.projectionMatrix, true).inverse;
         sheet.properties.SetMatrix("_ClipToView", clipToView);

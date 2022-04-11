@@ -28,6 +28,8 @@ public class Init_Level1_Boss : MonoBehaviour
             this.m_Boss.GetComponent<BossLogic>().SetEnabled(false);
             this.m_Player.SetActive(false);
             this.m_Boss.SetActive(false);
+            foreach (MusicManager mm in FindObjectsOfType<MusicManager>())
+                mm.PlaySong("Music/Level1_Boss", true, true);
         }
         else
         {
@@ -58,8 +60,6 @@ public class Init_Level1_Boss : MonoBehaviour
             switch (this.m_CurrentSequence)
             {
                 case 0:
-                    foreach (MusicManager mm in FindObjectsOfType<MusicManager>())
-                        mm.PlaySong("Music/Level1_Boss", true, true);
                     this.m_NextSequenceTime = Time.unscaledTime + 1.55f;
                     break;
                 case 1:
@@ -75,6 +75,7 @@ public class Init_Level1_Boss : MonoBehaviour
                     this.m_Boss.SetActive(true);
                     this.m_Boss.GetComponent<BossLogic>().SetBossJumpState(BossLogic.BossJumpState.Land);
                     this.m_NextSequenceTime = Time.unscaledTime + 0.5f;
+                    FindObjectOfType<AudioManager>().Play("Voice/Boss/Land", this.m_Boss.transform.position);
                     Camera.main.GetComponent<CameraLogic>().AddTrauma(0.5f);
                     Instantiate(this.m_dustland, this.m_Boss.transform.position, Quaternion.identity);
                     break;

@@ -34,6 +34,9 @@ MonoBehaviour:
   normalThreshold:
     overrideState: 0
     value: 0
+  videoGlitch:
+    overrideState: 1
+    value: {x: 0, y: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,3 +85,6 @@ MonoBehaviour:
   normalThreshold:
     overrideState: 0
     value: 0.4
+  videoGlitch:
+    overrideState: 0
+    value: {x: 0, y: 0}

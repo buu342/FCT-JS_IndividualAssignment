@@ -43,7 +43,7 @@ public class HotelElevatorTrigger : MonoBehaviour
             other.gameObject.GetComponent<PlayerCombat>().SetPlayerLastStreakTime(PlayerCombat.StreakLoseTime);
             this.m_Elevator.GetComponent<MovingPlatform>().SetActivated(true);
             this.m_PlayerClip.GetComponent<BoxCollider>().enabled = true;
-            FindObjectOfType<AudioManager>().Play("Gameplay/Elevator_Start", this.transform.position);
+            FindObjectOfType<AudioManager>().Play("Level/Elevator_Start", this.transform.position);
             GameObject.Find("SceneController").GetComponent<SceneController>().LoadScene("Level1_2");
             Destroy(this.gameObject);
         }

@@ -58,14 +58,17 @@ public class Level_FinishAnim : MonoBehaviour
                 case 2:
                     this.m_CompleteText.text = "Tokens Collected: " + FindObjectOfType<SceneController>().GetCollectedTokenCount();
                     this.m_NextSequenceTime = Time.unscaledTime + 0.651f;
+                    FindObjectOfType<AudioManager>().Play("Gameplay/Level_Info");
                     break;
                 case 3:
                     this.m_CompleteText.text += "\nTotal Deaths: " + FindObjectOfType<SceneController>().GetDeathCount();
                     this.m_NextSequenceTime = Time.unscaledTime + 0.651f;
+                    FindObjectOfType<AudioManager>().Play("Gameplay/Level_Info");
                     break;
                 case 4:
                     this.m_CompleteText.text += "\nFinal Score: " + FindObjectOfType<PlayerCombat>().GetScore();
                     this.m_NextSequenceTime = Time.unscaledTime + 2.0f;
+                    FindObjectOfType<AudioManager>().Play("Gameplay/Level_Info");
                     break;
                 case 5:
                     FindObjectOfType<SceneController>().StartingNewLevel();

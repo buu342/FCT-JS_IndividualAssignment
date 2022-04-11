@@ -111,7 +111,7 @@ public class BossLogic : MonoBehaviour
         this.m_OriginalAimPos = this.m_fireattachment.transform.localPosition;
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
         this.m_OriginalMeshPos = this.m_mesh.transform.localPosition;
-        this.m_NextAttackTime = Time.time + 1.0f;
+        this.m_NextAttackTime = Time.time + 1.0f;            
     }
 
 
@@ -227,6 +227,7 @@ public class BossLogic : MonoBehaviour
                     this.m_MovementStep++;
                     this.m_TimeToIdle = Time.time + 8.0f/60.0f;
                     this.m_TargetVelocity = new Vector3(speedmult*BossLogic.MovementSpeed, 0, 0);
+                    this.m_audio.Play("Voice/Boss/Move", this.transform.position);
                     break;
                 case 1:
                     if (this.m_TimeToIdle < Time.time)
@@ -235,6 +236,7 @@ public class BossLogic : MonoBehaviour
                         this.m_TimeToIdle = Time.time + 7.0f/60.0f;
                         this.m_TargetVelocity = Vector3.zero;
                         Camera.main.GetComponent<CameraLogic>().AddTrauma(0.3f);
+                        this.m_audio.Play("Voice/Boss/Step", this.transform.position);
                     }
                     break;
                 case 2:
@@ -243,6 +245,7 @@ public class BossLogic : MonoBehaviour
                         this.m_MovementStep++;
                         this.m_TimeToIdle = Time.time + 8.0f/60.0f;
                         this.m_TargetVelocity = new Vector3(speedmult*BossLogic.MovementSpeed, 0, 0);
+                        this.m_audio.Play("Voice/Boss/Move", this.transform.position);
                     }
                     break;
                 case 3:
@@ -252,6 +255,7 @@ public class BossLogic : MonoBehaviour
                         this.m_TimeToIdle = Time.time + 7.0f/60.0f;
                         this.m_TargetVelocity = Vector3.zero;
                         Camera.main.GetComponent<CameraLogic>().AddTrauma(0.3f);
+                        this.m_audio.Play("Voice/Boss/Step", this.transform.position);
                     }
                     break;
                 case 4:
@@ -315,6 +319,7 @@ public class BossLogic : MonoBehaviour
             {
                 this.m_rb.velocity = Vector3.zero;
                 this.m_BossJumpState = BossJumpState.Spring;
+                this.m_audio.Play("Voice/Boss/Jump", this.transform.position);
                 this.m_NextFire = Time.time + 0.56f;
             }
             else if (this.m_NextFire < Time.time && this.m_BossJumpState == BossJumpState.Spring)
@@ -336,6 +341,7 @@ public class BossLogic : MonoBehaviour
             {
                 Camera.main.GetComponent<CameraLogic>().AddTrauma(0.5f);
                 Instantiate(this.m_dustland, this.transform.position, Quaternion.identity);
+                this.m_audio.Play("Voice/Boss/Land", this.transform.position);
                 this.m_BossJumpState = BossJumpState.Land;
                 this.m_NextFire = Time.time + 1.0f;
             }
@@ -406,10 +412,12 @@ public class BossLogic : MonoBehaviour
                     {
                         this.m_NextFire = Time.time + 0.45f;
                         this.m_NextAttackTime = Time.time + 1.2f;
+                        this.m_audio.Play("Voice/Boss/StartRocket", this.transform.position);
                     }
                     else if (this.m_AttackState == 1)
                     {
                         FireRocket();
+                        this.m_audio.Play("Voice/Boss/EndRocket", this.transform.position);
                         this.m_NextFire = 0;
                     }
                     this.m_AttackState++;
@@ -497,6 +505,7 @@ public class BossLogic : MonoBehaviour
         if (this.m_Health <= 0 && !isdead)
         {
             this.m_explosionsmall.SetActive(true);
+            this.m_audio.Play("Voice/Boss/Dying", this.m_shoulder.transform.position);
             this.m_target.GetComponent<PlayerCombat>().SayLine("Voice/Shell/BossKill", true);
             this.m_TargetVelocity = Vector3.zero;
             this.m_target.GetComponent<PlayerCombat>().SetPlayerInvulTime(15.0f);
@@ -641,7 +650,11 @@ public class BossLogic : MonoBehaviour
     {
         this.m_Enabled = enabled;
         if (enabled)
+        {
             this.m_NextAttackTime = Time.time + 1.0f;
+            if (FindObjectOfType<SceneController>().IsRespawning())
+                this.m_NextMoveAction = Time.unscaledTime + 0.5f;
+        }
     }
     
     

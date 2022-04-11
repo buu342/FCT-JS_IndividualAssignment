@@ -94,6 +94,7 @@ public class EnemyLogic : MonoBehaviour
     private Rigidbody m_rb;
     private AudioManager m_audio; 
     private EnemyAnimations m_anims;
+    private SceneController m_scenectrl;
     
     
     /*==============================
@@ -113,6 +114,7 @@ public class EnemyLogic : MonoBehaviour
         this.m_rb = this.GetComponent<Rigidbody>();
         this.m_shoulder = this.transform.Find("Shoulder").gameObject;
         this.m_fireattachment = this.transform.Find("FireAttachment").gameObject;
+        this.m_scenectrl = FindObjectOfType<SceneController>();
         this.m_OriginalAimPos = this.m_fireattachment.transform.localPosition;
         this.m_OriginalAimAng = this.m_fireattachment.transform.localRotation;
         this.m_OriginalMeshPos = this.m_mesh.transform.localPosition;
@@ -265,7 +267,10 @@ public class EnemyLogic : MonoBehaviour
                     if (this.m_CombatState == CombatState.Idle || this.m_CombatState == CombatState.RemoveAim)
                     {
                         this.m_CombatState = CombatState.TakeAim;
-                        this.m_TimeToIdle = Time.time + this.m_ReactionTime;
+                        if (this.m_scenectrl.GetDifficulty() == SceneController.Difficulty.Easy)
+                            this.m_TimeToIdle = Time.time + this.m_ReactionTime*1.2f;
+                        else
+                            this.m_TimeToIdle = Time.time + this.m_ReactionTime;
                     }
                     
                     // Fire the bullet
@@ -282,7 +287,10 @@ public class EnemyLogic : MonoBehaviour
                     
                     // Stop aiming
                     this.m_CombatState = CombatState.RemoveAim;
-                    this.m_TimeToIdle = Time.time + this.m_ReactionTime;
+                    if (this.m_scenectrl.GetDifficulty() == SceneController.Difficulty.Easy)
+                        this.m_TimeToIdle = Time.time + this.m_ReactionTime*1.2f;
+                    else
+                        this.m_TimeToIdle = Time.time + this.m_ReactionTime;
                 }
                 break;
             case AttackStyle.Straight:
@@ -555,7 +563,7 @@ public class EnemyLogic : MonoBehaviour
         // Apply physics to the bones based on where the damage came from
         Collider[] colliders = Physics.OverlapSphere(this.m_DamagePos, 3);
         foreach (Collider hit in colliders)
-            if (hit.GetComponent<Rigidbody>() && hit.gameObject.layer != BulletLayer && hit.gameObject.tag != "Pickup")
+            if (hit.GetComponent<Rigidbody>() && hit.gameObject.layer != BulletLayer && hit.gameObject.tag != "Pickup" && hit.gameObject.tag != "Player")
                 hit.GetComponent<Rigidbody>().AddExplosionForce(75, this.m_DamagePos, 3, 0, ForceMode.Impulse);
             
         // Stop animating
