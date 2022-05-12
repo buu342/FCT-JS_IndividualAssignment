@@ -1,3 +1,3 @@
 # Scavenger Hunt Repository
 
-[Concept Document]()
+[Concept Document](Concept_Proposal_Document.pdf)
