@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody  m_RigidBody;  
     private Vector3 m_CurrentVelocity = Vector3.zero;
     private Vector3 m_TargetVelocity = Vector3.zero;
-    
+    private Vector2 movementDirection;
     
     /*==============================
         Start
@@ -40,7 +40,16 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        
+         if (movementDirection.y < 0)
+            this.m_TargetVelocity = -this.transform.forward*PlayerController.MoveSpeed;
+        if (movementDirection.y > 0)
+            this.m_TargetVelocity = this.transform.forward*PlayerController.MoveSpeed;
+        if (movementDirection.x<0)
+            this.m_TargetVelocity = -this.transform.right*PlayerController.MoveSpeed;
+        if (movementDirection.x>0)
+            this.m_TargetVelocity = this.transform.right*PlayerController.MoveSpeed;
+        if(movementDirection.x == 0 && movementDirection.y == 0)
+            this.m_TargetVelocity = Vector3.zero;
         // Turn the player to face the same direction as the camera
         if (this.m_TargetVelocity != Vector3.zero)
         {
@@ -71,17 +80,8 @@ public class PlayerController : MonoBehaviour
 
     void OnMove(InputValue value) {
   // Handle movement input
-        Vector2 direction = value.Get<Vector2>();
+        movementDirection = new Vector2(value.Get<Vector2>().x,value.Get<Vector2>().y);
                 // Handle movement input
-        if (direction.y < 0)
-            this.m_TargetVelocity = -this.transform.forward*PlayerController.MoveSpeed;
-        if (direction.y > 0)
-            this.m_TargetVelocity = this.transform.forward*PlayerController.MoveSpeed;
-        if (direction.x<0)
-            this.m_TargetVelocity = -this.transform.right*PlayerController.MoveSpeed;
-        if (direction.x>0)
-            this.m_TargetVelocity = this.transform.right*PlayerController.MoveSpeed;
-        if(direction.x == 0 && direction.y == 0)
-            this.m_TargetVelocity = Vector3.zero;
+       
     }
 }
