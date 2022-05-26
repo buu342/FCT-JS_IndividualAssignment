@@ -40,8 +40,7 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        this.m_TargetVelocity = (movementDirection.y*this.transform.forward + movementDirection.x*this.transform.right*PlayerController.MoveSpeed)*PlayerController.MoveSpeed;
-       
+        this.m_TargetVelocity = (movementDirection.y*this.transform.forward + movementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
         // Turn the player to face the same direction as the camera
         if (this.m_TargetVelocity != Vector3.zero)
         {
