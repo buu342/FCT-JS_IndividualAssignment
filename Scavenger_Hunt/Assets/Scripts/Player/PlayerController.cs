@@ -40,16 +40,8 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-         if (movementDirection.y < 0)
-            this.m_TargetVelocity = -this.transform.forward*PlayerController.MoveSpeed;
-        if (movementDirection.y > 0)
-            this.m_TargetVelocity = this.transform.forward*PlayerController.MoveSpeed;
-        if (movementDirection.x<0)
-            this.m_TargetVelocity = -this.transform.right*PlayerController.MoveSpeed;
-        if (movementDirection.x>0)
-            this.m_TargetVelocity = this.transform.right*PlayerController.MoveSpeed;
-        if(movementDirection.x == 0 && movementDirection.y == 0)
-            this.m_TargetVelocity = Vector3.zero;
+        this.m_TargetVelocity = (movementDirection.y*this.transform.forward + movementDirection.x*this.transform.right*PlayerController.MoveSpeed)*PlayerController.MoveSpeed;
+       
         // Turn the player to face the same direction as the camera
         if (this.m_TargetVelocity != Vector3.zero)
         {
@@ -74,14 +66,12 @@ public class PlayerController : MonoBehaviour
     
     void OnLook(InputValue value) {
         cameraController.lookDirection = new Vector2(value.Get<Vector2>().x,value.Get<Vector2>().y);
-
     }
 
 
     void OnMove(InputValue value) {
-  // Handle movement input
+    // Handle movement input
         movementDirection = new Vector2(value.Get<Vector2>().x,value.Get<Vector2>().y);
-                // Handle movement input
        
     }
 }
