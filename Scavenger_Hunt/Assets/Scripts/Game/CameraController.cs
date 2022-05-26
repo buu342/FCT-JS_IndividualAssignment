@@ -6,6 +6,8 @@ This script handles camera movement and logic
 
 using UnityEngine;
 
+using UnityEngine.InputSystem;
+
 public class CameraController : MonoBehaviour
 {
     private const float Sensitivity    = 3.0f;
@@ -15,7 +17,7 @@ public class CameraController : MonoBehaviour
     private const float MaxTraumaAngle = 10.0f;
     
     public GameObject m_Target;
-    
+    public Vector2 lookDirection;
     private float      m_NoiseSeed;
     private Quaternion m_CamRotation;
     private float      m_Trauma = 0.0f;
@@ -50,8 +52,8 @@ public class CameraController : MonoBehaviour
         float traumaoffsetr = CameraController.MaxTraumaAngle*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 3, Time.time*CameraController.TraumaSpeed)*2 - 1);
         
         // Calculate the final camera position and rotation
-        this.m_CamRotation.x += Input.GetAxis("Mouse X")*Sensitivity;
-        this.m_CamRotation.y -= Input.GetAxis("Mouse Y")*Sensitivity;
+        this.m_CamRotation.x += lookDirection.x*Sensitivity;
+        this.m_CamRotation.y -= lookDirection.y*Sensitivity;
         this.m_CamRotation.y = Mathf.Clamp(this.m_CamRotation.y, LookMax_Down, LookMax_Up);
         this.transform.rotation = Quaternion.Euler(this.m_CamRotation.y, this.m_CamRotation.x, 0.0f);
         this.transform.rotation *= Quaternion.Euler(traumaoffsetp, traumaoffsety, traumaoffsetr);
@@ -59,7 +61,7 @@ public class CameraController : MonoBehaviour
         // Decrease screen shake over time
         this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime);
     }
-    
+  
 
     /*==============================
         LateUpdate

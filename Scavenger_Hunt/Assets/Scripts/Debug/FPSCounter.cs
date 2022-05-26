@@ -4,7 +4,6 @@ public class FPSCounter : MonoBehaviour
 {
     public PlayerInput playerControls;
     private InputAction calculateFramesAction;
-    private InputAction MoveForward;
     private int frameRate;
     private bool calculateFrames;
     
@@ -39,8 +38,4 @@ public class FPSCounter : MonoBehaviour
         calculateFrames = !calculateFrames;
     }
 
-    private void moveForward(InputAction.CallbackContext context) {
-        
-
-    }
 }
