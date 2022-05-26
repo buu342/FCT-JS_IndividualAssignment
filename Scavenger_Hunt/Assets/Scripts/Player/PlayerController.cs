@@ -9,6 +9,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    //Sound utilities
+    public delegate void MakeSound(Vector3 origin, float distance);
+    public static event MakeSound makeSound;
+    public static float distanceOfSound = 10.0f;
+    
+
     public  const float Gravity      = -80.0f;
     private const float MoveSpeed    = 10.0f;
     private const float Acceleration = 0.5f;
@@ -44,6 +50,7 @@ public class PlayerController : MonoBehaviour
         // Turn the player to face the same direction as the camera
         if (this.m_TargetVelocity != Vector3.zero)
         {
+            makeSound(transform.position, distanceOfSound);
             Quaternion targetang = Quaternion.Euler(0.0f, this.m_Camera.transform.eulerAngles.y, 0.0f); 
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetang, PlayerController.TurnSpeed);
         }

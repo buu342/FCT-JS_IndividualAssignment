@@ -7,6 +7,14 @@ public class MonsterAI : MonoBehaviour
     bool hearsPlayer;
     public int hearingDistance;
     // Start is called before the first frame update
+
+    void OnEnable() {
+        PlayerController.makeSound += HearsSound;
+    }
+
+    void OnDisable() {
+            PlayerController.makeSound -= HearsSound;
+    }
     void Start()
     {
         hearsPlayer = false;
