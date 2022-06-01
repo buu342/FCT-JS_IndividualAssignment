@@ -19,7 +19,7 @@ public class MonsterAI : MonoBehaviour
     }
 
     void HearsSound(Vector3 origin, float distance) {
-        if(Vector3.Distance(origin, transform) < (distance + hearingDistance)) {
+        if(Vector3.Distance(origin, transform.position) < (distance + hearingDistance)) {
             hearsPlayer = true;
         }
 
