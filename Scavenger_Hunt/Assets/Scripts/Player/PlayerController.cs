@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour
     private const float TurnSpeed    = 0.1f;
 
     public GameObject m_Camera;
-    private CameraController cameraController;
     public Rigidbody  m_RigidBody;  
+    private CameraController cameraController;
     private Vector3 m_CurrentVelocity = Vector3.zero;
     private Vector3 m_TargetVelocity = Vector3.zero;
     
