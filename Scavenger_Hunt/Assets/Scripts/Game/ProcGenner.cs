@@ -70,6 +70,11 @@ public class ProcGenner : MonoBehaviour
     
     void Awake()
     {
+        #if UNITY_EDITOR
+            System.DateTime time = System.DateTime.Now;
+            int attempts = 1;
+            int roomsculled = 0;
+        #endif
         while (true)
         {            
             // Initialize our data structures
@@ -111,13 +116,30 @@ public class ProcGenner : MonoBehaviour
             // Check the start and end room have edges, if not, generate another map
             if (ConfirmBeatable())
                 break;
+            #if UNITY_EDITOR
+                attempts++;
+            #endif
         }
         
         // Cull rooms which don't have any edges coming out of them
+        #if UNITY_EDITOR
+            roomsculled = this.m_Rooms.Count;
+        #endif
         CullEmptyRooms();
+        #if UNITY_EDITOR
+            roomsculled -= this.m_Rooms.Count;
+        #endif
         
         // Finally, generate the corridors themselves
         GenerateCorridors();
+        
+        // Show some statistics if we're in debug mode
+        #if UNITY_EDITOR
+            Debug.Log("Level generation data:");
+            Debug.Log("* Time taken -> "+(System.DateTime.Now-time).TotalMilliseconds+"ms");
+            Debug.Log("* Attempts -> "+attempts);
+            Debug.Log("* Rooms Culled -> "+roomsculled);
+        #endif
     }
 
     
