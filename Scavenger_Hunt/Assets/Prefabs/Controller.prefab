@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b231299edf50d9248a72e35323f64858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1727716920416927307, guid: 4a8c19c51a0a5104f834996d2b5ddb49, type: 3}
   m_FloorPrefab: {fileID: 4546657156345559804, guid: bcf2f365cb079944abc10eafc74202cc, type: 3}
   m_CeilingPrefab: {fileID: 4546657156345559804, guid: 7c8412c326eac5141942d3bec6136b4b, type: 3}
-  m_StairPrefab: {fileID: 4546657156345559804, guid: 0adef0cb7ba757c40aec3e4e95b71aea, type: 3}
+  m_StairPrefab: {fileID: 8725706798832080784, guid: 0adef0cb7ba757c40aec3e4e95b71aea, type: 3}
+  m_DoorPrefab: {fileID: 6969831614626464371, guid: 02eb0cd0329be904db4229b31cec3fab, type: 3}
   m_PlayerPrefab: {fileID: 8512297084061567289, guid: 4989e4715fb20e04a9d8d198d616c25a, type: 3}
   m_MaterialRoom: {fileID: 2100000, guid: 732ccbda58b09a14082486b2697dd82c, type: 2}
   m_MaterialCorridor: {fileID: 2100000, guid: 0e451b62ade916149be2e85ec0f9d3cb, type: 2}

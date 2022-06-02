@@ -34,7 +34,7 @@ public class ProcGenner : MonoBehaviour
         NotFirst
     };
     
-    private enum BlockType
+    public enum BlockType
     {
         None,
         Room,
@@ -46,6 +46,7 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_FloorPrefab;
     public GameObject m_CeilingPrefab;
     public GameObject m_StairPrefab;
+    public GameObject m_DoorPrefab;
     public GameObject m_PlayerPrefab;
     public Material m_MaterialRoom;
     public Material m_MaterialCorridor;
@@ -165,6 +166,7 @@ public class ProcGenner : MonoBehaviour
         // Create the player on the spawn
         instobj = Instantiate(this.m_PlayerPrefab, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
         this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
+        instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
         this.m_Entities.Add(instobj);
         
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
@@ -490,6 +492,7 @@ public class ProcGenner : MonoBehaviour
             AStar astr = new AStar(gridsize);
             Vector3Int startpos = new Vector3Int((int)edge.U.Position.x, (int)edge.U.Position.y, (int)edge.U.Position.z);
             Vector3Int endpos = new Vector3Int((int)edge.V.Position.x, (int)edge.V.Position.y, (int)edge.V.Position.z);
+            List<Vector3> doorpos = new List<Vector3>();
             
             // Pathfind, using our custom cost function
             List<Vector3Int> path = astr.FindPath(startpos, endpos, (AStar.Node a, AStar.Node b) => {
@@ -509,6 +512,10 @@ public class ProcGenner : MonoBehaviour
                         pathcost.cost += 5;
                     else if (this.m_Grid[b.Position.x, b.Position.y, b.Position.z] == BlockType.None)
                         pathcost.cost += 1;
+                    
+                    if (pathcost.prevBlock != BlockType.Room && this.m_Grid[b.Position.x, b.Position.y, b.Position.z] == BlockType.Room)
+                        doorpos.Add(new Vector3(b.Position.x, b.Position.y, b.Position.z));
+                    pathcost.prevBlock = this.m_Grid[b.Position.x, b.Position.y, b.Position.z];
                     
                     // We're currently in a valid spot
                     pathcost.traversable = true;
@@ -653,6 +660,12 @@ public class ProcGenner : MonoBehaviour
                         res.ForEach(item => corridor.Add(item));
                     }
                 }
+                
+                // Place doors
+                //foreach (Vector3 pos in doorpos)
+                //{
+                //    GameObject instobj = Instantiate(this.m_DoorPrefab, (pos-Center)*ProcGenner.GridScale, this.m_DoorPrefab.transform.rotation);
+                //}
                 
                 // Add this to our list of corridors
                 this.m_Corridors.Add(corridor);

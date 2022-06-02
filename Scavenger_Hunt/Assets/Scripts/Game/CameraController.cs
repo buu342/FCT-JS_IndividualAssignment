@@ -10,14 +10,14 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    private const float Sensitivity    = 3.0f;
+    private const float Sensitivity    = 0.1f;
     private const int   LookMax_Up     = 60;
     private const int   LookMax_Down   = -60;
     private const float TraumaSpeed    = 25.0f;
     private const float MaxTraumaAngle = 10.0f;
     
     public GameObject m_Target;
-    public Vector2 lookDirection;
+    private Vector2 lookDirection;
     private float      m_NoiseSeed;
     private Quaternion m_CamRotation;
     private float      m_Trauma = 0.0f;
@@ -88,7 +88,7 @@ public class CameraController : MonoBehaviour
         this.m_Target = target;
     }
     
-
+    
     /*==============================
         AddTrauma
         Makes the camera shake
@@ -98,5 +98,17 @@ public class CameraController : MonoBehaviour
     public void AddTrauma(float amount)
     {
         this.m_Trauma = Mathf.Min(1.0f, this.m_Trauma + amount);
+    }
+    
+    
+    /*==============================
+        SetLookDirection
+        Set's the camera's look direction
+        @param The look direction vector
+    ==============================*/
+    
+    public void SetLookDirection(Vector2 lookdir)
+    {
+        this.lookDirection = lookdir;
     }
 }

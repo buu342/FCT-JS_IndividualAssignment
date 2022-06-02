@@ -1405,6 +1405,7 @@ public class AStar {
         public bool traversable;
         public float cost;
         public bool isStairs;
+        public ProcGenner.BlockType prevBlock;
     }
 
     static readonly Vector3Int[] neighbors = {
