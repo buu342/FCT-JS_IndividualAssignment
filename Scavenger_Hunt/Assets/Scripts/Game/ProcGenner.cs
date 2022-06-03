@@ -218,7 +218,7 @@ public class ProcGenner : MonoBehaviour
                 (int)Random.Range(0, ProcGenner.MapSize_X-1-ProcGenner.MaxRoomSize_Z)
             );
         
-            // Check that the generated coordinate is not overlapping with any room or hallway
+            // Check that the generated coordinate is not overlapping with any room or corridor
             for (int i=0; i<size.z && !overlap; i++)
             {
                 for (int j=0; j<size.y && !overlap; j++)
@@ -492,7 +492,6 @@ public class ProcGenner : MonoBehaviour
             AStar astr = new AStar(gridsize);
             Vector3Int startpos = new Vector3Int((int)edge.U.Position.x, (int)edge.U.Position.y, (int)edge.U.Position.z);
             Vector3Int endpos = new Vector3Int((int)edge.V.Position.x, (int)edge.V.Position.y, (int)edge.V.Position.z);
-            List<Vector3> doorpos = new List<Vector3>();
             
             // Pathfind, using our custom cost function
             List<Vector3Int> path = astr.FindPath(startpos, endpos, (AStar.Node a, AStar.Node b) => {
@@ -512,10 +511,6 @@ public class ProcGenner : MonoBehaviour
                         pathcost.cost += 5;
                     else if (this.m_Grid[b.Position.x, b.Position.y, b.Position.z] == BlockType.None)
                         pathcost.cost += 1;
-                    
-                    if (pathcost.prevBlock != BlockType.Room && this.m_Grid[b.Position.x, b.Position.y, b.Position.z] == BlockType.Room)
-                        doorpos.Add(new Vector3(b.Position.x, b.Position.y, b.Position.z));
-                    pathcost.prevBlock = this.m_Grid[b.Position.x, b.Position.y, b.Position.z];
                     
                     // We're currently in a valid spot
                     pathcost.traversable = true;
@@ -651,21 +646,32 @@ public class ProcGenner : MonoBehaviour
                     }
                 }
 
-                // Create hallways
+                // Create corridors
+                BlockType prevblock = BlockType.None;
+                Vector3Int prevpos = Vector3Int.zero;
                 foreach (Vector3Int pos in path)
                 {
+                    // Place corridors in our path
                     if (this.m_Grid[pos.x, pos.y, pos.z] == BlockType.Corridor)
                     {
                         List<GameObject> res = PlaceCorridor(pos);
                         res.ForEach(item => corridor.Add(item));
                     }
+                    
+                    // If we were in a room before, and we're in a corridor now, then place a door between the two points
+                    if ((prevblock == BlockType.Corridor && this.m_Grid[pos.x, pos.y, pos.z] == BlockType.Room) || (prevblock == BlockType.Room && this.m_Grid[pos.x, pos.y, pos.z] == BlockType.Corridor))
+                    {
+                        Vector3 doorpos = ((new Vector3(pos.x, 0.0f, pos.z)) - (new Vector3(prevpos.x, 0.0f, prevpos.z)))*0.5f + prevpos;
+                        float angle = 0.0f;
+                        if (pos.z - prevpos.z != 0)
+                            angle = 90.0f;
+                        Instantiate(this.m_DoorPrefab, (doorpos - Center)*ProcGenner.GridScale, this.m_DoorPrefab.transform.rotation*Quaternion.Euler(0, angle, 0));
+                    }
+                    
+                    // Store the previous path position
+                    prevblock = this.m_Grid[pos.x, pos.y, pos.z];
+                    prevpos = pos;
                 }
-                
-                // Place doors
-                //foreach (Vector3 pos in doorpos)
-                //{
-                //    GameObject instobj = Instantiate(this.m_DoorPrefab, (pos-Center)*ProcGenner.GridScale, this.m_DoorPrefab.transform.rotation);
-                //}
                 
                 // Add this to our list of corridors
                 this.m_Corridors.Add(corridor);
