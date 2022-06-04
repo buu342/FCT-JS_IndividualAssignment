@@ -48,6 +48,9 @@ MonoBehaviour:
   m_FloorPrefab: {fileID: 4546657156345559804, guid: bcf2f365cb079944abc10eafc74202cc, type: 3}
   m_CeilingPrefab: {fileID: 4546657156345559804, guid: 7c8412c326eac5141942d3bec6136b4b, type: 3}
   m_StairPrefab: {fileID: 8725706798832080784, guid: 0adef0cb7ba757c40aec3e4e95b71aea, type: 3}
+  m_Wall1Prefab: {fileID: 1512847438612294568, guid: 8da7c6dcc88617d43b2b4a3b3e9e3fef, type: 3}
+  m_Wall2Prefab: {fileID: 1512847438612294568, guid: d71e8368f5fdcd947b507ec0470b5803, type: 3}
+  m_Wall3Prefab: {fileID: 1512847438612294568, guid: 16045b20e8eecdb478223c048259e4aa, type: 3}
   m_DoorPrefab: {fileID: 6969831614626464371, guid: 02eb0cd0329be904db4229b31cec3fab, type: 3}
   m_PlayerPrefab: {fileID: 8512297084061567289, guid: 4989e4715fb20e04a9d8d198d616c25a, type: 3}
   m_MaterialRoom: {fileID: 2100000, guid: 732ccbda58b09a14082486b2697dd82c, type: 2}
