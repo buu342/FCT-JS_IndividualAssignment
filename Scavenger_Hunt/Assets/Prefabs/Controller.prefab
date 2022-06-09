@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Wall2Prefab: {fileID: 1512847438612294568, guid: d71e8368f5fdcd947b507ec0470b5803, type: 3}
   m_Wall3Prefab: {fileID: 1512847438612294568, guid: 16045b20e8eecdb478223c048259e4aa, type: 3}
   m_DoorPrefab: {fileID: 6969831614626464371, guid: 02eb0cd0329be904db4229b31cec3fab, type: 3}
+  m_DoorWall1Prefab: {fileID: 1512847438612294568, guid: 3facb2bfa7b1ff04c9f5d23ac7ecb156, type: 3}
+  m_DoorWall2Prefab: {fileID: 1512847438612294568, guid: 893f902372931e049affee6560a3cf38, type: 3}
   m_PlayerPrefab: {fileID: 8512297084061567289, guid: 4989e4715fb20e04a9d8d198d616c25a, type: 3}
   m_MaterialRoom: {fileID: 2100000, guid: 732ccbda58b09a14082486b2697dd82c, type: 2}
   m_MaterialCorridor: {fileID: 2100000, guid: 0e451b62ade916149be2e85ec0f9d3cb, type: 2}

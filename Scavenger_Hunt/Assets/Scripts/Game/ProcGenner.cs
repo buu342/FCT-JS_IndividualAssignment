@@ -9,9 +9,8 @@ provided:
 https://vazgriz.com/119/procedurally-generated-dungeons/
 
 TODO:
-    * Wall side buffer
-    * Room wall door top part
-    * Stair ceiling and walls
+    * Prevent the generation of double doors
+    * Prevent the generation of double stairs
 ****************************************************************/
 
 using System.Collections;
@@ -22,7 +21,7 @@ public class ProcGenner : MonoBehaviour
 {
     public  const float GridScale     = 4.0f; // The size of each grid mesh (in world units)
     private const int   MapSize_X     = 30;   // Maximum map size on X (in grid units)
-    private const int   MapSize_Y     = 5;    // Maximum map size on Y (in grid units)
+    private const int   MapSize_Y     = 6;    // Maximum map size on Y (in grid units)
     private const int   MapSize_Z     = 30;   // Maximum map size on Z (in grid units)
     private const int   MinRoomSize_X = 3;    // Minimum room size on X (in grid units)
     private const int   MinRoomSize_Y = 2;    // Minimum room size on Y (in grid units)
@@ -47,6 +46,13 @@ public class ProcGenner : MonoBehaviour
         Stairs
     };
     
+    private struct BlockDef
+    {
+        public BlockType type;
+        public RoomDef roomdef;         // C# doesn't allow for void* for some reason??????
+        public CorridorDef corridordef;
+    };
+    
     private struct RoomDef
     {
         public Vector3Int position;
@@ -57,6 +63,7 @@ public class ProcGenner : MonoBehaviour
     private struct CorridorDef
     {
         public Vector3Int position;
+        public Vector3Int direction;
         public List<GameObject> objects;
     };
     
@@ -68,6 +75,8 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_Wall2Prefab;
     public GameObject m_Wall3Prefab;
     public GameObject m_DoorPrefab;
+    public GameObject m_DoorWall1Prefab;
+    public GameObject m_DoorWall2Prefab;
     public GameObject m_PlayerPrefab;
     public Material m_MaterialRoom;
     public Material m_MaterialCorridor;
@@ -77,7 +86,7 @@ public class ProcGenner : MonoBehaviour
     
     private Delaunay3D m_Delaunay;
     private HashSet<Prim.Edge> m_SelectedEdges;
-    private BlockType[,,] m_Grid;
+    private BlockDef[,,] m_Grid;
     private List<GameObject> m_Entities;
     private List<RoomDef> m_Rooms;
     private List<CorridorDef> m_Corridors;
@@ -101,7 +110,7 @@ public class ProcGenner : MonoBehaviour
         while (true)
         {            
             // Initialize our data structures
-            this.m_Grid = new BlockType[ProcGenner.MapSize_X, ProcGenner.MapSize_Y, ProcGenner.MapSize_Z];
+            this.m_Grid = new BlockDef[ProcGenner.MapSize_X, ProcGenner.MapSize_Y, ProcGenner.MapSize_Z];
             this.m_Vertices = new List<Graphs.Vertex>();
             this.m_RoomVerts = new Dictionary<Graphs.Vertex, List<GameObject>>();
             
@@ -109,7 +118,7 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<ProcGenner.MapSize_X; i++)
                 for (int j=0; j<ProcGenner.MapSize_Y; j++)
                     for (int k=0; k<ProcGenner.MapSize_Z; k++)
-                        this.m_Grid[i, j, k] = BlockType.None;
+                        this.m_Grid[i, j, k] = new BlockDef(){type = BlockType.None};
                     
             // If we have non empty lists, then cycle through them and destroy all the objects contained within
             if (this.m_Entities != null)
@@ -193,7 +202,6 @@ public class ProcGenner : MonoBehaviour
         instobj.GetComponent<Renderer>().material = this.m_MaterialSpawn;
         this.m_Entities.Add(instobj);
         doorpos = coord + (new Vector3(0, 0, 0.25f)*ProcGenner.GridScale/2);
-        Debug.Log(doorpos);
         instobj = Instantiate(this.m_DoorPrefab, (doorpos - Center)*ProcGenner.GridScale, this.m_DoorPrefab.transform.rotation*Quaternion.Euler(0,90,0));
         this.m_Doors.Add((doorpos, instobj));
         
@@ -217,7 +225,10 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<4; i++)
             {
                 Vector3Int finalpos = coord - new Vector3Int(0, 0, i);
-                this.m_Corridors.Add(new CorridorDef(){position = finalpos, objects = PlaceCorridor(finalpos)});
+                CorridorDef cdef = new CorridorDef(){position = finalpos, direction = new Vector3Int(0, 0, 1), objects = PlaceCorridor(finalpos)};
+                this.m_Corridors.Add(cdef);
+                this.m_Grid[finalpos.x, finalpos.y, finalpos.z].type = BlockType.Corridor;
+                this.m_Grid[finalpos.x, finalpos.y, finalpos.z].corridordef = cdef;
             }
             this.m_Vertices.Add(new Graphs.Vertex(coord));
         }
@@ -263,13 +274,13 @@ public class ProcGenner : MonoBehaviour
                         int gridx = (int)(coord.x + k);
                         int gridy = (int)(coord.y + j);
                         int gridz = (int)(coord.z + i);
-                        if ((this.m_Grid[gridx, gridy, gridz] != BlockType.None) ||
-                            (this.m_Grid[Mathf.Min(gridx+1, ProcGenner.MapSize_X-1), gridy, gridz] != BlockType.None) ||
-                            (this.m_Grid[Mathf.Max(gridx-1, 0), gridy, gridz] != BlockType.None) ||
-                            (this.m_Grid[gridx, Mathf.Min(gridy+1, ProcGenner.MapSize_Y-1), gridz] != BlockType.None) ||
-                            (this.m_Grid[gridx, Mathf.Max(gridy-1, 0), gridz] != BlockType.None) ||
-                            (this.m_Grid[gridx, gridy, Mathf.Min(gridz+1, ProcGenner.MapSize_Z-1)] != BlockType.None) ||
-                            (this.m_Grid[gridx, gridy, Mathf.Max(gridz-1, 0)] != BlockType.None)
+                        if ((this.m_Grid[gridx, gridy, gridz].type != BlockType.None) ||
+                            (this.m_Grid[Mathf.Min(gridx+1, ProcGenner.MapSize_X-1), gridy, gridz].type != BlockType.None) ||
+                            (this.m_Grid[Mathf.Max(gridx-1, 0), gridy, gridz].type != BlockType.None) ||
+                            (this.m_Grid[gridx, Mathf.Min(gridy+1, ProcGenner.MapSize_Y-1), gridz].type != BlockType.None) ||
+                            (this.m_Grid[gridx, Mathf.Max(gridy-1, 0), gridz].type != BlockType.None) ||
+                            (this.m_Grid[gridx, gridy, Mathf.Min(gridz+1, ProcGenner.MapSize_Z-1)].type != BlockType.None) ||
+                            (this.m_Grid[gridx, gridy, Mathf.Max(gridz-1, 0)].type != BlockType.None)
                         )
                         {
                             overlap = true;
@@ -319,32 +330,42 @@ public class ProcGenner : MonoBehaviour
         GameObject instobj;
         Graphs.Vertex vert;
         List<GameObject> rm = new List<GameObject>();
+        List<Vector3Int> positions = new List<Vector3Int>();
         for (int i=0; i<size.z; i++)
         {
             for (int j=0; j<size.x; j++)
             {
                 // Floor
-                Vector3 finalpos = pos + new Vector3(j, 0, i);
+                Vector3Int finalpos = pos + new Vector3Int(j, 0, i);
                 instobj = Instantiate(this.m_FloorPrefab, (finalpos-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
                 
-                // Mark the entire block as a room in our grid
+                // Store a list of the positions we added objects to
                 for (int k=0; k<size.y; k++)
-                    this.m_Grid[(int)finalpos.x, (int)finalpos.y+k, (int)finalpos.z] = BlockType.Room;
+                    positions.Add(finalpos + new Vector3Int(0, k, 0));
                 
                 // Ceiling
-                finalpos += new Vector3(0, size.y, 0);
+                finalpos += new Vector3Int(0, size.y, 0);
                 instobj = Instantiate(this.m_CeilingPrefab, (finalpos-Center)*ProcGenner.GridScale, this.m_CeilingPrefab.transform.rotation);
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
             }
         }
         
+        // Store the room definition in the helper structures
+        RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm};
         vert = new Graphs.Vertex(pos + new Vector3(size.x*0.5f, 0.0f, size.z*0.5f));
-        this.m_Rooms.Add(new RoomDef(){position = pos, size = size, objects = rm});
+        this.m_Rooms.Add(rdef);
         this.m_Vertices.Add(vert);
         this.m_RoomVerts.Add(vert, rm);
+        
+        // Mark the entire block as a room in our grid
+        foreach (Vector3Int gridpos in positions)
+        {
+            this.m_Grid[gridpos.x, gridpos.y, gridpos.z].type = BlockType.Room;
+            this.m_Grid[gridpos.x, gridpos.y, gridpos.z].roomdef = rdef;
+        }
     }
       
     
@@ -363,7 +384,6 @@ public class ProcGenner : MonoBehaviour
         // Floor
         instobj = Instantiate(this.m_FloorPrefab, (pos-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
         instobj.GetComponent<Renderer>().material = this.m_MaterialCorridor;
-        this.m_Grid[(int)pos.x, (int)pos.y, (int)pos.z] = BlockType.Corridor;
         corridor.Add(instobj);
         
         // Ceiling
@@ -419,12 +439,19 @@ public class ProcGenner : MonoBehaviour
             return true;
         
         // Handle stairs edge case
-        //if (gridtype == BlockType.Stairs && check.y-1 >= 0 && this.m_Grid[check.x, check.y-1, check.z] == BlockType.Stairs)
-        //    return true;
+        BlockType gridtype = this.m_Grid[check.x, check.y, check.z].type;
+        if (gridtype == BlockType.Stairs)
+        {
+            CorridorDef stairdef = this.m_Grid[check.x, check.y, check.z].corridordef;
+            
+            // Prevent placing walls at the start or end of a staircase
+            if (Mathf.Abs(dir.x) == Mathf.Abs(stairdef.direction.x) && Mathf.Abs(dir.z) == Mathf.Abs(stairdef.direction.z))
+                if (check == stairdef.position || check == stairdef.position+stairdef.direction+new Vector3Int(0, 1, 0))
+                    return false;
+        }
         
         // Return if this is a valid place to put a wall
-        BlockType gridtype = this.m_Grid[check.x, check.y, check.z];
-        return (gridtype != BlockType.Corridor && gridtype != BlockType.Stairs);
+        return (gridtype != BlockType.Corridor);
     }
     
     
@@ -601,11 +628,11 @@ public class ProcGenner : MonoBehaviour
                     pathcost.cost = Vector3Int.Distance(b.Position, endpos);
 
                     // Calculate the path heuristic given what we're currently traveling into
-                    if (this.m_Grid[b.Position.x, b.Position.y, b.Position.z] == BlockType.Stairs)
+                    if (this.m_Grid[b.Position.x, b.Position.y, b.Position.z].type == BlockType.Stairs)
                         return pathcost;
-                    else if (this.m_Grid[b.Position.x, b.Position.y, b.Position.z] == BlockType.Room)
+                    else if (this.m_Grid[b.Position.x, b.Position.y, b.Position.z].type == BlockType.Room)
                         pathcost.cost += 5;
-                    else if (this.m_Grid[b.Position.x, b.Position.y, b.Position.z] == BlockType.None)
+                    else if (this.m_Grid[b.Position.x, b.Position.y, b.Position.z].type == BlockType.None)
                         pathcost.cost += 1;
                     
                     // We're currently in a valid spot
@@ -617,8 +644,8 @@ public class ProcGenner : MonoBehaviour
                     Vector3Int bpos = b.Position;
                     
                     // Stop if we are not connected by 2 corridor blocks
-                    if ((this.m_Grid[apos.x, apos.y, apos.z] != BlockType.None && this.m_Grid[apos.x, apos.y, apos.z] != BlockType.Corridor)
-                        || (this.m_Grid[bpos.x, bpos.y, bpos.z] != BlockType.None && this.m_Grid[bpos.x, bpos.y, bpos.z] != BlockType.Corridor)
+                    if ((this.m_Grid[apos.x, apos.y, apos.z].type != BlockType.None && this.m_Grid[apos.x, apos.y, apos.z].type != BlockType.Corridor)
+                        || (this.m_Grid[bpos.x, bpos.y, bpos.z].type != BlockType.None && this.m_Grid[bpos.x, bpos.y, bpos.z].type != BlockType.Corridor)
                     ) 
                         return pathcost;
 
@@ -642,10 +669,10 @@ public class ProcGenner : MonoBehaviour
                     Vector3Int offset2 = apos + horizontalOffset*2;
                     Vector3Int offset3 = apos + verticalOffset + horizontalOffset;
                     Vector3Int offset4 = apos + verticalOffset + horizontalOffset*2;
-                    if (this.m_Grid[offset1.x, offset1.y, offset1.z] != BlockType.None
-                        || this.m_Grid[offset2.x, offset2.y, offset2.z] != BlockType.None
-                        || this.m_Grid[offset3.x, offset3.y, offset3.z] != BlockType.None
-                        || this.m_Grid[offset4.x, offset4.y, offset4.z] != BlockType.None) {
+                    if (this.m_Grid[offset1.x, offset1.y, offset1.z].type != BlockType.None
+                        || this.m_Grid[offset2.x, offset2.y, offset2.z].type != BlockType.None
+                        || this.m_Grid[offset3.x, offset3.y, offset3.z].type != BlockType.None
+                        || this.m_Grid[offset4.x, offset4.y, offset4.z].type != BlockType.None) {
                         return pathcost;
                     }
 
@@ -667,14 +694,14 @@ public class ProcGenner : MonoBehaviour
                 {
                     Vector3Int current = path[i];
 
-                    if (this.m_Grid[current.x, current.y, current.z] == BlockType.None)
-                        this.m_Grid[current.x, current.y, current.z] = BlockType.Corridor;
+                    if (this.m_Grid[current.x, current.y, current.z].type == BlockType.None)
+                        this.m_Grid[current.x, current.y, current.z].type = BlockType.Corridor;
 
                     if (i > 0)
                     {
                         Vector3Int prev = path[i - 1];
                         Vector3Int delta = current - prev;
-                        BlockType prevblock = this.m_Grid[prev.x, prev.y, prev.z];
+                        BlockType prevblock = this.m_Grid[prev.x, prev.y, prev.z].type;
 
                         // If the delta y is non-zero, then we have stairs to place
                         if (delta.y != 0)
@@ -691,14 +718,14 @@ public class ProcGenner : MonoBehaviour
                             Vector3Int offset4 = prev + verticalOffset + horizontalOffset*2;
                             
                             // Mark the grid areas as stairs
-                            this.m_Grid[offset1.x, offset1.y, offset1.z] = BlockType.Stairs;
-                            this.m_Grid[offset2.x, offset2.y, offset2.z] = BlockType.Stairs;
-                            this.m_Grid[offset3.x, offset3.y, offset3.z] = BlockType.Stairs;
-                            this.m_Grid[offset4.x, offset4.y, offset4.z] = BlockType.Stairs;
+                            this.m_Grid[offset1.x, offset1.y, offset1.z].type = BlockType.Stairs;
+                            this.m_Grid[offset2.x, offset2.y, offset2.z].type = BlockType.Stairs;
+                            this.m_Grid[offset3.x, offset3.y, offset3.z].type = BlockType.Stairs;
+                            this.m_Grid[offset4.x, offset4.y, offset4.z].type = BlockType.Stairs;
                         }
                         
                         // If we were in a room before, and we're in a corridor now, then place a door between the two points
-                        if ((prevblock == BlockType.Corridor && this.m_Grid[current.x, current.y, current.z] == BlockType.Room) || (prevblock == BlockType.Room && this.m_Grid[current.x, current.y, current.z] == BlockType.Corridor))
+                        if ((prevblock == BlockType.Corridor && this.m_Grid[current.x, current.y, current.z].type == BlockType.Room) || (prevblock == BlockType.Room && this.m_Grid[current.x, current.y, current.z].type == BlockType.Corridor))
                         {
                             Vector3 doordir = (new Vector3(delta.x, 0.0f, delta.z));
                             if (!DoorExists(prev, Vector3Int.FloorToInt(doordir)))
@@ -726,7 +753,7 @@ public class ProcGenner : MonoBehaviour
                 {
                     Vector3Int prev = path[i - 1];
                     Vector3Int delta = pos - prev;
-                    BlockType prevblock = this.m_Grid[prev.x, prev.y, prev.z];
+                    BlockType prevblock = this.m_Grid[prev.x, prev.y, prev.z].type;
 
                     // If the delta y is non-zero, then we have stairs to place
                     if (delta.y != 0)
@@ -774,13 +801,36 @@ public class ProcGenner : MonoBehaviour
                                 placepos = prev + horizontalOffset;
                         }
                         
+                        // Correct the direction if necessary
+                        Vector3Int placedir = horizontalOffset;
+                        Vector3Int dircheck = placepos+placedir;
+                        if (this.m_Grid[dircheck.x, dircheck.y, dircheck.z].type != BlockType.Stairs)
+                            placedir = -placedir;
+                        
                         // Place the stair object
-                        this.m_Corridors.Add(new CorridorDef(){position = placepos, objects = PlaceStairs(placepos, Quaternion.Euler(0, 0, ang))});
+                        CorridorDef cdef = new CorridorDef(){position = placepos, direction = placedir, objects = PlaceStairs(placepos, Quaternion.Euler(0, 0, ang))};
+                        this.m_Corridors.Add(cdef);
+                            
+                        // Calculate the offsets to help us out
+                        Vector3Int offset1 = prev + horizontalOffset;
+                        Vector3Int offset2 = prev + horizontalOffset*2;
+                        Vector3Int offset3 = prev + verticalOffset + horizontalOffset;
+                        Vector3Int offset4 = prev + verticalOffset + horizontalOffset*2;
+                        
+                        // Mark the grid areas as stairs
+                        this.m_Grid[offset1.x, offset1.y, offset1.z].corridordef = cdef;
+                        this.m_Grid[offset2.x, offset2.y, offset2.z].corridordef = cdef;
+                        this.m_Grid[offset3.x, offset3.y, offset3.z].corridordef = cdef;
+                        this.m_Grid[offset4.x, offset4.y, offset4.z].corridordef = cdef;
                     }
                     
                     // Place corridors in our path
-                    if (this.m_Grid[pos.x, pos.y, pos.z] == BlockType.Corridor)
-                        this.m_Corridors.Add(new CorridorDef(){position = pos, objects = PlaceCorridor(pos)});
+                    if (this.m_Grid[pos.x, pos.y, pos.z].type == BlockType.Corridor)
+                    {
+                        CorridorDef cdef = new CorridorDef(){position = pos, direction = delta, objects = PlaceCorridor(pos)};
+                        this.m_Corridors.Add(cdef);
+                        this.m_Grid[pos.x, pos.y, pos.z].corridordef = cdef;
+                    }
                 }
             }
         }
@@ -801,18 +851,14 @@ public class ProcGenner : MonoBehaviour
         {
             List<GameObject> rm = new List<GameObject>();
             
-            // Get the wall prefab
-            GameObject wallprefab = this.m_Wall2Prefab;
-            if (rdef.size.y == 3)
-                wallprefab = this.m_Wall3Prefab;
-            
             // Front walls
             Vector3Int dir = new Vector3Int(0, 0, -1);
             for (int i=0; i<rdef.size.x; i++)
             {
                 Vector3Int finalpos = rdef.position + new Vector3Int(i, 0, 0);
+                GameObject wallprefab = (rdef.size.y == 3) ? this.m_Wall3Prefab : this.m_Wall2Prefab;
                 if (DoorExists(finalpos, dir))
-                    continue;
+                    wallprefab = (rdef.size.y == 3) ? this.m_DoorWall2Prefab : this.m_DoorWall1Prefab;
                 instobj = Instantiate(wallprefab, (finalpos-Center)*ProcGenner.GridScale + (((Vector3)dir)*ProcGenner.GridScale/2), wallprefab.transform.rotation*Quaternion.Euler(0, 0, 180));
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
@@ -823,8 +869,9 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<rdef.size.x; i++)
             {
                 Vector3Int finalpos = rdef.position + new Vector3Int(i, 0, rdef.size.z-1);
+                GameObject wallprefab = (rdef.size.y == 3) ? this.m_Wall3Prefab : this.m_Wall2Prefab;
                 if (DoorExists(finalpos, dir))
-                    continue;
+                    wallprefab = (rdef.size.y == 3) ? this.m_DoorWall2Prefab : this.m_DoorWall1Prefab;
                 instobj = Instantiate(wallprefab, (finalpos-Center)*ProcGenner.GridScale + (((Vector3)dir)*ProcGenner.GridScale/2), wallprefab.transform.rotation);
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
@@ -835,8 +882,9 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<rdef.size.z; i++)
             {
                 Vector3Int finalpos = rdef.position + new Vector3Int(0, 0, i);
+                GameObject wallprefab = (rdef.size.y == 3) ? this.m_Wall3Prefab : this.m_Wall2Prefab;
                 if (DoorExists(finalpos, dir))
-                    continue;
+                    wallprefab = (rdef.size.y == 3) ? this.m_DoorWall2Prefab : this.m_DoorWall1Prefab;
                 instobj = Instantiate(wallprefab, (finalpos-Center)*ProcGenner.GridScale + (((Vector3)dir)*ProcGenner.GridScale/2), wallprefab.transform.rotation*Quaternion.Euler(0, 0, -90));
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
@@ -847,8 +895,9 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<rdef.size.z; i++)
             {
                 Vector3Int finalpos = rdef.position + new Vector3Int(rdef.size.x-1, 0, i);
+                GameObject wallprefab = (rdef.size.y == 3) ? this.m_Wall3Prefab : this.m_Wall2Prefab;
                 if (DoorExists(finalpos, dir))
-                    continue;
+                    wallprefab = (rdef.size.y == 3) ? this.m_DoorWall2Prefab : this.m_DoorWall1Prefab;
                 instobj = Instantiate(wallprefab, (finalpos-Center)*ProcGenner.GridScale + (((Vector3)dir)*ProcGenner.GridScale/2), wallprefab.transform.rotation*Quaternion.Euler(0, 0, 90));
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
@@ -858,12 +907,10 @@ public class ProcGenner : MonoBehaviour
             rdef.objects.AddRange(rm);
         }
         
-        Debug.Log(this.m_Corridors.Count);
-        
         // Corridors
         foreach (CorridorDef cdef in this.m_Corridors)
         {
-            if (this.m_Grid[cdef.position.x, cdef.position.y, cdef.position.z] == BlockType.Stairs)
+            if (this.m_Grid[cdef.position.x, cdef.position.y, cdef.position.z].type == BlockType.Stairs)
                 continue;
             
             // Walls
