@@ -23,11 +23,12 @@ public class Sound
     public bool pitchBulletTime = true;
     public bool loop = false;
     public bool canStack = false;
+    public bool canMuffle = false;
     public bool is3D = false;
     public float maxDistance = 16.0f;
     
     [HideInInspector]
-    public List<GameObject> sources;
+    public List<(GameObject, GameObject)> sources = new List<(GameObject, GameObject)>();
     [HideInInspector]
     public float maxDistanceSqr;
 }

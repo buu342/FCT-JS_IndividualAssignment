@@ -35,9 +35,9 @@ public class AudioManager : MonoBehaviour
         @param The object that played the sound
     ==============================*/
 
-    public void Play(string name, GameObject obj)
+    public void Play(string name, GameObject obj, GameObject ignore=null)
     {
-        GameObject ret = Play(name, obj.transform.position);
+        GameObject ret = Play(name, obj.transform.position, ignore);
         ret.transform.SetParent(obj.transform);
     }
     
@@ -50,7 +50,7 @@ public class AudioManager : MonoBehaviour
         @returns The created sound object
     ==============================*/
 
-    public GameObject Play(string name, Vector3 position = default(Vector3))
+    public GameObject Play(string name, Vector3 position = default(Vector3), GameObject ignore=null)
     {
         // Find all sounds that have the given name
         Sound[] slist = Array.FindAll(this.m_RegisteredSoundsList, sound => sound.name == name);
@@ -69,7 +69,7 @@ public class AudioManager : MonoBehaviour
             {
                 for (int i=snds.sources.Count-1; i>=0; i--)
                 {
-                    Destroy(snds.sources[i]);
+                    Destroy(snds.sources[i].Item1);
                     snds.sources.RemoveAt(i);
                 }
             }
@@ -84,6 +84,7 @@ public class AudioManager : MonoBehaviour
         #endif
         AudioSource source = sndobj.AddComponent<AudioSource>();
         AudioLowPassFilter filter = sndobj.AddComponent<AudioLowPassFilter>();
+        filter.cutoffFrequency = 2000.0f;
         filter.enabled = false;
         source.clip = s.clip;
         source.loop = s.loop;
@@ -91,21 +92,34 @@ public class AudioManager : MonoBehaviour
         // Calculate the volume and panning
         if (s.is3D)
         {
-            Vector3 srcpos = new Vector3(position.x, position.y, position.z);
-            Vector3 listenerpos = new Vector3(this.m_listener.transform.position.x, this.m_listener.transform.position.y, this.m_listener.transform.position.z);
             sndobj.transform.position = position;
-            source.volume = s.volume*Calc3DSoundVolume(s.maxDistanceSqr, listenerpos, srcpos);
-            source.panStereo = Calc3DSoundPan(s.maxDistanceSqr, listenerpos, srcpos);
+            source.volume = s.volume*Calc3DSoundVolume(s.maxDistanceSqr, this.m_listener.transform.position, position);
+            source.panStereo = Calc3DSoundPan(s.maxDistance, this.m_listener.transform.position, position);
+        
+            // Calculate sound muffling
+            if (s.canMuffle)
+            {
+                bool hitsomething = false;
+                RaycastHit[] hits = Physics.RaycastAll(position, position-this.m_listener.transform.position, s.maxDistance);
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    GameObject hit = hits[i].transform.gameObject;
+                    if (hit.tag == "Wall" || hit.tag == "Floor" || hit.tag == "Ceiling" || hit.tag == "Door")
+                    {
+                        hitsomething = true;
+                        break;
+                    }
+                }
+                filter.enabled = hitsomething;
+            }
         }
         else
-        {
             source.volume = s.volume;
-        }
         
         // Play the sound
         source.pitch = s.pitch;
         source.Play();
-        s.sources.Add(sndobj);
+        s.sources.Add((sndobj, ignore));
         return sndobj;
     }
     
@@ -117,14 +131,15 @@ public class AudioManager : MonoBehaviour
     
     public void Update()
     {
-        Vector3 listenerpos = new Vector3(this.m_listener.transform.position.x, this.m_listener.transform.position.y, this.m_listener.transform.position.z);
+        Vector3 listenerpos = this.m_listener.transform.position;
         
         // Go through all active sounds
         foreach (Sound s in this.m_RegisteredSoundsList)
         {
             for (int i=s.sources.Count-1; i>=0; i--)
             {
-                GameObject sndobj = s.sources[i];
+                GameObject sndobj = s.sources[i].Item1;
+                GameObject ignore = s.sources[i].Item2;
                 if (sndobj == null)
                 {
                     s.sources.RemoveAt(i);
@@ -147,9 +162,28 @@ public class AudioManager : MonoBehaviour
                 // Calculate volume and panning
                 if (s.is3D)
                 {
-                    Vector3 srcpos = new Vector3(sndobj.transform.position.x, sndobj.transform.position.y, sndobj.transform.position.z);
+                    Vector3 srcpos = sndobj.transform.position;
                     source.volume = s.volume*Calc3DSoundVolume(s.maxDistanceSqr, listenerpos, srcpos);
-                    source.panStereo = Calc3DSoundPan(s.maxDistanceSqr, listenerpos, srcpos);
+                    source.panStereo = Calc3DSoundPan(s.maxDistance, listenerpos, srcpos);
+                    
+                    // Calculate sound muffling
+                    float dist = (listenerpos-srcpos).magnitude;
+                    if (s.canMuffle && dist < s.maxDistance)
+                    {
+                        bool hitsomething = false;
+                        RaycastHit[] hits = Physics.RaycastAll(srcpos, (listenerpos-srcpos).normalized, dist);
+                        Debug.DrawRay(srcpos, listenerpos-srcpos, Color.white, 1.0f, true);
+                        for (int j = 0; j < hits.Length; j++)
+                        {
+                            GameObject hit = hits[j].transform.gameObject;
+                            if (hit != ignore && (hit.tag == "Wall" || hit.tag == "Floor" || hit.tag == "Ceiling" || hit.tag == "Door"))
+                            {
+                                hitsomething = true;
+                                break;
+                            }
+                        }
+                        sndobj.GetComponent<AudioLowPassFilter>().enabled = hitsomething;
+                    }
                 }
             }
         }
@@ -181,11 +215,11 @@ public class AudioManager : MonoBehaviour
         {
             for (int i=s.sources.Count-1; i>=0; i--)
             {
-                if (emitter == null || s.sources[i].transform.parent == emitter)
+                if (emitter == null || s.sources[i].Item1.transform.parent == emitter)
                 {
-                    AudioSource source = s.sources[i].GetComponent<AudioSource>();
+                    AudioSource source = s.sources[i].Item1.GetComponent<AudioSource>();
                     source.Stop();
-                    Destroy(s.sources[i]);
+                    Destroy(s.sources[i].Item1);
                     s.sources.RemoveAt(i);
                 }
             }
@@ -205,10 +239,8 @@ public class AudioManager : MonoBehaviour
     private float Calc3DSoundVolume(float maxdistsqr, Vector3 listenerpos, Vector3 srcpos)
     {
         Vector3 dist = listenerpos - srcpos;
-        float distsqr = dist.sqrMagnitude;
-        if (distsqr > maxdistsqr)
-            return 0.0f;
-        return (maxdistsqr - distsqr)/maxdistsqr;
+        float volume = 3.0f/dist.magnitude - 3.0f/Mathf.Sqrt(maxdistsqr);
+        return Mathf.Max(0.0f, volume);
     }
     
 
@@ -223,17 +255,10 @@ public class AudioManager : MonoBehaviour
     
     public float Calc3DSoundPan(float maxdistsqr, Vector3 listenerpos, Vector3 srcpos)
     {
-        /*
-        Vector3 dist = listenerpos - srcpos;
-        float distsqr = dist.sqrMagnitude;
-        if (distsqr == maxdistsqr)
-            return 0.0f;
-        else if (listenerpos.x > srcpos.x)
-            return -(1.0f - Mathf.Min((maxdistsqr - distsqr)/maxdistsqr, 1.0f));
-        else
-            return (1.0f - Mathf.Min((maxdistsqr - distsqr)/maxdistsqr, 1.0f));
-        */
-        return 0.0f;
+        Vector3 side = Vector3.Cross(this.m_listener.transform.up, this.m_listener.transform.forward);
+        side.Normalize();
+        float x = Vector3.Dot(srcpos - listenerpos, side);
+        return Mathf.Clamp(x/maxdistsqr, -1, 1);
     }
     
 
