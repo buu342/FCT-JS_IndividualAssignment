@@ -96,11 +96,11 @@ public class ProcGenner : MonoBehaviour
     
     
     /*==============================
-        Awake
-        Called when the controller is created
+        GenerateScene
+        Procedurally generates a level
     ==============================*/
     
-    void Awake()
+    public void GenerateScene()
     {
         #if UNITY_EDITOR
             System.DateTime time = System.DateTime.Now;

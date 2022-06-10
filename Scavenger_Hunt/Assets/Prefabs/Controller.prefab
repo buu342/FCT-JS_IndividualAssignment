@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1436194342606117216}
+  - component: {fileID: 1648054404}
   - component: {fileID: 2869686202096945100}
   m_Layer: 0
   m_Name: Controller
@@ -32,6 +33,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1648054404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436194342606117223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abdf75dbb54e713418a2faa1782f4f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2869686202096945100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b231299edf50d9248a72e35323f64858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 1727716920416927307, guid: 4a8c19c51a0a5104f834996d2b5ddb49, type: 3}
+  m_Camera: {fileID: 0}
   m_FloorPrefab: {fileID: 4546657156345559804, guid: bcf2f365cb079944abc10eafc74202cc, type: 3}
   m_CeilingPrefab: {fileID: 4546657156345559804, guid: 7c8412c326eac5141942d3bec6136b4b, type: 3}
   m_StairPrefab: {fileID: 8725706798832080784, guid: 0adef0cb7ba757c40aec3e4e95b71aea, type: 3}
