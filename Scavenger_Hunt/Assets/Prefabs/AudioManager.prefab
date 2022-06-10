@@ -52,8 +52,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/Metal
@@ -63,8 +64,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/Metal
@@ -74,8 +76,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/Metal
@@ -85,8 +88,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/Metal
@@ -96,8 +100,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -107,8 +112,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 32
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -118,8 +124,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 32
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -129,8 +136,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 32
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -140,8 +148,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 32
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -151,8 +160,9 @@ MonoBehaviour:
     pitchBulletTime: 0
     loop: 0
     canStack: 0
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 32
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -161,9 +171,10 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -172,9 +183,10 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -183,9 +195,10 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -194,9 +207,10 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
     sources: []
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -205,8 +219,33 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
+    canMuffle: 1
     is3D: 1
-    maxDistance: 16
+    maxDistance: 24
+    sources: []
+    maxDistanceSqr: 0
+  - name: Physics/DoorOpen
+    clip: {fileID: 8300000, guid: 12f20465a157bea41a04dc606dcc5c79, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 1
+    canMuffle: 1
+    is3D: 1
+    maxDistance: 32
+    sources: []
+    maxDistanceSqr: 0
+  - name: Physics/DoorClose
+    clip: {fileID: 8300000, guid: 45a3935d32b929840a21777b25cd83cf, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 1
+    canMuffle: 1
+    is3D: 1
+    maxDistance: 32
     sources: []
     maxDistanceSqr: 0

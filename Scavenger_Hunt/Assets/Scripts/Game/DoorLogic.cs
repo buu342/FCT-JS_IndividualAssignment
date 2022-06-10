@@ -14,6 +14,7 @@ public class DoorLogic : MonoBehaviour
     public float m_OpenSpeed = 0.5f;
     public GameObject m_ModelPrefab;
     
+    private AudioManager m_Audio;
     private bool m_IsOpen = false;
     private Vector3 m_Displacement = Vector3.zero;
     private float m_Timer = 0;
@@ -28,6 +29,7 @@ public class DoorLogic : MonoBehaviour
     void Start()
     {
         this.m_StartingPos = this.m_ModelPrefab.transform.position;
+        this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
     
 
@@ -39,7 +41,7 @@ public class DoorLogic : MonoBehaviour
     void FixedUpdate()
     {
         // Open the door
-        if (this.m_IsOpen)
+        if (this.m_IsOpen || (!this.m_IsOpen && this.m_Timer > Time.time))
         {
             if (this.m_Displacement.y < ProcGenner.GridScale)
             {
@@ -52,8 +54,11 @@ public class DoorLogic : MonoBehaviour
         // Close the door
         if (!this.m_IsOpen && this.m_Displacement.y > 0)
         {
-            if (this.m_Timer < Time.time)
+            if (this.m_Timer < Time.time && this.m_Timer != 0)
+            {
                 this.m_Timer = 0;
+                this.m_Audio.Play("Physics/DoorClose", this.transform.position + new Vector3(0, 1, 0), this.m_ModelPrefab.transform.gameObject);
+            }
             if (this.m_Timer == 0 && this.m_Displacement.y > 0)
             {
                 this.m_Displacement -= new Vector3(0, this.m_OpenSpeed, 0);
@@ -77,6 +82,8 @@ public class DoorLogic : MonoBehaviour
     {
         this.m_IsOpen = true;
         this.m_Timer = Time.time + DoorLogic.DoorHoldTime;
+        if (this.m_Displacement.y == 0)
+            this.m_Audio.Play("Physics/DoorOpen", this.transform.position + new Vector3(0, 1, 0), this.m_ModelPrefab.transform.gameObject);
     }
 
 
