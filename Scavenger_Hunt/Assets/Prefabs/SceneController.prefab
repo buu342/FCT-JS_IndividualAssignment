@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1648054404}
   - component: {fileID: 2869686202096945100}
   m_Layer: 0
-  m_Name: Controller
+  m_Name: SceneController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,6 +68,7 @@ MonoBehaviour:
   m_DoorWall1Prefab: {fileID: 1512847438612294568, guid: 3facb2bfa7b1ff04c9f5d23ac7ecb156, type: 3}
   m_DoorWall2Prefab: {fileID: 1512847438612294568, guid: 893f902372931e049affee6560a3cf38, type: 3}
   m_PlayerPrefab: {fileID: 8512297084061567289, guid: 4989e4715fb20e04a9d8d198d616c25a, type: 3}
+  m_NavMesh: {fileID: 5298259278283892742, guid: cfced5b2594efb445964a64a5bd7fc8b, type: 3}
   m_MaterialRoom: {fileID: 2100000, guid: 732ccbda58b09a14082486b2697dd82c, type: 2}
   m_MaterialCorridor: {fileID: 2100000, guid: 0e451b62ade916149be2e85ec0f9d3cb, type: 2}
   m_MaterialStairs: {fileID: 2100000, guid: abb5a07f527693f43a35c47deb94268f, type: 2}

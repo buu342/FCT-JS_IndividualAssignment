@@ -16,6 +16,7 @@ TODO:
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.AI.Navigation;
 
 public class ProcGenner : MonoBehaviour
 {
@@ -78,6 +79,7 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_DoorWall1Prefab;
     public GameObject m_DoorWall2Prefab;
     public GameObject m_PlayerPrefab;
+    public GameObject m_NavMesh;
     public Material m_MaterialRoom;
     public Material m_MaterialCorridor;
     public Material m_MaterialStairs;
@@ -171,6 +173,10 @@ public class ProcGenner : MonoBehaviour
         
         // And then fill everything with walls
         GenerateWalls();
+        
+        // Generate a walkable navmesh
+        UnityEditor.AI.NavMeshBuilder.ClearAllNavMeshes();
+        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
         
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
