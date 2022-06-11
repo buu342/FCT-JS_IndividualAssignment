@@ -89,8 +89,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: -0.1, y: 8, z: 8}
-  m_Center: {x: -2, y: 0, z: 2}
+  m_Size: {x: 0.1, y: 8, z: 8}
+  m_Center: {x: -2.05, y: 0, z: 2}
 --- !u!65 &4230435506340992578
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -103,7 +103,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.1, y: 8, z: 8}
-  m_Center: {x: 2, y: 0, z: 2}
+  m_Center: {x: 2.05, y: 0, z: 2}
 --- !u!1 &7934804674130453825
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,13 +114,12 @@ GameObject:
   m_Component:
   - component: {fileID: 2211683566665434860}
   - component: {fileID: 3730540339397297364}
-  - component: {fileID: 841255352483623394}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: ColliderFloor
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &2211683566665434860
 Transform:
@@ -150,36 +149,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4, y: 8.945, z: 0.1}
   m_Center: {x: 0, y: 0, z: -0.05}
---- !u!114 &841255352483623394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7934804674130453825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 0
-  m_DefaultArea: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
-  m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
-  m_BuildHeightMesh: 0
 --- !u!1 &8725706798832080784
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,12 +160,12 @@ GameObject:
   - component: {fileID: 8240497387796729130}
   - component: {fileID: 5040648538152206991}
   - component: {fileID: 7068131791604250181}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8240497387796729130
 Transform:
