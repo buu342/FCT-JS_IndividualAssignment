@@ -10,16 +10,16 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    private const float Sensitivity    = 3.0f;
+    private const float Sensitivity    = 0.1f;
     private const int   LookMax_Up     = 60;
     private const int   LookMax_Down   = -60;
     private const float TraumaSpeed    = 25.0f;
     private const float MaxTraumaAngle = 10.0f;
     
-    public GameObject m_Target;
-    public Vector2 lookDirection;
+    public GameObject  m_Target;
     private float      m_NoiseSeed;
     private Quaternion m_CamRotation;
+    private Vector2    m_LookDirection;
     private float      m_Trauma = 0.0f;
 
     
@@ -52,8 +52,8 @@ public class CameraController : MonoBehaviour
         float traumaoffsetr = CameraController.MaxTraumaAngle*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 3, Time.time*CameraController.TraumaSpeed)*2 - 1);
         
         // Calculate the final camera position and rotation
-        this.m_CamRotation.x += lookDirection.x*Sensitivity;
-        this.m_CamRotation.y -= lookDirection.y*Sensitivity;
+        this.m_CamRotation.x += this.m_LookDirection.x*Sensitivity;
+        this.m_CamRotation.y -= this.m_LookDirection.y*Sensitivity;
         this.m_CamRotation.y = Mathf.Clamp(this.m_CamRotation.y, LookMax_Down, LookMax_Up);
         this.transform.rotation = Quaternion.Euler(this.m_CamRotation.y, this.m_CamRotation.x, 0.0f);
         this.transform.rotation *= Quaternion.Euler(traumaoffsetp, traumaoffsety, traumaoffsetr);
@@ -88,7 +88,7 @@ public class CameraController : MonoBehaviour
         this.m_Target = target;
     }
     
-
+    
     /*==============================
         AddTrauma
         Makes the camera shake
@@ -98,5 +98,17 @@ public class CameraController : MonoBehaviour
     public void AddTrauma(float amount)
     {
         this.m_Trauma = Mathf.Min(1.0f, this.m_Trauma + amount);
+    }
+    
+    
+    /*==============================
+        SetLookDirection
+        Set's the camera's look direction
+        @param The look direction vector
+    ==============================*/
+    
+    public void SetLookDirection(Vector2 lookdir)
+    {
+        this.m_LookDirection = lookdir;
     }
 }
