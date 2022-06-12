@@ -211,4 +211,26 @@ public class PlayerAnimations : MonoBehaviour
     {
         this.m_Animator.SetBool("IsReloading", false);
     }
+    
+    
+    /*==============================
+        RemoveShell
+        Called when a shell is removed
+    ==============================*/
+    
+    public void RemoveShell()
+    {
+        this.m_PlyCont.SetPlayerAmmoReserve(this.m_PlyCont.GetPlayerAmmoReserve()-1);
+    }
+    
+    
+    /*==============================
+        InsertShell
+        Called when a shell is inserted
+    ==============================*/
+    
+    public void InsertShell()
+    {
+        this.m_PlyCont.SetPlayerAmmoClip(this.m_PlyCont.GetPlayerAmmoClip()+1);
+    }
 }

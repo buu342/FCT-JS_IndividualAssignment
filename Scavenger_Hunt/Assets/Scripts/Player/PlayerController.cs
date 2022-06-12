@@ -138,8 +138,6 @@ public class PlayerController : MonoBehaviour
                     this.m_PlyAnims.ReloadAnimation(this.m_AmmoClip == 0);
                     break;
                 case PlayerCombatState.ReloadLoop:
-                    this.m_AmmoClip++;
-                    this.m_AmmoReserve--;
                     if (this.m_AmmoReserve > 0 && this.m_AmmoClip != ClipSize)
                     {
                         this.m_NextFireTime = Time.time + PlayerController.ReloadLoopTime;
@@ -217,6 +215,7 @@ public class PlayerController : MonoBehaviour
                 this.m_NextFireTime = Time.time + PlayerController.FireTime;
                 this.m_AmmoClip--;
                 this.m_PlyAnims.FireAnimation();
+                this.m_CameraController.AddTrauma(0.5f);
             }
             else
                 this.m_Audio.Play("Shotgun/DryFire", this.transform.gameObject);
@@ -311,7 +310,7 @@ public class PlayerController : MonoBehaviour
         @return The player aim state
     ==============================*/
 
-    public bool GetPlayerAiming() 
+    public bool GetPlayerAiming()
     {
         return this.m_AimState == PlayerAimState.Aiming;
     }
@@ -338,5 +337,33 @@ public class PlayerController : MonoBehaviour
     public int GetPlayerAmmoReserve() 
     {
         return this.m_AmmoReserve;
+    }
+    
+    
+    /*******************************
+                Setters
+    *******************************/
+    
+    /*==============================
+        SetPlayerAmmoClip
+        Sets how much ammo is currently in the player's clip
+        @param The amount of ammo to set the current clip
+    ==============================*/
+
+    public void SetPlayerAmmoClip(int amount) 
+    {
+        this.m_AmmoClip = amount;
+    }
+    
+    
+    /*==============================
+        SetPlayerAmmoReserve
+        Sets how much ammo is currently in the player's reserve
+        @param The amount of ammo to set in reserve
+    ==============================*/
+
+    public void SetPlayerAmmoReserve(int amount) 
+    {
+        this.m_AmmoReserve = amount;
     }
 }

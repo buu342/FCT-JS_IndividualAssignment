@@ -71,7 +71,7 @@ public class CameraController : MonoBehaviour
         this.transform.rotation *= Quaternion.Euler(traumaoffsetp, traumaoffsety, traumaoffsetr);
         
         // Decrease screen shake over time
-        this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime);
+        this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime/2.0f);
     }
   
 
