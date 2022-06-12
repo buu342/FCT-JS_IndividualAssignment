@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     
     private Vector3 m_CurrentVelocity = Vector3.zero;
     private Vector3 m_TargetVelocity = Vector3.zero;
-    private Vector2 m_MovementDirection = Vector2.zero;
+    private Vector3  m_MovementDirection=Vector3.zero;
     private float m_AimVerticalAngle = 0.0f;
     private Quaternion m_OriginalFlashLightAngles = Quaternion.identity;
     private Quaternion m_TargetFlashLightAngle = Quaternion.identity;
@@ -77,7 +77,25 @@ public class PlayerController : MonoBehaviour
         this.m_OriginalFlashLightAngles = this.m_FlashLight.transform.rotation;
         this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
+
+    void OnEnable() {
+        InputManagerScript.playerInput.Player.Fire.started += Fire;
+        InputManagerScript.playerInput.Player.Move.started += Move;
+        InputManagerScript.playerInput.Player.Reload.started += Reload;
+        InputManagerScript.playerInput.Player.Aim.started += Aim;
+        InputManagerScript.playerInput.Player.Aim.canceled += Aim;
+        
+
+    }
     
+
+    void OnDisable() {
+        InputManagerScript.playerInput.Player.Fire.started -= Fire;
+        InputManagerScript.playerInput.Player.Move.started -= Move;
+        InputManagerScript.playerInput.Player.Reload.started -= Reload;
+        InputManagerScript.playerInput.Player.Aim.started -= Aim;
+         InputManagerScript.playerInput.Player.Aim.canceled -= Aim;
+    }
 
     /*==============================
         Update
@@ -86,6 +104,7 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
+        this.m_MovementDirection = InputManagerScript.Move.ReadValue<Vector2>();
         this.m_TargetVelocity = (this.m_MovementDirection.y*this.transform.forward + this.m_MovementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
         
         // Turn the player to face the same direction as the camera
@@ -180,43 +199,27 @@ public class PlayerController : MonoBehaviour
     }
     
     
-    /*******************************
-             Event Handling
-    *******************************/
-    
     /*==============================
-        OnLook
-        Called when the player moves the mouse
-        @param The input value
-    ==============================*/
-    
-    void OnLook(InputValue value)
-    {
-        if (this.m_CameraController != null)
-            this.m_CameraController.SetLookDirection(new Vector2(value.Get<Vector2>().x, value.Get<Vector2>().y));
-    }
-    
-    
-    /*==============================
-        OnMove
-        Called when the player presses a movement key
+        Fire
+        Called when the player presses a movement direction
         @param The input value
     ==============================*/
 
-    void OnMove(InputValue value) 
+    void Move(InputAction.CallbackContext context) 
     {
-        this.m_MovementDirection = new Vector2(value.Get<Vector2>().x,value.Get<Vector2>().y);
+        Vector2 movedir = context.ReadValue<Vector2>();
+        this.m_MovementDirection = movedir;
         this.m_MovementState = PlayerMovementState.Moving;
     }
     
     
     /*==============================
-        OnFire
+        Fire
         Called when the player presses left click
         @param The input value
     ==============================*/
 
-    void OnFire(InputValue value) 
+    void Fire(InputAction.CallbackContext context) 
     {
         if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
         {
@@ -238,24 +241,24 @@ public class PlayerController : MonoBehaviour
     
     
     /*==============================
-        OnAim
+        Aim
         Called when the player presses right click
         @param The input value
     ==============================*/
 
-    void OnAim(InputValue value) 
+    void Aim(InputAction.CallbackContext context) 
     {
-        this.m_AimState = value.isPressed ? PlayerAimState.Aiming : PlayerAimState.Idle;
+        this.m_AimState = context.ReadValue<float>() > 0 ? PlayerAimState.Aiming : PlayerAimState.Idle;
     }
     
     
     /*==============================
-        OnReload
+        Reload
         Called when the player presses R
         @param The input value
     ==============================*/
 
-    void OnReload(InputValue value) 
+    void Reload(InputAction.CallbackContext context) 
     {
         if (this.m_CombatState == PlayerCombatState.Idle && this.m_AmmoClip < PlayerController.ClipSize && this.m_AmmoReserve > 0)
         {

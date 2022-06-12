@@ -41,7 +41,16 @@ public class CameraController : MonoBehaviour
             Cursor.visible = false;
         #endif
     }
-    
+    void OnEnable() {
+        if(!InputManagerScript.playerInput.Player.enabled)
+            InputManagerScript.playerInput.Player.Enable();
+    }
+
+
+    void OnDisable() {
+        if(InputManagerScript.playerInput.Player.enabled)
+            InputManagerScript.playerInput.Player.Disable();
+    }
 
     /*==============================
         Update
@@ -50,6 +59,7 @@ public class CameraController : MonoBehaviour
     
     void Update()
     {
+        m_LookDirection = InputManagerScript.Look.ReadValue<Vector2>();
         float shake = this.m_Trauma*this.m_Trauma;
         float traumaoffsetp = CameraController.MaxTraumaAngle*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 1, Time.time*CameraController.TraumaSpeed)*2 - 1);
         float traumaoffsety = CameraController.MaxTraumaAngle*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 2, Time.time*CameraController.TraumaSpeed)*2 - 1);
