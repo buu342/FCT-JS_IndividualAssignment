@@ -84,7 +84,6 @@ public class PlayerController : MonoBehaviour
         InputManagerScript.playerInput.Player.Reload.started += Reload;
         InputManagerScript.playerInput.Player.Aim.started += Aim;
         InputManagerScript.playerInput.Player.Aim.canceled += Aim;
-        
 
     }
     
@@ -197,9 +196,11 @@ public class PlayerController : MonoBehaviour
     {
         this.m_Camera = cam;
         this.m_CameraController = this.m_Camera.GetComponent<CameraController>();
+        this.m_CameraController.AddListenerFreeMoveEvent();
     }
     
-    
+ 
+
     /*==============================
         Fire
         Called when the player presses a movement direction
