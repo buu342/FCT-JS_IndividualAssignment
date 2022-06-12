@@ -181,9 +181,7 @@ public class ProcGenner : MonoBehaviour
         GenerateWalls();
         
         // Generate a walkable navmesh
-        UnityEditor.AI.NavMeshBuilder.ClearAllNavMeshes();
-        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
-        
+       
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
             Debug.Log("Level generation data:");
