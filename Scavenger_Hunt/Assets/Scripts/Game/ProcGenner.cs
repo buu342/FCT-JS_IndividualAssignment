@@ -16,21 +16,24 @@ TODO:
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using Unity.AI.Navigation;
+using NavMeshBuilder = UnityEngine.AI.NavMeshBuilder;
 
 public class ProcGenner : MonoBehaviour
 {
-    public  const float GridScale     = 4.0f; // The size of each grid mesh (in world units)
-    private const int   MapSize_X     = 30;   // Maximum map size on X (in grid units)
-    private const int   MapSize_Y     = 6;    // Maximum map size on Y (in grid units)
-    private const int   MapSize_Z     = 30;   // Maximum map size on Z (in grid units)
-    private const int   MinRoomSize_X = 3;    // Minimum room size on X (in grid units)
-    private const int   MinRoomSize_Y = 2;    // Minimum room size on Y (in grid units)
-    private const int   MinRoomSize_Z = 3;    // Minimum room size on Z (in grid units)
-    private const int   MaxRoomSize_X = 6;    // Maximum room size on X (in grid units)
-    private const int   MaxRoomSize_Y = 3;    // Maximum room size on Y (in grid units)
-    private const int   MaxRoomSize_Z = 6;    // Maximum room size on Z (in grid units)
-    private const int   MaxRooms      = 30;    // Maximum number of rooms to generate
-    private Vector3     Center        = new Vector3(ProcGenner.MapSize_X/2, ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z/2);
+    public  const float   GridScale     = 4.0f; // The size of each grid mesh (in world units)
+    private const int     MapSize_X     = 30;   // Maximum map size on X (in grid units)
+    private const int     MapSize_Y     = 6;    // Maximum map size on Y (in grid units)
+    private const int     MapSize_Z     = 30;   // Maximum map size on Z (in grid units)
+    private const int     MinRoomSize_X = 3;    // Minimum room size on X (in grid units)
+    private const int     MinRoomSize_Y = 2;    // Minimum room size on Y (in grid units)
+    private const int     MinRoomSize_Z = 3;    // Minimum room size on Z (in grid units)
+    private const int     MaxRoomSize_X = 6;    // Maximum room size on X (in grid units)
+    private const int     MaxRoomSize_Y = 3;    // Maximum room size on Y (in grid units)
+    private const int     MaxRoomSize_Z = 6;    // Maximum room size on Z (in grid units)
+    private const int     MaxRooms      = 30;   // Maximum number of rooms to generate
+    public  Vector3       Center        = new Vector3(ProcGenner.MapSize_X/2, ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z/2);
     
     private enum LevelType
     {
@@ -46,21 +49,24 @@ public class ProcGenner : MonoBehaviour
         Stairs
     };
     
-    private struct BlockDef
+    public struct BlockDef
     {
         public BlockType type;
         public RoomDef roomdef;         // C# doesn't allow for void* for some reason??????
         public CorridorDef corridordef;
     };
     
-    private struct RoomDef
+    public struct RoomDef
     {
         public Vector3Int position;
         public Vector3Int size;
+        public Vector3 midpoint;
         public List<GameObject> objects;
+        public List<GameObject> doors;
+        public bool visible;
     };
     
-    private struct CorridorDef
+    public struct CorridorDef
     {
         public Vector3Int position;
         public Vector3Int direction;
@@ -69,6 +75,7 @@ public class ProcGenner : MonoBehaviour
     
     public GameObject m_Camera;
     public GameObject m_FloorPrefab;
+    public GameObject m_FloorDustPrefab;
     public GameObject m_CeilingPrefab;
     public GameObject m_StairPrefab;
     public GameObject m_Wall1Prefab;
@@ -78,11 +85,13 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_DoorWall1Prefab;
     public GameObject m_DoorWall2Prefab;
     public GameObject m_PlayerPrefab;
+    public GameObject m_NavMesh;
     public Material m_MaterialRoom;
     public Material m_MaterialCorridor;
     public Material m_MaterialStairs;
     public Material m_MaterialSpawn;
-    public Material m_MaterialExit;
+    public GameObject m_ExitElevator;
+    public VisualOptimizer m_Optimizer;
     
     private Delaunay3D m_Delaunay;
     private HashSet<Prim.Edge> m_SelectedEdges;
@@ -139,6 +148,7 @@ public class ProcGenner : MonoBehaviour
             this.m_Rooms = new List<RoomDef>();
             this.m_Corridors = new List<CorridorDef>();
             this.m_Doors = new List<(Vector3, GameObject)>();
+            this.m_Optimizer.SetPlayer(null);
                     
             // Generate the rooms
             GenerateRooms(LevelType.First);
@@ -171,6 +181,30 @@ public class ProcGenner : MonoBehaviour
         
         // And then fill everything with walls
         GenerateWalls();
+        
+        // Generate a walkable navmesh
+        List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
+        NavMeshData navmeshdata = new NavMeshData();
+        NavMesh.AddNavMeshData(navmeshdata);
+        Bounds navmeshbounds = new Bounds(Vector3.zero, Center*ProcGenner.GridScale);
+        List<NavMeshBuildMarkup> markups = new List<NavMeshBuildMarkup>();
+        List<NavMeshModifier> modifiers = new List<NavMeshModifier>();
+        modifiers = NavMeshModifier.activeModifiers;
+        for (int i=0; i<modifiers.Count; i++)
+        {
+            markups.Add(new NavMeshBuildMarkup()
+            {
+                root = modifiers[i].transform,
+                overrideArea = modifiers[i].overrideArea,
+                area = modifiers[i].area,
+                ignoreFromBuild = modifiers[i].ignoreFromBuild
+            });
+        }
+        NavMeshSurface surface = this.m_NavMesh.GetComponent<NavMeshSurface>();
+        NavMeshBuilder.CollectSources(navmeshbounds, surface.layerMask, surface.useGeometry, surface.defaultArea, markups, sources);
+        sources.RemoveAll(source => source.component != null && source.component.gameObject.GetComponent<NavMeshAgent>() != null);
+        NavMeshBuilder.UpdateNavMeshData(navmeshdata, surface.GetBuildSettings(), sources, navmeshbounds);
+        //this.m_NavMesh.GetComponent<NavMeshSurface>().BuildNavMesh();
         
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
@@ -210,6 +244,7 @@ public class ProcGenner : MonoBehaviour
         this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
         instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
         this.m_Entities.Add(instobj);
+        this.m_Optimizer.SetPlayer(instobj);
         
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
         if (ltype != LevelType.First)
@@ -235,11 +270,9 @@ public class ProcGenner : MonoBehaviour
         
         // Then place the exit on the other end
         coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z);
-        instobj = Instantiate(this.m_FloorPrefab, (coord-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
-        instobj.GetComponent<Renderer>().material = this.m_MaterialExit;
+        instobj = Instantiate(this.m_ExitElevator, (coord-Center)*ProcGenner.GridScale, this.m_ExitElevator.transform.rotation);
         this.m_Entities.Add(instobj);
         doorpos = coord + (new Vector3(0, 0, -0.25f)*ProcGenner.GridScale/2);
-        instobj = Instantiate(this.m_DoorPrefab, (doorpos - Center)*ProcGenner.GridScale, this.m_DoorPrefab.transform.rotation*Quaternion.Euler(0,90,0));
         this.m_Doors.Add((doorpos, instobj));
         
         // Now place a room just before the end
@@ -331,13 +364,16 @@ public class ProcGenner : MonoBehaviour
         Graphs.Vertex vert;
         List<GameObject> rm = new List<GameObject>();
         List<Vector3Int> positions = new List<Vector3Int>();
+        bool createDust = true;//Random.Range(0,10) < 9;
         for (int i=0; i<size.z; i++)
         {
             for (int j=0; j<size.x; j++)
             {
                 // Floor
                 Vector3Int finalpos = pos + new Vector3Int(j, 0, i);
+
                 instobj = Instantiate(this.m_FloorPrefab, (finalpos-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
+                
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
                 
@@ -352,10 +388,21 @@ public class ProcGenner : MonoBehaviour
                 rm.Add(instobj);
             }
         }
+        if(createDust) {
+            Vector3 finalPos = pos + new Vector3(size.x/2,size.y/2,size.z/2);
+            instobj=Instantiate(this.m_FloorDustPrefab, (finalPos-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
+            instobj.transform.localScale = new Vector3Int(size.x,0,size.z);
+
+            //int maxScale = Mathf.Max(size.x, size.z);
+            //instobj.transform.localScale = new Vector3Int(maxScale, maxScale, maxScale);
+            rm.Add(instobj);
+        }
         
         // Store the room definition in the helper structures
-        RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm};
-        vert = new Graphs.Vertex(pos + new Vector3(size.x*0.5f, 0.0f, size.z*0.5f));
+        Vector3 mid = pos + new Vector3(size.x*0.5f, 0.0f, size.z*0.5f);
+        RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm, visible = true, doors = new List<GameObject>()};
+        rdef.midpoint = -(new Vector3(1, 1, 1)*ProcGenner.GridScale)/2 + (mid-Center)*ProcGenner.GridScale;
+        vert = new Graphs.Vertex(mid);
         this.m_Rooms.Add(rdef);
         this.m_Vertices.Add(vert);
         this.m_RoomVerts.Add(vert, rm);
@@ -402,19 +449,19 @@ public class ProcGenner : MonoBehaviour
         Checks if a door exists in a given coordinate
         @param The position on the grid to check
         @param The direction to check
-        @return Whether the door exists in a given position
+        @return The door GameObject that was found
     ==============================*/  
     
-    bool DoorExists(Vector3Int pos, Vector3Int dir)
+    GameObject DoorExists(Vector3Int pos, Vector3Int dir)
     {
         Vector3 checkdir = new Vector3(pos.x + ((float)dir.x)/2, pos.y, pos.z + ((float)dir.z)/2);
         
         // Check if a door exists on the given coordinate
         foreach ((Vector3, GameObject) pair in this.m_Doors)
             if (pair.Item1 == checkdir)
-                return true;
+                return pair.Item2;
             
-        return false;
+        return null;
     }
     
     
@@ -431,7 +478,7 @@ public class ProcGenner : MonoBehaviour
         Vector3Int check = new Vector3Int(pos.x+dir.x, pos.y+dir.y, pos.z+dir.z);
         
         // Check if a door exists on the given coordinate
-        if (DoorExists(pos, dir))
+        if (DoorExists(pos, dir) != null)
             return false;
         
         // Check if we're out of bounds
@@ -728,12 +775,12 @@ public class ProcGenner : MonoBehaviour
                         if ((prevblock == BlockType.Corridor && this.m_Grid[current.x, current.y, current.z].type == BlockType.Room) || (prevblock == BlockType.Room && this.m_Grid[current.x, current.y, current.z].type == BlockType.Corridor))
                         {
                             Vector3 doordir = (new Vector3(delta.x, 0.0f, delta.z));
-                            if (!DoorExists(prev, Vector3Int.FloorToInt(doordir)))
+                            if (DoorExists(prev, Vector3Int.FloorToInt(doordir)) == null)
                             {
                                 float angle = delta.z != 0 ? 90.0f : 0.0f;
                                 Vector3 doorpos = doordir/2 + prev;
                                 GameObject instobj = Instantiate(this.m_DoorPrefab, (doorpos - Center)*ProcGenner.GridScale, this.m_DoorPrefab.transform.rotation*Quaternion.Euler(0, angle, 0));
-                                this.m_Doors.Add((doorpos, null));
+                                this.m_Doors.Add((doorpos, instobj));
                             }
                         }
                     }
@@ -856,9 +903,13 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<rdef.size.x; i++)
             {
                 Vector3Int finalpos = rdef.position + new Vector3Int(i, 0, 0);
+                GameObject founddoor = DoorExists(finalpos, dir);
                 GameObject wallprefab = (rdef.size.y == 3) ? this.m_Wall3Prefab : this.m_Wall2Prefab;
-                if (DoorExists(finalpos, dir))
+                if (founddoor != null)
+                {
                     wallprefab = (rdef.size.y == 3) ? this.m_DoorWall2Prefab : this.m_DoorWall1Prefab;
+                    rdef.doors.Add(founddoor);
+                }
                 instobj = Instantiate(wallprefab, (finalpos-Center)*ProcGenner.GridScale + (((Vector3)dir)*ProcGenner.GridScale/2), wallprefab.transform.rotation*Quaternion.Euler(0, 0, 180));
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
@@ -869,9 +920,13 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<rdef.size.x; i++)
             {
                 Vector3Int finalpos = rdef.position + new Vector3Int(i, 0, rdef.size.z-1);
+                GameObject founddoor = DoorExists(finalpos, dir);
                 GameObject wallprefab = (rdef.size.y == 3) ? this.m_Wall3Prefab : this.m_Wall2Prefab;
-                if (DoorExists(finalpos, dir))
+                if (founddoor != null)
+                {
                     wallprefab = (rdef.size.y == 3) ? this.m_DoorWall2Prefab : this.m_DoorWall1Prefab;
+                    rdef.doors.Add(founddoor);
+                }
                 instobj = Instantiate(wallprefab, (finalpos-Center)*ProcGenner.GridScale + (((Vector3)dir)*ProcGenner.GridScale/2), wallprefab.transform.rotation);
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
@@ -882,9 +937,13 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<rdef.size.z; i++)
             {
                 Vector3Int finalpos = rdef.position + new Vector3Int(0, 0, i);
+                GameObject founddoor = DoorExists(finalpos, dir);
                 GameObject wallprefab = (rdef.size.y == 3) ? this.m_Wall3Prefab : this.m_Wall2Prefab;
-                if (DoorExists(finalpos, dir))
+                if (founddoor != null)
+                {
                     wallprefab = (rdef.size.y == 3) ? this.m_DoorWall2Prefab : this.m_DoorWall1Prefab;
+                    rdef.doors.Add(founddoor);
+                }
                 instobj = Instantiate(wallprefab, (finalpos-Center)*ProcGenner.GridScale + (((Vector3)dir)*ProcGenner.GridScale/2), wallprefab.transform.rotation*Quaternion.Euler(0, 0, -90));
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
@@ -895,9 +954,13 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<rdef.size.z; i++)
             {
                 Vector3Int finalpos = rdef.position + new Vector3Int(rdef.size.x-1, 0, i);
+                GameObject founddoor = DoorExists(finalpos, dir);
                 GameObject wallprefab = (rdef.size.y == 3) ? this.m_Wall3Prefab : this.m_Wall2Prefab;
-                if (DoorExists(finalpos, dir))
+                if (founddoor != null)
+                {
                     wallprefab = (rdef.size.y == 3) ? this.m_DoorWall2Prefab : this.m_DoorWall1Prefab;
+                    rdef.doors.Add(founddoor);
+                }
                 instobj = Instantiate(wallprefab, (finalpos-Center)*ProcGenner.GridScale + (((Vector3)dir)*ProcGenner.GridScale/2), wallprefab.transform.rotation*Quaternion.Euler(0, 0, 90));
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
@@ -939,6 +1002,18 @@ public class ProcGenner : MonoBehaviour
                 cdef.objects.Add(instobj);
             }
         }
+    }
+    
+    public List<ProcGenner.RoomDef> GetRoomDefs()
+    {
+        return this.m_Rooms;
+    }
+    
+    public void SetRoomVisible(int room, bool visible)
+    {
+        RoomDef rdef = this.m_Rooms[room];
+        rdef.visible = visible;
+        this.m_Rooms[room] = rdef;
     }
 
 

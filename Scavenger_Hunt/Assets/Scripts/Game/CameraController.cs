@@ -11,16 +11,25 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
     private const float Sensitivity    = 0.1f;
-    private const int   LookMax_Up     = 60;
-    private const int   LookMax_Down   = -60;
+    public  const int   LookMax_Up     = 60;
+    public  const int   LookMax_Down   = -60;
     private const float TraumaSpeed    = 25.0f;
     private const float MaxTraumaAngle = 10.0f;
+    private const float AimSpeed       = 0.1f;
+    private const float DefaultFOV     = 60.0f;
+    private const float ZoomFOV        = 40.0f;
     
     public GameObject  m_Target;
-    private float      m_NoiseSeed;
-    private Quaternion m_CamRotation;
-    private Vector2    m_LookDirection;
-    private float      m_Trauma = 0.0f;
+    public float m_DefaultFOV = CameraController.DefaultFOV;
+    public float m_ZoomFOV = CameraController.ZoomFOV;
+    
+    private float            m_NoiseSeed;
+    private Quaternion       m_CamRotation;
+    private PlayerController m_PlyCont;
+    private Vector2          m_LookDirection;
+    private float            m_Trauma = 0.0f;
+    private float            m_CurrentFOV;
+    private float            m_TargetFOV;
 
     
     /*==============================
@@ -30,6 +39,8 @@ public class CameraController : MonoBehaviour
     
     void Start()
     {
+        this.m_CurrentFOV = this.m_DefaultFOV;
+        this.m_TargetFOV = this.m_DefaultFOV;
         this.m_NoiseSeed = Random.value;
         this.m_CamRotation = this.transform.localRotation;
         Cursor.lockState = CursorLockMode.Locked;
@@ -37,7 +48,16 @@ public class CameraController : MonoBehaviour
             Cursor.visible = false;
         #endif
     }
-    
+    void OnEnable() {
+        if(!InputManagerScript.playerInput.Player.enabled)
+            InputManagerScript.playerInput.Player.Enable();
+    }
+
+
+    void OnDisable() {
+        if(InputManagerScript.playerInput.Player.enabled)
+            InputManagerScript.playerInput.Player.Disable();
+    }
 
     /*==============================
         Update
@@ -46,20 +66,29 @@ public class CameraController : MonoBehaviour
     
     void Update()
     {
+        m_LookDirection = InputManagerScript.Look.ReadValue<Vector2>();
         float shake = this.m_Trauma*this.m_Trauma;
         float traumaoffsetp = CameraController.MaxTraumaAngle*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 1, Time.time*CameraController.TraumaSpeed)*2 - 1);
         float traumaoffsety = CameraController.MaxTraumaAngle*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 2, Time.time*CameraController.TraumaSpeed)*2 - 1);
         float traumaoffsetr = CameraController.MaxTraumaAngle*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 3, Time.time*CameraController.TraumaSpeed)*2 - 1);
         
+        // Handle aiming FOV
+        if (this.m_PlyCont != null)
+        {
+            this.m_TargetFOV = this.m_PlyCont.GetPlayerAiming() ? this.m_ZoomFOV : this.m_DefaultFOV;
+            this.m_CurrentFOV = Mathf.Lerp(this.m_CurrentFOV, this.m_TargetFOV, AimSpeed);
+            Camera.main.fieldOfView = this.m_CurrentFOV;
+        }
+        
         // Calculate the final camera position and rotation
-        this.m_CamRotation.x += this.m_LookDirection.x*Sensitivity;
-        this.m_CamRotation.y -= this.m_LookDirection.y*Sensitivity;
-        this.m_CamRotation.y = Mathf.Clamp(this.m_CamRotation.y, LookMax_Down, LookMax_Up);
+        this.m_CamRotation.x += this.m_LookDirection.x*CameraController.Sensitivity;
+        this.m_CamRotation.y -= this.m_LookDirection.y*CameraController.Sensitivity;
+        this.m_CamRotation.y = Mathf.Clamp(this.m_CamRotation.y, CameraController.LookMax_Down, CameraController.LookMax_Up);
         this.transform.rotation = Quaternion.Euler(this.m_CamRotation.y, this.m_CamRotation.x, 0.0f);
         this.transform.rotation *= Quaternion.Euler(traumaoffsetp, traumaoffsety, traumaoffsetr);
         
         // Decrease screen shake over time
-        this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime);
+        this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime/2.0f);
     }
   
 
@@ -86,6 +115,9 @@ public class CameraController : MonoBehaviour
     public void SetTarget(GameObject target)
     {
         this.m_Target = target;
+        target = target.transform.parent.gameObject;
+        if (target != null)
+            this.m_PlyCont = target.GetComponent<PlayerController>();
     }
     
     
