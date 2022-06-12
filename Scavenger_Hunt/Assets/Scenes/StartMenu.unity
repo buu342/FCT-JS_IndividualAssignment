@@ -1100,7 +1100,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   createInput: {fileID: 1725377942}
   JoinInput: {fileID: 720517127}
-  PlayerCount: 0
 --- !u!1 &697840455
 GameObject:
   m_ObjectHideFlags: 0
