@@ -10,6 +10,8 @@ using UnityEngine;
 
 public class PlayerAnimations : MonoBehaviour
 {
+    private const float MoveDirSpeed = 0.1f;
+    
     public PlayerController m_PlyCont;
     public Animator m_Animator;
     public SkinnedMeshRenderer m_MeshBody;
@@ -69,24 +71,22 @@ public class PlayerAnimations : MonoBehaviour
         if (this.m_PlyCont.GetPlayerMovementState() == PlayerController.PlayerMovementState.Moving)
         {
             Vector3 dir = this.m_PlyCont.GetPlayerMovementDirection();
-            this.m_LastMoveDir = Vector3.Lerp(this.m_LastMoveDir, dir, 0.5f);
+            this.m_LastMoveDir = Vector3.Lerp(this.m_LastMoveDir, dir, PlayerAnimations.MoveDirSpeed);
             this.m_Animator.SetBool("Moving", true);
-            this.m_Animator.SetFloat("MoveX", this.m_LastMoveDir.x);
-            this.m_Animator.SetFloat("MoveY", this.m_LastMoveDir.y);
         }
         else
         {
             this.m_Animator.SetBool("Moving", false);
-            this.m_LastMoveDir = Vector3.Lerp(this.m_LastMoveDir, Vector3.zero, 0.5f);
+            this.m_LastMoveDir = Vector3.Lerp(this.m_LastMoveDir, Vector3.zero, PlayerAnimations.MoveDirSpeed);
         }
+        this.m_Animator.SetFloat("MoveX", this.m_LastMoveDir.x);
+        this.m_Animator.SetFloat("MoveY", this.m_LastMoveDir.y);
         
         // Handle aiming
-        if (this.m_PlyCont.GetPlayerAiming())
-        {
-            float yaim = this.m_PlyCont.GetPlayerVerticalAim();
-            this.m_Animator.SetFloat("AimY", yaim > 180 ? ((90-yaim%90)/CameraController.LookMax_Up) : yaim/CameraController.LookMax_Down); // Lerp this
+        float yaim = this.m_PlyCont.GetPlayerVerticalAim();
+        this.m_Animator.SetFloat("AimY", yaim > 180 ? ((90-yaim%90)/CameraController.LookMax_Up) : yaim/CameraController.LookMax_Down);
+        if (this.m_PlyCont.GetPlayerAimState() == PlayerController.PlayerAimState.Aiming)
             this.m_Animator.SetBool("Aiming", true);
-        }
         else
             this.m_Animator.SetBool("Aiming", false);
         
@@ -181,11 +181,11 @@ public class PlayerAnimations : MonoBehaviour
     
     public void StartReloadAnimation(bool empty)
     {
+        this.m_Animator.SetBool("IsReloading", true);
         if (empty)
             this.m_Animator.SetTrigger("ReloadEmpty");
         else
             this.m_Animator.SetTrigger("Reload");
-        this.m_Animator.SetBool("IsReloading", true);
         this.m_Animator.SetLayerWeight(LayerIndex_Reload, 1.0f);
         this.m_Animator.Play("Empty", LayerIndex_Reload, 0f);
     }

@@ -342,3 +342,14 @@ MonoBehaviour:
     is3D: 1
     maxDistance: 8
     maxDistanceSqr: 0
+  - name: Skye/ArmFlip
+    clip: {fileID: 8300000, guid: c75d7777fee0ab746a4199d6ba757ac2, type: 3}
+    volume: 0.2
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    is3D: 1
+    maxDistance: 8
+    maxDistanceSqr: 0

@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
         if (this.m_TargetVelocity == Vector3.zero)
         {
             this.m_MovementState = PlayerMovementState.Idle;
-            if (this.m_AimState == PlayerAimState.Aiming)
+            if (this.GetPlayerAiming())
                 this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetang, PlayerController.TurnSpeed);
         }
         else
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
         
         // Aim
         this.m_AimVerticalAngle = this.m_Camera.transform.eulerAngles.x;
-        if (this.m_AimState == PlayerAimState.Aiming)
+        if (this.GetPlayerAiming())
         {
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetang, PlayerController.TurnSpeed);
             this.m_TargetFlashLightAngle = this.m_OriginalFlashLightAngles*Quaternion.Euler(this.m_Camera.transform.eulerAngles.x, this.m_Camera.transform.eulerAngles.y, 0);
@@ -305,6 +305,18 @@ public class PlayerController : MonoBehaviour
     
     
     /*==============================
+        GetPlayerAimState
+        Gets the player's aim state
+        @return The player aim state
+    ==============================*/
+
+    public PlayerAimState GetPlayerAimState()
+    {
+        return this.m_AimState;
+    }
+    
+    
+    /*==============================
         GetPlayerAiming
         Checks whether the player is aiming or not
         @return The player aim state
@@ -312,7 +324,7 @@ public class PlayerController : MonoBehaviour
 
     public bool GetPlayerAiming()
     {
-        return this.m_AimState == PlayerAimState.Aiming;
+        return (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState != PlayerCombatState.ReloadStart && this.m_CombatState != PlayerCombatState.ReloadLoop);
     }
     
     

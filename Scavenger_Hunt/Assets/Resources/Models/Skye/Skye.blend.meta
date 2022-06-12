@@ -194,15 +194,15 @@ ModelImporter:
       takeName: Idle_Normal
       internalID: 0
       firstFrame: -1
-      lastFrame: 0
+      lastFrame: 119
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
@@ -241,94 +241,6 @@ ModelImporter:
         weight: 1
       - path: Skye_Armature/Pelvis
         weight: 1
-      - path: Skye_Armature/Pelvis/Chest
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/Flashlight
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LPad
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger11
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger11/LFinger12
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger11/LFinger12/LFinger13
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger21
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger21/LFinger22
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger21/LFinger22/LFinger23
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger31
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger31/LFinger32
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger31/LFinger32/LFinger33
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger41
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger41/LFinger42
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger41/LFinger42/LFinger43
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger51
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger51/LFinger52
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger51/LFinger52/LFinger53
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/Neck
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/Neck/Head
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger11
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger11/RFinger12
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger11/RFinger12/RFinger13
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger21
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger21/RFinger22
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger21/RFinger22/RFinger23
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger31
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger31/RFinger32
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger31/RFinger32/RFinger33
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger41
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger41/RFinger42
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger41/RFinger42/RFinger43
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger51
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger51/RFinger52
-        weight: 1
-      - path: Skye_Armature/Pelvis/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger51/RFinger52/RFinger53
-        weight: 1
       - path: Skye_Armature/Pelvis/LUpperLeg
         weight: 1
       - path: Skye_Armature/Pelvis/LUpperLeg/LLowerLeg
@@ -345,11 +257,101 @@ ModelImporter:
         weight: 1
       - path: Skye_Armature/Pelvis/RUpperLeg/RLowerLeg/RFoot/RToes
         weight: 1
-      - path: Skye_Armature/ShotgunBase
+      - path: Skye_Armature/UpperRotater
         weight: 1
-      - path: Skye_Armature/ShotgunBase/Pump
+      - path: Skye_Armature/UpperRotater/Chest
         weight: 1
-      - path: Skye_Armature/ShotgunBase/Trigger
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/Flashlight
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LPad
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger11
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger11/LFinger12
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger11/LFinger12/LFinger13
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger21
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger21/LFinger22
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger21/LFinger22/LFinger23
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger31
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger31/LFinger32
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger31/LFinger32/LFinger33
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger41
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger41/LFinger42
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger41/LFinger42/LFinger43
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger51
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger51/LFinger52
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/LClavicle/LUpperArm/LMidArm/LLowerArm/LHand/LFinger51/LFinger52/LFinger53
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/Neck
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/Neck/Head
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger11
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger11/RFinger12
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger11/RFinger12/RFinger13
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger21
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger21/RFinger22
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger21/RFinger22/RFinger23
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger31
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger31/RFinger32
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger31/RFinger32/RFinger33
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger41
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger41/RFinger42
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger41/RFinger42/RFinger43
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger51
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger51/RFinger52
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/RFinger51/RFinger52/RFinger53
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/ShotgunBase
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/ShotgunBase/Pump
+        weight: 1
+      - path: Skye_Armature/UpperRotater/Chest/RClavicle/RUpperArm/RLowerArm/RHand/ShotgunBase/Trigger
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -854,6 +856,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.112426035
+        functionName: AnimationEventSound
+        data: Skye/ArmFlip
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.42857143
         functionName: RemoveShell
         data: 
