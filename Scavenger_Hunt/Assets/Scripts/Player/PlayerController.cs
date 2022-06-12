@@ -19,9 +19,7 @@ public class PlayerController : MonoBehaviour
     private CameraController cameraController;
     private Vector3 m_CurrentVelocity = Vector3.zero;
     private Vector3 m_TargetVelocity = Vector3.zero;
-    private Vector2 movementDirection;
-    
-    
+
     /*==============================
         Start
         Called when the player is initialized
@@ -29,10 +27,8 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
-        
     }
     
-
     /*==============================
         Update
         Called every frame
@@ -40,6 +36,8 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
+        Vector2 movementDirection = InputManagerScript.Move.ReadValue<Vector2>();
+        Debug.Log("PLayer movement (" + movementDirection.x +", "+  movementDirection.y + ")");
         this.m_TargetVelocity = (movementDirection.y*this.transform.forward + movementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
         
         // Turn the player to face the same direction as the camera
@@ -76,14 +74,6 @@ public class PlayerController : MonoBehaviour
         this.m_Camera = cam;
         cameraController = this.m_Camera.GetComponent<CameraController>();
     }
-    
-    void OnLook(InputValue value) {
-        cameraController.SetLookDirection(new Vector2(value.Get<Vector2>().x, value.Get<Vector2>().y));
-    }
 
 
-    void OnMove(InputValue value) {
-    // Handle movement input
-        movementDirection = new Vector2(value.Get<Vector2>().x,value.Get<Vector2>().y);
-    }
 }
