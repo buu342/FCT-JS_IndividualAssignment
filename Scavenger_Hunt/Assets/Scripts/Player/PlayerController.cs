@@ -6,6 +6,7 @@ and combat.
 ****************************************************************/
 
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -65,8 +66,8 @@ public class PlayerController : MonoBehaviour
     private PlayerMovementState m_MovementState = PlayerMovementState.Idle;
     private PlayerAimState m_AimState = PlayerAimState.Idle;
     private PlayerCombatState m_CombatState = PlayerCombatState.Idle;
-    
-    
+    private bool isInFreeMode;
+
     /*==============================
         Start
         Called when the player is initialized
@@ -76,6 +77,7 @@ public class PlayerController : MonoBehaviour
     {
         this.m_OriginalFlashLightAngles = this.m_FlashLight.transform.rotation;
         this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        isInFreeMode = false;
     }
 
     void OnEnable() {
@@ -104,7 +106,7 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        this.m_MovementDirection = InputManagerScript.Move.ReadValue<Vector2>();
+        this.m_MovementDirection = m_CameraController.isInFreeMode() ? Vector2.zero:InputManagerScript.Move.ReadValue<Vector2>();
         this.m_TargetVelocity = (this.m_MovementDirection.y*this.transform.forward + this.m_MovementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
         
         // Turn the player to face the same direction as the camera
@@ -196,10 +198,7 @@ public class PlayerController : MonoBehaviour
     {
         this.m_Camera = cam;
         this.m_CameraController = this.m_Camera.GetComponent<CameraController>();
-        this.m_CameraController.AddListenerFreeMoveEvent();
-    }
-    
- 
+    } 
 
     /*==============================
         Fire

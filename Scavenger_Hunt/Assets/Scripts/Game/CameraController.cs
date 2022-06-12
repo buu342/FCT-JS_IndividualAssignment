@@ -5,7 +5,7 @@ This script handles camera movement and logic
 ****************************************************************/
 
 using UnityEngine;
-
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
@@ -32,7 +32,6 @@ public class CameraController : MonoBehaviour
     private float            m_CurrentFOV;
     private float            m_TargetFOV;
     private bool freeMode;
-    private UnityEvent freeModeEvent;
     
     /*==============================
         Start
@@ -52,9 +51,6 @@ public class CameraController : MonoBehaviour
     
         actualTarget = m_Target;
 
-        if(freeModeEvent == null) {
-            freeModeEvent = new UnityEvent();
-        }
     }
     void OnEnable() { 
         InputManagerScript.playerInput.Player.FreeLook.started +=  FreeMoveOptionActivated;
@@ -69,7 +65,6 @@ public class CameraController : MonoBehaviour
 
         if(InputManagerScript.playerInput.Player.enabled)
             InputManagerScript.playerInput.Player.Disable();
-            freeModeEvent.RemoveAllListeners();
     }
 
     /*==============================
@@ -130,7 +125,6 @@ public class CameraController : MonoBehaviour
         } else {
             actualTarget = m_Target;
         }
-
         Debug.Log("Activated free move");
     }
 
@@ -172,24 +166,12 @@ public class CameraController : MonoBehaviour
     }
 
      /*==============================
-        Add new listener to event
-        Adds listener to the free move event
-        @param the function to call
+        Checks if camera is in
+        Free mode
     ==============================*/
     
-    public void AddListenerFreeMoveEvent(Events.UnityAction callback) 
+    public bool isInFreeMode()
     {
-        freeModeEvent.AddListener(callback);
+        return freeMode;
     }
-    /*==============================
-        Remove listener to event
-        Removes listener to the free move event
-        @param the function to call
-    ==============================*/
-    
-    public void RemoveListenerFreeMoveEvent(Events.UnityAction callback) 
-    {
-        freeModeEvent.RemoveListener(callback);
-    }
-
 }
