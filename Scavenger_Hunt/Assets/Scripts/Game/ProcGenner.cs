@@ -363,9 +363,13 @@ public class ProcGenner : MonoBehaviour
             }
         }
         if(createDust) {
-            Vector3Int finalPos = pos + new Vector3Int(size.x/2,0,size.z/2);
+            Vector3 finalPos = pos + new Vector3(size.x/2,0,size.z/2);
             instobj=Instantiate(this.m_FloorDustPrefab, (finalPos-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
-            instobj.transform.localScale = new Vector3Int(size.x, size.y, size.z);
+            int randomScale = Random.Range(0, (size.x + size.z) /2);
+            instobj.transform.localScale = new Vector3Int(randomScale,randomScale,randomScale);
+
+            //int maxScale = Mathf.Max(size.x, size.z);
+            //instobj.transform.localScale = new Vector3Int(maxScale, maxScale, maxScale);
             rm.Add(instobj);
         }
         
