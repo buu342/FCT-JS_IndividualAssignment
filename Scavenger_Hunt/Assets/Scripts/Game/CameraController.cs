@@ -11,16 +11,20 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
     private const float Sensitivity    = 0.1f;
-    private const int   LookMax_Up     = 60;
-    private const int   LookMax_Down   = -60;
+    public  const int   LookMax_Up     = 60;
+    public  const int   LookMax_Down   = -60;
     private const float TraumaSpeed    = 25.0f;
     private const float MaxTraumaAngle = 10.0f;
+    private const float AimSpeed       = 0.1f;
     
-    public GameObject  m_Target;
-    private float      m_NoiseSeed;
-    private Quaternion m_CamRotation;
-    private Vector2    m_LookDirection;
-    private float      m_Trauma = 0.0f;
+    public GameObject        m_Target;
+    private float            m_NoiseSeed;
+    private Quaternion       m_CamRotation;
+    private Vector2          m_LookDirection;
+    private float            m_Trauma = 0.0f;
+    public float             m_CurrentFOV = 60;
+    public float             m_TargetFOV = 60;
+    public PlayerController  m_PlyCont;
 
     
     /*==============================
@@ -51,6 +55,14 @@ public class CameraController : MonoBehaviour
         float traumaoffsety = CameraController.MaxTraumaAngle*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 2, Time.time*CameraController.TraumaSpeed)*2 - 1);
         float traumaoffsetr = CameraController.MaxTraumaAngle*shake*(Mathf.PerlinNoise(this.m_NoiseSeed + 3, Time.time*CameraController.TraumaSpeed)*2 - 1);
         
+        // Handle aiming FOV
+        if (this.m_PlyCont != null)
+        {
+            this.m_TargetFOV = this.m_PlyCont.GetPlayerAiming() ? 40 : 60;
+            this.m_CurrentFOV = Mathf.Lerp(this.m_CurrentFOV, this.m_TargetFOV, AimSpeed);
+            Camera.main.fieldOfView = this.m_CurrentFOV;
+        }
+        
         // Calculate the final camera position and rotation
         this.m_CamRotation.x += this.m_LookDirection.x*Sensitivity;
         this.m_CamRotation.y -= this.m_LookDirection.y*Sensitivity;
@@ -59,7 +71,7 @@ public class CameraController : MonoBehaviour
         this.transform.rotation *= Quaternion.Euler(traumaoffsetp, traumaoffsety, traumaoffsetr);
         
         // Decrease screen shake over time
-        this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime);
+        this.m_Trauma = Mathf.Clamp01(this.m_Trauma - Time.deltaTime/2.0f);
     }
   
 
@@ -86,6 +98,9 @@ public class CameraController : MonoBehaviour
     public void SetTarget(GameObject target)
     {
         this.m_Target = target;
+        target = target.transform.parent.gameObject;
+        if (target != null)
+            this.m_PlyCont = target.GetComponent<PlayerController>();
     }
     
     
