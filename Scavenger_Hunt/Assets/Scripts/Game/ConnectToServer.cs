@@ -21,7 +21,9 @@ using UnityEngine.SceneManagement;
            // SceneManager.LoadScene("Lobby");
         }
 
-
+    public void Singleplayergame(){
+        SceneManager.LoadScene("SampleScene");
+    }
 
 
 
