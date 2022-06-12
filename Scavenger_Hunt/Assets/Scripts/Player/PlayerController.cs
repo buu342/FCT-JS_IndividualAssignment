@@ -13,13 +13,32 @@ public class PlayerController : MonoBehaviour
     private const float MoveSpeed    = 10.0f;
     private const float Acceleration = 0.5f;
     private const float TurnSpeed    = 0.1f;
+    
+    public enum PlayerMovementState
+    {
+        Idle,
+        Moving,
+    }
+    
+    public enum PlayerCombatState
+    {
+        Idle,
+        Aiming,
+        Firing,
+        ReloadStart,
+        ReloadLoop,
+        ReloadEnd,
+    }
 
     public Rigidbody  m_RigidBody;  
     private GameObject m_Camera;
-    private CameraController cameraController;
+    private CameraController m_CameraController;
     private Vector3 m_CurrentVelocity = Vector3.zero;
     private Vector3 m_TargetVelocity = Vector3.zero;
-    private Vector2 movementDirection;
+    private Vector2 m_MovementDirection;
+    
+    private PlayerMovementState m_MovementState = PlayerMovementState.Idle;
+    private PlayerCombatState m_CombatState = PlayerCombatState.Idle;
     
     
     /*==============================
@@ -40,7 +59,7 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        this.m_TargetVelocity = (movementDirection.y*this.transform.forward + movementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
+        this.m_TargetVelocity = (this.m_MovementDirection.y*this.transform.forward + this.m_MovementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
         
         // Turn the player to face the same direction as the camera
         if (this.m_TargetVelocity != Vector3.zero)
@@ -48,7 +67,8 @@ public class PlayerController : MonoBehaviour
             Quaternion targetang = Quaternion.Euler(0.0f, this.m_Camera.transform.eulerAngles.y, 0.0f); 
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetang, PlayerController.TurnSpeed);
         }
-        
+        else
+            this.m_MovementState = PlayerMovementState.Idle;
     }
     
     
@@ -74,16 +94,56 @@ public class PlayerController : MonoBehaviour
     public void SetCamera(GameObject cam)
     {
         this.m_Camera = cam;
-        cameraController = this.m_Camera.GetComponent<CameraController>();
+        this.m_CameraController = this.m_Camera.GetComponent<CameraController>();
     }
     
-    void OnLook(InputValue value) {
-        cameraController.SetLookDirection(new Vector2(value.Get<Vector2>().x, value.Get<Vector2>().y));
+    
+    /*==============================
+        OnLook
+        Called when the player moves the mouse
+        @param The input value
+    ==============================*/
+    
+    void OnLook(InputValue value)
+    {
+        if (this.m_CameraController != null)
+            this.m_CameraController.SetLookDirection(new Vector2(value.Get<Vector2>().x, value.Get<Vector2>().y));
     }
+    
+    
+    /*==============================
+        OnMove
+        Called when the player presses a movement key
+        @param The input value
+    ==============================*/
 
+    void OnMove(InputValue value) 
+    {
+        this.m_MovementDirection = new Vector2(value.Get<Vector2>().x,value.Get<Vector2>().y);
+        this.m_MovementState = PlayerMovementState.Moving;
+    }
+    
+    
+    /*==============================
+        GetPlayerMovementDirection
+        Retrieves the value of the player movement direction
+        @return The player movement direction
+    ==============================*/
 
-    void OnMove(InputValue value) {
-    // Handle movement input
-        movementDirection = new Vector2(value.Get<Vector2>().x,value.Get<Vector2>().y);
+    public Vector3 GetPlayerMovementDirection() 
+    {
+        return this.m_MovementDirection;
+    }
+    
+    
+    /*==============================
+        GetPlayerMovementState
+        Retrieves the value of the player movement state
+        @return The player movement state
+    ==============================*/
+
+    public PlayerMovementState GetPlayerMovementState() 
+    {
+        return this.m_MovementState;
     }
 }
