@@ -16,7 +16,9 @@ TODO:
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Unity.AI.Navigation;
+using NavMeshBuilder = UnityEngine.AI.NavMeshBuilder;
 
 public class ProcGenner : MonoBehaviour
 {
@@ -88,7 +90,7 @@ public class ProcGenner : MonoBehaviour
     public Material m_MaterialCorridor;
     public Material m_MaterialStairs;
     public Material m_MaterialSpawn;
-    public Material m_MaterialExit;
+    public GameObject m_ExitElevator;
     public VisualOptimizer m_Optimizer;
     
     private Delaunay3D m_Delaunay;
@@ -181,8 +183,28 @@ public class ProcGenner : MonoBehaviour
         GenerateWalls();
         
         // Generate a walkable navmesh
-        UnityEditor.AI.NavMeshBuilder.ClearAllNavMeshes();
-        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
+        List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
+        NavMeshData navmeshdata = new NavMeshData();
+        NavMesh.AddNavMeshData(navmeshdata);
+        Bounds navmeshbounds = new Bounds(Vector3.zero, Center*ProcGenner.GridScale);
+        List<NavMeshBuildMarkup> markups = new List<NavMeshBuildMarkup>();
+        List<NavMeshModifier> modifiers = new List<NavMeshModifier>();
+        modifiers = NavMeshModifier.activeModifiers;
+        for (int i=0; i<modifiers.Count; i++)
+        {
+            markups.Add(new NavMeshBuildMarkup()
+            {
+                root = modifiers[i].transform,
+                overrideArea = modifiers[i].overrideArea,
+                area = modifiers[i].area,
+                ignoreFromBuild = modifiers[i].ignoreFromBuild
+            });
+        }
+        NavMeshSurface surface = this.m_NavMesh.GetComponent<NavMeshSurface>();
+        NavMeshBuilder.CollectSources(navmeshbounds, surface.layerMask, surface.useGeometry, surface.defaultArea, markups, sources);
+        sources.RemoveAll(source => source.component != null && source.component.gameObject.GetComponent<NavMeshAgent>() != null);
+        NavMeshBuilder.UpdateNavMeshData(navmeshdata, surface.GetBuildSettings(), sources, navmeshbounds);
+        //this.m_NavMesh.GetComponent<NavMeshSurface>().BuildNavMesh();
         
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
@@ -248,11 +270,9 @@ public class ProcGenner : MonoBehaviour
         
         // Then place the exit on the other end
         coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z);
-        instobj = Instantiate(this.m_FloorPrefab, (coord-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
-        instobj.GetComponent<Renderer>().material = this.m_MaterialExit;
+        instobj = Instantiate(this.m_ExitElevator, (coord-Center)*ProcGenner.GridScale, this.m_ExitElevator.transform.rotation);
         this.m_Entities.Add(instobj);
         doorpos = coord + (new Vector3(0, 0, -0.25f)*ProcGenner.GridScale/2);
-        instobj = Instantiate(this.m_DoorPrefab, (doorpos - Center)*ProcGenner.GridScale, this.m_DoorPrefab.transform.rotation*Quaternion.Euler(0,90,0));
         this.m_Doors.Add((doorpos, instobj));
         
         // Now place a room just before the end
