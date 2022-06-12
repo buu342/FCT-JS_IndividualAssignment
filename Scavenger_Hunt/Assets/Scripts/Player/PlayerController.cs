@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
         InputManagerScript.playerInput.Player.Aim.started -= Aim;
          InputManagerScript.playerInput.Player.Aim.canceled -= Aim;
     }
+    
 
     /*==============================
         Update

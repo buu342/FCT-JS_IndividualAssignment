@@ -16,15 +16,20 @@ public class CameraController : MonoBehaviour
     private const float TraumaSpeed    = 25.0f;
     private const float MaxTraumaAngle = 10.0f;
     private const float AimSpeed       = 0.1f;
+    private const float DefaultFOV     = 60.0f;
+    private const float ZoomFOV        = 40.0f;
     
-    public GameObject        m_Target;
+    public GameObject  m_Target;
+    public float m_DefaultFOV = CameraController.DefaultFOV;
+    public float m_ZoomFOV = CameraController.ZoomFOV;
+    
     private float            m_NoiseSeed;
     private Quaternion       m_CamRotation;
+    private PlayerController m_PlyCont;
     private Vector2          m_LookDirection;
     private float            m_Trauma = 0.0f;
-    public float             m_CurrentFOV = 60;
-    public float             m_TargetFOV = 60;
-    public PlayerController  m_PlyCont;
+    private float            m_CurrentFOV;
+    private float            m_TargetFOV;
 
     
     /*==============================
@@ -34,6 +39,8 @@ public class CameraController : MonoBehaviour
     
     void Start()
     {
+        this.m_CurrentFOV = this.m_DefaultFOV;
+        this.m_TargetFOV = this.m_DefaultFOV;
         this.m_NoiseSeed = Random.value;
         this.m_CamRotation = this.transform.localRotation;
         Cursor.lockState = CursorLockMode.Locked;
@@ -68,15 +75,15 @@ public class CameraController : MonoBehaviour
         // Handle aiming FOV
         if (this.m_PlyCont != null)
         {
-            this.m_TargetFOV = this.m_PlyCont.GetPlayerAiming() ? 40 : 60;
+            this.m_TargetFOV = this.m_PlyCont.GetPlayerAiming() ? this.m_ZoomFOV : this.m_DefaultFOV;
             this.m_CurrentFOV = Mathf.Lerp(this.m_CurrentFOV, this.m_TargetFOV, AimSpeed);
             Camera.main.fieldOfView = this.m_CurrentFOV;
         }
         
         // Calculate the final camera position and rotation
-        this.m_CamRotation.x += this.m_LookDirection.x*Sensitivity;
-        this.m_CamRotation.y -= this.m_LookDirection.y*Sensitivity;
-        this.m_CamRotation.y = Mathf.Clamp(this.m_CamRotation.y, LookMax_Down, LookMax_Up);
+        this.m_CamRotation.x += this.m_LookDirection.x*CameraController.Sensitivity;
+        this.m_CamRotation.y -= this.m_LookDirection.y*CameraController.Sensitivity;
+        this.m_CamRotation.y = Mathf.Clamp(this.m_CamRotation.y, CameraController.LookMax_Down, CameraController.LookMax_Up);
         this.transform.rotation = Quaternion.Euler(this.m_CamRotation.y, this.m_CamRotation.x, 0.0f);
         this.transform.rotation *= Quaternion.Euler(traumaoffsetp, traumaoffsety, traumaoffsetr);
         

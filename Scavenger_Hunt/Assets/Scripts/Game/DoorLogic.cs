@@ -97,4 +97,16 @@ public class DoorLogic : MonoBehaviour
     {
         this.m_IsOpen = false;
     }
+
+
+    /*==============================
+        IsDoorOpen
+        Checks whether the door is open
+        @return Whether the door is open or not
+    ==============================*/
+    
+    public bool IsDoorOpen()
+    {
+        return (this.m_Displacement.y > 0);
+    }
 }

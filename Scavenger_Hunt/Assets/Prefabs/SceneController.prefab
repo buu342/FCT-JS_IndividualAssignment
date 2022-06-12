@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1436194342606117216}
   - component: {fileID: 1648054404}
   - component: {fileID: 2869686202096945100}
+  - component: {fileID: 765450197460495278}
   m_Layer: 0
   m_Name: SceneController
   m_TagString: Untagged
@@ -59,6 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Camera: {fileID: 0}
   m_FloorPrefab: {fileID: 4546657156345559804, guid: bcf2f365cb079944abc10eafc74202cc, type: 3}
+  m_FloorDustPrefab: {fileID: 5977091273754970389, guid: 2cea54980f6b6aca08f7e6131d0aaf60, type: 3}
   m_CeilingPrefab: {fileID: 4546657156345559804, guid: 7c8412c326eac5141942d3bec6136b4b, type: 3}
   m_StairPrefab: {fileID: 8725706798832080784, guid: 0adef0cb7ba757c40aec3e4e95b71aea, type: 3}
   m_Wall1Prefab: {fileID: 1512847438612294568, guid: 8da7c6dcc88617d43b2b4a3b3e9e3fef, type: 3}
@@ -74,3 +76,17 @@ MonoBehaviour:
   m_MaterialStairs: {fileID: 2100000, guid: abb5a07f527693f43a35c47deb94268f, type: 2}
   m_MaterialSpawn: {fileID: 2100000, guid: f87003065265b76429873dcff5b3c95c, type: 2}
   m_MaterialExit: {fileID: 2100000, guid: 508df2727752df74c8b1a61e1130f635, type: 2}
+  m_Optimizer: {fileID: 765450197460495278}
+--- !u!114 &765450197460495278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436194342606117223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f5e9d2bece87b940a184a9e7b72f014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ProcGen: {fileID: 2869686202096945100}
