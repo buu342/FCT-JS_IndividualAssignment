@@ -198,16 +198,23 @@ public class PlayerController : MonoBehaviour
         this.m_CameraController = this.m_Camera.GetComponent<CameraController>();
     }
     
- 
+    
+    /*==============================
+        Fire
+        Called when the player presses a movement direction
+        @param The input value
+    ==============================*/
 
     void Move(InputAction.CallbackContext context) 
     {
+        Vector2 movedir = context.ReadValue<Vector2>();
+        this.m_MovementDirection = movedir;
         this.m_MovementState = PlayerMovementState.Moving;
     }
     
     
     /*==============================
-        OnFire
+        Fire
         Called when the player presses left click
         @param The input value
     ==============================*/
@@ -234,19 +241,19 @@ public class PlayerController : MonoBehaviour
     
     
     /*==============================
-        OnAim
+        Aim
         Called when the player presses right click
         @param The input value
     ==============================*/
 
     void Aim(InputAction.CallbackContext context) 
     {
-        this.m_AimState = context.ReadValue<float>() >0 ? PlayerAimState.Aiming : PlayerAimState.Idle;
+        this.m_AimState = context.ReadValue<float>() > 0 ? PlayerAimState.Aiming : PlayerAimState.Idle;
     }
     
     
     /*==============================
-        OnReload
+        Reload
         Called when the player presses R
         @param The input value
     ==============================*/
