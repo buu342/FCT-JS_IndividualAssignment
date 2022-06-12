@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour
     private Quaternion m_TargetFlashLightAngle = Quaternion.identity;
     private Quaternion m_CurrentFlashLightAngle = Quaternion.identity;
     private float m_NextFireTime = 0.0f;
+    private bool m_CancelReload = false;
     
     private AudioManager m_Audio;
     private GameObject m_Camera;
@@ -133,12 +134,22 @@ public class PlayerController : MonoBehaviour
                     this.m_NextFireTime = 0;
                     break;
                 case PlayerCombatState.ReloadStart:
-                    this.m_CombatState = PlayerCombatState.ReloadLoop;
-                    this.m_NextFireTime = Time.time + PlayerController.ReloadLoopTime;
-                    this.m_PlyAnims.ReloadAnimation(this.m_AmmoClip == 0);
+                    if (!this.m_CancelReload)
+                    {
+                        this.m_CombatState = PlayerCombatState.ReloadLoop;
+                        this.m_NextFireTime = Time.time + PlayerController.ReloadLoopTime;
+                        this.m_PlyAnims.ReloadAnimation(this.m_AmmoClip == 0);
+                    }
+                    else
+                    {
+                        this.m_CombatState = PlayerCombatState.ReloadEnd;
+                        this.m_NextFireTime = Time.time + PlayerController.ReloadEndTime;
+                        this.m_PlyAnims.EndReloadAnimation();
+                        this.m_CancelReload = false;
+                    }
                     break;
                 case PlayerCombatState.ReloadLoop:
-                    if (this.m_AmmoReserve > 0 && this.m_AmmoClip != ClipSize)
+                    if (this.m_AmmoReserve > 0 && this.m_AmmoClip != ClipSize && !this.m_CancelReload)
                     {
                         this.m_NextFireTime = Time.time + PlayerController.ReloadLoopTime;
                         this.m_PlyAnims.ReloadAnimation(false);
@@ -148,6 +159,7 @@ public class PlayerController : MonoBehaviour
                         this.m_CombatState = PlayerCombatState.ReloadEnd;
                         this.m_NextFireTime = Time.time + PlayerController.ReloadEndTime;
                         this.m_PlyAnims.EndReloadAnimation();
+                        this.m_CancelReload = false;
                     }
                     break;
             }
@@ -220,6 +232,8 @@ public class PlayerController : MonoBehaviour
             else
                 this.m_Audio.Play("Shotgun/DryFire", this.transform.gameObject);
         }
+        else if (this.m_CombatState == PlayerCombatState.ReloadStart || this.m_CombatState == PlayerCombatState.ReloadLoop || this.m_CombatState == PlayerCombatState.ReloadEnd)
+            this.m_CancelReload = true;
     }
     
     
