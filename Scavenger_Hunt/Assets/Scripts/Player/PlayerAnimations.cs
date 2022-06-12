@@ -187,6 +187,7 @@ public class PlayerAnimations : MonoBehaviour
             this.m_Animator.SetTrigger("Reload");
         this.m_Animator.SetBool("IsReloading", true);
         this.m_Animator.SetLayerWeight(LayerIndex_Reload, 1.0f);
+        this.m_Animator.Play("Empty", LayerIndex_Reload, 0f);
     }
     
     

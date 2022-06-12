@@ -265,13 +265,24 @@ MonoBehaviour:
     is3D: 1
     maxDistance: 32
     maxDistanceSqr: 0
+  - name: Shotgun/DryFire
+    clip: {fileID: 8300000, guid: 0e6c0c9c2e661854e8c933324657e764, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    is3D: 1
+    maxDistance: 8
+    maxDistanceSqr: 0
   - name: Shotgun/Pump
     clip: {fileID: 8300000, guid: 8120ee55ffda54645a7d84ac675b28f0, type: 3}
     volume: 1
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 1
+    canStack: 0
     canMuffle: 1
     is3D: 1
     maxDistance: 8
@@ -282,7 +293,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 1
+    canStack: 0
     canMuffle: 1
     is3D: 1
     maxDistance: 8
@@ -293,40 +304,40 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 1
+    canStack: 0
     canMuffle: 1
     is3D: 1
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Shotgun/StartReload
     clip: {fileID: 8300000, guid: 599b992c4c0a5d24d88e3bdd66305337, type: 3}
-    volume: 1
+    volume: 0.2
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 1
+    canStack: 0
     canMuffle: 1
     is3D: 1
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Shotgun/InsertShell
     clip: {fileID: 8300000, guid: 1ae7b73f0fe3d784e897899eb0ab299c, type: 3}
-    volume: 1
+    volume: 0.2
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 1
+    canStack: 0
     canMuffle: 1
     is3D: 1
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Shotgun/EndReload
     clip: {fileID: 8300000, guid: 41dd69e3de1a48a48ad13f5ee5638ab3, type: 3}
-    volume: 1
+    volume: 0.2
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 1
+    canStack: 0
     canMuffle: 1
     is3D: 1
     maxDistance: 8
