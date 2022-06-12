@@ -70,6 +70,7 @@ public class ProcGenner : MonoBehaviour
     
     public GameObject m_Camera;
     public GameObject m_FloorPrefab;
+    public GameObject m_FloorDustPrefab;
     public GameObject m_CeilingPrefab;
     public GameObject m_StairPrefab;
     public GameObject m_Wall1Prefab;
@@ -337,13 +338,16 @@ public class ProcGenner : MonoBehaviour
         Graphs.Vertex vert;
         List<GameObject> rm = new List<GameObject>();
         List<Vector3Int> positions = new List<Vector3Int>();
+        bool createDust = true;//Random.Range(0,10) < 9;
         for (int i=0; i<size.z; i++)
         {
             for (int j=0; j<size.x; j++)
             {
                 // Floor
                 Vector3Int finalpos = pos + new Vector3Int(j, 0, i);
+
                 instobj = Instantiate(this.m_FloorPrefab, (finalpos-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
+                
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
                 
@@ -357,6 +361,15 @@ public class ProcGenner : MonoBehaviour
                 instobj.GetComponent<Renderer>().material = this.m_MaterialRoom;
                 rm.Add(instobj);
             }
+        }
+        if(createDust) {
+            Vector3 finalPos = pos + new Vector3(size.x/2,size.y/2,size.z/2);
+            instobj=Instantiate(this.m_FloorDustPrefab, (finalPos-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
+            instobj.transform.localScale = new Vector3Int(size.x,0,size.z);
+
+            //int maxScale = Mathf.Max(size.x, size.z);
+            //instobj.transform.localScale = new Vector3Int(maxScale, maxScale, maxScale);
+            rm.Add(instobj);
         }
         
         // Store the room definition in the helper structures
