@@ -45,6 +45,12 @@ public class VisualOptimizer : MonoBehaviour
                                 obj.GetComponent<MeshRenderer>().enabled = visible;
                         }
                         this.m_ProcGen.SetRoomVisible(i, visible);
+                        #if UNITY_EDITOR
+                            if (visible)
+                                room.parentobject.name = "Room";
+                            else
+                                room.parentobject.name = "Room (Hidden)";
+                        #endif
                     }
                 }
             }

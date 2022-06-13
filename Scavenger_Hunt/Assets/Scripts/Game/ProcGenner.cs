@@ -9,7 +9,7 @@ provided:
 https://vazgriz.com/119/procedurally-generated-dungeons/
 
 TODO:
-    * Prevent the generation of double doors
+    * Prevent the generation of double doors (Needs testing)
     * Prevent the generation of double stairs
 ****************************************************************/
 
@@ -793,7 +793,14 @@ public class ProcGenner : MonoBehaviour
                         if ((prevblock == BlockType.Corridor && this.m_Grid[current.x, current.y, current.z].type == BlockType.Room) || (prevblock == BlockType.Room && this.m_Grid[current.x, current.y, current.z].type == BlockType.Corridor))
                         {
                             Vector3 doordir = (new Vector3(delta.x, 0.0f, delta.z));
-                            if (DoorExists(prev, Vector3Int.FloorToInt(doordir)) == null)
+                            Vector3 otherdir1 = (new Vector3(delta.x, 0.0f, 1.0f));
+                            Vector3 otherdir2 = (new Vector3(delta.x, 0.0f, -1.0f));
+                            if (doordir.x == 0)
+                            {
+                                otherdir1 = (new Vector3(1.0f, 0.0f, delta.z));
+                                otherdir2 = (new Vector3(-1.0f, 0.0f, delta.z));
+                            }
+                            if (DoorExists(prev, Vector3Int.FloorToInt(doordir)) == null && DoorExists(prev, Vector3Int.FloorToInt(otherdir1)) == null && DoorExists(prev, Vector3Int.FloorToInt(otherdir2)) == null)
                             {
                                 float angle = delta.z != 0 ? 90.0f : 0.0f;
                                 Vector3 doorpos = doordir/2 + prev;
