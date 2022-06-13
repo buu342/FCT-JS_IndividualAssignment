@@ -4,26 +4,22 @@ using TMPro;
 
 public class FPSCounter : MonoBehaviour
 {
-    public PlayerInput playerControls;
-    private InputAction calculateFramesAction;
     private int frameRate;
     private bool calculateFrames;
     public TextMeshProUGUI FPSText;
 
-    private void Awake() {
-        playerControls = new PlayerInput();
-    }
+    
 
     private void OnEnable() {
-
-        calculateFramesAction = playerControls.UI.FPSCounter;
-        calculateFramesAction.Enable();
-        calculateFramesAction.performed += calculateFramesTriggered;
+        InputManagerScript.playerInput.UI.FPSCounter.started += calculateFramesTriggered;
+        if(!InputManagerScript.playerInput.UI.enabled)
+            InputManagerScript.playerInput.UI.Enable();
     }
 
     private void OnDisable() {
-        calculateFramesAction.performed -= calculateFramesTriggered;
-         calculateFramesAction.Disable();
+        InputManagerScript.playerInput.UI.FPSCounter.started -= calculateFramesTriggered;
+            if(InputManagerScript.playerInput.UI.enabled)
+                InputManagerScript.playerInput.UI.Disable();
     }
 
     // Update is called once per frame
@@ -40,6 +36,8 @@ public class FPSCounter : MonoBehaviour
 
     private void calculateFramesTriggered(InputAction.CallbackContext context) {
         calculateFrames = !calculateFrames;
+        if(!calculateFrames)
+            FPSText.text="";
     }
 
 }
