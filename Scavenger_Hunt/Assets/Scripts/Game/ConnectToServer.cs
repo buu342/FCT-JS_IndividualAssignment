@@ -25,6 +25,8 @@ using UnityEngine.SceneManagement;
         SceneManager.LoadScene("SampleScene");
     }
 
-
+    public void Quitgame(){
+        Application.Quit();
+    }
 
 }

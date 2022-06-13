@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
+
 public class FPSCounter : MonoBehaviour
 {
     public PlayerInput playerControls;
     private InputAction calculateFramesAction;
     private int frameRate;
     private bool calculateFrames;
-    
+    public TextMeshProUGUI FPSText;
+
     private void Awake() {
         playerControls = new PlayerInput();
     }
@@ -31,6 +34,7 @@ public class FPSCounter : MonoBehaviour
         {
             frameRate = (int)(1.0f / Time.unscaledDeltaTime);
             Debug.Log(frameRate);
+            FPSText.text=frameRate.ToString()+" FPS";
         }
     }
 
