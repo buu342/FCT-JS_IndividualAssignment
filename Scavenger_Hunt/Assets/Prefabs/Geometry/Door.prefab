@@ -107,8 +107,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3330461577559904770}
   - component: {fileID: -3695034808995775972}
-  - component: {fileID: -5215080091490589422}
-  - component: {fileID: 8832248749826300881}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -129,6 +127,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1407784604165060537}
+  - {fileID: 1357699439347416088}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -146,29 +145,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DoorType: 0
   m_OpenSpeed: 0.5
+  m_OpenAmount: 4
   m_ModelPrefab: {fileID: 3789783636049986526}
   m_OpenSound: Physics/DoorOpen
   m_CloseSound: Physics/DoorClose
---- !u!65 &-5215080091490589422
+--- !u!1 &7082345216937925234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1357699439347416088}
+  - component: {fileID: 8577681430664100716}
+  - component: {fileID: 5435252360111585190}
+  m_Layer: 0
+  m_Name: Trigger
+  m_TagString: Trigger
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1357699439347416088
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7082345216937925234}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3330461577559904770}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8577681430664100716
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6969831614626464371}
+  m_GameObject: {fileID: 7082345216937925234}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 4, y: 3.9, z: 3.9}
   m_Center: {x: 0, y: 2, z: 0}
---- !u!114 &8832248749826300881
+--- !u!114 &5435252360111585190
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6969831614626464371}
+  m_GameObject: {fileID: 7082345216937925234}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 340848ade3fcc1d489377ea6d2f97ca6, type: 3}

@@ -8,11 +8,13 @@ sounds as objects in the scene. Unity's audio system is weird...
 using UnityEngine.Audio;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour
 {
     public Sound[] m_RegisteredSoundsList;
     private GameObject m_listener;
+    private ProcGenner m_procgen;
     
     
     /*==============================
@@ -22,6 +24,7 @@ public class AudioManager : MonoBehaviour
     
     void Awake()
     {
+        this.m_procgen = GameObject.Find("SceneController").GetComponent<ProcGenner>();
         this.m_listener = GameObject.FindObjectOfType<AudioListener>().gameObject;
         foreach (Sound s in this.m_RegisteredSoundsList)
             s.maxDistanceSqr = s.maxDistance*s.maxDistance;
@@ -78,7 +81,7 @@ public class AudioManager : MonoBehaviour
         // Pick a random sound from the list and set it up
         Sound s = slist[(new System.Random()).Next(0, slist.Length)];
         GameObject sndobj = new GameObject();
-        #if DEBUG
+        #if UNITY_EDITOR
             sndobj.name = "SndFX - " + s.name;
             sndobj.transform.SetParent(this.gameObject.transform);
         #endif
@@ -86,6 +89,29 @@ public class AudioManager : MonoBehaviour
         AudioLowPassFilter filter = sndobj.AddComponent<AudioLowPassFilter>();
         filter.cutoffFrequency = 2000.0f;
         filter.enabled = false;
+        if (s.canReverb)
+        {
+            AudioReverbFilter reverb = sndobj.AddComponent<AudioReverbFilter>();
+            List<ProcGenner.RoomDef> rooms = this.m_procgen.GetRoomDefs();
+            reverb.reverbPreset = AudioReverbPreset.Cave;
+            foreach (ProcGenner.RoomDef room in rooms)
+            {
+                // Check if the sound is in bounds of a room
+                Vector3 realroomstart = room.midpoint;
+                Vector3 realroomsize = ((Vector3)room.size)*ProcGenner.GridScale/2;
+                if (position.x >= realroomstart.x-realroomsize.x && position.x <= realroomstart.x+realroomsize.x &&
+                    position.y >= realroomstart.y-realroomsize.y && position.y <= realroomstart.y+realroomsize.y &&
+                    position.z >= realroomstart.z-realroomsize.z && position.z <= realroomstart.z+realroomsize.z
+                )
+                {
+                    if (room.size.y == 2)
+                        reverb.reverbPreset = AudioReverbPreset.Hangar;
+                    else
+                        reverb.reverbPreset = AudioReverbPreset.Cave;
+                    break;
+                }
+            }
+        }
         source.clip = s.clip;
         source.loop = s.loop;
         
@@ -172,7 +198,7 @@ public class AudioManager : MonoBehaviour
                     {
                         bool hitsomething = false;
                         RaycastHit[] hits = Physics.RaycastAll(srcpos, (listenerpos-srcpos).normalized, dist);
-                        Debug.DrawRay(srcpos, listenerpos-srcpos, Color.white, 1.0f, true);
+                        //Debug.DrawRay(srcpos, listenerpos-srcpos, Color.white, 1.0f, true);
                         for (int j = 0; j < hits.Length; j++)
                         {
                             GameObject hit = hits[j].transform.gameObject;

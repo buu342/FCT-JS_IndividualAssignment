@@ -38,7 +38,7 @@ public class CameraPhysics : MonoBehaviour
         RaycastHit hit;
         Vector3 targetpos = this.transform.parent.TransformPoint(this.m_CamDir*CameraPhysics.MaxZoom);
         
-        if (Physics.Linecast(this.transform.parent.position, targetpos, out hit))
+        if (Physics.Linecast(this.transform.parent.position, targetpos, out hit) && !hit.collider.isTrigger)
             this.m_CamZoom = Mathf.Clamp((hit.distance*0.75f), CameraPhysics.MinZoom, CameraPhysics.MaxZoom);
         else
             this.m_CamZoom = CameraPhysics.MaxZoom;

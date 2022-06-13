@@ -19,7 +19,9 @@ public class DoorTrigger : MonoBehaviour
     
     public List<DoorLogic> m_TargetDoors = new List<DoorLogic>();
     public float m_TriggerDelay = 0.0f;
+    public TriggerType m_TiggerType = TriggerType.OpenClose;
     
+    private float m_TriggerTimer = 0.0f;
     
     /*==============================
         Start
@@ -39,7 +41,18 @@ public class DoorTrigger : MonoBehaviour
     
     void FixedUpdate()
     {
-        
+        if (this.m_TriggerTimer != 0.0f && this.m_TriggerTimer < Time.time)
+        {
+            foreach (DoorLogic door in this.m_TargetDoors)
+            {
+                switch (this.m_TiggerType)
+                {
+                    case TriggerType.OpenClose: door.StartOpen(true); break;
+                    case TriggerType.ForceOpen: door.StartOpen(false); break;
+                    case TriggerType.ForceClose: door.ForceCloseDoor(); break;
+                }
+            }
+        }
     }
     
     
@@ -52,8 +65,22 @@ public class DoorTrigger : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
-            foreach (DoorLogic door in this.m_TargetDoors)
-                door.StartOpen(true);
+        {
+            if (this.m_TriggerDelay == 0)
+            {
+                foreach (DoorLogic door in this.m_TargetDoors)
+                {
+                    switch (this.m_TiggerType)
+                    {
+                        case TriggerType.OpenClose: door.StartOpen(true); break;
+                        case TriggerType.ForceOpen: door.StartOpen(false); break;
+                        case TriggerType.ForceClose: door.ForceCloseDoor(); break;
+                    }
+                }
+            }
+            else if (this.m_TriggerTimer == 0.0f)
+                this.m_TriggerTimer = Time.time + this.m_TriggerDelay;
+        }
     }
 
 

@@ -9,7 +9,7 @@ provided:
 https://vazgriz.com/119/procedurally-generated-dungeons/
 
 TODO:
-    * Prevent the generation of double doors
+    * Prevent the generation of double doors (Needs testing)
     * Prevent the generation of double stairs
 ****************************************************************/
 
@@ -58,6 +58,7 @@ public class ProcGenner : MonoBehaviour
     
     public struct RoomDef
     {
+        public GameObject parentobject;
         public Vector3Int position;
         public Vector3Int size;
         public Vector3 midpoint;
@@ -68,6 +69,7 @@ public class ProcGenner : MonoBehaviour
     
     public struct CorridorDef
     {
+        public GameObject parentobject;
         public Vector3Int position;
         public Vector3Int direction;
         public List<GameObject> objects;
@@ -90,6 +92,7 @@ public class ProcGenner : MonoBehaviour
     public Material m_MaterialCorridor;
     public Material m_MaterialStairs;
     public Material m_MaterialSpawn;
+    public GameObject m_Airlock;
     public GameObject m_ExitElevator;
     public VisualOptimizer m_Optimizer;
     
@@ -186,7 +189,7 @@ public class ProcGenner : MonoBehaviour
         List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
         NavMeshData navmeshdata = new NavMeshData();
         NavMesh.AddNavMeshData(navmeshdata);
-        Bounds navmeshbounds = new Bounds(Vector3.zero, Center*ProcGenner.GridScale);
+        Bounds navmeshbounds = new Bounds(Vector3.zero, Center*2*ProcGenner.GridScale);
         List<NavMeshBuildMarkup> markups = new List<NavMeshBuildMarkup>();
         List<NavMeshModifier> modifiers = new List<NavMeshModifier>();
         modifiers = NavMeshModifier.activeModifiers;
@@ -204,7 +207,6 @@ public class ProcGenner : MonoBehaviour
         NavMeshBuilder.CollectSources(navmeshbounds, surface.layerMask, surface.useGeometry, surface.defaultArea, markups, sources);
         sources.RemoveAll(source => source.component != null && source.component.gameObject.GetComponent<NavMeshAgent>() != null);
         NavMeshBuilder.UpdateNavMeshData(navmeshdata, surface.GetBuildSettings(), sources, navmeshbounds);
-        //this.m_NavMesh.GetComponent<NavMeshSurface>().BuildNavMesh();
         
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
@@ -212,6 +214,24 @@ public class ProcGenner : MonoBehaviour
             Debug.Log("* Time taken -> "+(System.DateTime.Now-time).TotalMilliseconds+"ms");
             Debug.Log("* Attempts -> "+attempts);
             Debug.Log("* Rooms Culled -> "+roomsculled);
+        #endif
+        
+        // Group the objects to make the scene graph easier to traverse
+        #if UNITY_EDITOR
+            foreach (RoomDef roomdef in this.m_Rooms)
+            {
+                foreach (GameObject obj in roomdef.objects)
+                    obj.transform.SetParent(roomdef.parentobject.transform);
+                foreach (GameObject obj in roomdef.doors)
+                    obj.transform.SetParent(roomdef.parentobject.transform);
+                roomdef.parentobject.name = "Room";
+            }
+            foreach (CorridorDef cordef in this.m_Corridors)
+            {
+                foreach (GameObject obj in cordef.objects)
+                    obj.transform.SetParent(cordef.parentobject.transform);
+                cordef.parentobject.name = "Corridor";
+            }
         #endif
     }
 
@@ -232,11 +252,9 @@ public class ProcGenner : MonoBehaviour
         
         // Start by placing our spawn somewhere outside the grid
         coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, -1);
-        instobj = Instantiate(this.m_FloorPrefab, (coord-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
-        instobj.GetComponent<Renderer>().material = this.m_MaterialSpawn;
+        instobj = Instantiate(this.m_Airlock, (coord-Center)*ProcGenner.GridScale, this.m_Airlock.transform.rotation);
         this.m_Entities.Add(instobj);
         doorpos = coord + (new Vector3(0, 0, 0.25f)*ProcGenner.GridScale/2);
-        instobj = Instantiate(this.m_DoorPrefab, (doorpos - Center)*ProcGenner.GridScale, this.m_DoorPrefab.transform.rotation*Quaternion.Euler(0,90,0));
         this.m_Doors.Add((doorpos, instobj));
         
         // Create the player on the spawn
@@ -260,7 +278,7 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<4; i++)
             {
                 Vector3Int finalpos = coord - new Vector3Int(0, 0, i);
-                CorridorDef cdef = new CorridorDef(){position = finalpos, direction = new Vector3Int(0, 0, 1), objects = PlaceCorridor(finalpos)};
+                CorridorDef cdef = new CorridorDef(){position = finalpos, direction = new Vector3Int(0, 0, 1), objects = PlaceCorridor(finalpos), parentobject = new GameObject()};
                 this.m_Corridors.Add(cdef);
                 this.m_Grid[finalpos.x, finalpos.y, finalpos.z].type = BlockType.Corridor;
                 this.m_Grid[finalpos.x, finalpos.y, finalpos.z].corridordef = cdef;
@@ -400,7 +418,7 @@ public class ProcGenner : MonoBehaviour
         
         // Store the room definition in the helper structures
         Vector3 mid = pos + new Vector3(size.x*0.5f, 0.0f, size.z*0.5f);
-        RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm, visible = true, doors = new List<GameObject>()};
+        RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm, visible = true, doors = new List<GameObject>(), parentobject = new GameObject()};
         rdef.midpoint = -(new Vector3(1, 1, 1)*ProcGenner.GridScale)/2 + (mid-Center)*ProcGenner.GridScale;
         vert = new Graphs.Vertex(mid);
         this.m_Rooms.Add(rdef);
@@ -775,7 +793,14 @@ public class ProcGenner : MonoBehaviour
                         if ((prevblock == BlockType.Corridor && this.m_Grid[current.x, current.y, current.z].type == BlockType.Room) || (prevblock == BlockType.Room && this.m_Grid[current.x, current.y, current.z].type == BlockType.Corridor))
                         {
                             Vector3 doordir = (new Vector3(delta.x, 0.0f, delta.z));
-                            if (DoorExists(prev, Vector3Int.FloorToInt(doordir)) == null)
+                            Vector3 otherdir1 = (new Vector3(delta.x, 0.0f, 1.0f));
+                            Vector3 otherdir2 = (new Vector3(delta.x, 0.0f, -1.0f));
+                            if (doordir.x == 0)
+                            {
+                                otherdir1 = (new Vector3(1.0f, 0.0f, delta.z));
+                                otherdir2 = (new Vector3(-1.0f, 0.0f, delta.z));
+                            }
+                            if (DoorExists(prev, Vector3Int.FloorToInt(doordir)) == null && DoorExists(prev, Vector3Int.FloorToInt(otherdir1)) == null && DoorExists(prev, Vector3Int.FloorToInt(otherdir2)) == null)
                             {
                                 float angle = delta.z != 0 ? 90.0f : 0.0f;
                                 Vector3 doorpos = doordir/2 + prev;
@@ -855,7 +880,7 @@ public class ProcGenner : MonoBehaviour
                             placedir = -placedir;
                         
                         // Place the stair object
-                        CorridorDef cdef = new CorridorDef(){position = placepos, direction = placedir, objects = PlaceStairs(placepos, Quaternion.Euler(0, 0, ang))};
+                        CorridorDef cdef = new CorridorDef(){position = placepos, direction = placedir, objects = PlaceStairs(placepos, Quaternion.Euler(0, 0, ang)), parentobject = new GameObject()};
                         this.m_Corridors.Add(cdef);
                             
                         // Calculate the offsets to help us out
@@ -874,7 +899,7 @@ public class ProcGenner : MonoBehaviour
                     // Place corridors in our path
                     if (this.m_Grid[pos.x, pos.y, pos.z].type == BlockType.Corridor)
                     {
-                        CorridorDef cdef = new CorridorDef(){position = pos, direction = delta, objects = PlaceCorridor(pos)};
+                        CorridorDef cdef = new CorridorDef(){position = pos, direction = delta, objects = PlaceCorridor(pos), parentobject = new GameObject()};
                         this.m_Corridors.Add(cdef);
                         this.m_Grid[pos.x, pos.y, pos.z].corridordef = cdef;
                     }
