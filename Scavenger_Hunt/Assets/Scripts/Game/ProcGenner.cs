@@ -33,6 +33,7 @@ public class ProcGenner : MonoBehaviour
     private const int     MaxRoomSize_Y = 3;    // Maximum room size on Y (in grid units)
     private const int     MaxRoomSize_Z = 6;    // Maximum room size on Z (in grid units)
     private const int     MaxRooms      = 30;   // Maximum number of rooms to generate
+    [HideInInspector]
     public  Vector3       Center        = new Vector3(ProcGenner.MapSize_X/2, ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z/2);
     
     private enum LevelType
@@ -75,7 +76,12 @@ public class ProcGenner : MonoBehaviour
         public List<GameObject> objects;
     };
     
+    [Header("Important")]
     public GameObject m_Camera;
+    public GameObject m_NavMesh;
+    public VisualOptimizer m_Optimizer;
+    
+    [Header("Debug prefabs")]
     public GameObject m_FloorPrefab;
     public GameObject m_FloorDustPrefab;
     public GameObject m_CeilingPrefab;
@@ -87,14 +93,16 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_DoorWall1Prefab;
     public GameObject m_DoorWall2Prefab;
     public GameObject m_PlayerPrefab;
-    public GameObject m_NavMesh;
+    
+    [Header("Debug Materials")]
     public Material m_MaterialRoom;
     public Material m_MaterialCorridor;
     public Material m_MaterialStairs;
     public Material m_MaterialSpawn;
+    
+    [Header("Map Objects")]
     public GameObject m_Airlock;
     public GameObject m_ExitElevator;
-    public VisualOptimizer m_Optimizer;
     
     private Delaunay3D m_Delaunay;
     private HashSet<Prim.Edge> m_SelectedEdges;
@@ -419,7 +427,7 @@ public class ProcGenner : MonoBehaviour
         // Store the room definition in the helper structures
         Vector3 mid = pos + new Vector3(size.x*0.5f, 0.0f, size.z*0.5f);
         RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm, visible = true, doors = new List<GameObject>(), parentobject = new GameObject()};
-        rdef.midpoint = -(new Vector3(1, 1, 1)*ProcGenner.GridScale)/2 + (mid-Center)*ProcGenner.GridScale;
+        rdef.midpoint = -(new Vector3(1, 0, 1)*ProcGenner.GridScale)/2 + ((mid + new Vector3(0, size.y*0.5f, 0))-Center)*ProcGenner.GridScale;
         vert = new Graphs.Vertex(mid);
         this.m_Rooms.Add(rdef);
         this.m_Vertices.Add(vert);

@@ -93,7 +93,7 @@ public class AudioManager : MonoBehaviour
         {
             AudioReverbFilter reverb = sndobj.AddComponent<AudioReverbFilter>();
             List<ProcGenner.RoomDef> rooms = this.m_procgen.GetRoomDefs();
-            reverb.reverbPreset = AudioReverbPreset.Cave;
+            reverb.reverbPreset = AudioReverbPreset.Hallway;
             foreach (ProcGenner.RoomDef room in rooms)
             {
                 // Check if the sound is in bounds of a room
@@ -105,9 +105,9 @@ public class AudioManager : MonoBehaviour
                 )
                 {
                     if (room.size.y == 2)
-                        reverb.reverbPreset = AudioReverbPreset.Hangar;
-                    else
                         reverb.reverbPreset = AudioReverbPreset.Cave;
+                    else
+                        reverb.reverbPreset = AudioReverbPreset.Auditorium;
                     break;
                 }
             }
