@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2311736609854071609}
   - component: {fileID: 7577545273122379158}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,6 +191,69 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &3024794657702817881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5367830266800552220}
+  - component: {fileID: 1084314378416649547}
+  - component: {fileID: 2960759923650064137}
+  m_Layer: 7
+  m_Name: Trigger
+  m_TagString: Trigger
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5367830266800552220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3024794657702817881}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3770401519892340806}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1084314378416649547
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3024794657702817881}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 3.9, z: 3.9}
+  m_Center: {x: 0, y: -4, z: 2}
+--- !u!114 &2960759923650064137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3024794657702817881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 340848ade3fcc1d489377ea6d2f97ca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TargetDoors:
+  - {fileID: 240569109891253084}
+  - {fileID: 5177342152873045980}
+  m_TriggerDelay: 0
+  m_TiggerType: 0
 --- !u!1 &4546657156345559804
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,9 +267,7 @@ GameObject:
   - component: {fileID: 2600834179719060265}
   - component: {fileID: 240569109891253084}
   - component: {fileID: 5177342152873045980}
-  - component: {fileID: 2993275960656207587}
-  - component: {fileID: 7940965822000314993}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: ElevatorExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,6 +290,8 @@ Transform:
   - {fileID: 2570009065232889647}
   - {fileID: 1869349856305555144}
   - {fileID: 148662733947768306}
+  - {fileID: 5367830266800552220}
+  - {fileID: 8657086072101610851}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
@@ -318,35 +381,6 @@ MonoBehaviour:
   m_ModelPrefab: {fileID: 6071593535186936239}
   m_OpenSound: 
   m_CloseSound: 
---- !u!65 &2993275960656207587
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4546657156345559804}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4, y: 3.9, z: 3.9}
-  m_Center: {x: 0, y: -4, z: 2}
---- !u!114 &7940965822000314993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4546657156345559804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 340848ade3fcc1d489377ea6d2f97ca6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TargetDoors:
-  - {fileID: 240569109891253084}
-  - {fileID: 5177342152873045980}
-  m_TriggerDelay: 0
 --- !u!1 &6071593535186936239
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,7 +492,7 @@ GameObject:
   - component: {fileID: 1170359356919127429}
   - component: {fileID: 3200505246224196495}
   - component: {fileID: 6847660877601001712}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: ElevatorBox
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -545,3 +579,66 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4, y: 4, z: 0.1}
   m_Center: {x: 0, y: 0, z: -0.05}
+--- !u!1 &9133644473854751388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8657086072101610851}
+  - component: {fileID: 2478410950926980578}
+  - component: {fileID: 2928102078860246809}
+  m_Layer: 7
+  m_Name: TriggerClose
+  m_TagString: Trigger
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8657086072101610851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133644473854751388}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 1.87}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3770401519892340806}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2478410950926980578
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133644473854751388}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2928102078860246809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133644473854751388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 340848ade3fcc1d489377ea6d2f97ca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TargetDoors:
+  - {fileID: 240569109891253084}
+  - {fileID: 5177342152873045980}
+  m_TriggerDelay: 0
+  m_TiggerType: 2

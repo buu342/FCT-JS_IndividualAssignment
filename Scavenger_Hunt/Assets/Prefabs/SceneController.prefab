@@ -76,6 +76,7 @@ MonoBehaviour:
   m_MaterialCorridor: {fileID: 2100000, guid: 0e451b62ade916149be2e85ec0f9d3cb, type: 2}
   m_MaterialStairs: {fileID: 2100000, guid: abb5a07f527693f43a35c47deb94268f, type: 2}
   m_MaterialSpawn: {fileID: 2100000, guid: f87003065265b76429873dcff5b3c95c, type: 2}
+  m_Airlock: {fileID: 5906908505389256942, guid: 5b45b592b659a834f945e41793770b4c, type: 3}
   m_ExitElevator: {fileID: 4546657156345559804, guid: 88b81f0ea483d224494c850bf74700c7, type: 3}
   m_Optimizer: {fileID: 765450197460495278}
 --- !u!114 &765450197460495278

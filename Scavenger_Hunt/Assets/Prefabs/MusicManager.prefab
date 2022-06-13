@@ -52,19 +52,19 @@ MonoBehaviour:
     SongIntro: {fileID: 8300000, guid: 35fcd35cff0fe8c4baed3af674543f6c, type: 3}
     SongTracks:
     - {fileID: 8300000, guid: 2b76dfb07afe88e43b45ceb35b4a2bb0, type: 3}
-    volume: 1
+    volume: 0.5
     BarDuration: 2.08825
   - name: Music/LessCalm
     SongIntro: {fileID: 8300000, guid: f157055db80b0374f947d6cf3222ffe7, type: 3}
     SongTracks:
     - {fileID: 8300000, guid: 6b888cec731d8b54facad7303f569873, type: 3}
-    volume: 1
+    volume: 0.5
     BarDuration: 2.08825
   - name: Music/Tense
     SongIntro: {fileID: 0}
     SongTracks:
     - {fileID: 8300000, guid: 759d5f5c707e73545b06f7b9284af988, type: 3}
-    volume: 1
+    volume: 0.5
     BarDuration: 2.08825
 --- !u!82 &2011978152
 AudioSource:
