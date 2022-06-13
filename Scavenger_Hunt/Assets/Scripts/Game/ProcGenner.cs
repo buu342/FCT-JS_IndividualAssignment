@@ -33,6 +33,7 @@ public class ProcGenner : MonoBehaviour
     private const int     MaxRoomSize_Y = 3;    // Maximum room size on Y (in grid units)
     private const int     MaxRoomSize_Z = 6;    // Maximum room size on Z (in grid units)
     private const int     MaxRooms      = 30;   // Maximum number of rooms to generate
+    [HideInInspector]
     public  Vector3       Center        = new Vector3(ProcGenner.MapSize_X/2, ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z/2);
     
     private enum LevelType
@@ -72,10 +73,15 @@ public class ProcGenner : MonoBehaviour
         public GameObject parentobject;
         public Vector3Int position;
         public Vector3Int direction;
-        public List<GameObject> objects;
+        public GameObject prefab;
     };
     
+    [Header("Important")]
     public GameObject m_Camera;
+    public GameObject m_NavMesh;
+    public VisualOptimizer m_Optimizer;
+    
+    [Header("Debug prefabs")]
     public GameObject m_FloorPrefab;
     public GameObject m_FloorDustPrefab;
     public GameObject m_CeilingPrefab;
@@ -83,18 +89,27 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_Wall1Prefab;
     public GameObject m_Wall2Prefab;
     public GameObject m_Wall3Prefab;
-    public GameObject m_DoorPrefab;
     public GameObject m_DoorWall1Prefab;
     public GameObject m_DoorWall2Prefab;
     public GameObject m_PlayerPrefab;
-    public GameObject m_NavMesh;
+    
+    [Header("Debug Materials")]
     public Material m_MaterialRoom;
     public Material m_MaterialCorridor;
     public Material m_MaterialStairs;
     public Material m_MaterialSpawn;
+    
+    [Header("Corridor Prefabs")]
+    public GameObject m_CorridorPrefab_Straight;
+    public GameObject m_CorridorPrefab_Curve;
+    public GameObject m_CorridorPrefab_T;
+    public GameObject m_CorridorPrefab_4Way;
+    public GameObject m_CorridorStairPrefab;
+    
+    [Header("Map Objects")]
     public GameObject m_Airlock;
+    public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
-    public VisualOptimizer m_Optimizer;
     
     private Delaunay3D m_Delaunay;
     private HashSet<Prim.Edge> m_SelectedEdges;
@@ -142,8 +157,7 @@ public class ProcGenner : MonoBehaviour
                         Destroy(obj);
             if (this.m_Corridors != null)
                 foreach (CorridorDef l in this.m_Corridors)
-                    foreach (GameObject obj in l.objects)
-                        Destroy(obj);
+                    Destroy(l.prefab);
             if (this.m_Doors != null)
                 foreach ((Vector3, GameObject) l in this.m_Doors)
                     Destroy(l.Item2);
@@ -207,6 +221,9 @@ public class ProcGenner : MonoBehaviour
         NavMeshBuilder.CollectSources(navmeshbounds, surface.layerMask, surface.useGeometry, surface.defaultArea, markups, sources);
         sources.RemoveAll(source => source.component != null && source.component.gameObject.GetComponent<NavMeshAgent>() != null);
         NavMeshBuilder.UpdateNavMeshData(navmeshdata, surface.GetBuildSettings(), sources, navmeshbounds);
+        //var navMesh = NavMesh.CalculateTriangulation(); // get baked Navigation Mesh Data;
+        //Vector3[] vertices = navMesh.vertices;
+        //int[] polygons = navMesh.indices;
         
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
@@ -228,8 +245,8 @@ public class ProcGenner : MonoBehaviour
             }
             foreach (CorridorDef cordef in this.m_Corridors)
             {
-                foreach (GameObject obj in cordef.objects)
-                    obj.transform.SetParent(cordef.parentobject.transform);
+                if (cordef.prefab != null)
+                    cordef.prefab.transform.SetParent(cordef.parentobject.transform);
                 cordef.parentobject.name = "Corridor";
             }
         #endif
@@ -252,7 +269,7 @@ public class ProcGenner : MonoBehaviour
         
         // Start by placing our spawn somewhere outside the grid
         coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, -1);
-        instobj = Instantiate(this.m_Airlock, (coord-Center)*ProcGenner.GridScale, this.m_Airlock.transform.rotation);
+        instobj = Instantiate(this.m_Airlock, this.m_Airlock.transform.position + (coord-Center)*ProcGenner.GridScale, this.m_Airlock.transform.rotation);
         this.m_Entities.Add(instobj);
         doorpos = coord + (new Vector3(0, 0, 0.25f)*ProcGenner.GridScale/2);
         this.m_Doors.Add((doorpos, instobj));
@@ -278,7 +295,7 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<4; i++)
             {
                 Vector3Int finalpos = coord - new Vector3Int(0, 0, i);
-                CorridorDef cdef = new CorridorDef(){position = finalpos, direction = new Vector3Int(0, 0, 1), objects = PlaceCorridor(finalpos), parentobject = new GameObject()};
+                CorridorDef cdef = new CorridorDef(){position = finalpos, direction = new Vector3Int(0, 0, 1), prefab = null, parentobject = new GameObject()};
                 this.m_Corridors.Add(cdef);
                 this.m_Grid[finalpos.x, finalpos.y, finalpos.z].type = BlockType.Corridor;
                 this.m_Grid[finalpos.x, finalpos.y, finalpos.z].corridordef = cdef;
@@ -419,7 +436,7 @@ public class ProcGenner : MonoBehaviour
         // Store the room definition in the helper structures
         Vector3 mid = pos + new Vector3(size.x*0.5f, 0.0f, size.z*0.5f);
         RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm, visible = true, doors = new List<GameObject>(), parentobject = new GameObject()};
-        rdef.midpoint = -(new Vector3(1, 1, 1)*ProcGenner.GridScale)/2 + (mid-Center)*ProcGenner.GridScale;
+        rdef.midpoint = -(new Vector3(1, 0, 1)*ProcGenner.GridScale)/2 + ((mid + new Vector3(0, size.y*0.5f, 0))-Center)*ProcGenner.GridScale;
         vert = new Graphs.Vertex(mid);
         this.m_Rooms.Add(rdef);
         this.m_Vertices.Add(vert);
@@ -447,15 +464,15 @@ public class ProcGenner : MonoBehaviour
         GameObject instobj;
         
         // Floor
-        instobj = Instantiate(this.m_FloorPrefab, (pos-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
+        instobj = Instantiate(this.m_CorridorPrefab_Straight, (pos-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
         instobj.GetComponent<Renderer>().material = this.m_MaterialCorridor;
         corridor.Add(instobj);
         
         // Ceiling
-        pos += new Vector3Int(0, 1, 0);
-        instobj = Instantiate(this.m_CeilingPrefab, (pos-Center)*ProcGenner.GridScale, this.m_CeilingPrefab.transform.rotation);
-        instobj.GetComponent<Renderer>().material = this.m_MaterialCorridor;
-        corridor.Add(instobj);
+        //pos += new Vector3Int(0, 1, 0);
+        //instobj = Instantiate(this.m_CeilingPrefab, (pos-Center)*ProcGenner.GridScale, this.m_CeilingPrefab.transform.rotation);
+        //instobj.GetComponent<Renderer>().material = this.m_MaterialCorridor;
+        //corridor.Add(instobj);
         
         // Return our generated objects
         return corridor;
@@ -528,17 +545,9 @@ public class ProcGenner : MonoBehaviour
         @return A list of created objects
     ==============================*/  
     
-    List<GameObject> PlaceStairs(Vector3Int pos, Quaternion angle)
+    GameObject PlaceStairs(Vector3Int pos, Quaternion angle)
     {
-        List<GameObject> corridor = new List<GameObject>();
-        
-        // Floor
-        GameObject instobj = Instantiate(this.m_StairPrefab, (pos-Center)*ProcGenner.GridScale, this.m_StairPrefab.transform.rotation*angle);
-        instobj.GetComponent<Renderer>().material = this.m_MaterialStairs;
-        corridor.Add(instobj);
-        
-        // Return our generated objects
-        return corridor;
+        return Instantiate(this.m_CorridorStairPrefab, (pos-Center)*ProcGenner.GridScale, this.m_CorridorStairPrefab.transform.rotation*angle);
     }
     
     
@@ -880,7 +889,7 @@ public class ProcGenner : MonoBehaviour
                             placedir = -placedir;
                         
                         // Place the stair object
-                        CorridorDef cdef = new CorridorDef(){position = placepos, direction = placedir, objects = PlaceStairs(placepos, Quaternion.Euler(0, 0, ang)), parentobject = new GameObject()};
+                        CorridorDef cdef = new CorridorDef(){position = placepos, direction = placedir, prefab = PlaceStairs(placepos, Quaternion.Euler(0, 0, ang)), parentobject = new GameObject()};
                         this.m_Corridors.Add(cdef);
                             
                         // Calculate the offsets to help us out
@@ -899,7 +908,7 @@ public class ProcGenner : MonoBehaviour
                     // Place corridors in our path
                     if (this.m_Grid[pos.x, pos.y, pos.z].type == BlockType.Corridor)
                     {
-                        CorridorDef cdef = new CorridorDef(){position = pos, direction = delta, objects = PlaceCorridor(pos), parentobject = new GameObject()};
+                        CorridorDef cdef = new CorridorDef(){position = pos, direction = delta, prefab = null, parentobject = new GameObject()};
                         this.m_Corridors.Add(cdef);
                         this.m_Grid[pos.x, pos.y, pos.z].corridordef = cdef;
                     }
@@ -996,38 +1005,161 @@ public class ProcGenner : MonoBehaviour
         }
         
         // Corridors
-        foreach (CorridorDef cdef in this.m_Corridors)
+        for (int i=0; i<this.m_Corridors.Count; i++)
         {
+            CorridorDef cdef = this.m_Corridors[i];
             if (this.m_Grid[cdef.position.x, cdef.position.y, cdef.position.z].type == BlockType.Stairs)
                 continue;
+
+            // 4-Way block
+            if (CorridorConnectedTop(cdef) && CorridorConnectedLeft(cdef) && CorridorConnectedRight(cdef) && CorridorConnectedBottom(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_4Way, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_4Way.transform.rotation);
+                cdef.prefab = instobj;
+                continue;
+            }
             
-            // Walls
-            if (CanPlaceCorridorWall(cdef.position, new Vector3Int(1, 0, 0)))
+            
+            /* ========== T's ========== */
+            
+            // T (x-1, x+1, z-1)
+            if (CorridorConnectedLeft(cdef) && !CorridorConnectedTop(cdef) && CorridorConnectedRight(cdef) && CorridorConnectedBottom(cdef))
             {
-                instobj = Instantiate(this.m_Wall1Prefab, (cdef.position-Center)*ProcGenner.GridScale + (new Vector3(1, 0, 0)*ProcGenner.GridScale/2), this.m_Wall1Prefab.transform.rotation*Quaternion.Euler(0, 0, 90));
-                instobj.GetComponent<Renderer>().material = this.m_MaterialCorridor;
-                cdef.objects.Add(instobj);
+                instobj = Instantiate(this.m_CorridorPrefab_T, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_T.transform.rotation);
+                cdef.prefab = instobj;
+                continue;
             }
-            if (CanPlaceCorridorWall(cdef.position, new Vector3Int(-1, 0, 0)))
+            
+            // T (x+1, z-1, z+1)
+            if (!CorridorConnectedLeft(cdef) && CorridorConnectedTop(cdef) && CorridorConnectedRight(cdef) && CorridorConnectedBottom(cdef))
             {
-                instobj = Instantiate(this.m_Wall1Prefab, (cdef.position-Center)*ProcGenner.GridScale + (new Vector3(-1, 0, 0)*ProcGenner.GridScale/2), this.m_Wall1Prefab.transform.rotation*Quaternion.Euler(0, 0, -90));
-                instobj.GetComponent<Renderer>().material = this.m_MaterialCorridor;
-                cdef.objects.Add(instobj);
+                instobj = Instantiate(this.m_CorridorPrefab_T, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_T.transform.rotation*Quaternion.Euler(0, 0, -90));
+                cdef.prefab = instobj;
+                continue;
             }
-            if (CanPlaceCorridorWall(cdef.position, new Vector3Int(0, 0, 1)))
+            
+            // T (x-1, z-1, z+1)
+            if (CorridorConnectedLeft(cdef) && CorridorConnectedTop(cdef) && !CorridorConnectedRight(cdef) && CorridorConnectedBottom(cdef))
             {
-                instobj = Instantiate(this.m_Wall1Prefab, (cdef.position-Center)*ProcGenner.GridScale + (new Vector3(0, 0, 1)*ProcGenner.GridScale/2), this.m_Wall1Prefab.transform.rotation);
-                instobj.GetComponent<Renderer>().material = this.m_MaterialCorridor;
-                cdef.objects.Add(instobj);
+                instobj = Instantiate(this.m_CorridorPrefab_T, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_T.transform.rotation*Quaternion.Euler(0, 0, 90));
+                cdef.prefab = instobj;
+                continue;
             }
-            if (CanPlaceCorridorWall(cdef.position, new Vector3Int(0, 0, -1)))
+            
+            // T (x-1, x+1, z+1)
+            if (CorridorConnectedLeft(cdef) && CorridorConnectedTop(cdef) && CorridorConnectedRight(cdef) && !CorridorConnectedBottom(cdef))
             {
-                instobj = Instantiate(this.m_Wall1Prefab, (cdef.position-Center)*ProcGenner.GridScale + (new Vector3(0, 0, -1)*ProcGenner.GridScale/2), this.m_Wall1Prefab.transform.rotation*Quaternion.Euler(0, 0, 180));
-                instobj.GetComponent<Renderer>().material = this.m_MaterialCorridor;
-                cdef.objects.Add(instobj);
+                instobj = Instantiate(this.m_CorridorPrefab_T, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_T.transform.rotation*Quaternion.Euler(0, 0, 180));
+                cdef.prefab = instobj;
+                continue;
             }
+            
+            
+            /* ========== CURVES ========== */
+            
+            // Curve (x+1, z-1)
+            if (!CorridorConnectedLeft(cdef) && !CorridorConnectedTop(cdef) && CorridorConnectedRight(cdef) && CorridorConnectedBottom(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_Curve, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_Curve.transform.rotation*Quaternion.Euler(0, 0, -90));
+                cdef.prefab = instobj;
+                continue;
+            }
+            
+            // Curve (x-1, z-1)
+            if (CorridorConnectedLeft(cdef) && !CorridorConnectedTop(cdef) && !CorridorConnectedRight(cdef) && CorridorConnectedBottom(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_Curve, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_Curve.transform.rotation*Quaternion.Euler(0, 0, 0));
+                cdef.prefab = instobj;
+                continue;
+            }
+            
+            // Curve (x+1, z+1)
+            if (!CorridorConnectedLeft(cdef) && CorridorConnectedTop(cdef) && CorridorConnectedRight(cdef) && !CorridorConnectedBottom(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_Curve, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_Curve.transform.rotation*Quaternion.Euler(0, 0, 180));
+                cdef.prefab = instobj;
+                continue;
+            }
+            
+            // Curve (x-1, z+1)
+            if (CorridorConnectedLeft(cdef) && CorridorConnectedTop(cdef) && !CorridorConnectedRight(cdef) && !CorridorConnectedBottom(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_Curve, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_Curve.transform.rotation*Quaternion.Euler(0, 0, 90));
+                cdef.prefab = instobj;
+                continue;
+            }
+            
+            
+            /* ========== STRAIGHT ========== */
+            
+            // Straight line (left/right)
+            if (CorridorConnectedLeft(cdef) && CorridorConnectedRight(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_Straight, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_Straight.transform.rotation);
+                cdef.prefab = instobj;
+                continue;
+            }
+            
+            // Straight line (forwards/backwards)
+            if (CorridorConnectedTop(cdef) && CorridorConnectedBottom(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_Straight, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_Straight.transform.rotation*Quaternion.Euler(0, 0, -90));
+                cdef.prefab = instobj;
+                continue;
+            }
+            
+            
+            /* ========== PROBLEM!!!! ========== */
+            
+            instobj = Instantiate(this.m_FloorPrefab, (cdef.position-Center)*ProcGenner.GridScale, this.m_FloorPrefab.transform.rotation);
+            cdef.prefab = instobj;
         }
     }
+    
+    bool CorridorConnectedTop(CorridorDef cdef)
+    {
+        Vector3Int dir = new Vector3Int(0, 0, 1);
+        return (cdef.position.z < MapSize_Z-1 && this.m_Grid[cdef.position.x, cdef.position.y, cdef.position.z+1].type == BlockType.Corridor) || StairAtDirection(cdef.position, dir) || DoorExists(cdef.position, dir) != null;
+    }
+    
+    bool CorridorConnectedBottom(CorridorDef cdef)
+    {
+        Vector3Int dir = new Vector3Int(0, 0, -1);
+        return (cdef.position.z > 0 && this.m_Grid[cdef.position.x, cdef.position.y, cdef.position.z-1].type == BlockType.Corridor) || StairAtDirection(cdef.position, dir) || DoorExists(cdef.position, dir) != null;
+    }
+    
+    bool CorridorConnectedLeft(CorridorDef cdef)
+    {
+        Vector3Int dir = new Vector3Int(-1, 0, 0);
+        return (cdef.position.x > 0 && this.m_Grid[cdef.position.x-1, cdef.position.y, cdef.position.z].type == BlockType.Corridor) || StairAtDirection(cdef.position, dir) || DoorExists(cdef.position, dir) != null;
+    }
+    
+    bool CorridorConnectedRight(CorridorDef cdef)
+    {
+        Vector3Int dir = new Vector3Int(1, 0, 0);
+        return (cdef.position.x < MapSize_X-1 && this.m_Grid[cdef.position.x+1, cdef.position.y, cdef.position.z].type == BlockType.Corridor) || StairAtDirection(cdef.position, dir) || DoorExists(cdef.position, dir) != null;
+    }
+        
+    bool StairAtDirection(Vector3Int pos, Vector3Int dir)
+    {
+        Vector3Int check = new Vector3Int(pos.x+dir.x, pos.y+dir.y, pos.z+dir.z);
+        
+        // Check if we're out of bounds
+        if (check.x < 0 || check.x >= ProcGenner.MapSize_X || check.y < 0 || check.y >= ProcGenner.MapSize_Y || check.z < 0 || check.z >= ProcGenner.MapSize_Z)
+            return false;
+        
+        // Handle stairs edge case
+        BlockType gridtype = this.m_Grid[check.x, check.y, check.z].type;
+        if (gridtype == BlockType.Stairs)
+        {
+            CorridorDef stairdef = this.m_Grid[check.x, check.y, check.z].corridordef;
+            if (Mathf.Abs(dir.x) == Mathf.Abs(stairdef.direction.x) && Mathf.Abs(dir.z) == Mathf.Abs(stairdef.direction.z))
+                if (check == stairdef.position || check == stairdef.position+stairdef.direction+new Vector3Int(0, 1, 0))
+                    return true;
+        }
+        return false;
+    }
+    
     
     public List<ProcGenner.RoomDef> GetRoomDefs()
     {

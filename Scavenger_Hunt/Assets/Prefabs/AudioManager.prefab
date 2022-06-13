@@ -51,7 +51,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -63,7 +63,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -75,7 +75,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -87,7 +87,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -99,7 +99,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -111,7 +111,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -123,7 +123,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -135,7 +135,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -147,7 +147,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -159,7 +159,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 0
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
