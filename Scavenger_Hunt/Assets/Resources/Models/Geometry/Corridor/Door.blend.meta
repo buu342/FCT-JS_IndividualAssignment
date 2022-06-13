@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bd3b5fbeafa26064baf2bdbf78b51503
+guid: 69cac9d5b073ff94aa4b05a8c4833db8
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable:
@@ -10,8 +10,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Airlock_Ceiling1__Airlock_Ceiling1_png
-    second: {fileID: 2100000, guid: 661f2de12ebdf1f48929ceff3c00d687, type: 2}
+      name: AirlockWall__Airlock_Wall2_png
+    second: {fileID: 2100000, guid: 89909105916cd754aa86bcc8b304caa2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -20,63 +20,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Airlock_Ceiling3__Airlock_Ceiling3_png
-    second: {fileID: 2100000, guid: f4f44445087dc81438bad71a8908a87f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airlock_Floor1__Airlock_Floor1_png
-    second: {fileID: 2100000, guid: 68af702e98024954b9485b1b94eb35ce, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airlock_Floor2__Airlock_Floor2_png
-    second: {fileID: 2100000, guid: 85eeac4acb58df84d9b757f1868269b8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airlock_Floor3__Airlock_Floor3_png
-    second: {fileID: 2100000, guid: fb76ebeda680ee941936f8702b7f6765, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Airlock_Floor4__Airlock_Floor4_png
     second: {fileID: 2100000, guid: e0d5f56e4731e31479fef415956db1b9, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airlock_Floor5__Airlock_Floor5_png
-    second: {fileID: 2100000, guid: e7a7345eebc8bd54794df171dfae0906, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airlock_Trim1__Airlock_Trim1_png
-    second: {fileID: 2100000, guid: b3ea07e92b1326044b31a849d4acc238, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airlock_Trim2__Airlock_Trim2_png
-    second: {fileID: 2100000, guid: b56a217716ece534a90a3bd2853dcadf, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airlock_Trim3__Airlock_Trim3_png
-    second: {fileID: 2100000, guid: cf99a28d0792e734fa338c8e2eb57893, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airlock_Wall1__Airlock_Wall1_png
-    second: {fileID: 2100000, guid: a563368ab0b109f41a2c4c332cf1519a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Airlock_Wall2__Airlock_Wall2_png
-    second: {fileID: 2100000, guid: 89909105916cd754aa86bcc8b304caa2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: DoorFrame__DoorFrame_png
-    second: {fileID: 2100000, guid: 60c8296e2b239994a9c62d8b53e0bcb1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -86,17 +31,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Door__Door_png
-    second: {fileID: 2100000, guid: fae6663efbd70044ba19dd44fb23b085, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: LightCyan__DoorGutter_png
-    second: {fileID: 2100000, guid: a35605b06ac31bb459e7741e0aeae786, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Pipes__Pipes_png
-    second: {fileID: 2100000, guid: 431b1165878a5c94fae967382191b2c1, type: 2}
+    second: {fileID: 2100000, guid: ee81ad0958f4d7047a5f25a486642651, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

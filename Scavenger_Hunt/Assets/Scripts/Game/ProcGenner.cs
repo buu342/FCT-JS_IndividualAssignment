@@ -89,7 +89,6 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_Wall1Prefab;
     public GameObject m_Wall2Prefab;
     public GameObject m_Wall3Prefab;
-    public GameObject m_DoorPrefab;
     public GameObject m_DoorWall1Prefab;
     public GameObject m_DoorWall2Prefab;
     public GameObject m_PlayerPrefab;
@@ -109,6 +108,7 @@ public class ProcGenner : MonoBehaviour
     
     [Header("Map Objects")]
     public GameObject m_Airlock;
+    public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
     
     private Delaunay3D m_Delaunay;
@@ -221,6 +221,9 @@ public class ProcGenner : MonoBehaviour
         NavMeshBuilder.CollectSources(navmeshbounds, surface.layerMask, surface.useGeometry, surface.defaultArea, markups, sources);
         sources.RemoveAll(source => source.component != null && source.component.gameObject.GetComponent<NavMeshAgent>() != null);
         NavMeshBuilder.UpdateNavMeshData(navmeshdata, surface.GetBuildSettings(), sources, navmeshbounds);
+        //var navMesh = NavMesh.CalculateTriangulation(); // get baked Navigation Mesh Data;
+        //Vector3[] vertices = navMesh.vertices;
+        //int[] polygons = navMesh.indices;
         
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
@@ -266,7 +269,7 @@ public class ProcGenner : MonoBehaviour
         
         // Start by placing our spawn somewhere outside the grid
         coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, -1);
-        instobj = Instantiate(this.m_Airlock, (coord-Center)*ProcGenner.GridScale, this.m_Airlock.transform.rotation);
+        instobj = Instantiate(this.m_Airlock, this.m_Airlock.transform.position + (coord-Center)*ProcGenner.GridScale, this.m_Airlock.transform.rotation);
         this.m_Entities.Add(instobj);
         doorpos = coord + (new Vector3(0, 0, 0.25f)*ProcGenner.GridScale/2);
         this.m_Doors.Add((doorpos, instobj));
