@@ -108,8 +108,8 @@ NavMeshSettings:
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
-    agentSlope: 60
-    agentClimb: 0.4
+    agentSlope: 45
+    agentClimb: 0.75
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 1
@@ -402,30 +402,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 52021654175796770, guid: cfced5b2594efb445964a64a5bd7fc8b, type: 3}
-      propertyPath: m_TileSize
-      value: 256
-      objectReference: {fileID: 0}
-    - target: {fileID: 52021654175796770, guid: cfced5b2594efb445964a64a5bd7fc8b, type: 3}
-      propertyPath: m_VoxelSize
-      value: 0.16666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 52021654175796770, guid: cfced5b2594efb445964a64a5bd7fc8b, type: 3}
-      propertyPath: m_UseGeometry
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 52021654175796770, guid: cfced5b2594efb445964a64a5bd7fc8b, type: 3}
-      propertyPath: m_MinRegionArea
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 52021654175796770, guid: cfced5b2594efb445964a64a5bd7fc8b, type: 3}
-      propertyPath: m_OverrideTileSize
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 52021654175796770, guid: cfced5b2594efb445964a64a5bd7fc8b, type: 3}
-      propertyPath: m_OverrideVoxelSize
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4545420745871335196, guid: cfced5b2594efb445964a64a5bd7fc8b, type: 3}
       propertyPath: m_RootOrder
       value: 4

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1266583514165047139}
   - component: {fileID: 867777088650824922}
   - component: {fileID: 8666509051646127809}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DoorFrameBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 1289940265025817097}
   - component: {fileID: 896744249462266173}
   - component: {fileID: 2389968671363621682}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Trigger
   m_TagString: Trigger
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2667706051273201687}
   - component: {fileID: 8949448341299582202}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 8836474828321178862}
   - component: {fileID: 4108484111309848830}
   - component: {fileID: 3396228260423798447}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 5317048692374511081}
   - component: {fileID: 5236571212346336116}
   - component: {fileID: 8659322130663579093}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Airlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 6535388615143688788}
   - component: {fileID: 9192906951504452539}
   - component: {fileID: 7823488490253588168}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Airlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,7 +609,7 @@ GameObject:
   - component: {fileID: 4060569771602365021}
   - component: {fileID: 6314106908352445313}
   - component: {fileID: 5924522809938893073}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DoorFrameFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}

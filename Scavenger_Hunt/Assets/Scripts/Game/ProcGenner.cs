@@ -189,7 +189,7 @@ public class ProcGenner : MonoBehaviour
         List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
         NavMeshData navmeshdata = new NavMeshData();
         NavMesh.AddNavMeshData(navmeshdata);
-        Bounds navmeshbounds = new Bounds(Vector3.zero, Center*ProcGenner.GridScale);
+        Bounds navmeshbounds = new Bounds(Vector3.zero, Center*2*ProcGenner.GridScale);
         List<NavMeshBuildMarkup> markups = new List<NavMeshBuildMarkup>();
         List<NavMeshModifier> modifiers = new List<NavMeshModifier>();
         modifiers = NavMeshModifier.activeModifiers;

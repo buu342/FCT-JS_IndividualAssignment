@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2311736609854071609}
   - component: {fileID: 7577545273122379158}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 5367830266800552220}
   - component: {fileID: 1084314378416649547}
   - component: {fileID: 2960759923650064137}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Trigger
   m_TagString: Trigger
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 2600834179719060265}
   - component: {fileID: 240569109891253084}
   - component: {fileID: 5177342152873045980}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: ElevatorExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -492,7 +492,7 @@ GameObject:
   - component: {fileID: 1170359356919127429}
   - component: {fileID: 3200505246224196495}
   - component: {fileID: 6847660877601001712}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: ElevatorBox
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -590,7 +590,7 @@ GameObject:
   - component: {fileID: 8657086072101610851}
   - component: {fileID: 2478410950926980578}
   - component: {fileID: 2928102078860246809}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: TriggerClose
   m_TagString: Trigger
   m_Icon: {fileID: 0}
