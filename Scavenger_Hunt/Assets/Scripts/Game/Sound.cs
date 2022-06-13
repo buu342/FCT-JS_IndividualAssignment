@@ -24,6 +24,7 @@ public class Sound
     public bool loop = false;
     public bool canStack = false;
     public bool canMuffle = false;
+    public bool canReverb = false;
     public bool is3D = false;
     public float maxDistance = 16.0f;
     
