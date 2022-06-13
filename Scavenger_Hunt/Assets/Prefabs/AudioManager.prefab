@@ -232,6 +232,28 @@ MonoBehaviour:
     is3D: 1
     maxDistance: 32
     maxDistanceSqr: 0
+  - name: Physics/AirlockDoorOpen
+    clip: {fileID: 8300000, guid: b574f7e3f32059c4c8782c05a8aa27a6, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    is3D: 1
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Physics/AirlockDoorClose
+    clip: {fileID: 8300000, guid: 328d79bf643322740b8486a7e9afff78, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    is3D: 1
+    maxDistance: 32
+    maxDistanceSqr: 0
   - name: Physics/ElevatorDoorOpen
     clip: {fileID: 8300000, guid: dd2a246833a894949a1609f6dc22293b, type: 3}
     volume: 1
