@@ -58,6 +58,7 @@ public class ProcGenner : MonoBehaviour
     
     public struct RoomDef
     {
+        public GameObject parentobject;
         public Vector3Int position;
         public Vector3Int size;
         public Vector3 midpoint;
@@ -68,6 +69,7 @@ public class ProcGenner : MonoBehaviour
     
     public struct CorridorDef
     {
+        public GameObject parentobject;
         public Vector3Int position;
         public Vector3Int direction;
         public List<GameObject> objects;
@@ -213,6 +215,24 @@ public class ProcGenner : MonoBehaviour
             Debug.Log("* Attempts -> "+attempts);
             Debug.Log("* Rooms Culled -> "+roomsculled);
         #endif
+        
+        // Group the objects to make the scene graph easier to traverse
+        #if UNITY_EDITOR
+            foreach (RoomDef roomdef in this.m_Rooms)
+            {
+                foreach (GameObject obj in roomdef.objects)
+                    obj.transform.SetParent(roomdef.parentobject.transform);
+                foreach (GameObject obj in roomdef.doors)
+                    obj.transform.SetParent(roomdef.parentobject.transform);
+                roomdef.parentobject.name = "Room";
+            }
+            foreach (CorridorDef cordef in this.m_Corridors)
+            {
+                foreach (GameObject obj in cordef.objects)
+                    obj.transform.SetParent(cordef.parentobject.transform);
+                cordef.parentobject.name = "Corridor";
+            }
+        #endif
     }
 
     
@@ -258,7 +278,7 @@ public class ProcGenner : MonoBehaviour
             for (int i=0; i<4; i++)
             {
                 Vector3Int finalpos = coord - new Vector3Int(0, 0, i);
-                CorridorDef cdef = new CorridorDef(){position = finalpos, direction = new Vector3Int(0, 0, 1), objects = PlaceCorridor(finalpos)};
+                CorridorDef cdef = new CorridorDef(){position = finalpos, direction = new Vector3Int(0, 0, 1), objects = PlaceCorridor(finalpos), parentobject = new GameObject()};
                 this.m_Corridors.Add(cdef);
                 this.m_Grid[finalpos.x, finalpos.y, finalpos.z].type = BlockType.Corridor;
                 this.m_Grid[finalpos.x, finalpos.y, finalpos.z].corridordef = cdef;
@@ -398,7 +418,7 @@ public class ProcGenner : MonoBehaviour
         
         // Store the room definition in the helper structures
         Vector3 mid = pos + new Vector3(size.x*0.5f, 0.0f, size.z*0.5f);
-        RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm, visible = true, doors = new List<GameObject>()};
+        RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm, visible = true, doors = new List<GameObject>(), parentobject = new GameObject()};
         rdef.midpoint = -(new Vector3(1, 1, 1)*ProcGenner.GridScale)/2 + (mid-Center)*ProcGenner.GridScale;
         vert = new Graphs.Vertex(mid);
         this.m_Rooms.Add(rdef);
@@ -853,7 +873,7 @@ public class ProcGenner : MonoBehaviour
                             placedir = -placedir;
                         
                         // Place the stair object
-                        CorridorDef cdef = new CorridorDef(){position = placepos, direction = placedir, objects = PlaceStairs(placepos, Quaternion.Euler(0, 0, ang))};
+                        CorridorDef cdef = new CorridorDef(){position = placepos, direction = placedir, objects = PlaceStairs(placepos, Quaternion.Euler(0, 0, ang)), parentobject = new GameObject()};
                         this.m_Corridors.Add(cdef);
                             
                         // Calculate the offsets to help us out
@@ -872,7 +892,7 @@ public class ProcGenner : MonoBehaviour
                     // Place corridors in our path
                     if (this.m_Grid[pos.x, pos.y, pos.z].type == BlockType.Corridor)
                     {
-                        CorridorDef cdef = new CorridorDef(){position = pos, direction = delta, objects = PlaceCorridor(pos)};
+                        CorridorDef cdef = new CorridorDef(){position = pos, direction = delta, objects = PlaceCorridor(pos), parentobject = new GameObject()};
                         this.m_Corridors.Add(cdef);
                         this.m_Grid[pos.x, pos.y, pos.z].corridordef = cdef;
                     }
