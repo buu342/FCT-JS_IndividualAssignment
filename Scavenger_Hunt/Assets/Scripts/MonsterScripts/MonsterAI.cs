@@ -6,18 +6,20 @@ using RoomDef = ProcGenner.RoomDef;
 using Unity.AI.Navigation;
 public class MonsterAI : MonoBehaviour
 {
+    const float POSITION_THRESHOLD = 5.0f;
     bool hearsSound;
-    bool chasingPlayer;
-    bool goingToRoom;
+    bool startedPatrolling;
+    bool startedChasingPlayer;
     public int hearingDistance;
-    private NavMeshAgent agent;
     private Vector3 destination;
+    private NavMeshAgent agent;
     //TODO: need to guarantee that its centered
     private GameObject playerToChase;
 
     void Awake() {
         hearsSound = false;
         agent = GetComponent<NavMeshAgent>();
+        
     }
 
     void OnEnable() {
@@ -35,26 +37,32 @@ public class MonsterAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //RaycastInfo rayInfo;
-        //Physics.RayCast(transform.position, player.position, rayInfo, 0);
-        //TODO: check capsule instead of sphere? since fov of eye is not a sphere
         if(playerToChase != null && checkIfCanSeePlayer()) {
-            //TODO: change music for chasing
-            agent.SetDestination(playerToChase.transform.position);
+            //chase constantly the player
+            ChasePlayer();
         } else {
+            startedChasingPlayer = false;
+            
             //patrolling or chasing sound
             if(hearsSound) {
-                //TODO: change music for tension
-                agent.SetDestination(destination);
-                 Debug.Log("Heard sound");
+                //check if reached destination
+                hearsSound = !hasReachedDestination();
             } else {
                 //patrolling
-                //TODO: standart music
                 Patrol();
             }
         }
 
     }
+    public bool hasReachedDestination() {
+          if(Vector3.Distance(destination, transform.position) < POSITION_THRESHOLD) {
+                
+                Debug.Log("Arrived to destination");
+                return true;
+            }
+        return false;
+    }
+
     public bool checkIfCanSeePlayer() {
         Vector3 playerPos = playerToChase.transform.position - transform.position;
     
@@ -76,48 +84,45 @@ public class MonsterAI : MonoBehaviour
         return false;
     }
 
+    public void ChasePlayer() {
+        if(!startedChasingPlayer) {
+          //TODO: change music for chasing
+          startedChasingPlayer =true;            
+        }
+            agent.SetDestination(playerToChase.transform.position); 
+    }
+
     public void Patrol() {
-        if(!goingToRoom || !agent.hasPath) {
-        List<RoomDef> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGenner>().GetRoomDefs();
-        int roomToCheck = Random.Range(0,roomsInLevel.Count);
-        Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
-        destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
-        agent.SetDestination(destination);
-        Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
-        goingToRoom = true;
-        } else {
-            /*if(Vector3.Distance(destination, transform.position) < 5.0f) {
-                goingToRoom = false;
-                Debug.Log("Arrived to room");
-            }*/
+        
+        if(!agent.hasPath) {
+            if(!startedPatrolling) {
+                startedPatrolling = true;
+                //TODO: start standard music
+            }
+            List<RoomDef> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGenner>().GetRoomDefs();
+            int roomToCheck = Random.Range(0,roomsInLevel.Count);
+            Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
+            Vector3 destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
+            agent.SetDestination(destination);
+            Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
         }
     }
+
 
     //TODO: rewrite with audio manager
     void HearsSound(Vector3 origin, float distance) {
-        if(Vector3.Distance(origin, transform.position) < (distance + hearingDistance)) {
-           // hearsSound = true;
+        if(!hearsSound) {
+            if(Vector3.Distance(origin, transform.position) < (distance + hearingDistance)) {
+                 hearsSound = true;
+                 agent.SetDestination(origin);
+                 destination = origin;
+                 //TODO: play tension music
+            }
         }
 
     }
+
     public void SetPlayerTarget(GameObject target) {
         playerToChase = target;
     }
-
-    /**
-    Taken from https://answers.unity.com/questions/324589/how-can-i-tell-when-a-navmesh-has-reached-its-dest.html
-    
-     protected bool pathComplete()
-     {
-         if ( Vector3.Distance( m_NavAgent.destination, m_NavAgent.transform.position) <= m_NavAgent.stoppingDistance)
-         {
-             if (!m_NavAgent.hasPath || m_NavAgent.velocity.sqrMagnitude == 0f)
-             {
-                 return true;
-             }
-         }
- 
-         return false;
-     }
-     **/
 }
