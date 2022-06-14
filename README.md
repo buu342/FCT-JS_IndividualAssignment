@@ -4,7 +4,6 @@
 
 
 # TODOs
-- AI Behavior Trees with noise detection of player
 - Procedural Generation of level and rooms
 - Multiplayer Support
 - Diegetic Interface

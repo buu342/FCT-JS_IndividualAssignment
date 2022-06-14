@@ -5,7 +5,7 @@ This script handles camera movement and logic
 ****************************************************************/
 
 using UnityEngine;
-
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
@@ -20,6 +20,7 @@ public class CameraController : MonoBehaviour
     private const float ZoomFOV        = 40.0f;
     
     public GameObject  m_Target;
+    private GameObject actualTarget;
     public float m_DefaultFOV = CameraController.DefaultFOV;
     public float m_ZoomFOV = CameraController.ZoomFOV;
     
@@ -30,7 +31,7 @@ public class CameraController : MonoBehaviour
     private float            m_Trauma = 0.0f;
     private float            m_CurrentFOV;
     private float            m_TargetFOV;
-
+    private bool freeMode;
     
     /*==============================
         Start
@@ -47,14 +48,21 @@ public class CameraController : MonoBehaviour
         #if UNITY_EDITOR
             Cursor.visible = false;
         #endif
+    
+        actualTarget = m_Target;
+
     }
-    void OnEnable() {
+    void OnEnable() { 
+        InputManagerScript.playerInput.Player.FreeLook.started +=  FreeMoveOptionActivated;
+        
         if(!InputManagerScript.playerInput.Player.enabled)
             InputManagerScript.playerInput.Player.Enable();
     }
 
 
     void OnDisable() {
+        InputManagerScript.playerInput.Player.FreeLook.started -=  FreeMoveOptionActivated;
+
         if(InputManagerScript.playerInput.Player.enabled)
             InputManagerScript.playerInput.Player.Disable();
     }
@@ -100,11 +108,25 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         Vector3 finalpos = Vector3.zero;
-        if (this.m_Target != null)
+        if (this.actualTarget != null) {
             finalpos += this.m_Target.transform.position;
-        this.transform.position = finalpos;
+            this.transform.position = finalpos;
+        } else {
+            this.transform.position += (InputManagerScript.Move.ReadValue<Vector2>().y*transform.forward) + (InputManagerScript.Move.ReadValue<Vector2>().x*transform.right);
+        }
+    
     }
     
+
+    public void FreeMoveOptionActivated(InputAction.CallbackContext context) {
+        freeMode = !freeMode;
+        if(freeMode) {
+            actualTarget = null;
+        } else {
+            actualTarget = m_Target;
+        }
+        Debug.Log("Activated free move");
+    }
 
     /*==============================
         SetTarget
@@ -119,7 +141,6 @@ public class CameraController : MonoBehaviour
         if (target != null)
             this.m_PlyCont = target.GetComponent<PlayerController>();
     }
-    
     
     /*==============================
         AddTrauma
@@ -142,5 +163,15 @@ public class CameraController : MonoBehaviour
     public void SetLookDirection(Vector2 lookdir)
     {
         this.m_LookDirection = lookdir;
+    }
+
+     /*==============================
+        Checks if camera is in
+        Free mode
+    ==============================*/
+    
+    public bool isInFreeMode()
+    {
+        return freeMode;
     }
 }

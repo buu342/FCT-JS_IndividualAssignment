@@ -92,6 +92,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: LightCyan__DoorGutter_png
     second: {fileID: 2100000, guid: a35605b06ac31bb459e7741e0aeae786, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pipes__Pipes_png
+    second: {fileID: 2100000, guid: 431b1165878a5c94fae967382191b2c1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
