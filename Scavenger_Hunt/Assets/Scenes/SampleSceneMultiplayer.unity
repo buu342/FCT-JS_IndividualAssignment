@@ -609,7 +609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Center: {x: 15, y: 3, z: 15}
-  m_Camera: {fileID: 1727716920416927307, guid: a1b26fd54606942459b854c3fbc10b32, type: 3}
+  m_Camera: {fileID: 1727716920416927307, guid: 4a8c19c51a0a5104f834996d2b5ddb49, type: 3}
   m_NavMesh: {fileID: 3135358089962179253}
   m_Optimizer: {fileID: 1648054410}
   m_FloorPrefab: {fileID: 4546657156345559804, guid: bcf2f365cb079944abc10eafc74202cc, type: 3}
@@ -621,7 +621,7 @@ MonoBehaviour:
   m_Wall3Prefab: {fileID: 919132149155446097, guid: 1661fcb2a9ac04044930d3b329d15ed5, type: 3}
   m_DoorWall1Prefab: {fileID: 1512847438612294568, guid: 3facb2bfa7b1ff04c9f5d23ac7ecb156, type: 3}
   m_DoorWall2Prefab: {fileID: 1512847438612294568, guid: 893f902372931e049affee6560a3cf38, type: 3}
-  m_PlayerPrefab: {fileID: 8512297084061567289, guid: c1498f6e134cfd14b9abef239e8f4c4c, type: 3}
+  m_PlayerPrefab: {fileID: 8512297084061567289, guid: edec63f17e0de3643ab1a7dda8bf3853, type: 3}
   m_MaterialRoom: {fileID: 2100000, guid: 732ccbda58b09a14082486b2697dd82c, type: 2}
   m_MaterialCorridor: {fileID: 2100000, guid: 0e451b62ade916149be2e85ec0f9d3cb, type: 2}
   m_MaterialStairs: {fileID: 2100000, guid: abb5a07f527693f43a35c47deb94268f, type: 2}

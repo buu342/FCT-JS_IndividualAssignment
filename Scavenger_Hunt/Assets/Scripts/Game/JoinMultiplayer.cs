@@ -6,10 +6,11 @@ using TMPro;
 public class JoinMultiplayer: MonoBehaviourPunCallbacks{
 public TMP_InputField createInput;
 public TMP_InputField JoinInput;    
+public static bool RoomCreator=false;
 
     public void createRoom(){
         PhotonNetwork.CreateRoom(createInput.text);
-
+        RoomCreator=true;
     }
 
     public void JoinRoom(){
@@ -26,5 +27,9 @@ public TMP_InputField JoinInput;
    
     public void LeaveLobby(){
         PhotonNetwork.LeaveLobby();
+    }
+
+    public bool RoomOwner(){
+        return RoomCreator;
     }
 }

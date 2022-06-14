@@ -122,7 +122,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
     private List<(Vector3, GameObject)> m_Doors;
     private List<Graphs.Vertex> m_Vertices;
     private Dictionary<Graphs.Vertex, List<GameObject>> m_RoomVerts;
-    
+
     
     /*==============================
         GenerateScene
@@ -153,7 +153,8 @@ public class ProcGennerMultiplayer : MonoBehaviour
             // If we have non empty lists, then cycle through them and destroy all the objects contained within
             if (this.m_Entities != null)
                 foreach (GameObject obj in this.m_Entities)
-                    Destroy(obj);
+                    //Destroy(obj);
+                    PhotonNetwork.Destroy(obj);
             if (this.m_Rooms != null)
                 foreach (RoomDef l in this.m_Rooms)
                     foreach (GameObject obj in l.objects)
@@ -169,7 +170,6 @@ public class ProcGennerMultiplayer : MonoBehaviour
             this.m_Corridors = new List<CorridorDef>();
             this.m_Doors = new List<(Vector3, GameObject)>();
             this.m_Optimizer.SetPlayer(null);
-                    
             // Generate the rooms
             GenerateRooms(LevelType.First);
             
@@ -278,12 +278,12 @@ public class ProcGennerMultiplayer : MonoBehaviour
         this.m_Doors.Add((doorpos, instobj));
         
         // Create the player on the spawn
-        instobj =PhotonNetwork.Instantiate(this.m_PlayerPrefab.name, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
+       if(JoinMultiplayer.RoomCreator & m_Entities.Count==1){ instobj =PhotonNetwork.Instantiate(this.m_PlayerPrefab.name, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
         this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
         instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
         this.m_Entities.Add(instobj);
         this.m_Optimizer.SetPlayer(instobj);
-        
+        }
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
         if (ltype != LevelType.First)
         {
