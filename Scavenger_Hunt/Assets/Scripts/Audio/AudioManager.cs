@@ -86,8 +86,8 @@ public class AudioManager : MonoBehaviour
             sndobj.transform.SetParent(this.gameObject.transform);
         #endif
         AudioSource source = sndobj.AddComponent<AudioSource>();
-        AudioLowPassFilter filter = sndobj.AddComponent<AudioLowPassFilter>();
-        filter.cutoffFrequency = 2000.0f;
+        CustomLowPassFilter filter = sndobj.AddComponent<CustomLowPassFilter>();
+        filter.SetCutoffPercent(0.3f);
         filter.enabled = false;
         if (s.canReverb)
         {
@@ -208,7 +208,7 @@ public class AudioManager : MonoBehaviour
                                 break;
                             }
                         }
-                        sndobj.GetComponent<AudioLowPassFilter>().enabled = hitsomething;
+                        sndobj.GetComponent<CustomLowPassFilter>().enabled = hitsomething;
                     }
                 }
             }
