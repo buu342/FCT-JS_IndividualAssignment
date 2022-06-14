@@ -17,7 +17,6 @@ public class MonsterAI : MonoBehaviour
     private GameObject playerToChase;
 
     void Awake() {
-        hearsSound = false;
         agent = GetComponent<NavMeshAgent>();
         
     }
@@ -32,6 +31,7 @@ public class MonsterAI : MonoBehaviour
     void Start()
     {
         hearsSound = false;
+        hearingDistance = 20;
     }
 
     // Update is called once per frame
@@ -39,6 +39,8 @@ public class MonsterAI : MonoBehaviour
     {
         if(playerToChase != null && checkIfCanSeePlayer()) {
             //chase constantly the player
+            startedPatrolling = false;
+            hearsSound = false;
             ChasePlayer();
         } else {
             startedChasingPlayer = false;
@@ -47,6 +49,7 @@ public class MonsterAI : MonoBehaviour
             if(hearsSound) {
                 //check if reached destination
                 hearsSound = !hasReachedDestination();
+                startedPatrolling = !hearsSound;
             } else {
                 //patrolling
                 Patrol();
@@ -54,7 +57,9 @@ public class MonsterAI : MonoBehaviour
         }
 
     }
+
     public bool hasReachedDestination() {
+        Debug.Log(Vector3.Distance(destination, transform.position));
           if(Vector3.Distance(destination, transform.position) < POSITION_THRESHOLD) {
                 
                 Debug.Log("Arrived to destination");
@@ -89,7 +94,12 @@ public class MonsterAI : MonoBehaviour
           //TODO: change music for chasing
           startedChasingPlayer =true;            
         }
-            agent.SetDestination(playerToChase.transform.position); 
+        agent.SetDestination(playerToChase.transform.position); 
+        destination = playerToChase.transform.position;
+        if(Vector3.Distance(destination, transform.position) < 2.0f) {
+                //close to player
+
+        }
     }
 
     public void Patrol() {
@@ -108,14 +118,15 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-
-    //TODO: rewrite with audio manager
     void HearsSound(Vector3 origin, float distance) {
-        if(!hearsSound) {
+        Debug.Log("Heardd some sound");
+        if(!hearsSound && !startedChasingPlayer) {
+            Debug.Log("Was able to heard sound!");
             if(Vector3.Distance(origin, transform.position) < (distance + hearingDistance)) {
                  hearsSound = true;
                  agent.SetDestination(origin);
                  destination = origin;
+                 Debug.Log("Amber Heard sound");
                  //TODO: play tension music
             }
         }
