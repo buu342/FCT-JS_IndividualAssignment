@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
-public class FPSCounter : MonoBehaviour
+public class DebugFeatures : MonoBehaviour
 {
     private int frameRate;
     private bool calculateFrames;
