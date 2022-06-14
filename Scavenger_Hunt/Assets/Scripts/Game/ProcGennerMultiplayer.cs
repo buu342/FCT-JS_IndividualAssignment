@@ -20,7 +20,7 @@ using UnityEngine.AI;
 using Unity.AI.Navigation;
 using NavMeshBuilder = UnityEngine.AI.NavMeshBuilder;
 using Photon.Pun;
- Random.InitState(PhotonNetwork.CurrentRoom.Name.Length*PhotonNetwork.CurrentRoom.Name[0]);
+
 public class ProcGennerMultiplayer : MonoBehaviour
 {   
     public  const float   GridScale     = 4.0f; // The size of each grid mesh (in world units)
@@ -81,7 +81,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
     [Header("Important")]
     public GameObject m_Camera;
     public GameObject m_NavMesh;
-    public VisualOptimizer m_Optimizer;
+    public VisualOptimizerMultiplayer m_Optimizer;
     
     [Header("Debug prefabs")]
     public GameObject m_FloorPrefab;
@@ -131,6 +131,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
     
     public void GenerateScene()
     {
+        
         #if UNITY_EDITOR
             System.DateTime time = System.DateTime.Now;
             int attempts = 1;
@@ -263,7 +264,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
     
     void GenerateRooms(LevelType ltype)
     {
-        
+        Random.InitState(PhotonNetwork.CurrentRoom.Name.Length*PhotonNetwork.CurrentRoom.Name[0]);
         int roomcount = ProcGennerMultiplayer.MaxRooms;
         Vector3Int coord;
         Vector3Int size;
@@ -277,7 +278,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
         this.m_Doors.Add((doorpos, instobj));
         
         // Create the player on the spawn
-        instobj = Instantiate(this.m_PlayerPrefab, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
+        instobj =PhotonNetwork.Instantiate(this.m_PlayerPrefab.name, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
         this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
         instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
         this.m_Entities.Add(instobj);
