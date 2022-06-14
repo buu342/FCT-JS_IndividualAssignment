@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
     private PlayerMovementState m_MovementState = PlayerMovementState.Idle;
     private PlayerAimState m_AimState = PlayerAimState.Idle;
     private PlayerCombatState m_CombatState = PlayerCombatState.Idle;
-    private bool isInFreeMode;
 
     /*==============================
         Start
@@ -83,7 +82,6 @@ public class PlayerController : MonoBehaviour
     {
         this.m_OriginalFlashLightAngles = this.m_FlashLight.transform.rotation;
         this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        isInFreeMode = false;
     }
 
     void OnEnable() {
