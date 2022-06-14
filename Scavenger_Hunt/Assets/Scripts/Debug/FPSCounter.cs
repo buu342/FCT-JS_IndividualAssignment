@@ -29,7 +29,6 @@ public class FPSCounter : MonoBehaviour
         if (calculateFrames)
         {
             frameRate = (int)(1.0f / Time.unscaledDeltaTime);
-            Debug.Log(frameRate);
             FPSText.text=frameRate.ToString()+" FPS";
         }
     }

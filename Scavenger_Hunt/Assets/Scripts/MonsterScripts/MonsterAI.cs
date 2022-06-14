@@ -15,6 +15,7 @@ public class MonsterAI : MonoBehaviour
     private NavMeshAgent agent;
     //TODO: need to guarantee that its centered
     private GameObject playerToChase;
+    private MusicManager musicManager;
 
     void Awake() {
         agent = GetComponent<NavMeshAgent>();
@@ -23,6 +24,7 @@ public class MonsterAI : MonoBehaviour
 
     void OnEnable() {
         PlayerController.makeSound += HearsSound;
+        musicManager = GameObject.Find("MusicManager").GetComponent<MusicManager>(); 
     }
 
     void OnDisable() {
@@ -92,12 +94,14 @@ public class MonsterAI : MonoBehaviour
     public void ChasePlayer() {
         if(!startedChasingPlayer) {
           //TODO: change music for chasing
+          musicManager.FadeMusic();
           startedChasingPlayer =true;            
         }
         agent.SetDestination(playerToChase.transform.position); 
         destination = playerToChase.transform.position;
         if(Vector3.Distance(destination, transform.position) < 2.0f) {
-                //close to player
+                //close to player to attack
+                //TODO: start attacking animation
 
         }
     }
@@ -108,6 +112,8 @@ public class MonsterAI : MonoBehaviour
             if(!startedPatrolling) {
                 startedPatrolling = true;
                 //TODO: start standard music
+                musicManager.FadeMusic();
+                musicManager.PlaySong("Assets/Resources/Sound/Music/Music_Calm.ogg");
             }
             List<RoomDef> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGenner>().GetRoomDefs();
             int roomToCheck = Random.Range(0,roomsInLevel.Count);
@@ -119,7 +125,6 @@ public class MonsterAI : MonoBehaviour
     }
 
     void HearsSound(Vector3 origin, float distance) {
-        Debug.Log("Heardd some sound");
         if(!hearsSound && !startedChasingPlayer) {
             Debug.Log("Was able to heard sound!");
             if(Vector3.Distance(origin, transform.position) < (distance + hearingDistance)) {
@@ -127,6 +132,8 @@ public class MonsterAI : MonoBehaviour
                  agent.SetDestination(origin);
                  destination = origin;
                  Debug.Log("Amber Heard sound");
+                 musicManager.FadeMusic();
+                musicManager.PlaySong("Assets/Resources/Sound/Music/Music_Tense1.ogg");
                  //TODO: play tension music
             }
         }
