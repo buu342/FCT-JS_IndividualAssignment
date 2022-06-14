@@ -13,13 +13,12 @@ public class MonsterAI : MonoBehaviour
     public int hearingDistance;
     private Vector3 destination;
     private NavMeshAgent agent;
-    //TODO: need to guarantee that its centered
+    //need to guarantee that its centered
     private GameObject playerToChase;
     private MusicManager musicManager;
 
     void Awake() {
-        agent = GetComponent<NavMeshAgent>();
-        
+        agent = GetComponent<NavMeshAgent>();   
     }
 
     void OnEnable() {
