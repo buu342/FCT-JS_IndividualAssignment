@@ -7,8 +7,8 @@ public class MultiplayerRoom: MonoBehaviourPunCallbacks{
 
     
     void Update(){
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 2){
-            PhotonNetwork.LoadLevel("SampleScene");
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 1){
+            PhotonNetwork.LoadLevel("SampleSceneMultiplayer");
         }
     }
  
