@@ -11,6 +11,12 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 public class PlayerController : MonoBehaviour
 {
+    //Sound utilities
+    public delegate void MakeSound(Vector3 origin, float distance);
+    public static event MakeSound makeSound;
+    public static float distanceOfSound = 10.0f;
+    
+
     public  const float Gravity      = -80.0f;
     public  const int   ClipSize     = 8;
     private const float MoveSpeed    = 10.0f;
@@ -66,7 +72,6 @@ public class PlayerController : MonoBehaviour
     private PlayerMovementState m_MovementState = PlayerMovementState.Idle;
     private PlayerAimState m_AimState = PlayerAimState.Idle;
     private PlayerCombatState m_CombatState = PlayerCombatState.Idle;
-    private bool isInFreeMode;
 
     /*==============================
         Start
@@ -79,8 +84,7 @@ public class PlayerController : MonoBehaviour
         view=GetComponent<PhotonView>();
         this.m_OriginalFlashLightAngles = this.m_FlashLight.transform.rotation;
         this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        isInFreeMode = false;
-        }
+    }
 
     void OnEnable() {
         InputManagerScript.playerInput.Player.Fire.started += Fire;

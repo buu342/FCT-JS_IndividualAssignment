@@ -80,6 +80,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseAnimations"",
+                    ""type"": ""Button"",
+                    ""id"": ""91868e0d-dfb9-4534-a3e9-17918043533e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -206,17 +215,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3ea4d645-4504-4529-b061-ab81934c3752"",
-                    ""path"": ""<Joystick>/stick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""c1f7a91b-d0fd-4a62-997e-7fb9b69bf235"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
@@ -333,6 +331,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""FreeLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52080e64-451a-4354-ba9a-dd04ac53ae4a"",
+                    ""path"": ""<keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseAnimations"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -946,6 +955,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_FreeLook = m_Player.FindAction("FreeLook", throwIfNotFound: true);
+        m_Player_PauseAnimations = m_Player.FindAction("PauseAnimations", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1024,6 +1034,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_FreeLook;
+    private readonly InputAction m_Player_PauseAnimations;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -1034,6 +1045,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @FreeLook => m_Wrapper.m_Player_FreeLook;
+        public InputAction @PauseAnimations => m_Wrapper.m_Player_PauseAnimations;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1061,6 +1073,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @FreeLook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFreeLook;
                 @FreeLook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFreeLook;
                 @FreeLook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFreeLook;
+                @PauseAnimations.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPauseAnimations;
+                @PauseAnimations.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPauseAnimations;
+                @PauseAnimations.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPauseAnimations;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1083,6 +1098,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @FreeLook.started += instance.OnFreeLook;
                 @FreeLook.performed += instance.OnFreeLook;
                 @FreeLook.canceled += instance.OnFreeLook;
+                @PauseAnimations.started += instance.OnPauseAnimations;
+                @PauseAnimations.performed += instance.OnPauseAnimations;
+                @PauseAnimations.canceled += instance.OnPauseAnimations;
             }
         }
     }
@@ -1253,6 +1271,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnFreeLook(InputAction.CallbackContext context);
+        void OnPauseAnimations(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

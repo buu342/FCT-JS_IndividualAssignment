@@ -9,6 +9,7 @@ TagManager:
   - Ceiling
   - Floor
   - Trigger
+  - Monster
   layers:
   - Default
   - TransparentFX

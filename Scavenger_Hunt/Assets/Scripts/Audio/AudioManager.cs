@@ -190,7 +190,7 @@ public class AudioManager : MonoBehaviour
         #endif
         AudioSource source = sndobj.AddComponent<AudioSource>();
         CustomLowPassFilter filter = sndobj.AddComponent<CustomLowPassFilter>();
-        filter.SetCutoffPercent(0.3f);
+        filter.SetCutoffPercent(0.5f);
         filter.enabled = false;
         if (s.canReverb)
         {
