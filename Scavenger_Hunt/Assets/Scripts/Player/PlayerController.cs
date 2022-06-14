@@ -8,7 +8,7 @@ and combat.
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-
+using Photon.Pun;
 public class PlayerController : MonoBehaviour
 {
     public  const float Gravity      = -80.0f;
@@ -16,12 +16,12 @@ public class PlayerController : MonoBehaviour
     private const float MoveSpeed    = 10.0f;
     private const float Acceleration = 0.5f;
     private const float TurnSpeed    = 0.1f;
-    
+    private bool  multiplayer= JoinMultiplayer.Multiplayer;
     private const float FireTime        = 1.0f;
     private const float ReloadStartTime = 0.333f;
     private const float ReloadLoopTime  = 0.833f;
     private const float ReloadEndTime   = 0.333f;
-    
+    private PhotonView view;
     public enum PlayerMovementState
     {
         Idle,
@@ -75,10 +75,12 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
+        if(multiplayer)
+        view=GetComponent<PhotonView>();
         this.m_OriginalFlashLightAngles = this.m_FlashLight.transform.rotation;
         this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         isInFreeMode = false;
-    }
+        }
 
     void OnEnable() {
         InputManagerScript.playerInput.Player.Fire.started += Fire;
@@ -105,7 +107,9 @@ public class PlayerController : MonoBehaviour
     ==============================*/
     
     void Update()
-    {
+    { if(view!=null)
+            if(!view.IsMine)
+            return;  
         this.m_MovementDirection = m_CameraController.isInFreeMode() ? Vector2.zero:InputManagerScript.Move.ReadValue<Vector2>();
         this.m_TargetVelocity = (this.m_MovementDirection.y*this.transform.forward + this.m_MovementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
         
@@ -131,8 +135,8 @@ public class PlayerController : MonoBehaviour
             this.m_TargetFlashLightAngle = this.transform.rotation*this.m_OriginalFlashLightAngles;
         this.m_CurrentFlashLightAngle = Quaternion.Slerp(this.m_CurrentFlashLightAngle, this.m_TargetFlashLightAngle, TurnSpeed);
         this.m_FlashLight.transform.rotation = this.m_CurrentFlashLightAngle;
+        
     }
-    
     
     /*==============================
         FixedUpdate
@@ -140,7 +144,9 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     void FixedUpdate()
-    {
+    {   if(view!=null)
+            if(!view.IsMine)
+            return;
         this.m_CurrentVelocity = Vector3.Lerp(this.m_CurrentVelocity, this.m_TargetVelocity, PlayerController.Acceleration);
         this.m_RigidBody.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_RigidBody.velocity.y + this.m_CurrentVelocity.y, this.m_CurrentVelocity.z);
         this.m_RigidBody.AddForce(0, PlayerController.Gravity, 0);
@@ -184,6 +190,7 @@ public class PlayerController : MonoBehaviour
                     }
                     break;
             }
+            
         }
     }
     
@@ -207,7 +214,7 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     void Move(InputAction.CallbackContext context) 
-    {
+    { 
         Vector2 movedir = context.ReadValue<Vector2>();
         this.m_MovementDirection = movedir;
         this.m_MovementState = PlayerMovementState.Moving;
@@ -248,7 +255,9 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     void Aim(InputAction.CallbackContext context) 
-    {
+    {   if(view!=null)
+            if(!view.IsMine)
+            return;
         this.m_AimState = context.ReadValue<float>() > 0 ? PlayerAimState.Aiming : PlayerAimState.Idle;
     }
     
@@ -261,6 +270,9 @@ public class PlayerController : MonoBehaviour
 
     void Reload(InputAction.CallbackContext context) 
     {
+        if(view!=null)
+            if(!view.IsMine)
+            return;
         if (this.m_CombatState == PlayerCombatState.Idle && this.m_AmmoClip < PlayerController.ClipSize && this.m_AmmoReserve > 0)
         {
             this.m_CombatState = PlayerCombatState.ReloadStart;
@@ -341,7 +353,7 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     public bool GetPlayerAiming()
-    {
+    {   
         return (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState != PlayerCombatState.ReloadStart && this.m_CombatState != PlayerCombatState.ReloadLoop);
     }
     
