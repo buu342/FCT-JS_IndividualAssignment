@@ -6,10 +6,13 @@ using RoomDef = ProcGenner.RoomDef;
 using Unity.AI.Navigation;
 public class MonsterAI : MonoBehaviour
 {
-    const float POSITION_THRESHOLD = 5.0f;
-    bool hearsSound;
-    bool startedPatrolling;
-    bool startedChasingPlayer;
+    public enum MonsterState {
+        ChasingPlayer,
+        Patrolling,
+        CheckingSound
+    }
+    const float POSITION_THRESHOLD = 2.0f;
+    MonsterState monsterState;
     public int hearingDistance;
     private Vector3 destination;
     private NavMeshAgent agent;
@@ -32,30 +35,29 @@ public class MonsterAI : MonoBehaviour
 
     void Start()
     {
-        hearsSound = false;
         hearingDistance = 20;
+        monsterState = MonsterState.Patrolling;
     }
 
     // Update is called once per frame
     void Update()
     {
         if(playerToChase != null && checkIfCanSeePlayer()) {
-            //chase constantly the player
-            startedPatrolling = false;
-            hearsSound = false;
+            monsterState = MonsterState.ChasingPlayer;
+        }
+
+        switch(monsterState) {
+            case MonsterState.ChasingPlayer:
             ChasePlayer();
-        } else {
-            startedChasingPlayer = false;
-            
-            //patrolling or chasing sound
-            if(hearsSound) {
-                //check if reached destination
-                hearsSound = !hasReachedDestination();
-                startedPatrolling = !hearsSound;
-            } else {
-                //patrolling
-                Patrol();
+            break;
+            case MonsterState.Patrolling:
+            Patrol();
+            break;
+            case MonsterState.CheckingSound:
+            if(hasReachedDestination()) {
+                monsterState = MonsterState.Patrolling;
             }
+            break;
         }
     }
 
@@ -90,46 +92,35 @@ public class MonsterAI : MonoBehaviour
     }
 
     public void ChasePlayer() {
-        if(!startedChasingPlayer) {
+        
           //TODO: change music for chasing
-            musicManager.PlaySong("Music/Tense", true, true, true);
-            startedChasingPlayer =true;            
-        }
-        agent.SetDestination(playerToChase.transform.position); 
+        monsterState = MonsterState.ChasingPlayer;
+        agent.SetDestination(playerToChase.transform.position);
         destination = playerToChase.transform.position;
         if(Vector3.Distance(destination, transform.position) < 2.0f) {
                 //close to player to attack
                 //TODO: start attacking animation
-
         }
     }
 
     public void Patrol() {
         
         if(!agent.hasPath) {
-            if(!startedPatrolling) {
-                startedPatrolling = true;
-                //TODO: start standard music
-                musicManager.PlaySong("Music/Calm", true, true, true);
-            }
             List<RoomDef> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGenner>().GetRoomDefs();
             int roomToCheck = Random.Range(0,roomsInLevel.Count);
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
-            Vector3 destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
+            destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
             agent.SetDestination(destination);
             Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
         }
     }
 
     public void AlertSound(Vector3 origin, float maxDistancesqr) {
-        if(!hearsSound && !startedChasingPlayer) {
+        if(monsterState != MonsterState.CheckingSound) {
             if( (transform.position-origin).sqrMagnitude < (maxDistancesqr)) {
-                 hearsSound = true;
-                 agent.SetDestination(origin);
-                 destination = origin;
-                 Debug.Log("MONSTER GOING TO CHECK SOUND");
-                 
-                musicManager.PlaySong("Music/LessCalm", true, true, true);
+                destination = origin;
+                agent.SetDestination(origin);
+                monsterState = MonsterState.CheckingSound;
                  //TODO: play tension music
             }
         }
