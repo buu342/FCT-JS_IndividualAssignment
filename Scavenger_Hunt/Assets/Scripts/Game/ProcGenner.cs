@@ -106,6 +106,7 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_CorridorPrefab_Curve;
     public GameObject m_CorridorPrefab_T;
     public GameObject m_CorridorPrefab_4Way;
+    public GameObject m_CorridorPrefab_DeadEnd;
     public GameObject m_CorridorStairPrefab;
     
     [Header("Map Objects")]
@@ -1109,6 +1110,42 @@ public class ProcGenner : MonoBehaviour
                 cdef.prefab = instobj;
                 continue;
             }
+            
+            
+            /* ========== Dead End Edge Case ========== */
+            
+            // Dead End (Connected at right)
+            if (CorridorConnectedLeft(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation);
+                cdef.prefab = instobj;
+                continue;
+            }
+            
+            // Dead End (Connected at bottom)
+            if (CorridorConnectedBottom(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation*Quaternion.Euler(0, 0, 90));
+                cdef.prefab = instobj;
+                continue;
+            }
+            
+            // Dead End (Connected at left)
+            if (CorridorConnectedLeft(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation*Quaternion.Euler(0, 0, 180));
+                cdef.prefab = instobj;
+                continue;
+            }
+            
+            // Dead End (Connected at top)
+            if (CorridorConnectedTop(cdef))
+            {
+                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation*Quaternion.Euler(0, 0, -90));
+                cdef.prefab = instobj;
+                continue;
+            }
+            
             
             
             /* ========== PROBLEM!!!! ========== */
