@@ -94,6 +94,7 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_DoorWall1Prefab;
     public GameObject m_DoorWall2Prefab;
     public GameObject m_PlayerPrefab;
+    public GameObject m_MonsterPrefab;
     
     [Header("Debug Materials")]
     public Material m_MaterialRoom;
@@ -137,6 +138,7 @@ public class ProcGenner : MonoBehaviour
             int attempts = 1;
             int roomsculled = 0;
         #endif
+        Vector3Int exitPosition;
         while (true)
         {            
             // Initialize our data structures
@@ -171,7 +173,7 @@ public class ProcGenner : MonoBehaviour
             this.m_Optimizer.SetPlayer(null);
                     
             // Generate the rooms
-            GenerateRooms(LevelType.First);
+            exitPosition=GenerateRooms(LevelType.First);
             
             // Then generate the Delaunay tetrahedralization mesh for the map
             MakeDelaunay3D();
@@ -227,7 +229,12 @@ public class ProcGenner : MonoBehaviour
         //var navMesh = NavMesh.CalculateTriangulation(); // get baked Navigation Mesh Data;
         //Vector3[] vertices = navMesh.vertices;
         //int[] polygons = navMesh.indices;
-        
+                
+        Vector3Int coord = exitPosition;
+        GameObject instobj = Instantiate(this.m_MonsterPrefab, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
+        instobj.GetComponent<MonsterAI>().SetPlayerTarget(GameObject.Find("CameraTarget"));
+        this.m_Entities.Add(instobj);
+
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
             Debug.Log("Level generation data:");
@@ -262,8 +269,9 @@ public class ProcGenner : MonoBehaviour
         @param The type of level
     ==============================*/
     
-    void GenerateRooms(LevelType ltype)
+    Vector3Int GenerateRooms(LevelType ltype)
     {
+        Vector3Int exitPosition;
         int roomcount = ProcGenner.MaxRooms;
         Vector3Int coord;
         Vector3Int size;
@@ -307,12 +315,12 @@ public class ProcGenner : MonoBehaviour
         }
         
         // Then place the exit on the other end
-        coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z);
+        exitPosition = coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z);
         instobj = Instantiate(this.m_ExitElevator, (coord-Center)*ProcGenner.GridScale, this.m_ExitElevator.transform.rotation);
         this.m_Entities.Add(instobj);
         doorpos = coord + (new Vector3(0, 0, -0.25f)*ProcGenner.GridScale/2);
         this.m_Doors.Add((doorpos, instobj));
-        
+
         // Now place a room just before the end
         size = GenerateRoomVector();
         coord += new Vector3Int((int)(-size.x/2), 0, -size.z);
@@ -370,6 +378,7 @@ public class ProcGenner : MonoBehaviour
             PlaceRoom(coord, size);
             roomcount--;
         }
+        return exitPosition;
     }
 
     

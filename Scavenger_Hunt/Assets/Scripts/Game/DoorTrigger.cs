@@ -64,7 +64,8 @@ public class DoorTrigger : MonoBehaviour
     
     void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
+        Debug.Log(other.tag);
+        if (other.tag == "Player" || other.tag == "Monster")
         {
             if (this.m_TriggerDelay == 0)
             {
@@ -92,7 +93,7 @@ public class DoorTrigger : MonoBehaviour
     
     void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" || other.tag == "Monster")
             foreach (DoorLogic door in this.m_TargetDoors)
                 door.CloseDoor();
     }
