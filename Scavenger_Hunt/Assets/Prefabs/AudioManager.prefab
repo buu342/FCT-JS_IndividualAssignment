@@ -55,6 +55,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 1
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Footsteps/Metal
@@ -67,6 +68,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 1
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Footsteps/Metal
@@ -79,6 +81,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 1
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Footsteps/Metal
@@ -91,6 +94,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 1
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Footsteps/Metal
@@ -103,6 +107,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 1
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -115,6 +120,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -127,6 +133,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -139,6 +146,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -151,6 +159,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
@@ -163,6 +172,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -175,6 +185,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -187,6 +198,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -199,6 +211,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -211,6 +224,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
@@ -223,6 +237,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 24
     maxDistanceSqr: 0
   - name: Physics/DoorOpen
@@ -235,6 +250,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 0
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Physics/DoorClose
@@ -247,6 +263,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 0
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Physics/AirlockDoorOpen
@@ -259,6 +276,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 0
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Physics/AirlockDoorClose
@@ -271,6 +289,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 0
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Physics/ElevatorDoorOpen
@@ -283,6 +302,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 0
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Physics/ElevatorDoorClose
@@ -295,6 +315,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 0
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Shotgun/Fire
@@ -307,6 +328,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 1
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Shotgun/Fire
@@ -319,6 +341,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 1
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Shotgun/Fire
@@ -331,6 +354,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 1
     maxDistance: 32
     maxDistanceSqr: 0
   - name: Shotgun/DryFire
@@ -343,6 +367,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Shotgun/Pump
@@ -355,6 +380,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Shotgun/PumpBack
@@ -367,6 +393,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Shotgun/PumpForward
@@ -379,6 +406,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Shotgun/StartReload
@@ -391,6 +419,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Shotgun/InsertShell
@@ -403,6 +432,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Shotgun/EndReload
@@ -415,6 +445,7 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 8
     maxDistanceSqr: 0
   - name: Skye/ArmFlip
@@ -427,5 +458,6 @@ MonoBehaviour:
     canMuffle: 1
     canReverb: 1
     is3D: 1
+    canAlertMonster: 0
     maxDistance: 8
     maxDistanceSqr: 0

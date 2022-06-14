@@ -22,13 +22,14 @@ public class MonsterAI : MonoBehaviour
     }
 
     void OnEnable() {
-        PlayerController.makeSound += HearsSound;
+       // PlayerController.makeSound += HearsSound;
         musicManager = GameObject.Find("MusicManager").GetComponent<MusicManager>(); 
     }
 
     void OnDisable() {
-            PlayerController.makeSound -= HearsSound;
+    //       PlayerController.makeSound -= HearsSound;
     }
+
     void Start()
     {
         hearsSound = false;
@@ -120,20 +121,18 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-    void HearsSound(Vector3 origin, float distance) {
+    public void AlertSound(Vector3 origin, float maxDistancesqr) {
         if(!hearsSound && !startedChasingPlayer) {
-            Debug.Log("Was able to heard sound!");
-            if(Vector3.Distance(origin, transform.position) < (distance + hearingDistance)) {
+            if( (transform.position-origin).sqrMagnitude < (maxDistancesqr)) {
                  hearsSound = true;
                  agent.SetDestination(origin);
                  destination = origin;
-                 Debug.Log("Amber Heard sound");
+                 Debug.Log("MONSTER GOING TO CHECK SOUND");
                  
                 musicManager.PlaySong("Music/LessCalm", true, true, true);
                  //TODO: play tension music
             }
         }
-
     }
 
     public void SetPlayerTarget(GameObject target) {

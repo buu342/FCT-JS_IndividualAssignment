@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
     public Sound[] m_RegisteredSoundsList;
     private GameObject m_listener;
     private ProcGenner m_procgen;
-    
+    private MonsterAI m_monster; 
     
     /*==============================
         Awake
@@ -24,7 +24,7 @@ public class AudioManager : MonoBehaviour
     
     void Awake()
     {
-        this.m_procgen = GameObject.Find("SceneController").GetComponent<ProcGenner>();
+        this.m_procgen = GameObject.Find("SceneController").GetComponent<ProcGenner>(); 
         this.m_listener = GameObject.FindObjectOfType<AudioListener>().gameObject;
         foreach (Sound s in this.m_RegisteredSoundsList)
             s.maxDistanceSqr = s.maxDistance*s.maxDistance;
@@ -141,7 +141,9 @@ public class AudioManager : MonoBehaviour
         }
         else
             source.volume = s.volume;
-        
+        if(s.canAlertMonster) {
+            m_monster.AlertSound(position, s.maxDistanceSqr);
+        }
         // Play the sound
         source.pitch = s.pitch;
         source.Play();
@@ -311,4 +313,8 @@ public class AudioManager : MonoBehaviour
         Sound s = slist[(new System.Random()).Next(0, slist.Length)];
         return s;
     }        
+
+    public void SetMonster(MonsterAI monster) {
+        this.m_monster = monster;
+    }
 }

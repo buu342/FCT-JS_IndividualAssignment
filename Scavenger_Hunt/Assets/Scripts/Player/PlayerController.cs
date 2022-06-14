@@ -12,9 +12,9 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     //Sound utilities
-    public delegate void MakeSound(Vector3 origin, float distance);
+    /* public delegate void MakeSound(Vector3 origin, float distance);
     public static event MakeSound makeSound;
-    public static float distanceOfSound = 10.0f;
+     */public static float distanceOfSound = 10.0f;
     
 
     public  const float Gravity      = -80.0f;

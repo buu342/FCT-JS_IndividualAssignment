@@ -39,7 +39,7 @@ public class DebugFeatures : MonoBehaviour
                 Time.timeScale = Mathf.Lerp(Time.timeScale, 0, 0.1f);
             }
         } else {
-            if(Time.timeScale >0.9) {
+            if(Time.timeScale >0.9f) {
                 Time.timeScale = 1.0f;
             } else {
                 Time.timeScale = Mathf.Lerp(Time.timeScale,1, 0.1f);
