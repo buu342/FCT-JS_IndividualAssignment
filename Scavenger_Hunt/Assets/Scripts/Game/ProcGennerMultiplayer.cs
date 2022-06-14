@@ -34,8 +34,6 @@ public class ProcGennerMultiplayer : MonoBehaviour
     private const int     MaxRoomSize_Y = 3;    // Maximum room size on Y (in grid units)
     private const int     MaxRoomSize_Z = 6;    // Maximum room size on Z (in grid units)
     private const int     MaxRooms      = 30;   // Maximum number of rooms to generate
-     private Vector3Int coord1;
-     private int loop=0;
     [HideInInspector]
     public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_X/2, ProcGennerMultiplayer.MapSize_Y/2, ProcGennerMultiplayer.MapSize_Z/2);
     
@@ -132,15 +130,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
     
     public void GenerateScene()
     {
-        GameObject[] objects = GameObject.FindObjectsOfType<GameObject>();
-        foreach (GameObject o in objects)
-        {
-            if (o.GetComponent<PhotonView>() != null && !o.tag.Equals("Player") && !o.tag.Equals("MainCamera") && !o.tag.Equals("Console_Text"))
-            {
-                PhotonNetwork.Destroy(o);
-            }
-        }
-     
+        
         #if UNITY_EDITOR
             System.DateTime time = System.DateTime.Now;
             int attempts = 1;
@@ -189,27 +179,8 @@ public class ProcGennerMultiplayer : MonoBehaviour
             SelectCorridors();
             
             // Check the start and end room have edges, if not, generate another map
-            if (ConfirmBeatable()){
-               if(loop==0){
-                 GameObject instobj;
-                instobj =PhotonNetwork.Instantiate(this.m_PlayerPrefab.name, (coord1-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
-                this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
-                instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
-                this.m_Entities.Add(instobj);
-                this.m_Optimizer.SetPlayer(instobj);
-                loop=1;
-
-                GameObject[] objects1 = GameObject.FindObjectsOfType<GameObject>();
-        foreach (GameObject o in objects1)
-        {
-            if (o.GetComponent<PhotonView>() != null && !o.tag.Equals("Player") && !o.tag.Equals("MainCamera") && !o.tag.Equals("Console_Text"))
-            {
-                PhotonNetwork.Destroy(o);
-            }
-        }
-                }
+            if (ConfirmBeatable())
                 break;
-        }
             #if UNITY_EDITOR
                 attempts++;
             #endif
@@ -304,10 +275,17 @@ public class ProcGennerMultiplayer : MonoBehaviour
         this.m_Entities.Add(instobj);
         doorpos = coord + (new Vector3(0, 0, 0.25f)*ProcGennerMultiplayer.GridScale/2);
         this.m_Doors.Add((doorpos, instobj));
-        coord1=coord;
         // Create the player on the spawn
-      /* if(JoinMultiplayer.RoomCreator & m_Entities.Count==1)*/{ 
-        }
+      /* if(JoinMultiplayer.RoomCreator & m_Entities.Count==1)*/
+                instobj =PhotonNetwork.Instantiate(this.m_PlayerPrefab.name, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
+                this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
+                instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
+                this.m_Entities.Add(instobj);
+                this.m_Optimizer.SetPlayer(instobj);
+
+        
+                
+        
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
         if (ltype != LevelType.First)
         {
