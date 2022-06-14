@@ -162,6 +162,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: 89909105916cd754aa86bcc8b304caa2, type: 2}
   - {fileID: 2100000, guid: e0d5f56e4731e31479fef415956db1b9, type: 2}
   - {fileID: 2100000, guid: b403815690f2e6d438b5f15ecce5a90f, type: 2}
+  - {fileID: 2100000, guid: 88071bf700a2fb74a86e1aadf6052d30, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -232,7 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DoorType: 0
   m_OpenSpeed: 0.5
-  m_OpenAmount: 4
+  m_OpenAmount: 3.4
   m_ModelPrefab: {fileID: 1014551881730441449}
   m_OpenSound: Physics/DoorOpen
   m_CloseSound: Physics/DoorClose
