@@ -132,7 +132,15 @@ public class ProcGennerMultiplayer : MonoBehaviour
     
     public void GenerateScene()
     {
-        
+        GameObject[] objects = GameObject.FindObjectsOfType<GameObject>();
+        foreach (GameObject o in objects)
+        {
+            if (o.GetComponent<PhotonView>() != null && !o.tag.Equals("Player") && !o.tag.Equals("MainCamera") && !o.tag.Equals("Console_Text"))
+            {
+                PhotonNetwork.Destroy(o);
+            }
+        }
+     
         #if UNITY_EDITOR
             System.DateTime time = System.DateTime.Now;
             int attempts = 1;
@@ -190,6 +198,15 @@ public class ProcGennerMultiplayer : MonoBehaviour
                 this.m_Entities.Add(instobj);
                 this.m_Optimizer.SetPlayer(instobj);
                 loop=1;
+
+                GameObject[] objects1 = GameObject.FindObjectsOfType<GameObject>();
+        foreach (GameObject o in objects1)
+        {
+            if (o.GetComponent<PhotonView>() != null && !o.tag.Equals("Player") && !o.tag.Equals("MainCamera") && !o.tag.Equals("Console_Text"))
+            {
+                PhotonNetwork.Destroy(o);
+            }
+        }
                 }
                 break;
         }
@@ -1210,4 +1227,6 @@ public class ProcGennerMultiplayer : MonoBehaviour
             }
         }
     #endif
+
+  
 }

@@ -23,7 +23,7 @@ public static bool Multiplayer=false;
    
  
     public override void OnJoinedRoom(){
-        PhotonNetwork.LoadLevel("WaitingRoom");
+        Application.LoadLevel("WaitingRoom");
     }
 
    
