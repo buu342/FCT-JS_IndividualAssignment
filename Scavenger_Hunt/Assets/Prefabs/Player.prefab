@@ -263,7 +263,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 5
+  m_Intensity: 2
   m_Range: 30
   m_SpotAngle: 60
   m_InnerSpotAngle: 4
@@ -325,9 +325,10 @@ GameObject:
   - component: {fileID: 1769589095}
   - component: {fileID: 6251197457138080675}
   - component: {fileID: 1769589094}
+  - component: {fileID: 7143493286251733301}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
