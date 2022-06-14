@@ -11,6 +11,8 @@ https://vazgriz.com/119/procedurally-generated-dungeons/
 TODO:
     * Prevent the generation of double doors (Needs testing)
     * Prevent the generation of double stairs
+    * Check if door on ceiling, and if so regenerate the level
+      as a bodge
 ****************************************************************/
 
 using System.Collections;
