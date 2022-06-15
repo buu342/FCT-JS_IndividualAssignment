@@ -11,6 +11,7 @@ using UnityEngine;
 public class HunterAnimations : MonoBehaviour
 {   
     public Animator m_Animator;
+    public MonsterAI m_AI;
     public UnityEngine.AI.NavMeshAgent m_NavAgent;
     
     private AudioManager m_Audio;
@@ -33,7 +34,10 @@ public class HunterAnimations : MonoBehaviour
     
     void Update()
     {
-       this.m_Animator.SetFloat("MoveSpeed", this.m_NavAgent.velocity.magnitude/5.0f);
+        if (this.m_AI.monsterCombatState == MonsterAI.MonsterCombatState.Idle)
+            this.m_Animator.SetFloat("MoveSpeed", this.m_NavAgent.velocity.magnitude/5.0f);
+        else
+            this.m_Animator.SetFloat("MoveSpeed", 1.0f);
     }
     
     
@@ -46,5 +50,27 @@ public class HunterAnimations : MonoBehaviour
     void AnimationEventSound(string sound) 
     {
         this.m_Audio.Play(sound, this.transform.gameObject);
+    }
+    
+    
+    /*==============================
+        TriggerStagger
+        Trigger the stagger animation
+    ==============================*/
+
+    public void TriggerStagger() 
+    {
+        this.m_Animator.SetTrigger("Stagger");
+    }
+    
+    
+    /*==============================
+        TriggerAttack
+        Trigger the attack animation
+    ==============================*/
+
+    public void TriggerAttack() 
+    {
+        this.m_Animator.SetTrigger("Attack");
     }
 }
