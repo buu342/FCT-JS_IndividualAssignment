@@ -123,7 +123,6 @@ public class CameraController : MonoBehaviour
         } else {
             actualTarget = m_Target;
         }
-        Debug.Log("Activated free move");
     }
     
 
@@ -147,6 +146,8 @@ public class CameraController : MonoBehaviour
     public void SetTarget(GameObject target)
     {
         this.m_Target = target;
+        if(!freeMode)
+            actualTarget = m_Target;
         target = target.transform.parent.gameObject;
         if (target != null)
             this.m_PlyCont = target.GetComponent<PlayerController>();
