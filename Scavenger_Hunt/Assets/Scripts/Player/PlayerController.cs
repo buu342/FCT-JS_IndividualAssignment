@@ -211,6 +211,9 @@ public class PlayerController : MonoBehaviour
     
     public void SetCamera(GameObject cam)
     {
+        if(view!=null)
+            if(!view.IsMine)
+            return;  
         this.m_Camera = cam;
         this.m_CameraController = this.m_Camera.GetComponent<CameraController>();
     } 
@@ -222,7 +225,9 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     void Move(InputAction.CallbackContext context) 
-    { 
+    {   if(view!=null)
+            if(!view.IsMine)
+            return;  
         Vector2 movedir = context.ReadValue<Vector2>();
         this.m_MovementDirection = movedir;
         this.m_MovementState = PlayerMovementState.Moving;
@@ -235,7 +240,10 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     void Fire(InputAction.CallbackContext context) 
-    {
+    {   if(view!=null)
+            if(!view.IsMine)
+            return;  
+            
         if(!DebugFeatures.pauseAnimations) {
         if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
         {
