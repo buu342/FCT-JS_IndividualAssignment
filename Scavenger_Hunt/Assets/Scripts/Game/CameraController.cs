@@ -5,7 +5,6 @@ This script handles camera movement and logic
 ****************************************************************/
 
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 public class CameraController : MonoBehaviour

@@ -137,8 +137,8 @@ public class ProcGenner : MonoBehaviour
     private List<(Vector3, GameObject)> m_Doors;
     private List<Graphs.Vertex> m_Vertices;
     private Dictionary<Graphs.Vertex, List<GameObject>> m_RoomVerts;
+    private Transform m_airLockTransform;
     private LevelManager m_LevelManager;
-    
     
     /*==============================
         GenerateScene
@@ -309,6 +309,7 @@ public class ProcGenner : MonoBehaviour
             instobj = Instantiate(this.m_EntranceElevator, this.m_EntranceElevator.transform.position + (coord-Center)*ProcGenner.GridScale, this.m_EntranceElevator.transform.rotation);
         else
             instobj = Instantiate(this.m_Airlock, this.m_Airlock.transform.position + (coord-Center)*ProcGenner.GridScale, this.m_Airlock.transform.rotation);
+        m_airLockTransform = instobj.transform;
         this.m_Entities.Add(instobj);
         this.m_Debug.SetJumpPoint(0, instobj.transform.position, Quaternion.identity);
         doorpos = coord + (new Vector3(0, 0, 0.25f)*ProcGenner.GridScale/2);
@@ -327,7 +328,7 @@ public class ProcGenner : MonoBehaviour
         }
         this.m_Entities.Add(instobj);
         this.m_Optimizer.SetPlayer(instobj);
-        
+        this.m_Director.SetPlayer(instobj);
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
         Debug.Log(levelcount);
         if (levelcount > 1)
@@ -1196,6 +1197,10 @@ public class ProcGenner : MonoBehaviour
         return this.m_Rooms;
     }
     
+    public Transform GetAirlockTransform() {
+        return m_airLockTransform;
+    }
+
     public void SetRoomVisible(int room, bool visible)
     {
         RoomDef rdef = this.m_Rooms[room];
