@@ -53,11 +53,14 @@ public class SceneDirector : MonoBehaviour
     void Start()
     {
         ShowAimInstruction = false;
-        this.GetComponent<ProcGenner>().GenerateScene();
+        ProcGenner proc = this.GetComponent<ProcGenner>();
+        proc.GenerateScene();
         this.m_Music = GameObject.Find("MusicManager").GetComponent<MusicManager>();
         this.m_Music.PlaySong("Music/Calm", true, true);
         this.m_MusicType = MusicType.Calm;
-        
+        Transform airlockStartPosition = proc.GetAirlockTransform();
+        GameObject.Instantiate(MovementPrefab, airlockStartPosition);
+        GameObject.Instantiate(AimPrefab, airlockStartPosition);
     }
     
     void FixedUpdate()
