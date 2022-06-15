@@ -14,7 +14,6 @@ public class MonsterAI : MonoBehaviour
     const float POSITION_THRESHOLD = 2.0f;
     [HideInInspector]
     public MonsterState monsterState;
-    public int hearingDistance;
     private Vector3 destination;
     private NavMeshAgent agent;
     //need to guarantee that its centered
@@ -25,17 +24,8 @@ public class MonsterAI : MonoBehaviour
         monsterState = MonsterState.Patrolling;
     }
 
-    void OnEnable() {
-       // PlayerController.makeSound += HearsSound;
-    }
-
-    void OnDisable() {
-    //       PlayerController.makeSound -= HearsSound;
-    }
-
     void Start()
     {
-        hearingDistance = 20;
         monsterState = MonsterState.Patrolling;
     }
 
