@@ -83,6 +83,7 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_Camera;
     public GameObject m_NavMesh;
     public VisualOptimizer m_Optimizer;
+    public SceneDirector m_Director;
     
     [Header("Generic prefabs")]
     public GameObject m_FloorPrefab;
@@ -148,6 +149,7 @@ public class ProcGenner : MonoBehaviour
             int roomsculled = 0;
         #endif
         Vector3Int exitPosition;
+        
         while (true)
         {            
             // Initialize our data structures
@@ -239,10 +241,12 @@ public class ProcGenner : MonoBehaviour
         // Spawn the monster on the exit room
         Vector3Int coord = exitPosition;
         GameObject instobj = Instantiate(this.m_MonsterPrefab, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
-        MonsterAI monster =instobj.GetComponent<MonsterAI>(); 
+        MonsterAI monster = instobj.GetComponent<MonsterAI>(); 
         monster.SetPlayerTarget(GameObject.Find("CameraTarget"));
         GameObject.Find("AudioManager").GetComponent<AudioManager>().SetMonster(monster);
         this.m_Entities.Add(instobj);
+        this.m_Director = this.transform.gameObject.GetComponent<SceneDirector>();
+        this.m_Director.SetMonster(instobj);
 
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR

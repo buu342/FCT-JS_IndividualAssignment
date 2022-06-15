@@ -13,8 +13,8 @@ public class MonsterAI : MonoBehaviour
         CheckingSound
     }
     const float POSITION_THRESHOLD = 2.0f;
-    MonsterState monsterState;
-    public int hearingDistance;
+    [HideInInspector]
+    public MonsterState monsterState;
     private Vector3 destination;
     private NavMeshAgent agent;
     //need to guarantee that its centered
@@ -23,27 +23,18 @@ public class MonsterAI : MonoBehaviour
     private bool multiplayer=JoinMultiplayer.Multiplayer;
     void Awake() {
         agent = GetComponent<NavMeshAgent>();   
-    }
-
-    void OnEnable() {
-       // PlayerController.makeSound += HearsSound;
-        musicManager = GameObject.Find("MusicManager").GetComponent<MusicManager>(); 
-    }
-
-    void OnDisable() {
-    //       PlayerController.makeSound -= HearsSound;
+        monsterState = MonsterState.Patrolling;
     }
 
     void Start()
     {
-        hearingDistance = 20;
         monsterState = MonsterState.Patrolling;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(playerToChase != null && checkIfCanSeePlayer()) {
+        if (playerToChase != null && checkIfCanSeePlayer()) {
             monsterState = MonsterState.ChasingPlayer;
         }
 
