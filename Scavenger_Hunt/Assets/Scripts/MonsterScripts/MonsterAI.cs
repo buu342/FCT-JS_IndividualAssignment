@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using RoomDef = ProcGenner.RoomDef;
+using RoomDefMulti= ProcGennerMultiplayer.RoomDef;
 using Unity.AI.Navigation;
 public class MonsterAI : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class MonsterAI : MonoBehaviour
     //need to guarantee that its centered
     private GameObject playerToChase;
     private MusicManager musicManager;
-
+    private bool multiplayer=JoinMultiplayer.Multiplayer;
     void Awake() {
         agent = GetComponent<NavMeshAgent>();   
     }
@@ -105,13 +106,21 @@ public class MonsterAI : MonoBehaviour
 
     public void Patrol() {
         
-        if(!agent.hasPath) {
+        if(!agent.hasPath&!multiplayer) {
             if(!startedPatrolling) {
                 startedPatrolling = true;
                 //TODO: start standard music
                 musicManager.PlaySong("Music/Calm", true, true, true);
             }
             List<RoomDef> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGenner>().GetRoomDefs();
+            int roomToCheck = Random.Range(0,roomsInLevel.Count);
+            Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
+            Vector3 destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
+            agent.SetDestination(destination);
+            Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
+        }
+        else if(!agent.hasPath&multiplayer){
+            List<RoomDefMulti> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGennerMultiplayer>().GetRoomDefs();
             int roomToCheck = Random.Range(0,roomsInLevel.Count);
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
             Vector3 destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
