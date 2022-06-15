@@ -244,7 +244,7 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
 
         // Spawn the monster on the exit room
         Vector3Int coord = exitPosition;
-        GameObject instobj = Instantiate(this.m_MonsterPrefab, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
+        GameObject instobj = PhotonNetwork.Instantiate(this.m_MonsterPrefab.name, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
         MonsterAI monster = instobj.GetComponent<MonsterAI>(); 
         monster.SetPlayerTarget(GameObject.Find("CameraTarget"));
         GameObject.Find("AudioManager").GetComponent<AudioManager>().SetMonster(monster);
