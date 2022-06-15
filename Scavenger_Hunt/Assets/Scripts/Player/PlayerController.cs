@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour
     private AudioManager m_Audio;
     private GameObject m_Camera;
     private CameraController m_CameraController;
+    private GameObject m_SceneController;
     
     private PlayerMovementState m_MovementState = PlayerMovementState.Idle;
     private PlayerAimState m_AimState = PlayerAimState.Idle;
@@ -472,5 +473,21 @@ public class PlayerController : MonoBehaviour
     public void SetPlayerAmmoReserve(int amount) 
     {
         this.m_AmmoReserve = amount;
+    }
+    
+    public void SetSceneController(GameObject obj)
+    {
+        this.m_SceneController = obj;
+    }
+    
+    public void KillPlayer()
+    {
+        //this.m_Audio.Play("Skye/Death");
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().StopMusic();
+        this.m_SceneController.transform.Find("GUI").GetComponent<ScreenGUI>().PlayerDied();
+        this.m_SceneController.GetComponent<DebugFeatures>().PlayerDied();
+        this.m_SceneController.GetComponent<SceneDirector>().PlayerDied();
+        Time.timeScale = 0;
+        this.m_Audio.Play("Gameplay/PlayerHit");
     }
 }

@@ -121,6 +121,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.09090909
+        functionName: MakeHurtBox
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -174,6 +181,13 @@ ModelImporter:
       - time: 0.9433962
         functionName: AnimationEventSound
         data: Footsteps/MetalHeavy
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.2027972
+        functionName: MakeHurtBox
+        data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
@@ -242,6 +256,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.2027972
+        functionName: MakeHurtBox
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -251,7 +272,7 @@ ModelImporter:
       takeName: flinch1
       internalID: 0
       firstFrame: -1
-      lastFrame: 138
+      lastFrame: 117
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

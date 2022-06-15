@@ -26,11 +26,11 @@ public class SceneDirector : MonoBehaviour
     public GameObject FirePrefab;
     public GameObject PilferPrefab;
 
+    private bool m_PlayerDead = false;
     private MonsterAI m_Monster = null;
     private MusicManager m_Music = null;
     private MusicType m_MusicType = MusicType.None;
     private GameObject m_Player = null;
-    private bool ShowAimInstruction;
     
     void OnEnable() {
         InputManagerScript.playerInput.Player.Aim.started +=  PressedAim;
@@ -52,9 +52,8 @@ public class SceneDirector : MonoBehaviour
     
     void Start()
     {
-        ShowAimInstruction = false;
         ProcGenner proc = this.GetComponent<ProcGenner>();
-        proc.GenerateScene();
+        proc.GenerateScene(GameObject.Find("LevelManager").GetComponent<LevelManager>().GetLevelCount());
         this.m_Music = GameObject.Find("MusicManager").GetComponent<MusicManager>();
         this.m_Music.PlaySong("Music/Calm", true, true);
         this.m_MusicType = MusicType.Calm;
@@ -65,7 +64,7 @@ public class SceneDirector : MonoBehaviour
     
     void FixedUpdate()
     {
-        if (this.m_Monster != null)
+        if (this.m_Monster != null && !this.m_PlayerDead)
         {
             if (this.m_Monster.monsterState == MonsterAI.MonsterState.ChasingPlayer && !this.GetMusicTense())
                 this.SetMusicTense(true);
@@ -132,5 +131,10 @@ public class SceneDirector : MonoBehaviour
 
     public void SetPlayer(GameObject player) {
         m_Player = player;
+    }
+
+    public void PlayerDied()
+    {
+        this.m_PlayerDead = true;
     }
 }

@@ -21,6 +21,7 @@ public class DoorTrigger : MonoBehaviour
     public float m_TriggerDelay = 0.0f;
     public TriggerType m_TiggerType = TriggerType.OpenClose;
     public bool m_IgnoreMonster = false;
+    public bool m_IsExit = false;
     
     private float m_TriggerTimer = 0.0f;
     
@@ -81,6 +82,9 @@ public class DoorTrigger : MonoBehaviour
             }
             else if (this.m_TriggerTimer == 0.0f)
                 this.m_TriggerTimer = Time.time + this.m_TriggerDelay;
+            
+            if (this.m_IsExit)
+                GameObject.Find("SceneController").gameObject.transform.Find("GUI").GetComponent<ScreenGUI>().LoadNextLevel();
         }
     }
 

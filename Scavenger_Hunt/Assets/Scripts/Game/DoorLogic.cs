@@ -157,7 +157,7 @@ public class DoorLogic : MonoBehaviour
         if (this.m_IsOpen)
         {
             this.m_IsOpen = false;
-            this.m_Timer = 0;
+            this.m_Timer = 1;
             if (this.m_CloseSound != "")
                 this.m_Audio.Play(this.m_CloseSound, this.transform.position + new Vector3(0, 1, 0), this.m_ModelPrefab.transform.gameObject);
         }
