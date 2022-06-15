@@ -8,7 +8,6 @@ public class DebugFeatures : MonoBehaviour
     public CameraController m_Camera;
     public GameObject m_Monster;
     public GameObject m_Player;
-    
     private string m_TargetName = "";
     private int frameRate;
     private bool calculateFrames;

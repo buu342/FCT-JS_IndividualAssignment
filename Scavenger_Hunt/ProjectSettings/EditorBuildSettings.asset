@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/Scenes/SampleSceneMultiplayer.unity
+    guid: 6e61fd117355dc048832b6bc0c9bbc9c
+  - enabled: 1
     path: Assets/Scenes/WaitingRoom.unity
     guid: f3b1f3017951afd4b8901fe2c726a3c5
   m_configObjects:
