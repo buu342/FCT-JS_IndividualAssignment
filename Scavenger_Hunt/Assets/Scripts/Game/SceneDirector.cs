@@ -34,12 +34,14 @@ public class SceneDirector : MonoBehaviour
     
     void OnEnable() {
         InputManagerScript.playerInput.Player.Aim.started +=  PressedAim;
+        InputManagerScript.playerInput.Player.Fire.started += Fire;
         if(!InputManagerScript.playerInput.Player.enabled)
             InputManagerScript.playerInput.Player.Enable();
 
     }
     void OnDisable() {
         InputManagerScript.playerInput.Player.Aim.started -=  PressedAim;
+        InputManagerScript.playerInput.Player.Fire.started -= Fire;
         if(InputManagerScript.playerInput.Player.enabled)
             InputManagerScript.playerInput.Player.Disable();
 
@@ -79,6 +81,15 @@ public class SceneDirector : MonoBehaviour
             GameObject.Instantiate(FirePrefab,m_Player.transform);
             InputManagerScript.playerInput.Player.Aim.started -=  PressedAim;
         }
+    }
+
+    void Fire(InputAction.CallbackContext context) 
+    {
+        if(m_Player != null && m_Player.GetComponent<PlayerController>().GetPlayerAmmoClip() == 0) {
+            GameObject.Instantiate(ReloadPrefab,m_Player.transform);
+            InputManagerScript.playerInput.Player.Fire.started -= Fire;
+        }
+
     }
     
 
