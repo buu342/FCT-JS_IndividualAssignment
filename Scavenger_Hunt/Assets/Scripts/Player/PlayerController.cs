@@ -261,7 +261,10 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     void Fire(InputAction.CallbackContext context) 
-    {
+    {   if(view!=null)
+            if(!view.IsMine)
+            return;
+
         if(!DebugFeatures.pauseAnimations && !m_CameraController.isInFreeMode()) 
         {
             if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
