@@ -11,6 +11,7 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 public class PlayerController : MonoBehaviour
 {
+    
     //Sound utilities   
  	public  const int   NumberOfShells = 8;
     public  const float Gravity      = -80.0f;
@@ -251,21 +252,21 @@ public class PlayerController : MonoBehaviour
         if(!DebugFeatures.pauseAnimations) {
         if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
         {
-            if (this.m_AmmoClip > 0)
-            {
-                this.m_Audio.Play("Shotgun/Fire", this.transform.gameObject);
-                this.m_CombatState = PlayerCombatState.Firing;
-                this.m_NextFireTime = Time.time + PlayerController.FireTime;
-                this.m_AmmoClip--;
-                this.m_PlyAnims.FireAnimation();
-                this.m_CameraController.AddTrauma(0.5f);
-                FireShell();
+                if (this.m_AmmoClip > 0)
+                {
+                    this.m_Audio.Play("Shotgun/Fire", this.transform.gameObject);
+                    this.m_CombatState = PlayerCombatState.Firing;
+                    this.m_NextFireTime = Time.time + PlayerController.FireTime;
+                    this.m_AmmoClip--;
+                    this.m_PlyAnims.FireAnimation();
+                    this.m_CameraController.AddTrauma(0.5f);
+                    FireShell();
+                }
+                else
+                    this.m_Audio.Play("Shotgun/DryFire", this.transform.gameObject);
             }
-            else
-                this.m_Audio.Play("Shotgun/DryFire", this.transform.gameObject);
-        }
-        else if (this.m_CombatState == PlayerCombatState.ReloadStart || this.m_CombatState == PlayerCombatState.ReloadLoop || this.m_CombatState == PlayerCombatState.ReloadEnd)
-            this.m_CancelReload = true;
+            else if (this.m_CombatState == PlayerCombatState.ReloadStart || this.m_CombatState == PlayerCombatState.ReloadLoop || this.m_CombatState == PlayerCombatState.ReloadEnd)
+                this.m_CancelReload = true;
         }
     }
 

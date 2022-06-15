@@ -124,6 +124,10 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_Airlock;
     public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
+    public GameObject m_Table;
+    public GameObject m_Lamp;
+    public List<GameObject> m_Props;
+    public List<GameObject> m_Items;
     
     private Delaunay3D m_Delaunay;
     private HashSet<Prim.Edge> m_SelectedEdges;
@@ -214,6 +218,9 @@ public class ProcGenner : MonoBehaviour
         
         // And then fill everything with walls
         GenerateWalls();
+        
+        // And dump objects in the room
+        PlaceObjectsInRooms();
         
         // Generate a walkable navmesh
         List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
@@ -1166,7 +1173,6 @@ public class ProcGenner : MonoBehaviour
         return false;
     }
     
-    
     public List<ProcGenner.RoomDef> GetRoomDefs()
     {
         return this.m_Rooms;
@@ -1233,6 +1239,59 @@ public class ProcGenner : MonoBehaviour
         return null;
     }
 
+
+    void PlaceObjectsInRooms()
+    {
+        foreach (RoomDef rdef in this.m_Rooms)
+        {
+            Vector3Int dir;
+            bool[,] occupied = new bool[rdef.size.x, rdef.size.z];
+            for (int x=0; x<rdef.size.x; x++)
+                for (int z=0; z<rdef.size.z; z++)
+                    occupied[x, z] = false;
+                
+            // Check for doors, so we don't place items there
+            dir = new Vector3Int(0, 0, -1);
+            for (int x=0; x<rdef.size.x; x++)
+            {
+                if (DoorExists(rdef.position + new Vector3Int(x, 0, 0), dir))
+                    occupied[x, 0] = true;
+                if (DoorExists(rdef.position + new Vector3Int(x, 0, rdef.size.z-1), -dir))
+                    occupied[x, rdef.size.z-1] = true;
+            }
+            dir = new Vector3Int(-1, 0, 0);
+            for (int z=0; z<rdef.size.z; z++)
+            {
+                if (DoorExists(rdef.position + new Vector3Int(0, 0, z), dir))
+                    occupied[0, z] = true;
+                if (DoorExists(rdef.position + new Vector3Int(rdef.size.x-1, 0, z), -dir))
+                    occupied[rdef.size.x-1, z] = true;
+            }
+            
+            // Scatter the room with props and items
+            for (int x=0; x<rdef.size.x; x++)
+            {
+                for (int z=0; z<rdef.size.z; z++)
+                {
+                    if (!occupied[x, z] && Random.Range(0, 2) == 0)
+                    {
+                        GameObject prefab = this.m_Props[Random.Range(0, this.m_Props.Count)];
+                        rdef.objects.Add(Instantiate(prefab, ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGenner.GridScale, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0)));
+                        occupied[x, z] = true;
+                    }
+                    else if (!occupied[x, z] && Random.Range(0, 4) == 0)
+                    {
+                        GameObject prefab = this.m_Table;
+                        Vector3 tablepos = ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGenner.GridScale;
+                        rdef.objects.Add(Instantiate(prefab, tablepos, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0)));
+                        prefab = this.m_Items[Random.Range(0, this.m_Props.Count)];
+                        rdef.objects.Add(Instantiate(prefab, tablepos+ new Vector3(Random.Range(-1.0f, 1.0f), 1.4f, Random.Range(-1.0f, 1.0f)), prefab.transform.rotation*Quaternion.Euler(0, 0, Random.Range(0, 360))));
+                        occupied[x, z] = true;
+                    }
+                }
+            }
+        }
+    }
 
     #if UNITY_EDITOR
         /*==============================
