@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
     { if(view!=null)
             if(!view.IsMine)
             return;  
-    {
+    
         if(!DebugFeatures.pauseAnimations) 
         {
             this.m_MovementDirection = m_CameraController.isInFreeMode() ? Vector2.zero:InputManagerScript.Move.ReadValue<Vector2>();
@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
             this.m_CurrentFlashLightAngle = Quaternion.Slerp(this.m_CurrentFlashLightAngle, this.m_TargetFlashLightAngle, TurnSpeed);
             this.m_FlashLight.transform.rotation = this.m_CurrentFlashLightAngle;
         }
-        }
+        
     } 
     /*==============================
         FixedUpdate
@@ -340,7 +340,7 @@ public class PlayerController : MonoBehaviour
         if(view!=null)
             if(!view.IsMine)
             return;
-        if(DebugFeatures.pauseAnimations) {
+        if(!DebugFeatures.pauseAnimations) {
             if (this.m_CombatState == PlayerCombatState.Idle && this.m_AmmoClip < PlayerController.ClipSize && this.m_AmmoReserve > 0)
             {
                 this.m_CombatState = PlayerCombatState.ReloadStart;
