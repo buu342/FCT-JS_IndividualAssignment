@@ -13,6 +13,8 @@ public class HunterAnimations : MonoBehaviour
     public Animator m_Animator;
     public MonsterAI m_AI;
     public UnityEngine.AI.NavMeshAgent m_NavAgent;
+    public GameObject m_HurtBoxPlacement;
+    public GameObject m_HurtBoxPrefab;
     
     private AudioManager m_Audio;
     
@@ -72,5 +74,13 @@ public class HunterAnimations : MonoBehaviour
     public void TriggerAttack() 
     {
         this.m_Animator.SetTrigger("Attack");
+    }
+    
+    
+    
+    public void MakeHurtBox()
+    {
+        GameObject obj = Instantiate(this.m_HurtBoxPrefab, this.m_HurtBoxPlacement.transform.position, this.m_HurtBoxPlacement.transform.rotation);
+        obj.transform.parent = this.m_HurtBoxPlacement.transform;
     }
 }
