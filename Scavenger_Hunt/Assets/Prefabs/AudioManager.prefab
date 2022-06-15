@@ -461,6 +461,45 @@ MonoBehaviour:
     canAlertMonster: 0
     maxDistance: 8
     maxDistanceSqr: 0
+  - name: Skye/Death
+    clip: {fileID: 8300000, guid: 4b64e6e49d547764aab32bbd534cac47, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 0
+    canReverb: 0
+    is3D: 0
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Skye/Death
+    clip: {fileID: 8300000, guid: 09d2839f4b2f1dd4693599dea7d9fa9a, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 0
+    canReverb: 0
+    is3D: 0
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Skye/Death
+    clip: {fileID: 8300000, guid: 3475504a724c0f348a8f7613de2ca25f, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 0
+    canReverb: 0
+    is3D: 0
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
   - name: Hunter/Attack
     clip: {fileID: 8300000, guid: 1b07366a05f23ad49a09f629b1f188c2, type: 3}
     volume: 1

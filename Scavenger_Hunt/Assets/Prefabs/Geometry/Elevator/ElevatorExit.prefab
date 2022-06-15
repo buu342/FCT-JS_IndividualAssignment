@@ -591,7 +591,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8657086072101610851}
   - component: {fileID: 2478410950926980578}
-  - component: {fileID: 2928102078860246809}
+  - component: {fileID: 1223986564640090530}
   m_Layer: 7
   m_Name: TriggerClose
   m_TagString: Trigger
@@ -627,7 +627,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2928102078860246809
+--- !u!114 &1223986564640090530
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

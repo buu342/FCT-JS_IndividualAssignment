@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.26764098, g: 0.14858118, b: 0.31925803, a: 1}
+  m_IndirectSpecularColor: {r: 0.26764306, g: 0.14858508, b: 0.31925988, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -372,6 +372,7 @@ PrefabInstance:
       propertyPath: m_MaterialExit
       value: 
       objectReference: {fileID: 0}
+<<<<<<< Updated upstream
     - target: {fileID: 5160235985486152608, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -380,6 +381,52 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+=======
+    - target: {fileID: 3410084622008509087, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3755967370917254308, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3772167392405035897, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3772167392405035897, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_fontSize
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 3772167392405035897, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_margin.z
+      value: -1603.8524
+      objectReference: {fileID: 0}
+    - target: {fileID: 3772167392405035897, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 4085609432247065261, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4085609432247065261, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_fontSize
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 4085609432247065261, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_margin.z
+      value: -1619.9016
+      objectReference: {fileID: 0}
+    - target: {fileID: 4085609432247065261, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397188342549139482, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 122
+      objectReference: {fileID: 0}
+>>>>>>> Stashed changes
     m_RemovedComponents:
     - {fileID: 7674863950223756036, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
