@@ -617,3 +617,16 @@ MonoBehaviour:
     canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
+  - name: Gameplay/PlayerHit
+    clip: {fileID: 8300000, guid: 71b0bd8f6942a6847b9ed23c26626bb8, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 0
+    canReverb: 0
+    is3D: 0
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FlickeringLights : MonoBehaviour
 {
-    public Light light; 
+    public Light m_Light; 
     public ParticleSystem particles;
     public float timeToFlick;
     public MeshRenderer mesh;
@@ -16,7 +16,7 @@ public class FlickeringLights : MonoBehaviour
     void Start()
     {
         particles = GetComponent<ParticleSystem>();
-        light = GetComponent<Light>();
+        this.m_Light = GetComponent<Light>();
         for (int i=0; i<this.mesh.materials.Length; i++)
             this.mesh.materials[i] = new Material(this.mesh.materials[i]);
     }
@@ -36,7 +36,7 @@ public class FlickeringLights : MonoBehaviour
         flickTimer = 1.5f;
         if(sparkle)
         {
-            light.enabled = false;
+            this.m_Light.enabled = false;
             particles.Play();
             mats[0] = OffMaterial;
         }
@@ -44,7 +44,7 @@ public class FlickeringLights : MonoBehaviour
         yield return new WaitForSeconds(flickTimer);
         particles.Stop();
         mats[0] = OnMaterial;
-        light.enabled = true;
+        this.m_Light.enabled = true;
         flickTimer = Random.Range(timeToFlick/2, timeToFlick);
         this.mesh.materials = mats;
         yield return new WaitForSeconds(flickTimer);
