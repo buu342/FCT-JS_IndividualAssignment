@@ -110,32 +110,33 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        if(!DebugFeatures.pauseAnimations) {
-        this.m_MovementDirection = m_CameraController.isInFreeMode() ? Vector2.zero:InputManagerScript.Move.ReadValue<Vector2>();
-        this.m_TargetVelocity = (this.m_MovementDirection.y*this.transform.forward + this.m_MovementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
-        
-        // Turn the player to face the same direction as the camera
-        Quaternion targetang = Quaternion.Euler(0.0f, this.m_Camera.transform.eulerAngles.y, 0.0f);
-        if (this.m_TargetVelocity == Vector3.zero)
+        if(!DebugFeatures.pauseAnimations) 
         {
-            this.m_MovementState = PlayerMovementState.Idle;
-            if (this.GetPlayerAiming())
+            this.m_MovementDirection = m_CameraController.isInFreeMode() ? Vector2.zero:InputManagerScript.Move.ReadValue<Vector2>();
+            this.m_TargetVelocity = (this.m_MovementDirection.y*this.transform.forward + this.m_MovementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
+            
+            // Turn the player to face the same direction as the camera
+            Quaternion targetang = Quaternion.Euler(0.0f, this.m_Camera.transform.eulerAngles.y, 0.0f);
+            if (this.m_TargetVelocity == Vector3.zero)
+            {
+                this.m_MovementState = PlayerMovementState.Idle;
+                if (this.GetPlayerAiming())
+                    this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetang, PlayerController.TurnSpeed);
+            }
+            else
                 this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetang, PlayerController.TurnSpeed);
-        }
-        else
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetang, PlayerController.TurnSpeed);
-        
-        // Aim
-        this.m_AimVerticalAngle = this.m_Camera.transform.eulerAngles.x;
-        if (this.GetPlayerAiming())
-        {
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetang, PlayerController.TurnSpeed);
-            this.m_TargetFlashLightAngle = this.m_OriginalFlashLightAngles*Quaternion.Euler(this.m_Camera.transform.eulerAngles.x, this.m_Camera.transform.eulerAngles.y, 0);
-        }
-        else
-            this.m_TargetFlashLightAngle = this.transform.rotation*this.m_OriginalFlashLightAngles;
-        this.m_CurrentFlashLightAngle = Quaternion.Slerp(this.m_CurrentFlashLightAngle, this.m_TargetFlashLightAngle, TurnSpeed);
-        this.m_FlashLight.transform.rotation = this.m_CurrentFlashLightAngle;
+            
+            // Aim
+            this.m_AimVerticalAngle = this.m_Camera.transform.eulerAngles.x;
+            if (this.GetPlayerAiming())
+            {
+                this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetang, PlayerController.TurnSpeed);
+                this.m_TargetFlashLightAngle = this.m_OriginalFlashLightAngles*Quaternion.Euler(this.m_Camera.transform.eulerAngles.x, this.m_Camera.transform.eulerAngles.y, 0);
+            }
+            else
+                this.m_TargetFlashLightAngle = this.transform.rotation*this.m_OriginalFlashLightAngles;
+            this.m_CurrentFlashLightAngle = Quaternion.Slerp(this.m_CurrentFlashLightAngle, this.m_TargetFlashLightAngle, TurnSpeed);
+            this.m_FlashLight.transform.rotation = this.m_CurrentFlashLightAngle;
         }
     }
     
@@ -286,7 +287,8 @@ public class PlayerController : MonoBehaviour
 
     void Reload(InputAction.CallbackContext context) 
     {
-        if(DebugFeatures.pauseAnimations) {
+        if (!DebugFeatures.pauseAnimations)
+        {
             if (this.m_CombatState == PlayerCombatState.Idle && this.m_AmmoClip < PlayerController.ClipSize && this.m_AmmoReserve > 0)
             {
                 this.m_CombatState = PlayerCombatState.ReloadStart;
