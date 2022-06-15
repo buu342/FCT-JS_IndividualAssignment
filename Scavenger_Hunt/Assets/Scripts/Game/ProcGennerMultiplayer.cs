@@ -33,8 +33,8 @@ public class ProcGennerMultiplayer : MonoBehaviour
     private const int     MaxRoomSize_Z = 6;    // Maximum room size on Z (in grid units)
     private const int     MaxRooms      = 30;   // Maximum number of rooms to generate
     [HideInInspector]
-    public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_X/2, ProcGennerMultiplayer.MapSize_Y/2, ProcGennerMultiplayer.MapSize_Z/2);
-    
+public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_X/2, ProcGennerMultiplayer.MapSize_Y/2, ProcGennerMultiplayer.MapSize_Z/2);
+  
     private enum LevelType
     {
         First,
@@ -117,12 +117,16 @@ public class ProcGennerMultiplayer : MonoBehaviour
     public GameObject m_Room3Prefab_GlassWall_Mid;
     public GameObject m_Room3Prefab_GlassWall_Right;
 
-    [Header("Map Objects")]
-    public GameObject m_MonsterPrefab;
+       [Header("Map Objects")]
     public GameObject m_PlayerPrefab;
+    public GameObject m_MonsterPrefab;
     public GameObject m_Airlock;
     public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
+    public GameObject m_Table;
+    public GameObject m_Lamp;
+    public List<GameObject> m_Props;
+    public List<GameObject> m_Items;
     
     private Delaunay3D m_Delaunay;
     private HashSet<Prim.Edge> m_SelectedEdges;
@@ -213,7 +217,8 @@ public class ProcGennerMultiplayer : MonoBehaviour
         
         // And then fill everything with walls
         GenerateWalls();
-        
+        // And dump objects in the room
+        PlaceObjectsInRooms();
         // Generate a walkable navmesh
         List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
         NavMeshData navmeshdata = new NavMeshData();
@@ -237,16 +242,15 @@ public class ProcGennerMultiplayer : MonoBehaviour
         sources.RemoveAll(source => source.component != null && source.component.gameObject.GetComponent<NavMeshAgent>() != null);
         NavMeshBuilder.UpdateNavMeshData(navmeshdata, surface.GetBuildSettings(), sources, navmeshbounds);
 
-        // create monster
+        // Spawn the monster on the exit room
         Vector3Int coord = exitPosition;
-        GameObject instobj = PhotonNetwork.Instantiate(this.m_MonsterPrefab.name, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
-        MonsterAI monster = instobj.GetComponent<MonsterAI>();
-         GameObject.Find("AudioManager").GetComponent<AudioManager>().SetMonster(monster);
+        GameObject instobj = Instantiate(this.m_MonsterPrefab, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
+        MonsterAI monster = instobj.GetComponent<MonsterAI>(); 
+        monster.SetPlayerTarget(GameObject.Find("CameraTarget"));
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().SetMonster(monster);
         this.m_Entities.Add(instobj);
-         this.m_Director = this.transform.gameObject.GetComponent<SceneDirectorMultiplayer>();
+        this.m_Director = this.transform.gameObject.GetComponent<SceneDirectorMultiplayer>();
         this.m_Director.SetMonster(instobj);
-
-
 
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
@@ -290,6 +294,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
         Vector3Int size;
         Vector3 doorpos;
         GameObject instobj;
+
         // Start by placing our spawn somewhere outside the grid
         coord = new Vector3Int((int)Random.Range(ProcGennerMultiplayer.MaxRoomSize_X, ProcGennerMultiplayer.MapSize_X-ProcGennerMultiplayer.MaxRoomSize_X), ProcGennerMultiplayer.MapSize_Y/2, -1);
         instobj = Instantiate(this.m_Airlock, this.m_Airlock.transform.position + (coord-Center)*ProcGennerMultiplayer.GridScale, this.m_Airlock.transform.rotation);
@@ -434,9 +439,9 @@ public class ProcGennerMultiplayer : MonoBehaviour
                 // Floor
                 Vector3Int finalpos = pos + new Vector3Int(j, 0, i);
                  if (size.y == 2)
-                 instobj = Instantiate(this.m_Room2Prefab_Floor, (finalpos-Center)*ProcGenner.GridScale, this.m_Room2Prefab_Floor.transform.rotation);
+                 instobj = Instantiate(this.m_Room2Prefab_Floor, (finalpos-Center)*ProcGennerMultiplayer.GridScale, this.m_Room2Prefab_Floor.transform.rotation);
                  else 
-                instobj = Instantiate(this.m_Room3Prefab_Floor, (finalpos-Center)*ProcGenner.GridScale, this.m_Room3Prefab_Floor.transform.rotation);
+                instobj = Instantiate(this.m_Room3Prefab_Floor, (finalpos-Center)*ProcGennerMultiplayer.GridScale, this.m_Room3Prefab_Floor.transform.rotation);
                 rm.Add(instobj);
                 
                 // Store a list of the positions we added objects to
@@ -446,9 +451,9 @@ public class ProcGennerMultiplayer : MonoBehaviour
                 // Ceiling
                 finalpos += new Vector3Int(0, size.y, 0);
                 if (size.y == 2)
-                instobj = Instantiate(this.m_Room2Prefab_Ceiling, (finalpos-Center)*ProcGenner.GridScale, this.m_Room2Prefab_Ceiling.transform.rotation);
+                instobj = Instantiate(this.m_Room2Prefab_Ceiling, (finalpos-Center)*ProcGennerMultiplayer.GridScale, this.m_Room2Prefab_Ceiling.transform.rotation);
                  else
-                    instobj = Instantiate(this.m_Room3Prefab_Ceiling, (finalpos-Center)*ProcGenner.GridScale, this.m_Room3Prefab_Ceiling.transform.rotation);
+                    instobj = Instantiate(this.m_Room3Prefab_Ceiling, (finalpos-Center)*ProcGennerMultiplayer.GridScale, this.m_Room3Prefab_Ceiling.transform.rotation);
                 rm.Add(instobj);
         }
     }
@@ -464,8 +469,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
         
         // Store the room definition in the helper structures
         Vector3 mid = pos + new Vector3(size.x*0.5f, 0.0f, size.z*0.5f);
-        RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm, visible = true, doors = new List<GameObject>(), parentobject = new GameObject(),haselevator = haselevator};
-        
+        RoomDef rdef = new RoomDef(){position = pos, size = size, objects = rm, visible = true, doors = new List<GameObject>(), parentobject = new GameObject(), haselevator = haselevator};
         rdef.midpoint = -(new Vector3(1, 0, 1)*ProcGennerMultiplayer.GridScale)/2 + ((mid + new Vector3(0, size.y*0.5f, 0))-Center)*ProcGennerMultiplayer.GridScale;
         vert = new Graphs.Vertex(mid);
         this.m_Rooms.Add(rdef);
@@ -1094,7 +1098,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
             // Dead End (Connected at right)
             if (CorridorConnectedLeft(cdef))
             {
-                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation);
+                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGennerMultiplayer.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation);
                 cdef.prefab = instobj;
                 continue;
             }
@@ -1102,7 +1106,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
             // Dead End (Connected at bottom)
             if (CorridorConnectedBottom(cdef))
             {
-                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation*Quaternion.Euler(0, 0, 90));
+                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGennerMultiplayer.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation*Quaternion.Euler(0, 0, 90));
                 cdef.prefab = instobj;
                 continue;
             }
@@ -1110,7 +1114,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
             // Dead End (Connected at left)
             if (CorridorConnectedLeft(cdef))
             {
-                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation*Quaternion.Euler(0, 0, 180));
+                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGennerMultiplayer.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation*Quaternion.Euler(0, 0, 180));
                 cdef.prefab = instobj;
                 continue;
             }
@@ -1118,7 +1122,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
             // Dead End (Connected at top)
             if (CorridorConnectedTop(cdef))
             {
-                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGenner.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation*Quaternion.Euler(0, 0, -90));
+                instobj = Instantiate(this.m_CorridorPrefab_DeadEnd, (cdef.position-Center)*ProcGennerMultiplayer.GridScale, this.m_CorridorPrefab_DeadEnd.transform.rotation*Quaternion.Euler(0, 0, -90));
                 cdef.prefab = instobj;
                 continue;
             }
@@ -1240,7 +1244,58 @@ public class ProcGennerMultiplayer : MonoBehaviour
         return null;
     }
     
-
+void PlaceObjectsInRooms()
+    {
+        foreach (RoomDef rdef in this.m_Rooms)
+        {
+            Vector3Int dir;
+            bool[,] occupied = new bool[rdef.size.x, rdef.size.z];
+            for (int x=0; x<rdef.size.x; x++)
+                for (int z=0; z<rdef.size.z; z++)
+                    occupied[x, z] = false;
+                
+            // Check for doors, so we don't place items there
+            dir = new Vector3Int(0, 0, -1);
+            for (int x=0; x<rdef.size.x; x++)
+            {
+                if (DoorExists(rdef.position + new Vector3Int(x, 0, 0), dir))
+                    occupied[x, 0] = true;
+                if (DoorExists(rdef.position + new Vector3Int(x, 0, rdef.size.z-1), -dir))
+                    occupied[x, rdef.size.z-1] = true;
+            }
+            dir = new Vector3Int(-1, 0, 0);
+            for (int z=0; z<rdef.size.z; z++)
+            {
+                if (DoorExists(rdef.position + new Vector3Int(0, 0, z), dir))
+                    occupied[0, z] = true;
+                if (DoorExists(rdef.position + new Vector3Int(rdef.size.x-1, 0, z), -dir))
+                    occupied[rdef.size.x-1, z] = true;
+            }
+            
+            // Scatter the room with props and items
+            for (int x=0; x<rdef.size.x; x++)
+            {
+                for (int z=0; z<rdef.size.z; z++)
+                {
+                    if (!occupied[x, z] && Random.Range(0, 2) == 0)
+                    {
+                        GameObject prefab = this.m_Props[Random.Range(0, this.m_Props.Count)];
+                        rdef.objects.Add(Instantiate(prefab, ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGennerMultiplayer.GridScale, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0)));
+                        occupied[x, z] = true;
+                    }
+                    else if (!occupied[x, z] && Random.Range(0, 4) == 0)
+                    {
+                        GameObject prefab = this.m_Table;
+                        Vector3 tablepos = ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGennerMultiplayer.GridScale;
+                        rdef.objects.Add(Instantiate(prefab, tablepos, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0)));
+                        prefab = this.m_Items[Random.Range(0, this.m_Props.Count)];
+                        rdef.objects.Add(Instantiate(prefab, tablepos+ new Vector3(Random.Range(-1.0f, 1.0f), 1.4f, Random.Range(-1.0f, 1.0f)), prefab.transform.rotation*Quaternion.Euler(0, 0, Random.Range(0, 360))));
+                        occupied[x, z] = true;
+                    }
+                }
+            }
+        }
+    }
     #if UNITY_EDITOR
         /*==============================
             OnDrawGizmos
