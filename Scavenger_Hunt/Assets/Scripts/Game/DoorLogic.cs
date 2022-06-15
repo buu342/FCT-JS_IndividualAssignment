@@ -89,7 +89,7 @@ public class DoorLogic : MonoBehaviour
             {
                 this.m_Timer = 0;
                 if (this.m_CloseSound != "")
-                    this.m_Audio.Play(this.m_CloseSound, this.m_ModelPrefab.transform.position + new Vector3(0, 1, 0), this.m_ModelPrefab.transform.gameObject);
+                    this.m_Audio.Play(this.m_CloseSound, this.m_StartingPos + new Vector3(0, 1, 0), this.m_ModelPrefab.transform.gameObject);
             }
             if (this.m_Timer == 0 && this.IsDoorOpen())
             {
