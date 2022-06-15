@@ -12,12 +12,13 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     //Sound utilities
-    public  const float Gravity        = -80.0f;
-    public  const int   ClipSize       = 8;
-    private const float MoveSpeed      = 10.0f;
-    private const float Acceleration   = 0.5f;
-    private const float TurnSpeed      = 0.1f;
-    public  const int   NumberOfShells = 8;
+    public  const float Gravity          = -80.0f;
+    public  const int   ClipSize         = 8;
+    private const float MoveSpeed        = 10.0f;
+    private const float Acceleration     = 0.5f;
+    private const float TurnSpeed        = 0.1f;
+    public  const int   NumberOfShells   = 8;
+    public  const float MuzzleLightSpeed = 0.1f;
     
     private const float FireTime        = 1.0f;
     private const float ReloadStartTime = 0.333f;
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
     public Rigidbody  m_RigidBody;  
     public GameObject m_FlashLight;
+    public Light m_MuzzleLight;
     public PlayerAnimations m_PlyAnims;
     public int m_AmmoClip = 8;
     public int m_AmmoReserve = 8;
@@ -62,6 +64,7 @@ public class PlayerController : MonoBehaviour
     private Quaternion m_CurrentFlashLightAngle = Quaternion.identity;
     private float m_NextFireTime = 0.0f;
     private bool m_CancelReload = false;
+    private float m_MuzzleLightSize = 0.0f;
     
     private AudioManager m_Audio;
     private GameObject m_Camera;
@@ -141,6 +144,18 @@ public class PlayerController : MonoBehaviour
                 this.m_TargetFlashLightAngle = this.transform.rotation*this.m_OriginalFlashLightAngles;
             this.m_CurrentFlashLightAngle = Quaternion.Slerp(this.m_CurrentFlashLightAngle, this.m_TargetFlashLightAngle, TurnSpeed);
             this.m_FlashLight.transform.rotation = this.m_CurrentFlashLightAngle;
+            
+            // Muzzle light
+            if (this.m_MuzzleLightSize > 0)
+            {
+                this.m_MuzzleLightSize -= PlayerController.MuzzleLightSpeed;
+                if (this.m_MuzzleLightSize <= 0)
+                {
+                    this.m_MuzzleLightSize = 0;
+                    this.m_MuzzleLight.enabled = false;
+                }
+                this.m_MuzzleLight.range = this.m_MuzzleLightSize;
+            }
         }
     }
     
@@ -256,6 +271,9 @@ public class PlayerController : MonoBehaviour
 
     private void FireShell() {
         muzzleFlash.Play();
+        this.m_MuzzleLightSize = 3.0f;
+        this.m_MuzzleLight.enabled = true;
+        this.m_MuzzleLight.range = this.m_MuzzleLightSize;
         for (int i=0; i<PlayerController.NumberOfShells; i++)
         {
             RaycastHit hitInfo;
