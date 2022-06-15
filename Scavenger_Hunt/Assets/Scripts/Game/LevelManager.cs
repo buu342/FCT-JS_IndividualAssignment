@@ -80,6 +80,11 @@ public class LevelManager : MonoBehaviour
         return PlyData.levels;
     }
     
+    public int GetScore()
+    {
+        return PlyData.score;
+    }
+    
     public int GetPlayerAmmoClip()
     {
         return PlyData.playerclip;
@@ -88,6 +93,11 @@ public class LevelManager : MonoBehaviour
     public int GetPlayerAmmoReserve()
     {
         return PlyData.playerreserve;
+    }
+    
+    public int GetPickupCount()
+    {
+        return PlyData.levelpickups;
     }
     
     public void SetPlayer(GameObject obj)

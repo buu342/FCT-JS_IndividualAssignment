@@ -15,16 +15,21 @@ public class AudioManager : MonoBehaviour
     public Sound[] m_RegisteredSoundsList;
     private GameObject m_listener;
     private ProcGenner m_procgen;
+    private ProcGennerMultiplayer mp_procgen;
+    private bool multiplayer=JoinMultiplayer.Multiplayer;
     private MonsterAI m_monster; 
-    
+
     /*==============================
         Awake
         Called before the audio manager is initialized
     ==============================*/
     
     void Awake()
-    {
-        this.m_procgen = GameObject.Find("SceneController").GetComponent<ProcGenner>(); 
+    {   if(!multiplayer){
+        this.m_procgen = GameObject.Find("SceneController").GetComponent<ProcGenner>();}
+        else{
+            this.mp_procgen = GameObject.Find("SceneController").GetComponent<ProcGennerMultiplayer>();
+        }
         this.m_listener = GameObject.FindObjectOfType<AudioListener>().gameObject;
         foreach (Sound s in this.m_RegisteredSoundsList)
             s.maxDistanceSqr = s.maxDistance*s.maxDistance;
@@ -39,9 +44,14 @@ public class AudioManager : MonoBehaviour
     ==============================*/
 
     public void Play(string name, GameObject obj, GameObject ignore=null)
-    {
+    {   if(!multiplayer){
         GameObject ret = Play(name, obj.transform.position, ignore);
-        ret.transform.SetParent(obj.transform);
+         ret.transform.SetParent(obj.transform);}
+        else{
+            GameObject ret = PlayMultiplayer(name, obj.transform.position, ignore);
+             ret.transform.SetParent(obj.transform);
+        }
+       
     }
     
     
@@ -52,7 +62,101 @@ public class AudioManager : MonoBehaviour
         @param The position where the sound was played
         @returns The created sound object
     ==============================*/
-
+ public GameObject PlayMultiplayer(string name, Vector3 position = default(Vector3), GameObject ignore=null)
+    {
+        // Find all sounds that have the given name
+        Sound[] slist = Array.FindAll(this.m_RegisteredSoundsList, sound => sound.name == name);
+        
+        // If no sound was found, throw a warning
+        if (slist.Length == 0)
+        {
+            Debug.LogWarning("Sound: '"+name+"' not found!");
+            return null;
+        }
+        
+        // If this sound isn't allowed to stack, kill all of the ones that are already playing
+        foreach (Sound snds in slist)
+        {
+            if (!snds.canStack)
+            {
+                for (int i=snds.sources.Count-1; i>=0; i--)
+                {
+                    Destroy(snds.sources[i].Item1);
+                    snds.sources.RemoveAt(i);
+                }
+            }
+        }
+        
+        // Pick a random sound from the list and set it up
+        Sound s = slist[(new System.Random()).Next(0, slist.Length)];
+        GameObject sndobj = new GameObject();
+        #if UNITY_EDITOR
+            sndobj.name = "SndFX - " + s.name;
+            sndobj.transform.SetParent(this.gameObject.transform);
+        #endif
+        AudioSource source = sndobj.AddComponent<AudioSource>();
+        CustomLowPassFilter filter = sndobj.AddComponent<CustomLowPassFilter>();
+        filter.SetCutoffPercent(0.3f);
+        filter.enabled = false;
+        if (s.canReverb)
+        {
+            AudioReverbFilter reverb = sndobj.AddComponent<AudioReverbFilter>();
+            List<ProcGennerMultiplayer.RoomDef> rooms = this.mp_procgen.GetRoomDefs();
+            reverb.reverbPreset = AudioReverbPreset.Hallway;
+            foreach (ProcGennerMultiplayer.RoomDef room in rooms)
+            {
+                // Check if the sound is in bounds of a room
+                Vector3 realroomstart = room.midpoint;
+                Vector3 realroomsize = ((Vector3)room.size)*ProcGennerMultiplayer.GridScale/2;
+                if (position.x >= realroomstart.x-realroomsize.x && position.x <= realroomstart.x+realroomsize.x &&
+                    position.y >= realroomstart.y-realroomsize.y && position.y <= realroomstart.y+realroomsize.y &&
+                    position.z >= realroomstart.z-realroomsize.z && position.z <= realroomstart.z+realroomsize.z
+                )
+                {
+                    if (room.size.y == 2)
+                        reverb.reverbPreset = AudioReverbPreset.Cave;
+                    else
+                        reverb.reverbPreset = AudioReverbPreset.Auditorium;
+                    break;
+                }
+            }
+        }
+        source.clip = s.clip;
+        source.loop = s.loop;
+        
+        // Calculate the volume and panning
+        if (s.is3D)
+        {
+            sndobj.transform.position = position;
+            source.volume = s.volume*Calc3DSoundVolume(s.maxDistanceSqr, this.m_listener.transform.position, position);
+            source.panStereo = Calc3DSoundPan(s.maxDistance, this.m_listener.transform.position, position);
+        
+            // Calculate sound muffling
+            if (s.canMuffle)
+            {
+                bool hitsomething = false;
+                RaycastHit[] hits = Physics.RaycastAll(position, position-this.m_listener.transform.position, s.maxDistance);
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    GameObject hit = hits[i].transform.gameObject;
+                    if (hit.tag == "Wall" || hit.tag == "Floor" || hit.tag == "Ceiling" || hit.tag == "Door")
+                    {
+                        hitsomething = true;
+                        break;
+                    }
+                }
+                filter.enabled = hitsomething;
+            }
+        }
+        else
+            source.volume = s.volume;
+        
+        // Play the sound
+        source.pitch = s.pitch;
+        source.Play();
+        s.sources.Add((sndobj, ignore));
+        return sndobj;
+    }
     public GameObject Play(string name, Vector3 position = default(Vector3), GameObject ignore=null)
     {
         // Find all sounds that have the given name

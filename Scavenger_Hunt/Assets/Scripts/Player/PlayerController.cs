@@ -8,22 +8,24 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-
+using Photon.Pun;
 public class PlayerController : MonoBehaviour
 {
-    //Sound utilities
-    public  const float Gravity          = -80.0f;
-    public  const int   ClipSize         = 8;
-    private const float MoveSpeed        = 10.0f;
-    private const float Acceleration     = 0.5f;
-    private const float TurnSpeed        = 0.1f;
-    public  const int   NumberOfShells   = 8;
-    public  const float MuzzleLightSpeed = 0.1f;
     
+    //Sound utilities   
+ 	public  const int   NumberOfShells = 8;
+    public  const float Gravity      = -80.0f;
+    public  const int   ClipSize     = 8;
+    private const float MoveSpeed    = 10.0f;
+    private const float Acceleration = 0.5f;
+    private const float TurnSpeed    = 0.1f;
+    private bool  multiplayer= JoinMultiplayer.Multiplayer;
     private const float FireTime        = 1.0f;
     private const float ReloadStartTime = 0.333f;
     private const float ReloadLoopTime  = 0.833f;
     private const float ReloadEndTime   = 0.333f;
+     public  const float MuzzleLightSpeed = 0.1f;
+    private PhotonView view;
 
     private Vector3 bulletSpread = new Vector3(0.1f,0.1f,0.1f);
     
@@ -88,6 +90,8 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
+        if(multiplayer)
+        view=GetComponent<PhotonView>();
         this.m_OriginalFlashLightAngles = this.m_FlashLight.transform.rotation;
         this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
@@ -117,8 +121,11 @@ public class PlayerController : MonoBehaviour
     ==============================*/
     
     void Update()
-    {
-        if(!DebugFeatures.pauseAnimations && !m_CameraController.isInFreeMode() ) 
+    { if(view!=null)
+            if(!view.IsMine)
+            return;  
+    
+        if(!DebugFeatures.pauseAnimations && !m_CameraController.isInFreeMode()) 
         {
             this.m_MovementDirection = InputManagerScript.Move.ReadValue<Vector2>();
             this.m_TargetVelocity = (this.m_MovementDirection.y*this.transform.forward + this.m_MovementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
@@ -158,16 +165,17 @@ public class PlayerController : MonoBehaviour
                 this.m_MuzzleLight.range = this.m_MuzzleLightSize;
             }
         }
-    }
-    
-    
+        
+    } 
     /*==============================
         FixedUpdate
         Called every engine tick
     ==============================*/
 
     void FixedUpdate()
-    {
+    {   if(view!=null)
+            if(!view.IsMine)
+            return;
         this.m_CurrentVelocity = Vector3.Lerp(this.m_CurrentVelocity, this.m_TargetVelocity, PlayerController.Acceleration);
         this.m_RigidBody.velocity = new Vector3(this.m_CurrentVelocity.x, this.m_RigidBody.velocity.y + this.m_CurrentVelocity.y, this.m_CurrentVelocity.z);
         this.m_RigidBody.AddForce(0, PlayerController.Gravity, 0);
@@ -211,6 +219,7 @@ public class PlayerController : MonoBehaviour
                     }
                     break;
             }
+            
         }
     }
     
@@ -223,6 +232,9 @@ public class PlayerController : MonoBehaviour
     
     public void SetCamera(GameObject cam)
     {
+        if(view!=null)
+            if(!view.IsMine)
+            return;  
         this.m_Camera = cam;
         this.m_CameraController = this.m_Camera.GetComponent<CameraController>();
     } 
@@ -234,7 +246,9 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     void Move(InputAction.CallbackContext context) 
-    {
+    {   if(view!=null)
+            if(!view.IsMine)
+            return;  
         Vector2 movedir = context.ReadValue<Vector2>();
         this.m_MovementDirection = movedir;
         this.m_MovementState = PlayerMovementState.Moving;
@@ -248,10 +262,8 @@ public class PlayerController : MonoBehaviour
 
     void Fire(InputAction.CallbackContext context) 
     {
-        if(!DebugFeatures.pauseAnimations && !m_CameraController.isInFreeMode() ) 
+        if(!DebugFeatures.pauseAnimations && !m_CameraController.isInFreeMode()) 
         {
-            if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
-            {
                 if (this.m_AmmoClip > 0)
                 {
                     this.m_Audio.Play("Shotgun/Fire", this.transform.gameObject);
@@ -322,10 +334,14 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     void Aim(InputAction.CallbackContext context) 
+    {   if(view!=null)
+            if(!view.IsMine)
+            return;
+        this.m_AimState = context.ReadValue<float>() > 0 ? PlayerAimState.Aiming : PlayerAimState.Idle;
     {
         this.m_AimState = context.ReadValue<float>() > 0 && !DebugFeatures.pauseAnimations ? PlayerAimState.Aiming : PlayerAimState.Idle;
     }
-    
+    }
     
     /*==============================
         Reload
@@ -335,8 +351,10 @@ public class PlayerController : MonoBehaviour
 
     void Reload(InputAction.CallbackContext context) 
     {
-        if (!DebugFeatures.pauseAnimations)
-        {
+        if(view!=null)
+            if(!view.IsMine)
+            return;
+        if(!DebugFeatures.pauseAnimations) {
             if (this.m_CombatState == PlayerCombatState.Idle && this.m_AmmoClip < PlayerController.ClipSize && this.m_AmmoReserve > 0)
             {
                 this.m_CombatState = PlayerCombatState.ReloadStart;
@@ -345,7 +363,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
     
     /*******************************
                 Getters
@@ -418,7 +435,7 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     public bool GetPlayerAiming()
-    {
+    {   
         return (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState != PlayerCombatState.ReloadStart && this.m_CombatState != PlayerCombatState.ReloadLoop);
     }
     
@@ -480,7 +497,9 @@ public class PlayerController : MonoBehaviour
     }
     
     public void KillPlayer()
-    {
+    { if(view!=null)
+        if(!view.IsMine)
+        return;
         //this.m_Audio.Play("Skye/Death");
         GameObject.Find("MusicManager").GetComponent<MusicManager>().StopMusic();
         this.m_SceneController.transform.Find("GUI").GetComponent<ScreenGUI>().PlayerDied();
@@ -490,3 +509,4 @@ public class PlayerController : MonoBehaviour
         this.m_Audio.Play("Gameplay/PlayerHit");
     }
 }
+

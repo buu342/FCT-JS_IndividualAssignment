@@ -24,6 +24,7 @@ public class DoorLogic : MonoBehaviour
     public string m_OpenSound = "Physics/DoorOpen";
     public string m_CloseSound = "Physics/DoorClose";
     
+    private bool forceclosing = false;
     private AudioManager m_Audio;
     private bool m_IsOpen = false;
     private Vector3 m_Displacement = Vector3.zero;
@@ -154,12 +155,11 @@ public class DoorLogic : MonoBehaviour
     
     public void ForceCloseDoor()
     {
-        if (this.m_IsOpen)
+        if (!forceclosing)
         {
             this.m_IsOpen = false;
-            this.m_Timer = 1;
-            if (this.m_CloseSound != "")
-                this.m_Audio.Play(this.m_CloseSound, this.transform.position + new Vector3(0, 1, 0), this.m_ModelPrefab.transform.gameObject);
+            this.m_Timer = Time.time;
+            forceclosing = true;
         }
     }
 }

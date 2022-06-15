@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using RoomDef = ProcGenner.RoomDef;
+using RoomDefMulti= ProcGennerMultiplayer.RoomDef;
 using Unity.AI.Navigation;
+using Photon.Pun;
 public class MonsterAI : MonoBehaviour
 {
     public enum MonsterState {
@@ -24,7 +26,7 @@ public class MonsterAI : MonoBehaviour
     [HideInInspector]
     public MonsterCombatState monsterCombatState = MonsterCombatState.Idle;
     public HunterAnimations m_MonsterAnims;
-    
+    private bool multiplayer=JoinMultiplayer.Multiplayer;
     private float MonsterSpeed;
     private Vector3 destination;
     private NavMeshAgent agent;
@@ -34,24 +36,31 @@ public class MonsterAI : MonoBehaviour
     private float m_CombatTimer = 0;
     private AudioManager m_Audio;
 
+    private PhotonView view;
+
+    private bool  multiplayer1= JoinMultiplayer.Multiplayer;
     void Awake() {
         agent = GetComponent<NavMeshAgent>();   
         monsterState = MonsterState.Patrolling;
     }
 
     void Start()
-    {
+    {   view = GetComponent<PhotonView>();
         monsterState = MonsterState.Patrolling;
         MonsterSpeed = agent.speed;
         this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        //if(multiplayer1)
+         //Random.InitState(view.ViewID);
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {  if(view!=null)
+            if(!view.IsMine)
+            return;
         if (playerToChase != null)
         {
-            if (checkIfCanSeePlayer())
+           if (checkIfCanSeePlayer())
             {
                 if (monsterState != MonsterState.ChasingPlayer && monsterCombatState == MonsterCombatState.Idle)
                 {
@@ -76,6 +85,7 @@ public class MonsterAI : MonoBehaviour
             switch(monsterState) {
                 case MonsterState.ChasingPlayer:
                     ChasePlayer();
+                    Debug.Log("chasing");
                     break;
                 case MonsterState.Patrolling:
                     Patrol();
@@ -104,6 +114,7 @@ public class MonsterAI : MonoBehaviour
         // Go back to idle state if the timer ran out
         if (monsterCombatState != MonsterCombatState.Idle && this.m_CombatTimer < Time.time)
             this.monsterCombatState = MonsterCombatState.Idle;
+        
     }
 
     public bool hasReachedDestination() {
@@ -141,23 +152,34 @@ public class MonsterAI : MonoBehaviour
             return;
           //TODO: change music for chasing
         monsterState = MonsterState.ChasingPlayer;
-        agent.SetDestination(playerToChase.transform.position);
-        destination = playerToChase.transform.position;
-        if (Vector3.Distance(destination, transform.position) < 2.0f) {
-                //close to player to attack
-                //TODO: start attacking animation
+        if(playerToChase!=null){
+            agent.SetDestination(playerToChase.transform.position);
+            destination = playerToChase.transform.position;
+            if (Vector3.Distance(destination, transform.position) < 2.0f) {
+                    //close to player to attack
+                    //TODO: start attacking animation
+            }
         }
     }
 
     public void Patrol() {
         
-        if(!agent.hasPath) {
+        if(!agent.hasPath&!multiplayer) {
+           
             List<RoomDef> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGenner>().GetRoomDefs();
             int roomToCheck = Random.Range(0,roomsInLevel.Count);
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
             destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
             agent.SetDestination(destination);
-            //Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
+            Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
+    }
+        else if(!agent.hasPath&multiplayer){
+           List<RoomDefMulti> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGennerMultiplayer>().GetRoomDefs();
+           int roomToCheck = Random.Range(0,roomsInLevel.Count);
+            Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
+            destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
+            agent.SetDestination(destination);
+            Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
         }
     }
 

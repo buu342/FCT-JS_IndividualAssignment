@@ -5,10 +5,8 @@ A script which handles the scene.
 ****************************************************************/
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-
-public class SceneDirector : MonoBehaviour
+public class SceneDirectorMultiplayer : MonoBehaviour
 {
     enum MusicType
     {
@@ -18,36 +16,10 @@ public class SceneDirector : MonoBehaviour
         LessCalm
     }
     
-
-    [Header("Tutorial Prefabs")]
-    public GameObject MovementPrefab;
-    public GameObject ReloadPrefab;
-    public GameObject AimPrefab;
-    public GameObject FirePrefab;
-    public GameObject PilferPrefab;
-
-    private bool m_PlayerDead = false;
-    private bool m_PlayerCompleted = false;
     private MonsterAI m_Monster = null;
     private MusicManager m_Music = null;
     private MusicType m_MusicType = MusicType.None;
-    private GameObject m_Player = null;
     
-    void OnEnable() {
-        InputManagerScript.playerInput.Player.Aim.started +=  PressedAim;
-        InputManagerScript.playerInput.Player.Fire.started += Fire;
-        if(!InputManagerScript.playerInput.Player.enabled)
-            InputManagerScript.playerInput.Player.Enable();
-
-    }
-    void OnDisable() {
-        InputManagerScript.playerInput.Player.Aim.started -=  PressedAim;
-        InputManagerScript.playerInput.Player.Fire.started -= Fire;
-        if(InputManagerScript.playerInput.Player.enabled)
-            InputManagerScript.playerInput.Player.Disable();
-
-    }
-
     /*==============================
         Start
         Called when the scene director is initialized
@@ -55,19 +27,15 @@ public class SceneDirector : MonoBehaviour
     
     void Start()
     {
-        ProcGenner proc = this.GetComponent<ProcGenner>();
-        proc.GenerateScene(GameObject.Find("LevelManager").GetComponent<LevelManager>().GetLevelCount());
+        this.GetComponent<ProcGennerMultiplayer>().GenerateScene();
         this.m_Music = GameObject.Find("MusicManager").GetComponent<MusicManager>();
         this.m_Music.PlaySong("Music/Calm", true, true);
         this.m_MusicType = MusicType.Calm;
-        Transform airlockStartPosition = proc.GetAirlockTransform();
-        GameObject.Instantiate(MovementPrefab, airlockStartPosition);
-        GameObject.Instantiate(AimPrefab, airlockStartPosition);
     }
-    
+   
     void FixedUpdate()
     {
-        if (this.m_Monster != null && !this.m_PlayerDead && !this.m_PlayerCompleted)
+        if (this.m_Monster != null)
         {
             if (this.m_Monster.monsterState == MonsterAI.MonsterState.ChasingPlayer && !this.GetMusicTense())
                 this.SetMusicTense(true);
@@ -75,25 +43,7 @@ public class SceneDirector : MonoBehaviour
                 this.SetMusicTense(false);
         }
     }
-
-    void PressedAim(InputAction.CallbackContext context) {
-        //instantiate aim tutorial to object
-        if(m_Player != null) {
-            GameObject.Instantiate(FirePrefab,m_Player.transform);
-            InputManagerScript.playerInput.Player.Aim.started -=  PressedAim;
-        }
-    }
-
-    void Fire(InputAction.CallbackContext context) 
-    {
-        if(m_Player != null && m_Player.GetComponent<PlayerController>().GetPlayerAmmoClip() == 0) {
-            GameObject.Instantiate(ReloadPrefab,m_Player.transform);
-            InputManagerScript.playerInput.Player.Fire.started -= Fire;
-        }
-
-    }
     
-
     /*==============================
         SetMonster
         Checks if the music is tense
@@ -107,7 +57,6 @@ public class SceneDirector : MonoBehaviour
         else
             this.m_Monster = null;
     }
-    
 
     /*==============================
         GetMusicTense
@@ -134,24 +83,10 @@ public class SceneDirector : MonoBehaviour
             this.m_Music.PlaySong("Music/Tense", true, true, true);
             this.m_MusicType = MusicType.Tense;
         }
-        else if (!enable && this.m_MusicType != MusicType.LessCalm)
+       else if (!enable && this.m_MusicType != MusicType.LessCalm)
         {
             this.m_Music.PlaySong("Music/LessCalm", true, true, true);
             this.m_MusicType = MusicType.LessCalm;
         }
-    }
-
-    public void SetPlayer(GameObject player) {
-        m_Player = player;
-    }
-
-    public void PlayerDied()
-    {
-        this.m_PlayerDead = true;
-    }
-
-    public void PlayerCompleted()
-    {
-        this.m_PlayerCompleted = true;
     }
 }
