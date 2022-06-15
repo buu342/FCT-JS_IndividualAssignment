@@ -35,15 +35,10 @@ public class SceneDirector : MonoBehaviour
     
     void OnEnable() {
         EnableAllInputEvents();
-        if(!InputManagerScript.playerInput.Player.enabled)
-            InputManagerScript.playerInput.Player.Enable();
-
     }
+
     void OnDisable() {
         DisableAllInputEvents();
-        if(InputManagerScript.playerInput.Player.enabled)
-            InputManagerScript.playerInput.Player.Disable();
-
     }
     private void DisableAllInputEvents() {
         InputManagerScript.playerInput.Player.Aim.started -=  PressedAim;
