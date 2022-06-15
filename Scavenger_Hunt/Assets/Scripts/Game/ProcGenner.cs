@@ -328,7 +328,7 @@ public class ProcGenner : MonoBehaviour
         }
         this.m_Entities.Add(instobj);
         this.m_Optimizer.SetPlayer(instobj);
-        this.m_Director.SetPlayer(instobj);
+        
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
         Debug.Log(levelcount);
         if (levelcount > 1)
