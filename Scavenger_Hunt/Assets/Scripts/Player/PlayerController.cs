@@ -12,11 +12,12 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     //Sound utilities
-    public  const float Gravity      = -80.0f;
-    public  const int   ClipSize     = 8;
-    private const float MoveSpeed    = 10.0f;
-    private const float Acceleration = 0.5f;
-    private const float TurnSpeed    = 0.1f;
+    public  const float Gravity        = -80.0f;
+    public  const int   ClipSize       = 8;
+    private const float MoveSpeed      = 10.0f;
+    private const float Acceleration   = 0.5f;
+    private const float TurnSpeed      = 0.1f;
+    public  const int   NumberOfShells = 8;
     
     private const float FireTime        = 1.0f;
     private const float ReloadStartTime = 0.333f;
@@ -239,11 +240,14 @@ public class PlayerController : MonoBehaviour
                 this.m_AmmoClip--;
                 this.m_PlyAnims.FireAnimation();
                 this.m_CameraController.AddTrauma(0.5f);
-                RaycastHit hitInfo;
-                Vector3 bulletSpawn = muzzle.transform.position;
-                if(Physics.Raycast(this.transform.position,this.transform.forward, out hitInfo)) {
-                    TrailRenderer trail = Instantiate(trailOfBullets, bulletSpawn, Quaternion.identity);
-                    StartCoroutine(SpawnTrail(trail, hitInfo));    
+                for (int i=0; i<PlayerController.NumberOfShells; i++)
+                {
+                    RaycastHit hitInfo;
+                    Vector3 bulletSpawn = muzzle.transform.position;
+                    if(Physics.Raycast(muzzle.transform.position, muzzle.transform.forward, out hitInfo)) {
+                        TrailRenderer trail = Instantiate(trailOfBullets, bulletSpawn, Quaternion.identity);
+                        StartCoroutine(SpawnTrail(trail, hitInfo));    
+                    }
                 }
             }
             else
