@@ -11,13 +11,26 @@ public class MonsterAI : MonoBehaviour
         Patrolling,
         CheckingSound
     }
+    
+    public enum MonsterCombatState {
+        Idle,
+        Attacking,
+        Staggared
+    }
+    
     const float POSITION_THRESHOLD = 2.0f;
     [HideInInspector]
     public MonsterState monsterState;
+    [HideInInspector]
+    public MonsterCombatState monsterCombatState = MonsterCombatState.Idle;
+    public HunterAnimations m_MonsterAnims;
+    
+    private float MonsterSpeed;
     private Vector3 destination;
     private NavMeshAgent agent;
     //need to guarantee that its centered
     private GameObject playerToChase;
+    private float m_CombatTimer = 0;
 
     void Awake() {
         agent = GetComponent<NavMeshAgent>();   
@@ -27,6 +40,7 @@ public class MonsterAI : MonoBehaviour
     void Start()
     {
         monsterState = MonsterState.Patrolling;
+        MonsterSpeed = agent.speed;
     }
 
     // Update is called once per frame
@@ -36,25 +50,42 @@ public class MonsterAI : MonoBehaviour
             monsterState = MonsterState.ChasingPlayer;
         }
 
-        switch(monsterState) {
-            case MonsterState.ChasingPlayer:
-            ChasePlayer();
-            break;
-            case MonsterState.Patrolling:
-            Patrol();
-            break;
-            case MonsterState.CheckingSound:
-            if(hasReachedDestination()) {
-                monsterState = MonsterState.Patrolling;
+        if (monsterCombatState == MonsterCombatState.Idle)
+        {
+            agent.speed = MonsterSpeed;
+            switch(monsterState) {
+                case MonsterState.ChasingPlayer:
+                    ChasePlayer();
+                    break;
+                case MonsterState.Patrolling:
+                    Patrol();
+                    break;
+                case MonsterState.CheckingSound:
+                    if(hasReachedDestination()) {
+                        monsterState = MonsterState.Patrolling;
+                    }
+                    break;
             }
-            break;
+            
+            if (monsterState == MonsterState.ChasingPlayer && Vector3.Distance(playerToChase.transform.position, transform.position) < 2.0f)
+            {
+                this.monsterCombatState = MonsterCombatState.Attacking;
+                this.m_CombatTimer = Time.time + 3.4f;
+                this.m_MonsterAnims.TriggerAttack();
+            }
         }
+        else
+            agent.speed = 0;
+        
+        // Go back to idle state if the timer ran out
+        if (monsterCombatState != MonsterCombatState.Idle && this.m_CombatTimer < Time.time)
+            this.monsterCombatState = MonsterCombatState.Idle;
     }
 
     public bool hasReachedDestination() {
-        Debug.Log(Vector3.Distance(destination, transform.position));
+        //Debug.Log(Vector3.Distance(destination, transform.position));
           if(Vector3.Distance(destination, transform.position) < POSITION_THRESHOLD) {
-                Debug.Log("Arrived to destination");
+                //Debug.Log("Arrived to destination");
                 return true;
             }
         return false;
@@ -72,7 +103,7 @@ public class MonsterAI : MonoBehaviour
                  //the ray from the monster to the player hit something
                  if(rayInfo.collider != null && rayInfo.collider.tag == "Player") {
                      //the monster saw the player
-                      Debug.Log("Saw Player");
+                      //Debug.Log("Saw Player");
                     return true;
                  }   
             }
@@ -87,7 +118,7 @@ public class MonsterAI : MonoBehaviour
         monsterState = MonsterState.ChasingPlayer;
         agent.SetDestination(playerToChase.transform.position);
         destination = playerToChase.transform.position;
-        if(Vector3.Distance(destination, transform.position) < 2.0f) {
+        if (Vector3.Distance(destination, transform.position) < 2.0f) {
                 //close to player to attack
                 //TODO: start attacking animation
         }
@@ -101,7 +132,7 @@ public class MonsterAI : MonoBehaviour
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
             destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
             agent.SetDestination(destination);
-            Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
+            //Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
         }
     }
 
@@ -122,6 +153,8 @@ public class MonsterAI : MonoBehaviour
     
     public void TakeDamage()
     {
-        
+        this.monsterCombatState = MonsterCombatState.Staggared;
+        this.m_CombatTimer = Time.time + 4.6f;
+        this.m_MonsterAnims.TriggerStagger();
     }
 }

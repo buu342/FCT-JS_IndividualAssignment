@@ -289,8 +289,7 @@ public class PlayerController : MonoBehaviour
         trail.transform.position = hit.point;
         Instantiate(impactBullet, hit.point, Quaternion.LookRotation(hit.normal));
         Destroy(trail.gameObject, trail.time);
-        if(hit.collider.tag == "Monster") {
-            Debug.Log("Hitted monster");
+        if (hit.collider != null && hit.collider.tag == "Monster") {
             hit.collider.gameObject.GetComponent<MonsterAI>().TakeDamage();
         }
     }
