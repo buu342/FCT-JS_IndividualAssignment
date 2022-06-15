@@ -6,21 +6,21 @@ public class DebugFeatures : MonoBehaviour
 {
     private int frameRate;
     private bool calculateFrames;
-    private bool pauseGame;
+    public static bool pauseAnimations;
     public TextMeshProUGUI FPSText;
 
     
 
     private void OnEnable() {
         InputManagerScript.playerInput.UI.FPSCounter.started += calculateFramesTriggered;
-        InputManagerScript.playerInput.Player.PauseAnimations.started += PauseGameTriggered;
+        InputManagerScript.playerInput.Player.PauseAnimations.started += pauseAnimationsTriggered;
         if(!InputManagerScript.playerInput.UI.enabled)
             InputManagerScript.playerInput.UI.Enable();
     }
 
     private void OnDisable() {
         InputManagerScript.playerInput.UI.FPSCounter.started -= calculateFramesTriggered;
-        InputManagerScript.playerInput.Player.PauseAnimations.started -= PauseGameTriggered;
+        InputManagerScript.playerInput.Player.PauseAnimations.started -= pauseAnimationsTriggered;
         
         if(InputManagerScript.playerInput.UI.enabled)
             InputManagerScript.playerInput.UI.Disable();
@@ -31,7 +31,7 @@ public class DebugFeatures : MonoBehaviour
     {
         //calculate frameRate
         
-        if(pauseGame) 
+        if(pauseAnimations) 
         {
             if(Time.timeScale<0.1f) { 
                 Time.timeScale = 0;
@@ -59,8 +59,13 @@ public class DebugFeatures : MonoBehaviour
             FPSText.text="";
     }
 
-    private void PauseGameTriggered(InputAction.CallbackContext context) {
-        pauseGame = !pauseGame;
+    private void pauseAnimationsTriggered(InputAction.CallbackContext context) {
+        pauseAnimations = !pauseAnimations;
     }
-
+    public bool getPausedGame() {
+        return pauseAnimations;
+    }
+    public bool getCalculateFrames() {
+        return calculateFrames;
+    }
 }
