@@ -35,7 +35,6 @@ public class TutorialPopUp : MonoBehaviour
                     } else {
                         float factor = remainingTime/TimeToFadeIn;
                         remainingTime -= Time.deltaTime;
-                        Debug.Log(factor);
                         this.m_Sprite.color = new Color(1.0f,1.0f, 1.0f,Mathf.Lerp(1.0f,0.0f, factor));
                     }  
                 break;
@@ -45,7 +44,6 @@ public class TutorialPopUp : MonoBehaviour
                     } else {
                     float factor = remainingTime/TimeToFadeOut;
                     remainingTime -= Time.deltaTime;
-                    Debug.Log(factor);
                     this.m_Sprite.color = new Color(1.0f,1.0f, 1.0f,Mathf.Lerp(0.0f,1.0f, factor));
                     }  
                 break;
