@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
 
     void OnEnable() {
         InputManagerScript.playerInput.Player.Fire.started += Fire;
+        InputManagerScript.playerInput.Player.Move.started += Move;
         InputManagerScript.playerInput.Player.Reload.started += Reload;
         InputManagerScript.playerInput.Player.Aim.started += Aim;
         InputManagerScript.playerInput.Player.Aim.canceled += Aim;
@@ -90,9 +91,10 @@ public class PlayerController : MonoBehaviour
 
     void OnDisable() {
         InputManagerScript.playerInput.Player.Fire.started -= Fire;
+        InputManagerScript.playerInput.Player.Move.started -= Move;
         InputManagerScript.playerInput.Player.Reload.started -= Reload;
         InputManagerScript.playerInput.Player.Aim.started -= Aim;
-         InputManagerScript.playerInput.Player.Aim.canceled -= Aim;
+        InputManagerScript.playerInput.Player.Aim.canceled -= Aim;
     }
     
 
@@ -198,6 +200,19 @@ public class PlayerController : MonoBehaviour
         this.m_Camera = cam;
         this.m_CameraController = this.m_Camera.GetComponent<CameraController>();
     } 
+
+    /*==============================
+        Move
+        Called when the player presses a movement direction
+        @param The input value
+    ==============================*/
+
+    void Move(InputAction.CallbackContext context) 
+    {
+        Vector2 movedir = context.ReadValue<Vector2>();
+        this.m_MovementDirection = movedir;
+        this.m_MovementState = PlayerMovementState.Moving;
+    }
     
     /*==============================
         Fire
