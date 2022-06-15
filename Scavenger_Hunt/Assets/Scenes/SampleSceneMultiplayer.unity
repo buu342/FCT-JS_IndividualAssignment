@@ -630,11 +630,28 @@ MonoBehaviour:
   m_Room3Prefab_GlassWall_Left: {fileID: 1512847438612294568, guid: c7683b5d96ae12a43ba1368c1d2ab02a, type: 3}
   m_Room3Prefab_GlassWall_Mid: {fileID: 1512847438612294568, guid: 945a6c13e1bbaf94fb59e7e0817b83e4, type: 3}
   m_Room3Prefab_GlassWall_Right: {fileID: 1512847438612294568, guid: 098566aaa562bef4cbb4d781cc0ab168, type: 3}
-  m_MonsterPrefab: {fileID: 6333973165192279540, guid: 7c39686b444f42b4283176cf84857150, type: 3}
   m_PlayerPrefab: {fileID: 8512297084061567289, guid: 7a9ccc5e5440dcb449274c5d836a4f8e, type: 3}
+  m_MonsterPrefab: {fileID: 6333973165192279540, guid: 7c39686b444f42b4283176cf84857150, type: 3}
   m_Airlock: {fileID: 5906908505389256942, guid: 5b45b592b659a834f945e41793770b4c, type: 3}
   m_DoorPrefab: {fileID: 6969831614626464371, guid: ba85e3a3e085aa44dbd56e761cfcc9df, type: 3}
   m_ExitElevator: {fileID: 4546657156345559804, guid: 88b81f0ea483d224494c850bf74700c7, type: 3}
+  m_Table: {fileID: 2568041744584808639, guid: a1f01e300f00ca8499e7ae783db1e715, type: 3}
+  m_Lamp: {fileID: 2568041744584808639, guid: 1cc688d4720a69b448378b31caedaf78, type: 3}
+  m_Props:
+  - {fileID: 2568041744584808639, guid: aaf8cd872b99c40449876a43f772f6df, type: 3}
+  - {fileID: 919132149155446097, guid: b333f3aa860fc0149b6a9b1eb97d8d5d, type: 3}
+  - {fileID: 2568041744584808639, guid: 7b532722b353a644ebd51b26d711442d, type: 3}
+  - {fileID: 2568041744584808639, guid: a33cc27c5aa04ff458edfdfe3280c1ab, type: 3}
+  m_Items:
+  - {fileID: 1697101360001426422, guid: 8c80e42144afd8c43943cbea51ba350f, type: 3}
+  - {fileID: 1879968159759456123, guid: 94d9205c93e287341bd20787e3cee642, type: 3}
+  - {fileID: 1879968159759456123, guid: 94d9205c93e287341bd20787e3cee642, type: 3}
+  - {fileID: 7648739334897225702, guid: 9b5370c7963a5e344991cf4c0db7ee0e, type: 3}
+  - {fileID: 7648739334897225702, guid: 9b5370c7963a5e344991cf4c0db7ee0e, type: 3}
+  - {fileID: 5162506386475670112, guid: 7e5f6afdfe64d554d8df7c9ac2f467c8, type: 3}
+  - {fileID: 5162506386475670112, guid: 7e5f6afdfe64d554d8df7c9ac2f467c8, type: 3}
+  - {fileID: 5162506386475670112, guid: 7e5f6afdfe64d554d8df7c9ac2f467c8, type: 3}
+  - {fileID: 5162506386475670112, guid: 7e5f6afdfe64d554d8df7c9ac2f467c8, type: 3}
 --- !u!114 &1648054410
 MonoBehaviour:
   m_ObjectHideFlags: 0
