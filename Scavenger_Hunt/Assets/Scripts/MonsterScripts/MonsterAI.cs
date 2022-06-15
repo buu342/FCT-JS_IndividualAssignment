@@ -119,4 +119,9 @@ public class MonsterAI : MonoBehaviour
     public void SetPlayerTarget(GameObject target) {
         playerToChase = target;
     }
+    
+    public void TakeDamage()
+    {
+        
+    }
 }
