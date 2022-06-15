@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 using TMPro;
 using Photon.Pun;
 public class ScreenGUI : MonoBehaviour
@@ -51,16 +52,9 @@ public class ScreenGUI : MonoBehaviour
         if (PhotonNetwork.CurrentRoom.PlayerCount < 2){
             this.m_WinningText.enabled = true;
              this.m_Fade = 255;
-            this.m_FadeImage.color = new Color(0.0f, 0.0f, 0.0f, this.m_Fade/255.0f);
-            this.m_DeathStateTimer = Time.unscaledTime + 2.0f;
-             if (this.m_Fade > 0)
-            {
-                this.m_Fade -= 30.0f*Time.unscaledDeltaTime;
-                if (this.m_Fade < 0)
-                    this.m_Fade = 0;
-                this.m_FadeImage.color = new Color(0.0f, 0.0f, 0.0f, this.m_Fade/255.0f);
-            }
-             SceneManager.LoadScene("StartMenu");
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            SceneManager.LoadScene("StartMenu");
         }
         if(!multiplayer)
         if (this.m_NextLevelTimer != 0 && this.m_NextLevelTimer <= Time.unscaledTime)
@@ -71,11 +65,13 @@ public class ScreenGUI : MonoBehaviour
     }
     
     public void PlayerDied()
-    {
+    {   
         this.m_PlayerDead = true;
         this.m_Fade = 255;
         this.m_FadeImage.color = new Color(0.0f, 0.0f, 0.0f, this.m_Fade/255.0f);
         this.m_DeathStateTimer = Time.unscaledTime + 2.0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
     
     public void LoadNextLevel()

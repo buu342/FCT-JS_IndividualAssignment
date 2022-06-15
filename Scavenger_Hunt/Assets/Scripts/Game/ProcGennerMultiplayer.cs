@@ -172,8 +172,8 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
             // If we have non empty lists, then cycle through them and destroy all the objects contained within
             if (this.m_Entities != null)
                 foreach (GameObject obj in this.m_Entities)
-                    //Destroy(obj);
-                    PhotonNetwork.Destroy(obj);
+                    Destroy(obj);
+                   // PhotonNetwork.Destroy(obj);
             if (this.m_Rooms != null)
                 foreach (RoomDef l in this.m_Rooms)
                     foreach (GameObject obj in l.objects)
