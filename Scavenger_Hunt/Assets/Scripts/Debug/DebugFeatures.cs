@@ -13,6 +13,7 @@ public class DebugFeatures : MonoBehaviour
     private bool calculateFrames;
     public static bool pauseAnimations;
     
+    private bool m_PlayerDead = false;
     private Vector3[] JumpPoints = new Vector3[2];
     private Quaternion[] JumpPointsDir = new Quaternion[2];
 
@@ -42,50 +43,52 @@ public class DebugFeatures : MonoBehaviour
     void Update()
     {
         //calculate frameRate
-        if(pauseAnimations && Time.timeScale != 0) 
+        if (!this.m_PlayerDead)
         {
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 0, 0.02f);
-            if(Time.timeScale<0.02f) { 
-                Time.timeScale = 0;
-            }
-        } else if (!pauseAnimations && Time.timeScale != 1.0f) {
-            Time.timeScale = Mathf.Lerp(Time.timeScale,1, 0.02f);
-            if(Time.timeScale > 0.98f)
-                Time.timeScale = 1.0f;
-        } 
+            if(pauseAnimations && Time.timeScale != 0) 
+            {
+                Time.timeScale = Mathf.Lerp(Time.timeScale, 0, 0.02f);
+                if(Time.timeScale<0.02f) { 
+                    Time.timeScale = 0;
+                }
+            } else if (!pauseAnimations && Time.timeScale != 1.0f) {
+                Time.timeScale = Mathf.Lerp(Time.timeScale,1, 0.02f);
+                if(Time.timeScale > 0.98f)
+                    Time.timeScale = 1.0f;
+            } 
 
-        FPSText.text = "";
-        if (calculateFrames)
-        {
-            frameRate = (int)(1.0f / Time.unscaledDeltaTime);
-            FPSText.text=frameRate.ToString()+" FPS";
-        }
-        if (Time.timeScale != 1.0f)
-        {
-            if (FPSText.text == "")
-                FPSText.text = "Game Paused";
-            else
-                FPSText.text += "\nGame Paused";
-        }
-        if(this.m_Camera!=null){
-        if (this.m_Camera.isInFreeMode())
-        {
-            if (FPSText.text == "")
-                FPSText.text = "Camera Free";
-            else
-                FPSText.text += "\nCamera Free";
-        }
-        
-        if (this.m_Camera.isInFreeMode() && this.m_TargetName != "")
-        {
-            if (FPSText.text == "")
-                FPSText.text = this.m_TargetName;
-            else
-                FPSText.text += "\n"+this.m_TargetName;
-        }
-        else if (this.m_TargetName != "")
-            this.m_TargetName = "";
+            FPSText.text = "";
+            if (calculateFrames)
+            {
+                frameRate = (int)(1.0f / Time.unscaledDeltaTime);
+                FPSText.text=frameRate.ToString()+" FPS";
             }
+            if (Time.timeScale != 1.0f)
+            {
+                if (FPSText.text == "")
+                    FPSText.text = "Game Paused";
+                else
+                    FPSText.text += "\nGame Paused";
+            }
+            
+            if (this.m_Camera != null && this.m_Camera.isInFreeMode())
+            {
+                if (FPSText.text == "")
+                    FPSText.text = "Camera Free";
+                else
+                    FPSText.text += "\nCamera Free";
+            }
+            
+            if (this.m_Camera != null && this.m_Camera.isInFreeMode() && this.m_TargetName != "")
+            {
+                if (FPSText.text == "")
+                    FPSText.text = this.m_TargetName;
+                else
+                    FPSText.text += "\n"+this.m_TargetName;
+            }
+            else if (this.m_TargetName != "")
+                this.m_TargetName = "";
+        }
     }
 
     private void calculateFramesTriggered(InputAction.CallbackContext context) {
@@ -147,6 +150,11 @@ public class DebugFeatures : MonoBehaviour
     public void SetPlayer(GameObject player)
     {
         this.m_Player = player.transform.Find("CameraTarget").gameObject;
+    }
+
+    public void PlayerDied()
+    {
+        this.m_PlayerDead = true;
     }
     
     public bool getPausedGame() {

@@ -16,6 +16,7 @@ public class SceneDirector : MonoBehaviour
         LessCalm
     }
     
+    private bool m_PlayerDead = false;
     private MonsterAI m_Monster = null;
     private MusicManager m_Music = null;
     private MusicType m_MusicType = MusicType.None;
@@ -36,7 +37,7 @@ public class SceneDirector : MonoBehaviour
     
     void FixedUpdate()
     {
-        if (this.m_Monster != null)
+        if (this.m_Monster != null && !this.m_PlayerDead)
         {
             if (this.m_Monster.monsterState == MonsterAI.MonsterState.ChasingPlayer && !this.GetMusicTense())
                 this.SetMusicTense(true);
@@ -91,5 +92,10 @@ public class SceneDirector : MonoBehaviour
             this.m_Music.PlaySong("Music/LessCalm", true, true, true);
             this.m_MusicType = MusicType.LessCalm;
         }
+    }
+
+    public void PlayerDied()
+    {
+        this.m_PlayerDead = true;
     }
 }

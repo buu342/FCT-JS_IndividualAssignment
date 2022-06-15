@@ -317,6 +317,7 @@ public class ProcGenner : MonoBehaviour
         instobj = Instantiate(this.m_PlayerPrefab, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
         this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
         instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
+        instobj.GetComponent<PlayerController>().SetSceneController(this.transform.gameObject);
         this.m_Entities.Add(instobj);
         this.m_Optimizer.SetPlayer(instobj);
         

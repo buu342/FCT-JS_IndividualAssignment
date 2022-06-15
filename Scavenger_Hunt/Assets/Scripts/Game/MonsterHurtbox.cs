@@ -20,6 +20,6 @@ public class MonsterHurtbox : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
-            Debug.Log("Hit player");
+            other.gameObject.GetComponent<PlayerController>().KillPlayer();
     }
 }
