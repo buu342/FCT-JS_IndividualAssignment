@@ -89,6 +89,42 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""JumpPoint1"",
+                    ""type"": ""Button"",
+                    ""id"": ""85a438c3-baba-439e-9e16-ef1308e7338c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""JumpPoint2"",
+                    ""type"": ""Button"",
+                    ""id"": ""69be3cdd-7173-44c1-b1b2-25e74964fcf5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""JumpPoint3"",
+                    ""type"": ""Button"",
+                    ""id"": ""9ecf12e1-83bb-4def-a5d8-72d83027868f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""JumpPoint4"",
+                    ""type"": ""Button"",
+                    ""id"": ""21bb712e-7026-4fa7-b222-468005f70dee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -342,6 +378,50 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PauseAnimations"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6783ea0d-81a7-4aed-bcf7-9b473e9b2e03"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""JumpPoint1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f8332bc-2a23-4108-806d-d3dcadcef642"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""JumpPoint2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b75d4656-880a-4702-a362-fd909584e90a"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""JumpPoint3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""48677024-4de5-4f2f-ba87-50bb9db01ad5"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""JumpPoint4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -956,6 +1036,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_FreeLook = m_Player.FindAction("FreeLook", throwIfNotFound: true);
         m_Player_PauseAnimations = m_Player.FindAction("PauseAnimations", throwIfNotFound: true);
+        m_Player_JumpPoint1 = m_Player.FindAction("JumpPoint1", throwIfNotFound: true);
+        m_Player_JumpPoint2 = m_Player.FindAction("JumpPoint2", throwIfNotFound: true);
+        m_Player_JumpPoint3 = m_Player.FindAction("JumpPoint3", throwIfNotFound: true);
+        m_Player_JumpPoint4 = m_Player.FindAction("JumpPoint4", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1035,6 +1119,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_FreeLook;
     private readonly InputAction m_Player_PauseAnimations;
+    private readonly InputAction m_Player_JumpPoint1;
+    private readonly InputAction m_Player_JumpPoint2;
+    private readonly InputAction m_Player_JumpPoint3;
+    private readonly InputAction m_Player_JumpPoint4;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -1046,6 +1134,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @FreeLook => m_Wrapper.m_Player_FreeLook;
         public InputAction @PauseAnimations => m_Wrapper.m_Player_PauseAnimations;
+        public InputAction @JumpPoint1 => m_Wrapper.m_Player_JumpPoint1;
+        public InputAction @JumpPoint2 => m_Wrapper.m_Player_JumpPoint2;
+        public InputAction @JumpPoint3 => m_Wrapper.m_Player_JumpPoint3;
+        public InputAction @JumpPoint4 => m_Wrapper.m_Player_JumpPoint4;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1076,6 +1168,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @PauseAnimations.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPauseAnimations;
                 @PauseAnimations.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPauseAnimations;
                 @PauseAnimations.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPauseAnimations;
+                @JumpPoint1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint1;
+                @JumpPoint1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint1;
+                @JumpPoint1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint1;
+                @JumpPoint2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint2;
+                @JumpPoint2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint2;
+                @JumpPoint2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint2;
+                @JumpPoint3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint3;
+                @JumpPoint3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint3;
+                @JumpPoint3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint3;
+                @JumpPoint4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint4;
+                @JumpPoint4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint4;
+                @JumpPoint4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint4;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1101,6 +1205,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @PauseAnimations.started += instance.OnPauseAnimations;
                 @PauseAnimations.performed += instance.OnPauseAnimations;
                 @PauseAnimations.canceled += instance.OnPauseAnimations;
+                @JumpPoint1.started += instance.OnJumpPoint1;
+                @JumpPoint1.performed += instance.OnJumpPoint1;
+                @JumpPoint1.canceled += instance.OnJumpPoint1;
+                @JumpPoint2.started += instance.OnJumpPoint2;
+                @JumpPoint2.performed += instance.OnJumpPoint2;
+                @JumpPoint2.canceled += instance.OnJumpPoint2;
+                @JumpPoint3.started += instance.OnJumpPoint3;
+                @JumpPoint3.performed += instance.OnJumpPoint3;
+                @JumpPoint3.canceled += instance.OnJumpPoint3;
+                @JumpPoint4.started += instance.OnJumpPoint4;
+                @JumpPoint4.performed += instance.OnJumpPoint4;
+                @JumpPoint4.canceled += instance.OnJumpPoint4;
             }
         }
     }
@@ -1272,6 +1388,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnReload(InputAction.CallbackContext context);
         void OnFreeLook(InputAction.CallbackContext context);
         void OnPauseAnimations(InputAction.CallbackContext context);
+        void OnJumpPoint1(InputAction.CallbackContext context);
+        void OnJumpPoint2(InputAction.CallbackContext context);
+        void OnJumpPoint3(InputAction.CallbackContext context);
+        void OnJumpPoint4(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
