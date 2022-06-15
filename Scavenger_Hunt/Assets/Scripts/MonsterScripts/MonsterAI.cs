@@ -25,7 +25,7 @@ public class MonsterAI : MonoBehaviour
     [HideInInspector]
     public MonsterCombatState monsterCombatState = MonsterCombatState.Idle;
     public HunterAnimations m_MonsterAnims;
-    
+    private bool multiplayer=JoinMultiplayer.Multiplayer;
     private float MonsterSpeed;
     private Vector3 destination;
     private NavMeshAgent agent;

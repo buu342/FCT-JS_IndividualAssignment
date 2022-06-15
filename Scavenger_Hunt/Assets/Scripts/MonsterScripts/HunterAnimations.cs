@@ -34,7 +34,7 @@ public class HunterAnimations : MonoBehaviour
     
     void Update()
     {
-        if (this.m_AI.monsterCombatState == MonsterAI.MonsterCombatState.Idle)
+        if (m_AI.monsterCombatState == MonsterAI.MonsterCombatState.Idle)
             this.m_Animator.SetFloat("MoveSpeed", this.m_NavAgent.velocity.magnitude/5.0f);
         else
             this.m_Animator.SetFloat("MoveSpeed", 1.0f);
