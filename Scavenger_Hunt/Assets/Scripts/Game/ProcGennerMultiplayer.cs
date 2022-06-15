@@ -239,7 +239,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
 
         // create monster
         Vector3Int coord = exitPosition;
-        GameObject instobj = Instantiate(this.m_MonsterPrefab, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
+        GameObject instobj = PhotonNetwork.Instantiate(this.m_MonsterPrefab.name, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
         MonsterAI monster = instobj.GetComponent<MonsterAI>();
          GameObject.Find("AudioManager").GetComponent<AudioManager>().SetMonster(monster);
         this.m_Entities.Add(instobj);

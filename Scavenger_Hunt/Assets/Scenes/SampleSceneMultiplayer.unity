@@ -630,8 +630,8 @@ MonoBehaviour:
   m_Room3Prefab_GlassWall_Left: {fileID: 1512847438612294568, guid: c7683b5d96ae12a43ba1368c1d2ab02a, type: 3}
   m_Room3Prefab_GlassWall_Mid: {fileID: 1512847438612294568, guid: 945a6c13e1bbaf94fb59e7e0817b83e4, type: 3}
   m_Room3Prefab_GlassWall_Right: {fileID: 1512847438612294568, guid: 098566aaa562bef4cbb4d781cc0ab168, type: 3}
-  m_MonsterPrefab: {fileID: 6333973165192279540, guid: 91354419b7ffcd751b1b50da384cbaa5, type: 3}
-  m_PlayerPrefab: {fileID: 8512297084061567289, guid: edec63f17e0de3643ab1a7dda8bf3853, type: 3}
+  m_MonsterPrefab: {fileID: 6333973165192279540, guid: 8be2133ec32286a4cbf0e57889e1c7c0, type: 3}
+  m_PlayerPrefab: {fileID: 8512297084061567289, guid: 1a3e5d53e11dfc140ae8d918695f9cc1, type: 3}
   m_Airlock: {fileID: 5906908505389256942, guid: 5b45b592b659a834f945e41793770b4c, type: 3}
   m_DoorPrefab: {fileID: 6969831614626464371, guid: ba85e3a3e085aa44dbd56e761cfcc9df, type: 3}
   m_ExitElevator: {fileID: 4546657156345559804, guid: 88b81f0ea483d224494c850bf74700c7, type: 3}
