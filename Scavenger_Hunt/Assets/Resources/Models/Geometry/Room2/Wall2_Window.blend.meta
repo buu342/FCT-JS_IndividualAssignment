@@ -10,6 +10,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Airlock_Floor4__Airlock_Floor4_png
+    second: {fileID: 2100000, guid: e0d5f56e4731e31479fef415956db1b9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DoorGutter__DoorGutter_png
+    second: {fileID: 2100000, guid: 88071bf700a2fb74a86e1aadf6052d30, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Wall1__Airlock_Floor4_png
     second: {fileID: 2100000, guid: e0d5f56e4731e31479fef415956db1b9, type: 2}
   - first:
