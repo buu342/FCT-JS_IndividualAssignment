@@ -269,6 +269,10 @@ public class PlayerController : MonoBehaviour
 
         trail.transform.position = hit.point;
         Destroy(trail.gameObject, trail.time);
+        if(hit.collider.tag == "Monster") {
+            Debug.Log("Hitted monster");
+            hit.collider.gameObject.GetComponent<MonsterAI>().TakeDamage();
+        }
     }
     
     /*==============================
