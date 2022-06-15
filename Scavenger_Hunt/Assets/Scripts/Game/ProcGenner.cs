@@ -124,6 +124,7 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_Airlock;
     public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
+    public GameObject m_Crap;
     
     private Delaunay3D m_Delaunay;
     private HashSet<Prim.Edge> m_SelectedEdges;
@@ -214,6 +215,9 @@ public class ProcGenner : MonoBehaviour
         
         // And then fill everything with walls
         GenerateWalls();
+        
+        // And dump objects in the room
+        PlaceObjectsInRooms();
         
         // Generate a walkable navmesh
         List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
@@ -1166,7 +1170,6 @@ public class ProcGenner : MonoBehaviour
         return false;
     }
     
-    
     public List<ProcGenner.RoomDef> GetRoomDefs()
     {
         return this.m_Rooms;
@@ -1233,6 +1236,47 @@ public class ProcGenner : MonoBehaviour
         return null;
     }
 
+
+    void PlaceObjectsInRooms()
+    {
+        foreach (RoomDef rdef in this.m_Rooms)
+        {
+            Vector3Int dir;
+            bool[,] occupied = new bool[rdef.size.x, rdef.size.z];
+            for (int x=0; x<rdef.size.x; x++)
+                for (int z=0; z<rdef.size.z; z++)
+                    occupied[x, z] = false;
+                
+            // Check for doors
+            dir = new Vector3Int(0, 0, -1);
+            for (int x=0; x<rdef.size.x; x++)
+            {
+                if (DoorExists(rdef.position + new Vector3Int(x, 0, 0), dir))
+                    occupied[x, 0] = true;
+                if (DoorExists(rdef.position + new Vector3Int(x, 0, rdef.size.z-1), -dir))
+                    occupied[x, rdef.size.z-1] = true;
+            }
+            dir = new Vector3Int(-1, 0, 0);
+            for (int z=0; z<rdef.size.z; z++)
+            {
+                if (DoorExists(rdef.position + new Vector3Int(0, 0, z), dir))
+                    occupied[0, z] = true;
+                if (DoorExists(rdef.position + new Vector3Int(rdef.size.x-1, 0, z), -dir))
+                    occupied[rdef.size.x-1, z] = true;
+            }
+            
+            for (int x=0; x<rdef.size.x; x++)
+            {
+                for (int z=0; z<rdef.size.z; z++)
+                {
+                    if (!occupied[x, z])
+                    {
+                        Instantiate(this.m_Crap, ((rdef.position + new Vector3Int(x, 0, z))-Center)*ProcGenner.GridScale, this.m_Crap.transform.rotation);
+                    }
+                }
+            }
+        }
+    }
 
     #if UNITY_EDITOR
         /*==============================
