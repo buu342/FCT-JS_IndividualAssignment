@@ -33,18 +33,25 @@ public class SceneDirector : MonoBehaviour
     private GameObject m_Player = null;
     
     void OnEnable() {
-        InputManagerScript.playerInput.Player.Aim.started +=  PressedAim;
-        InputManagerScript.playerInput.Player.Fire.started += Fire;
+        EnableAllInputEvents();
         if(!InputManagerScript.playerInput.Player.enabled)
             InputManagerScript.playerInput.Player.Enable();
 
     }
     void OnDisable() {
-        InputManagerScript.playerInput.Player.Aim.started -=  PressedAim;
-        InputManagerScript.playerInput.Player.Fire.started -= Fire;
+        DisableAllInputEvents();
         if(InputManagerScript.playerInput.Player.enabled)
             InputManagerScript.playerInput.Player.Disable();
 
+    }
+    private void DisableAllInputEvents() {
+        InputManagerScript.playerInput.Player.Aim.started -=  PressedAim;
+        InputManagerScript.playerInput.Player.Fire.started -= Fire;
+    }
+
+    private void EnableAllInputEvents() {
+        InputManagerScript.playerInput.Player.Aim.started +=  PressedAim;
+        InputManagerScript.playerInput.Player.Fire.started += Fire;
     }
 
     /*==============================
@@ -55,13 +62,19 @@ public class SceneDirector : MonoBehaviour
     void Start()
     {
         ProcGenner proc = this.GetComponent<ProcGenner>();
-        proc.GenerateScene(GameObject.Find("LevelManager").GetComponent<LevelManager>().GetLevelCount());
+        int levelCount = GameObject.Find("LevelManager").GetComponent<LevelManager>().GetLevelCount();
+        proc.GenerateScene(levelCount);
         this.m_Music = GameObject.Find("MusicManager").GetComponent<MusicManager>();
         this.m_Music.PlaySong("Music/Calm", true, true);
         this.m_MusicType = MusicType.Calm;
-        Transform airlockStartPosition = proc.GetAirlockTransform();
-        GameObject.Instantiate(MovementPrefab, airlockStartPosition);
-        GameObject.Instantiate(AimPrefab, airlockStartPosition);
+        if(levelCount == 1) {
+            Transform airlockStartPosition = proc.GetAirlockTransform();
+            GameObject.Instantiate(MovementPrefab, airlockStartPosition);
+            GameObject.Instantiate(AimPrefab, airlockStartPosition);
+        } else {
+            Debug.Log("Disabling all inputs");
+             DisableAllInputEvents();
+        }
     }
     
     void FixedUpdate()
@@ -77,6 +90,7 @@ public class SceneDirector : MonoBehaviour
 
     void PressedAim(InputAction.CallbackContext context) {
         //instantiate aim tutorial to object
+        Debug.Log("Pressed aim in director");
         if(m_Player != null) {
             GameObject.Instantiate(FirePrefab,m_Player.transform);
             InputManagerScript.playerInput.Player.Aim.started -=  PressedAim;
