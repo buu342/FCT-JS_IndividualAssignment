@@ -20,6 +20,7 @@ public class DoorTrigger : MonoBehaviour
     public List<DoorLogic> m_TargetDoors = new List<DoorLogic>();
     public float m_TriggerDelay = 0.0f;
     public TriggerType m_TiggerType = TriggerType.OpenClose;
+    public bool m_IgnoreMonster = false;
     
     private float m_TriggerTimer = 0.0f;
     
@@ -64,7 +65,7 @@ public class DoorTrigger : MonoBehaviour
     
     void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player" || other.tag == "Monster")
+        if (other.tag == "Player" || (other.tag == "Monster" && !this.m_IgnoreMonster))
         {
             if (this.m_TriggerDelay == 0)
             {
@@ -92,7 +93,7 @@ public class DoorTrigger : MonoBehaviour
     
     void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player" || other.tag == "Monster")
+        if (other.tag == "Player" || (other.tag == "Monster" && !this.m_IgnoreMonster))
             foreach (DoorLogic door in this.m_TargetDoors)
                 door.CloseDoor();
     }

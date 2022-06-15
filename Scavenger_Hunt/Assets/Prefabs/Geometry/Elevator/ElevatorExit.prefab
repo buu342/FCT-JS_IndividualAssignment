@@ -254,6 +254,7 @@ MonoBehaviour:
   - {fileID: 5177342152873045980}
   m_TriggerDelay: 0
   m_TiggerType: 0
+  m_IgnoreMonster: 1
 --- !u!1 &4546657156345559804
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,3 +643,4 @@ MonoBehaviour:
   - {fileID: 5177342152873045980}
   m_TriggerDelay: 0
   m_TiggerType: 2
+  m_IgnoreMonster: 1
