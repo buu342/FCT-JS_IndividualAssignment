@@ -26,6 +26,7 @@ public class Sound
     public bool canMuffle = false;
     public bool canReverb = false;
     public bool is3D = false;
+    public bool canAlertMonster = false;
     public float maxDistance = 16.0f;
     
     [HideInInspector]

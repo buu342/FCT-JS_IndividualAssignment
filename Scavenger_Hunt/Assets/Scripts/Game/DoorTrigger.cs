@@ -64,7 +64,6 @@ public class DoorTrigger : MonoBehaviour
     
     void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.tag);
         if (other.tag == "Player" || other.tag == "Monster")
         {
             if (this.m_TriggerDelay == 0)

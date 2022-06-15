@@ -235,7 +235,9 @@ public class ProcGenner : MonoBehaviour
         // create monster    
         Vector3Int coord = exitPosition;
         GameObject instobj = Instantiate(this.m_MonsterPrefab, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
-        instobj.GetComponent<MonsterAI>().SetPlayerTarget(GameObject.Find("CameraTarget"));
+        MonsterAI monster =instobj.GetComponent<MonsterAI>(); 
+        monster.SetPlayerTarget(GameObject.Find("CameraTarget"));
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().SetMonster(monster);
         this.m_Entities.Add(instobj);
 
         // Show some statistics if we're in debug mode
