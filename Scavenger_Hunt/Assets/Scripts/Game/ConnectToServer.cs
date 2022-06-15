@@ -22,6 +22,7 @@ using UnityEngine.SceneManagement;
         }
 
     public void Singleplayergame(){
+        GameObject.Find("LevelManager").GetComponent<LevelManager>().StartNewGame();
         SceneManager.LoadScene("SampleScene");
     }
 

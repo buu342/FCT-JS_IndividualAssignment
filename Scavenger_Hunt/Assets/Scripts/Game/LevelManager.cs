@@ -43,14 +43,15 @@ public class LevelManager : MonoBehaviour
     
     void FixedUpdate()
     {
-        if (!Playing && SceneManager.GetActiveScene().name == "SampleScene")
+        if (!Playing && (SceneManager.GetActiveScene().name == "SampleScene" || SceneManager.GetActiveScene().name == "SampleSceneMultiplayer"))
         {
             StartNewGame();
         }
         
-        if (Playing && SceneManager.GetActiveScene().name != "SampleScene")
+        if (Playing && (SceneManager.GetActiveScene().name == "SampleScene" || SceneManager.GetActiveScene().name == "SampleSceneMultiplayer"))
         {
             Playing = false;
+            StartNewGame();
         }
     }
     
