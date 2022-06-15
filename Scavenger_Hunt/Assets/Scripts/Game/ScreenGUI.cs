@@ -8,17 +8,13 @@ public class ScreenGUI : MonoBehaviour
 {
     public Image m_FadeImage;
     public TextMeshProUGUI m_DeathText;
-<<<<<<< Updated upstream
-     public TextMeshProUGUI m_WinningText;
-    private int m_DeathState = 0;
-=======
+    public TextMeshProUGUI m_WinningText;
     public TextMeshProUGUI m_LevelCompleteText;
     public TextMeshProUGUI m_ItemsCollectedText;
     public TextMeshProUGUI m_CurrentScoreText;
     public TextMeshProUGUI m_FinalScoreText;
     public TextMeshProUGUI m_LoadingText;
     private int   m_DeathState = 0;
->>>>>>> Stashed changes
     private float m_DeathStateTimer = 0;
     private int   m_NextLevelState = 0;
     private float m_NextLevelTimer = 0;
@@ -51,10 +47,6 @@ public class ScreenGUI : MonoBehaviour
                     this.m_DeathStateTimer = Time.unscaledTime + 2.0f;
                     break;
                 case 1:
-<<<<<<< Updated upstream
-                    if(multiplayer)
-                    PhotonNetwork.LeaveRoom();
-=======
                     this.m_FinalScoreText.enabled = true;
                     this.m_DeathStateTimer = Time.unscaledTime + 1.0f;
                     break;
@@ -63,13 +55,13 @@ public class ScreenGUI : MonoBehaviour
                     this.m_DeathStateTimer = Time.unscaledTime + 2.0f;
                     break;
                 case 3:
->>>>>>> Stashed changes
+                    if(multiplayer)
+                        PhotonNetwork.LeaveRoom();
                     SceneManager.LoadScene("StartMenu");
                     break;
             }
             this.m_DeathState++;
         }
-<<<<<<< Updated upstream
         if(multiplayer)
         if (PhotonNetwork.CurrentRoom.PlayerCount < 2){
             this.m_WinningText.enabled = true;
@@ -79,40 +71,38 @@ public class ScreenGUI : MonoBehaviour
             SceneManager.LoadScene("StartMenu");
         }
         if(!multiplayer)
-        if (this.m_NextLevelTimer != 0 && this.m_NextLevelTimer <= Time.unscaledTime)
-=======
-        
-        if (this.m_NextLevelTimer != 0 && this.m_NextLevelTimer < Time.unscaledTime)
         {
-            switch (this.m_NextLevelState)
+            if (this.m_NextLevelTimer != 0 && this.m_NextLevelTimer < Time.unscaledTime)
             {
-                case 0:
-                    this.m_LevelCompleteText.enabled = true;
-                    this.m_NextLevelTimer = Time.unscaledTime + 2.0f;
-                    break;
-                case 1:
-                    this.m_ItemsCollectedText.enabled = true;
-                    this.m_ItemsCollectedText.text += "AAA" + "/" + GameObject.Find("LevelManager").GetComponent<LevelManager>().GetPickupCount();
-                    this.m_NextLevelTimer = Time.unscaledTime + 1.0f;
-                    break;
-                case 2:
-                    this.m_CurrentScoreText.enabled = true;
-                    this.m_CurrentScoreText.text += GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
-                    this.m_NextLevelTimer = Time.unscaledTime + 3.0f;
-                    break;
-                case 3:
-                    this.m_LoadingText.enabled = true;
-                    this.m_NextLevelTimer = Time.unscaledTime + 2.0f;
-                    break;
-                case 4:
-                    GameObject.Find("LevelManager").GetComponent<LevelManager>().LoadNextLevel();
-                    break;
+                switch (this.m_NextLevelState)
+                {
+                    case 0:
+                        this.m_LevelCompleteText.enabled = true;
+                        this.m_NextLevelTimer = Time.unscaledTime + 2.0f;
+                        break;
+                    case 1:
+                        this.m_ItemsCollectedText.enabled = true;
+                        this.m_ItemsCollectedText.text += "AAA" + "/" + GameObject.Find("LevelManager").GetComponent<LevelManager>().GetPickupCount();
+                        this.m_NextLevelTimer = Time.unscaledTime + 1.0f;
+                        break;
+                    case 2:
+                        this.m_CurrentScoreText.enabled = true;
+                        this.m_CurrentScoreText.text += GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
+                        this.m_NextLevelTimer = Time.unscaledTime + 3.0f;
+                        break;
+                    case 3:
+                        this.m_LoadingText.enabled = true;
+                        this.m_NextLevelTimer = Time.unscaledTime + 2.0f;
+                        break;
+                    case 4:
+                        GameObject.Find("LevelManager").GetComponent<LevelManager>().LoadNextLevel();
+                        break;
+                }
+                this.m_NextLevelState++;
             }
-            this.m_NextLevelState++;
         }
             
         if (this.m_NextLevelState > 0 && this.m_NextLevelState < 3)
->>>>>>> Stashed changes
         {
             if (this.m_Fade < 128)
             {
@@ -150,19 +140,13 @@ public class ScreenGUI : MonoBehaviour
     }
     
     public void LoadNextLevel()
-<<<<<<< Updated upstream
     {   if(!multiplayer)    
-        if (this.m_NextLevelTimer == 0)
-            this.m_NextLevelTimer = Time.unscaledTime + 5.0f;
-=======
-    {
-        if (this.m_NextLevelState == 0 && this.m_NextLevelTimer == 0)
-        {
-            this.m_LevelCompleteText.enabled = true;
-            this.m_NextLevelTimer = Time.unscaledTime + 3.0f;
-            GameObject.Find("MusicManager").GetComponent<MusicManager>().FadeMusic();
-            this.transform.parent.gameObject.GetComponent<SceneDirector>().PlayerCompleted();
-        }
->>>>>>> Stashed changes
+            if (this.m_NextLevelState == 0 && this.m_NextLevelTimer == 0)
+            {
+                this.m_LevelCompleteText.enabled = true;
+                this.m_NextLevelTimer = Time.unscaledTime + 3.0f;
+                GameObject.Find("MusicManager").GetComponent<MusicManager>().FadeMusic();
+                this.transform.parent.gameObject.GetComponent<SceneDirector>().PlayerCompleted();
+            }
     }
 }

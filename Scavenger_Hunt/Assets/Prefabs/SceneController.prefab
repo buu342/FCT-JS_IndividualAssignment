@@ -31,7 +31,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7674863949467861832}
-  m_RootOrder: 3
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -319,7 +319,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7674863949467861832}
-  m_RootOrder: 5
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -589,7 +589,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7674863949467861832}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -611,7 +611,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3469604751231297043}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -724,7 +724,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7674863949467861832}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1074,15 +1074,12 @@ RectTransform:
   - {fileID: 7674863950223756039}
   - {fileID: 5160235985486152608}
   - {fileID: 1662753008664494037}
-<<<<<<< Updated upstream
   - {fileID: 670875297482428952}
-=======
-  - {fileID: 6649169706264808524}
-  - {fileID: 5520545249968220753}
-  - {fileID: 7397188342549139482}
   - {fileID: 3755967370917254308}
+  - {fileID: 5520545249968220753}
   - {fileID: 6259464785493261708}
->>>>>>> Stashed changes
+  - {fileID: 6649169706264808524}
+  - {fileID: 7397188342549139482}
   m_Father: {fileID: 1436194342606117216}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1166,15 +1163,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FadeImage: {fileID: 7383481318320739668}
   m_DeathText: {fileID: 5711560810190262881}
-<<<<<<< Updated upstream
-  m_WinningText: {fileID: 0}
-=======
   m_LevelCompleteText: {fileID: 3772167392405035897}
   m_ItemsCollectedText: {fileID: 4085609432247065261}
   m_CurrentScoreText: {fileID: 3410084622008509087}
   m_FinalScoreText: {fileID: 3055426818565862956}
   m_LoadingText: {fileID: 4268246728055933246}
->>>>>>> Stashed changes
 --- !u!1 &7674863950223756038
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,7 +1334,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7674863949467861832}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
