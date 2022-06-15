@@ -124,7 +124,10 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_Airlock;
     public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
-    public GameObject m_Crap;
+    public GameObject m_Table;
+    public GameObject m_Lamp;
+    public List<GameObject> m_Props;
+    public List<GameObject> m_Items;
     
     private Delaunay3D m_Delaunay;
     private HashSet<Prim.Edge> m_SelectedEdges;
@@ -1247,7 +1250,7 @@ public class ProcGenner : MonoBehaviour
                 for (int z=0; z<rdef.size.z; z++)
                     occupied[x, z] = false;
                 
-            // Check for doors
+            // Check for doors, so we don't place items there
             dir = new Vector3Int(0, 0, -1);
             for (int x=0; x<rdef.size.x; x++)
             {
@@ -1265,13 +1268,25 @@ public class ProcGenner : MonoBehaviour
                     occupied[rdef.size.x-1, z] = true;
             }
             
+            // Scatter the room with props and items
             for (int x=0; x<rdef.size.x; x++)
             {
                 for (int z=0; z<rdef.size.z; z++)
                 {
-                    if (!occupied[x, z])
+                    if (!occupied[x, z] && Random.Range(0, 2) == 0)
                     {
-                        Instantiate(this.m_Crap, ((rdef.position + new Vector3Int(x, 0, z))-Center)*ProcGenner.GridScale, this.m_Crap.transform.rotation);
+                        GameObject prefab = this.m_Props[Random.Range(0, this.m_Props.Count)];
+                        rdef.objects.Add(Instantiate(prefab, ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGenner.GridScale, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0)));
+                        occupied[x, z] = true;
+                    }
+                    else if (!occupied[x, z] && Random.Range(0, 4) == 0)
+                    {
+                        GameObject prefab = this.m_Table;
+                        Vector3 tablepos = ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGenner.GridScale;
+                        rdef.objects.Add(Instantiate(prefab, tablepos, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0)));
+                        prefab = this.m_Items[Random.Range(0, this.m_Props.Count)];
+                        rdef.objects.Add(Instantiate(prefab, tablepos+ new Vector3(Random.Range(-1.0f, 1.0f), 1.4f, Random.Range(-1.0f, 1.0f)), prefab.transform.rotation*Quaternion.Euler(0, 0, Random.Range(0, 360))));
+                        occupied[x, z] = true;
                     }
                 }
             }
