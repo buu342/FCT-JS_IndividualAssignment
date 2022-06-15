@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 7727111492593395201}
   m_Layer: 0
   m_Name: DoorFrame
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -299,3 +299,4 @@ MonoBehaviour:
   - {fileID: -3695034808995775972}
   m_TriggerDelay: 0
   m_TiggerType: 0
+  m_IgnoreMonster: 0

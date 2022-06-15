@@ -232,24 +232,25 @@ public class PlayerController : MonoBehaviour
 
     void Fire(InputAction.CallbackContext context) 
     {
-        if(!DebugFeatures.pauseAnimations) {
-        if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
+        if(!DebugFeatures.pauseAnimations) 
         {
-            if (this.m_AmmoClip > 0)
+            if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
             {
-                this.m_Audio.Play("Shotgun/Fire", this.transform.gameObject);
-                this.m_CombatState = PlayerCombatState.Firing;
-                this.m_NextFireTime = Time.time + PlayerController.FireTime;
-                this.m_AmmoClip--;
-                this.m_PlyAnims.FireAnimation();
-                this.m_CameraController.AddTrauma(0.5f);
-                FireShell();
+                if (this.m_AmmoClip > 0)
+                {
+                    this.m_Audio.Play("Shotgun/Fire", this.transform.gameObject);
+                    this.m_CombatState = PlayerCombatState.Firing;
+                    this.m_NextFireTime = Time.time + PlayerController.FireTime;
+                    this.m_AmmoClip--;
+                    this.m_PlyAnims.FireAnimation();
+                    this.m_CameraController.AddTrauma(0.5f);
+                    FireShell();
+                }
+                else
+                    this.m_Audio.Play("Shotgun/DryFire", this.transform.gameObject);
             }
-            else
-                this.m_Audio.Play("Shotgun/DryFire", this.transform.gameObject);
-        }
-        else if (this.m_CombatState == PlayerCombatState.ReloadStart || this.m_CombatState == PlayerCombatState.ReloadLoop || this.m_CombatState == PlayerCombatState.ReloadEnd)
-            this.m_CancelReload = true;
+            else if (this.m_CombatState == PlayerCombatState.ReloadStart || this.m_CombatState == PlayerCombatState.ReloadLoop || this.m_CombatState == PlayerCombatState.ReloadEnd)
+                this.m_CancelReload = true;
         }
     }
 
