@@ -30,7 +30,9 @@ public class MonsterAI : MonoBehaviour
     private NavMeshAgent agent;
     //need to guarantee that its centered
     private GameObject playerToChase;
+    private float m_LastSawPlayerTimer = 0;
     private float m_CombatTimer = 0;
+    private AudioManager m_Audio;
 
     void Awake() {
         agent = GetComponent<NavMeshAgent>();   
@@ -41,14 +43,32 @@ public class MonsterAI : MonoBehaviour
     {
         monsterState = MonsterState.Patrolling;
         MonsterSpeed = agent.speed;
+        this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerToChase != null && checkIfCanSeePlayer()) {
-            monsterState = MonsterState.ChasingPlayer;
+        if (playerToChase != null)
+        {
+            if (checkIfCanSeePlayer())
+            {
+                if (monsterState != MonsterState.ChasingPlayer && monsterCombatState == MonsterCombatState.Idle)
+                {
+                    this.m_Audio.Stop("Hunter/Damage");
+                    this.m_Audio.Stop("Hunter/HearSound");
+                    this.m_Audio.Stop("Hunter/Attack");
+                    this.m_Audio.Play("Hunter/SpotPlayer", this.transform.gameObject);
+                }
+                monsterState = MonsterState.ChasingPlayer;
+                this.m_LastSawPlayerTimer = 0;
+            }
+            else if (this.m_LastSawPlayerTimer == 0)
+                this.m_LastSawPlayerTimer = Time.time + 5.0f;
         }
+        
+        if (this.m_LastSawPlayerTimer != 0 && this.m_LastSawPlayerTimer < Time.time)
+            monsterState = MonsterState.CheckingSound;
 
         if (monsterCombatState == MonsterCombatState.Idle)
         {
@@ -67,11 +87,15 @@ public class MonsterAI : MonoBehaviour
                     break;
             }
             
-            if (monsterState == MonsterState.ChasingPlayer && Vector3.Distance(playerToChase.transform.position, transform.position) < 2.0f)
+            if (monsterState == MonsterState.ChasingPlayer && Vector3.Distance(playerToChase.transform.position, transform.position) < 2.0f && this.monsterCombatState == MonsterCombatState.Idle)
             {
                 this.monsterCombatState = MonsterCombatState.Attacking;
                 this.m_CombatTimer = Time.time + 3.4f;
                 this.m_MonsterAnims.TriggerAttack();
+                this.m_Audio.Stop("Hunter/Damage");
+                this.m_Audio.Stop("Hunter/HearSound");
+                this.m_Audio.Stop("Hunter/SpotPlayer");
+                this.m_Audio.Play("Hunter/Attack", this.transform.gameObject);
             }
         }
         else
@@ -137,12 +161,15 @@ public class MonsterAI : MonoBehaviour
     }
 
     public void AlertSound(Vector3 origin, float maxDistancesqr) {
-        if(monsterState != MonsterState.CheckingSound) {
+        if(monsterState == MonsterState.Patrolling) {
             if( (transform.position-origin).sqrMagnitude < (maxDistancesqr)) {
                 destination = origin;
                 agent.SetDestination(origin);
+                this.m_Audio.Stop("Hunter/Damage");
+                this.m_Audio.Stop("Hunter/SpotPlayer");
+                this.m_Audio.Stop("Hunter/Attack");
+                this.m_Audio.Play("Hunter/HearSound", this.transform.gameObject);
                 monsterState = MonsterState.CheckingSound;
-                 //TODO: play tension music
             }
         }
     }
@@ -153,8 +180,13 @@ public class MonsterAI : MonoBehaviour
     
     public void TakeDamage()
     {
+        this.monsterState = MonsterState.ChasingPlayer;
         this.monsterCombatState = MonsterCombatState.Staggared;
         this.m_CombatTimer = Time.time + 4.6f;
         this.m_MonsterAnims.TriggerStagger();
+        this.m_Audio.Stop("Hunter/SpotPlayer");
+        this.m_Audio.Stop("Hunter/HearSound");
+        this.m_Audio.Stop("Hunter/Attack");
+        this.m_Audio.Play("Hunter/Damage", this.transform.gameObject);
     }
 }

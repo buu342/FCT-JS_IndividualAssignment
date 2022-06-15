@@ -121,7 +121,7 @@ MonoBehaviour:
     canReverb: 1
     is3D: 1
     canAlertMonster: 0
-    maxDistance: 32
+    maxDistance: 48
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
     clip: {fileID: 8300000, guid: bef4570afbb2e674e9ae8e0e7371e4cb, type: 3}
@@ -134,7 +134,7 @@ MonoBehaviour:
     canReverb: 1
     is3D: 1
     canAlertMonster: 0
-    maxDistance: 32
+    maxDistance: 48
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
     clip: {fileID: 8300000, guid: b78f78088c86e064ebaf4e72e47a9f4a, type: 3}
@@ -147,7 +147,7 @@ MonoBehaviour:
     canReverb: 1
     is3D: 1
     canAlertMonster: 0
-    maxDistance: 32
+    maxDistance: 48
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
     clip: {fileID: 8300000, guid: 19d570d4d466c9e4689320d085a09cc2, type: 3}
@@ -160,7 +160,7 @@ MonoBehaviour:
     canReverb: 1
     is3D: 1
     canAlertMonster: 0
-    maxDistance: 32
+    maxDistance: 48
     maxDistanceSqr: 0
   - name: Footsteps/MetalHeavy
     clip: {fileID: 8300000, guid: 23094274ebf0dc647bdf66e63bc3c330, type: 3}
@@ -173,7 +173,7 @@ MonoBehaviour:
     canReverb: 1
     is3D: 1
     canAlertMonster: 0
-    maxDistance: 32
+    maxDistance: 48
     maxDistanceSqr: 0
   - name: Footsteps/MetalSoft
     clip: {fileID: 8300000, guid: 11233822ae2bffd448dc465e664df0a4, type: 3}
@@ -460,4 +460,160 @@ MonoBehaviour:
     is3D: 1
     canAlertMonster: 0
     maxDistance: 8
+    maxDistanceSqr: 0
+  - name: Hunter/Attack
+    clip: {fileID: 8300000, guid: 1b07366a05f23ad49a09f629b1f188c2, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/Attack
+    clip: {fileID: 8300000, guid: 79a18fb964bc4e547a8568cd91891b6a, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/HearSound
+    clip: {fileID: 8300000, guid: b4390436ad2a88b4e99b3a3f3249f16d, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/HearSound
+    clip: {fileID: 8300000, guid: 54f9cdc4cf592834f905cc9897a76891, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/HearSound
+    clip: {fileID: 8300000, guid: 1cb3a7957f68cbc4abd07d7c8e1f46aa, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/SpotPlayer
+    clip: {fileID: 8300000, guid: ad51bd12119ad8e4f906de890e30583f, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/SpotPlayer
+    clip: {fileID: 8300000, guid: f69b2a6a7f202ad41bed65db7085c545, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/SpotPlayer
+    clip: {fileID: 8300000, guid: e4c62a3440c39e742946dd465c2ab62a, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/SpotPlayer
+    clip: {fileID: 8300000, guid: 7866ce1a8ac7bf04496665275ff3e73c, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/Damage
+    clip: {fileID: 8300000, guid: 894977c5c6686c44cb40c13d36dc3f48, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/Damage
+    clip: {fileID: 8300000, guid: eee01aea4d4c7bb409f632a736276498, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Hunter/Damage
+    clip: {fileID: 8300000, guid: 67d14488bbe51d64c8c280a9c8182d23, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
     maxDistanceSqr: 0
