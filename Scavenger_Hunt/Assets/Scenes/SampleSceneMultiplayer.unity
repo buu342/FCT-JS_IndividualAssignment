@@ -616,12 +616,12 @@ MonoBehaviour:
   m_FloorDustPrefab: {fileID: 5977091273754970389, guid: 2cea54980f6b6aca08f7e6131d0aaf60, type: 3}
   m_CeilingPrefab: {fileID: 919132149155446097, guid: 6700df413555d7e41ab13ea5626c4e6e, type: 3}
   m_Wall3Prefab: {fileID: 919132149155446097, guid: 1661fcb2a9ac04044930d3b329d15ed5, type: 3}
-  m_DoorWall2Prefab: {fileID: 1512847438612294568, guid: 893f902372931e049affee6560a3cf38, type: 3}
+  m_DoorWall2Prefab: {fileID: 1512847438612294568, guid: fe599b3bb2dbeb149b8225d0ebf1be04, type: 3}
   m_CorridorPrefab_Straight: {fileID: 6079494987575945719, guid: d28b251c47d11504d88dfb342c0a9b60, type: 3}
   m_CorridorPrefab_Curve: {fileID: 5116925716882930841, guid: ca4254d3dde62b0459ee9e24f1369aa1, type: 3}
   m_CorridorPrefab_T: {fileID: 6079494987575945719, guid: d0f91a69397b4c24989e9852975c5ebf, type: 3}
   m_CorridorPrefab_4Way: {fileID: 4234000772878918774, guid: ff5253459f67eca4c96335c68bd7ceb0, type: 3}
-  m_CorridorPrefab_DeadEnd: {fileID: 0}
+  m_CorridorPrefab_DeadEnd: {fileID: 6079494987575945719, guid: 465420398f4e80047a6f29b9052f6717, type: 3}
   m_CorridorStairPrefab: {fileID: 8725706798832080784, guid: 0adef0cb7ba757c40aec3e4e95b71aea, type: 3}
   m_Room2Prefab_Floor: {fileID: 4546657156345559804, guid: 23641c63c197e5646b35a74c39433c14, type: 3}
   m_Room2Prefab_Ceiling: {fileID: 4546657156345559804, guid: d0d1f0edd5b0d6341a79aef448973e07, type: 3}

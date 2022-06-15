@@ -7,7 +7,7 @@ This script handles camera movement and logic
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-
+using Photon.Pun;
 public class CameraController : MonoBehaviour
 {
     private const float Sensitivity    = 0.1f;

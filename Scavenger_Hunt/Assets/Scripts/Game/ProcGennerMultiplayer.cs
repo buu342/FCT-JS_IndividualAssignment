@@ -290,8 +290,8 @@ public class ProcGennerMultiplayer : MonoBehaviour
         // Create the player on the spawn
       /* if(JoinMultiplayer.RoomCreator & m_Entities.Count==1)*/
                 instobj =PhotonNetwork.Instantiate(this.m_PlayerPrefab.name, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
-                this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
-                instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
+                m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
+                instobj.GetComponent<PlayerController>().SetCamera(m_Camera);  
                 this.m_Entities.Add(instobj);
                 this.m_Optimizer.SetPlayer(instobj);
 
