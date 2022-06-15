@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using Photon.Pun;
 public class Pickup : MonoBehaviour
 {
     public enum ItemType
