@@ -142,7 +142,7 @@ public class ProcGennerMultiplayer : MonoBehaviour
     
     public void GenerateScene()
     {
-        
+        Random.InitState(PhotonNetwork.CurrentRoom.Name[0]*PhotonNetwork.CurrentRoom.Name.Length);
         #if UNITY_EDITOR
             System.DateTime time = System.DateTime.Now;
             int attempts = 1;
