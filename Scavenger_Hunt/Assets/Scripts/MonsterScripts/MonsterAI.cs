@@ -93,7 +93,7 @@ public class MonsterAI : MonoBehaviour
                     break;
             }
             
-            if (monsterState == MonsterState.ChasingPlayer && Vector3.Distance(playerToChase.transform.position, transform.position) < 2.0f && this.monsterCombatState == MonsterCombatState.Idle)
+            if (playerToChase != null && monsterState == MonsterState.ChasingPlayer && Vector3.Distance(playerToChase.transform.position, transform.position) < 2.0f && this.monsterCombatState == MonsterCombatState.Idle)
             {
                 this.monsterCombatState = MonsterCombatState.Attacking;
                 this.m_CombatTimer = Time.time + 3.4f;
@@ -144,7 +144,8 @@ public class MonsterAI : MonoBehaviour
     }
 
     public void ChasePlayer() {
-        
+        if (playerToChase == null)
+            return;
           //TODO: change music for chasing
         monsterState = MonsterState.ChasingPlayer;
         if(playerToChase!=null){
@@ -192,6 +193,11 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
+    public Vector3 GetDestination()
+    {
+        return destination;
+    }
+
     public void SetPlayerTarget(GameObject target) {
         playerToChase = target;
     }
@@ -200,7 +206,7 @@ public class MonsterAI : MonoBehaviour
     {
         this.monsterState = MonsterState.ChasingPlayer;
         this.monsterCombatState = MonsterCombatState.Staggared;
-        this.m_CombatTimer = Time.time + 4.6f;
+        this.m_CombatTimer = Time.time + 3.95f;
         this.m_MonsterAnims.TriggerStagger();
         this.m_Audio.Stop("Hunter/SpotPlayer");
         this.m_Audio.Stop("Hunter/HearSound");

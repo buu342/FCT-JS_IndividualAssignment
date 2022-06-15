@@ -114,7 +114,6 @@ public class CameraController : MonoBehaviour
         } else {
             this.transform.position += (InputManagerScript.Move.ReadValue<Vector2>().y*transform.forward) + (InputManagerScript.Move.ReadValue<Vector2>().x*transform.right);
         }
-    
     }
     
 
@@ -127,11 +126,23 @@ public class CameraController : MonoBehaviour
         }
         Debug.Log("Activated free move");
     }
+    
 
     /*==============================
         SetTarget
         Sets the camera's target
         @param The GameObject for the camera to follow
+    ==============================*/
+    
+    public GameObject GetTarget()
+    {
+        return this.m_Target;
+    }
+
+    /*==============================
+        GetTarget
+        Gets the camera's target
+        @return The GameObject that the camera is following
     ==============================*/
     
     public void SetTarget(GameObject target)
@@ -173,5 +184,16 @@ public class CameraController : MonoBehaviour
     public bool isInFreeMode()
     {
         return freeMode;
+    }
+
+     /*==============================
+        Checks if camera is in
+        Free mode
+    ==============================*/
+    
+    public void EnableFreeMode()
+    {
+        freeMode = true;
+        actualTarget = null;
     }
 }
