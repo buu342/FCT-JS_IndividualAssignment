@@ -125,9 +125,9 @@ public class PlayerController : MonoBehaviour
             if(!view.IsMine)
             return;  
     
-        if(!DebugFeatures.pauseAnimations) 
+        if(!DebugFeatures.pauseAnimations && !m_CameraController.isInFreeMode()) 
         {
-            this.m_MovementDirection = m_CameraController.isInFreeMode() ? Vector2.zero:InputManagerScript.Move.ReadValue<Vector2>();
+            this.m_MovementDirection = InputManagerScript.Move.ReadValue<Vector2>();
             this.m_TargetVelocity = (this.m_MovementDirection.y*this.transform.forward + this.m_MovementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
             
             // Turn the player to face the same direction as the camera
@@ -261,12 +261,8 @@ public class PlayerController : MonoBehaviour
     ==============================*/
 
     void Fire(InputAction.CallbackContext context) 
-    {   if(view!=null)
-            if(!view.IsMine)
-            return;  
-            
-        if(!DebugFeatures.pauseAnimations) {
-        if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
+    {
+        if(!DebugFeatures.pauseAnimations && !m_CameraController.isInFreeMode()) 
         {
                 if (this.m_AmmoClip > 0)
                 {
@@ -297,7 +293,6 @@ public class PlayerController : MonoBehaviour
             Vector3 bulletSpawn = muzzle.transform.position;
             Vector3 bulletDirection = RandomizeDirection(muzzle.transform.forward);
             if(Physics.Raycast(muzzle.transform.position, bulletDirection, out hitInfo,Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) {
-                Debug.Log("Shot collide");
                 TrailRenderer trail = Instantiate(trailOfBullets, bulletSpawn, Quaternion.identity);
                 StartCoroutine(SpawnTrail(trail, hitInfo));    
             }
