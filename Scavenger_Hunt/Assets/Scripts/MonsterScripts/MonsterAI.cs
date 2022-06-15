@@ -174,6 +174,11 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
+    public Vector3 GetDestination()
+    {
+        return destination;
+    }
+
     public void SetPlayerTarget(GameObject target) {
         playerToChase = target;
     }

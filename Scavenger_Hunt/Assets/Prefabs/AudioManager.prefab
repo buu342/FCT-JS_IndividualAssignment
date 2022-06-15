@@ -49,7 +49,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 68c6365a58772ca4280910c54880c34b, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -62,7 +62,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 186614793caed6e4c9632db188926f68, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -75,7 +75,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 7c2969d17e022b14eb3e6587542ac5e7, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 292515edb770f904193c79a39e82b176, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -101,7 +101,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 153b42dcb55a2c54eaf1dccaf7e033b0, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -114,7 +114,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: da4b08f75ea9eca43875fee50275e3ad, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -127,7 +127,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: bef4570afbb2e674e9ae8e0e7371e4cb, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -140,7 +140,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: b78f78088c86e064ebaf4e72e47a9f4a, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -153,7 +153,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 19d570d4d466c9e4689320d085a09cc2, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -166,7 +166,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 23094274ebf0dc647bdf66e63bc3c330, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -179,7 +179,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 11233822ae2bffd448dc465e664df0a4, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -192,7 +192,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 03650ccada4746744a5fc1eb0bc7d167, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -205,7 +205,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 207e782802f4fcc45928840400adb2e1, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -218,7 +218,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 0eb9cb6cf3cfbb648928e061f25f83ff, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -231,7 +231,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 502332be8ca8ffa4987b2e74f2b70eef, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -244,7 +244,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 12f20465a157bea41a04dc606dcc5c79, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -257,7 +257,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 45a3935d32b929840a21777b25cd83cf, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -270,7 +270,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: b574f7e3f32059c4c8782c05a8aa27a6, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -283,7 +283,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 328d79bf643322740b8486a7e9afff78, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -296,7 +296,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: dd2a246833a894949a1609f6dc22293b, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -309,7 +309,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 25587691dbed83f4ea4328b57d3d3299, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -322,7 +322,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 94a5116454a099f4290576beff0a3833, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -335,7 +335,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 63ce4d88f6fa1c547b9fc897000e3e1e, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -348,7 +348,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 97e80e08816b32a40b75070ac510d96b, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 1
     canMuffle: 1
@@ -361,7 +361,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 0e6c0c9c2e661854e8c933324657e764, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -374,7 +374,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 8120ee55ffda54645a7d84ac675b28f0, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -387,7 +387,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 5173da2f09c8d1246b5fe19fd52892fa, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -400,7 +400,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 59c0e90e33b89ee409707af76db4a39c, type: 3}
     volume: 1
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -413,7 +413,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 599b992c4c0a5d24d88e3bdd66305337, type: 3}
     volume: 0.2
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -426,7 +426,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 1ae7b73f0fe3d784e897899eb0ab299c, type: 3}
     volume: 0.2
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -439,7 +439,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 41dd69e3de1a48a48ad13f5ee5638ab3, type: 3}
     volume: 0.2
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1
@@ -452,7 +452,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: c75d7777fee0ab746a4199d6ba757ac2, type: 3}
     volume: 0.05
     pitch: 1
-    pitchBulletTime: 0
+    pitchBulletTime: 1
     loop: 0
     canStack: 0
     canMuffle: 1

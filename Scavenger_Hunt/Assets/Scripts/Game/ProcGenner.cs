@@ -84,6 +84,7 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_NavMesh;
     public VisualOptimizer m_Optimizer;
     public SceneDirector m_Director;
+    public DebugFeatures m_Debug;
     
     [Header("Generic prefabs")]
     public GameObject m_FloorPrefab;
@@ -254,6 +255,10 @@ public class ProcGenner : MonoBehaviour
         this.m_Entities.Add(instobj);
         this.m_Director = this.transform.gameObject.GetComponent<SceneDirector>();
         this.m_Director.SetMonster(instobj);
+        
+        // Setup the debug stuff
+        this.m_Debug.SetMonster(instobj);
+        this.m_Debug.SetCamera(this.m_Camera);
 
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
@@ -302,6 +307,7 @@ public class ProcGenner : MonoBehaviour
         coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, -1);
         instobj = Instantiate(this.m_Airlock, this.m_Airlock.transform.position + (coord-Center)*ProcGenner.GridScale, this.m_Airlock.transform.rotation);
         this.m_Entities.Add(instobj);
+        this.m_Debug.SetJumpPoint(0, this.m_Airlock.transform.position + (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
         doorpos = coord + (new Vector3(0, 0, 0.25f)*ProcGenner.GridScale/2);
         this.m_Doors.Add((doorpos, instobj));
         
@@ -338,6 +344,7 @@ public class ProcGenner : MonoBehaviour
         exitPosition = coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z);
         instobj = Instantiate(this.m_ExitElevator, (coord-Center)*ProcGenner.GridScale, this.m_ExitElevator.transform.rotation);
         this.m_Entities.Add(instobj);
+        this.m_Debug.SetJumpPoint(1, this.m_ExitElevator.transform.position + (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
         doorpos = coord + (new Vector3(0, 0, -0.25f)*ProcGenner.GridScale/2);
         this.m_Doors.Add((doorpos, instobj));
 
@@ -1285,7 +1292,7 @@ public class ProcGenner : MonoBehaviour
                         Vector3 tablepos = ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGenner.GridScale;
                         rdef.objects.Add(Instantiate(prefab, tablepos, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0)));
                         prefab = this.m_Items[Random.Range(0, this.m_Props.Count)];
-                        rdef.objects.Add(Instantiate(prefab, tablepos+ new Vector3(Random.Range(-1.0f, 1.0f), 1.4f, Random.Range(-1.0f, 1.0f)), prefab.transform.rotation*Quaternion.Euler(0, 0, Random.Range(0, 360))));
+                        rdef.objects.Add(Instantiate(prefab, tablepos+ new Vector3(Random.Range(-0.9f, 0.9f), 1.4f, Random.Range(-0.9f, 0.9f)), prefab.transform.rotation*Quaternion.Euler(0, 0, Random.Range(0, 360))));
                         occupied[x, z] = true;
                     }
                 }

@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 3774664189224017307}
   - component: {fileID: 7851462994791788167}
   m_Layer: 0
-  m_Name: MonsterPrefab
+  m_Name: Hunter
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
