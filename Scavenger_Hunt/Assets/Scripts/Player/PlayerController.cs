@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private const float ReloadStartTime = 0.333f;
     private const float ReloadLoopTime  = 0.833f;
     private const float ReloadEndTime   = 0.333f;
+     public  const float MuzzleLightSpeed = 0.1f;
     private PhotonView view;
 
     private Vector3 bulletSpread = new Vector3(0.1f,0.1f,0.1f);
