@@ -33,7 +33,7 @@ public class HunterAnimations : MonoBehaviour
     
     void Update()
     {
-       this.m_Animator.SetFloat("MoveSpeed", this.m_NavAgent.speed/5.0f);
+       this.m_Animator.SetFloat("MoveSpeed", this.m_NavAgent.velocity.magnitude/5.0f);
     }
     
     
