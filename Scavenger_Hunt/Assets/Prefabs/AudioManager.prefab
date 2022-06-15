@@ -695,3 +695,42 @@ MonoBehaviour:
     canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
+  - name: Gameplay/Win
+    clip: {fileID: 8300000, guid: 4c37d0a3b80480042ae500352df4869b, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 0
+    canReverb: 0
+    is3D: 0
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Gameplay/Death
+    clip: {fileID: 8300000, guid: 58287732c94a83c4a9c6133dcd8608cf, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 0
+    loop: 0
+    canStack: 0
+    canMuffle: 0
+    canReverb: 0
+    is3D: 0
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Gameplay/LightFlicker
+    clip: {fileID: 8300000, guid: c5b55cf0dc7ed54479d1b22b89fb06ca, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 1
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0

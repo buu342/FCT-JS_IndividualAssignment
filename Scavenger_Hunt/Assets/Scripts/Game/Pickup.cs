@@ -12,7 +12,7 @@ public class Pickup : MonoBehaviour
     public float m_Distance = 5.0f;
     public ItemType m_ItemType = ItemType.Scavange;
     public int m_Value = 1000;
-    
+     private bool multiplayer=JoinMultiplayer.Multiplayer;
     private GameObject m_Player;
     private SpriteRenderer m_Sprite;
     private float m_TargetAlpha = 0.0f;
@@ -52,7 +52,8 @@ public class Pickup : MonoBehaviour
     ==============================*/
     
     void Update()
-    {
+    {   if(multiplayer)
+        return;
         if (this.m_Player == null)
             return;
         Vector3 dist = this.m_Player.transform.position - this.transform.position;
@@ -87,6 +88,8 @@ public class Pickup : MonoBehaviour
     
     void PickedUp(InputAction.CallbackContext context)
     {
+         if(multiplayer)
+        return;
         if (this.m_ItemType == ItemType.Ammo && this.m_Player.GetComponent<PlayerController>().GetPlayerAmmoReserve() == PlayerController.ClipSize)
             return;
         if ((this.m_Player.transform.position - this.transform.position).magnitude < this.m_Distance)

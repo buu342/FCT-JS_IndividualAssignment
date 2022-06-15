@@ -45,6 +45,7 @@ public class ScreenGUI : MonoBehaviour
                 case 0:
                     this.m_DeathText.enabled = true;
                     this.m_DeathStateTimer = Time.unscaledTime + 2.0f;
+                    GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Gameplay/Death");
                     break;
                 case 1:
                     this.m_FinalScoreText.enabled = true;
@@ -81,6 +82,7 @@ public class ScreenGUI : MonoBehaviour
                     case 0:
                         this.m_LevelCompleteText.enabled = true;
                         this.m_NextLevelTimer = Time.unscaledTime + 2.0f;
+                        GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Gameplay/Win");
                         break;
                     case 1:
                         this.m_ItemsCollectedText.enabled = true;
