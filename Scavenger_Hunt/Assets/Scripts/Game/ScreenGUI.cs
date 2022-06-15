@@ -55,8 +55,9 @@ public class ScreenGUI : MonoBehaviour
                     this.m_DeathStateTimer = Time.unscaledTime + 2.0f;
                     break;
                 case 3:
-                    if(multiplayer)
+                    if(multiplayer){
                         PhotonNetwork.LeaveRoom();
+                        JoinMultiplayer.Multiplayer=false;}
                     SceneManager.LoadScene("StartMenu");
                     break;
             }
@@ -69,6 +70,7 @@ public class ScreenGUI : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             SceneManager.LoadScene("StartMenu");
+            JoinMultiplayer.Multiplayer=false;
         }
         if(!multiplayer)
         {
