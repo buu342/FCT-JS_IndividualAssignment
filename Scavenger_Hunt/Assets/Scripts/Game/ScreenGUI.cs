@@ -62,7 +62,7 @@ public class ScreenGUI : MonoBehaviour
             }
              SceneManager.LoadScene("StartMenu");
         }
-        
+        if(!multiplayer)
         if (this.m_NextLevelTimer != 0 && this.m_NextLevelTimer <= Time.unscaledTime)
         {
             Debug.Log("Loaded");
@@ -79,7 +79,7 @@ public class ScreenGUI : MonoBehaviour
     }
     
     public void LoadNextLevel()
-    {
+    {   if(!multiplayer)    
         if (this.m_NextLevelTimer == 0)
             this.m_NextLevelTimer = Time.unscaledTime + 5.0f;
     }
