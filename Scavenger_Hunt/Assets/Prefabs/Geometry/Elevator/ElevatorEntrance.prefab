@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3337463760034155343}
   - component: {fileID: 145991885486922609}
   m_Layer: 7
-  m_Name: ElevatorDoorLeft
+  m_Name: ElevatorDoorRight
   m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,71 +191,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1 &3024794657702817881
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5367830266800552220}
-  - component: {fileID: 1084314378416649547}
-  - component: {fileID: 2960759923650064137}
-  m_Layer: 7
-  m_Name: Trigger
-  m_TagString: Trigger
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5367830266800552220
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3024794657702817881}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3770401519892340806}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1084314378416649547
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3024794657702817881}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4, y: 3.9, z: 3.9}
-  m_Center: {x: 0, y: -4, z: 2}
---- !u!114 &2960759923650064137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3024794657702817881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 340848ade3fcc1d489377ea6d2f97ca6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TargetDoors:
-  - {fileID: 240569109891253084}
-  - {fileID: 5177342152873045980}
-  m_TriggerDelay: 0
-  m_TiggerType: 0
-  m_IgnoreMonster: 1
-  m_IsExit: 0
 --- !u!1 &4546657156345559804
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,7 +205,7 @@ GameObject:
   - component: {fileID: 240569109891253084}
   - component: {fileID: 5177342152873045980}
   m_Layer: 7
-  m_Name: ElevatorExit
+  m_Name: ElevatorEntrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -283,7 +218,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4546657156345559804}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -292,11 +227,10 @@ Transform:
   - {fileID: 2570009065232889647}
   - {fileID: 1869349856305555144}
   - {fileID: 148662733947768306}
-  - {fileID: 5367830266800552220}
   - {fileID: 8657086072101610851}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &287372353150234595
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -362,7 +296,7 @@ MonoBehaviour:
   m_DoorType: 1
   m_OpenSpeed: 0.02
   m_OpenAmount: 1
-  m_ModelPrefab: {fileID: 2135993830618937362}
+  m_ModelPrefab: {fileID: 6071593535186936239}
   m_OpenSound: Physics/ElevatorDoorOpen
   m_CloseSound: Physics/ElevatorDoorClose
 --- !u!114 &5177342152873045980
@@ -380,7 +314,7 @@ MonoBehaviour:
   m_DoorType: 2
   m_OpenSpeed: 0.02
   m_OpenAmount: 1
-  m_ModelPrefab: {fileID: 6071593535186936239}
+  m_ModelPrefab: {fileID: 2135993830618937362}
   m_OpenSound: 
   m_CloseSound: 
 --- !u!1 &6071593535186936239
@@ -396,7 +330,7 @@ GameObject:
   - component: {fileID: 6443348731325716497}
   - component: {fileID: 8373533067230711524}
   m_Layer: 7
-  m_Name: ElevatorDoorRight
+  m_Name: ElevatorDoorLeft
   m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -593,7 +527,7 @@ GameObject:
   - component: {fileID: 2478410950926980578}
   - component: {fileID: 2928102078860246809}
   m_Layer: 7
-  m_Name: TriggerClose
+  m_Name: TriggerOpen
   m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -612,7 +546,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3770401519892340806}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2478410950926980578
 BoxCollider:
@@ -642,7 +576,7 @@ MonoBehaviour:
   m_TargetDoors:
   - {fileID: 240569109891253084}
   - {fileID: 5177342152873045980}
-  m_TriggerDelay: 0
-  m_TiggerType: 2
+  m_TriggerDelay: 1
+  m_TiggerType: 1
   m_IgnoreMonster: 1
-  m_IsExit: 1
+  m_IsExit: 0

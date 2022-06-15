@@ -38,12 +38,6 @@ public class ProcGenner : MonoBehaviour
     [HideInInspector]
     public  Vector3       Center        = new Vector3(ProcGenner.MapSize_X/2, ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z/2);
     
-    private enum LevelType
-    {
-        First,
-        NotFirst
-    };
-    
     public enum BlockType
     {
         None,
@@ -125,10 +119,12 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_Airlock;
     public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
+    public GameObject m_EntranceElevator;
     public GameObject m_Table;
     public GameObject m_LampOn;
     public GameObject m_LampFlicker;
     public GameObject m_LampOff;
+    public GameObject m_AmmoPrefab;
     public List<GameObject> m_Props;
     public List<GameObject> m_Items;
     
@@ -141,6 +137,7 @@ public class ProcGenner : MonoBehaviour
     private List<(Vector3, GameObject)> m_Doors;
     private List<Graphs.Vertex> m_Vertices;
     private Dictionary<Graphs.Vertex, List<GameObject>> m_RoomVerts;
+    private LevelManager m_LevelManager;
     
     
     /*==============================
@@ -148,7 +145,7 @@ public class ProcGenner : MonoBehaviour
         Procedurally generates a level
     ==============================*/
     
-    public void GenerateScene()
+    public void GenerateScene(int levelcount)
     {
         #if UNITY_EDITOR
             System.DateTime time = System.DateTime.Now;
@@ -156,6 +153,7 @@ public class ProcGenner : MonoBehaviour
             int roomsculled = 0;
         #endif
         Vector3Int exitPosition;
+        this.m_LevelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         
         while (true)
         {            
@@ -191,7 +189,7 @@ public class ProcGenner : MonoBehaviour
             this.m_Optimizer.SetPlayer(null);
                     
             // Generate the rooms
-            exitPosition=GenerateRooms(LevelType.First);
+            exitPosition=GenerateRooms(levelcount);
             
             // Then generate the Delaunay tetrahedralization mesh for the map
             MakeDelaunay3D();
@@ -296,7 +294,7 @@ public class ProcGenner : MonoBehaviour
         @param The type of level
     ==============================*/
     
-    Vector3Int GenerateRooms(LevelType ltype)
+    Vector3Int GenerateRooms(int levelcount)
     {
         Vector3Int exitPosition;
         int roomcount = ProcGenner.MaxRooms;
@@ -307,9 +305,12 @@ public class ProcGenner : MonoBehaviour
         
         // Start by placing our spawn somewhere outside the grid
         coord = new Vector3Int((int)Random.Range(ProcGenner.MaxRoomSize_X, ProcGenner.MapSize_X-ProcGenner.MaxRoomSize_X), ProcGenner.MapSize_Y/2, -1);
-        instobj = Instantiate(this.m_Airlock, this.m_Airlock.transform.position + (coord-Center)*ProcGenner.GridScale, this.m_Airlock.transform.rotation);
+        if (levelcount > 1)
+            instobj = Instantiate(this.m_EntranceElevator, this.m_EntranceElevator.transform.position + (coord-Center)*ProcGenner.GridScale, this.m_EntranceElevator.transform.rotation);
+        else
+            instobj = Instantiate(this.m_Airlock, this.m_Airlock.transform.position + (coord-Center)*ProcGenner.GridScale, this.m_Airlock.transform.rotation);
         this.m_Entities.Add(instobj);
-        this.m_Debug.SetJumpPoint(0, this.m_Airlock.transform.position + (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
+        this.m_Debug.SetJumpPoint(0, instobj.transform.position, Quaternion.identity);
         doorpos = coord + (new Vector3(0, 0, 0.25f)*ProcGenner.GridScale/2);
         this.m_Doors.Add((doorpos, instobj));
         
@@ -318,11 +319,18 @@ public class ProcGenner : MonoBehaviour
         this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
         instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
         instobj.GetComponent<PlayerController>().SetSceneController(this.transform.gameObject);
+        this.m_LevelManager.SetPlayer(instobj);
+        if (levelcount > 1)
+        {
+            instobj.GetComponent<PlayerController>().SetPlayerAmmoClip(this.m_LevelManager.GetPlayerAmmoClip());
+            instobj.GetComponent<PlayerController>().SetPlayerAmmoReserve(this.m_LevelManager.GetPlayerAmmoReserve());
+        }
         this.m_Entities.Add(instobj);
         this.m_Optimizer.SetPlayer(instobj);
         
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
-        if (ltype != LevelType.First)
+        Debug.Log(levelcount);
+        if (levelcount > 1)
         {
             size = GenerateRoomVector();
             coord += new Vector3Int((int)(-size.x/2), 0, 1);
@@ -1294,7 +1302,9 @@ public class ProcGenner : MonoBehaviour
                         GameObject prefab = this.m_Table;
                         Vector3 tablepos = ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGenner.GridScale;
                         rdef.objects.Add(Instantiate(prefab, tablepos, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0)));
-                        prefab = this.m_Items[Random.Range(0, this.m_Props.Count)];
+                        prefab = this.m_Items[Random.Range(0, this.m_Items.Count)];
+                        if (prefab != this.m_AmmoPrefab)
+                            this.m_LevelManager.IncrementPickups();
                         rdef.objects.Add(Instantiate(prefab, tablepos+ new Vector3(Random.Range(-0.9f, 0.9f), 1.4f, Random.Range(-0.9f, 0.9f)), prefab.transform.rotation*Quaternion.Euler(0, 0, Random.Range(0, 360))));
                         occupied[x, z] = true;
                     }
@@ -1314,9 +1324,9 @@ public class ProcGenner : MonoBehaviour
                 if (Random.Range(0, 10) == 0)
                 {
                     if (Random.Range(0, 5) == 0)
-                        lightprefab = this.m_LampFlicker;
-                    else
                         lightprefab = this.m_LampOn;
+                    else
+                        lightprefab = this.m_LampFlicker;
                 }
                 rdef.objects.Add(Instantiate(lightprefab, lamppositions[i], lightprefab.transform.rotation));
             }

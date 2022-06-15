@@ -29,7 +29,7 @@ public class SceneDirector : MonoBehaviour
     
     void Start()
     {
-        this.GetComponent<ProcGenner>().GenerateScene();
+        this.GetComponent<ProcGenner>().GenerateScene(GameObject.Find("LevelManager").GetComponent<LevelManager>().GetLevelCount());
         this.m_Music = GameObject.Find("MusicManager").GetComponent<MusicManager>();
         this.m_Music.PlaySong("Music/Calm", true, true);
         this.m_MusicType = MusicType.Calm;
