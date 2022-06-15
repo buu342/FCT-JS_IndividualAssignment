@@ -405,6 +405,8 @@ MonoBehaviour:
   m_PlyAnims: {fileID: 2859675183100217818}
   m_AmmoClip: 8
   m_AmmoReserve: 8
+  trailOfBullets: {fileID: 0}
+  muzzle: {fileID: 0}
 --- !u!114 &7143493286251733301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,7 +562,7 @@ Animator:
   m_GameObject: {fileID: 8512297084061567289}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: a658590ed6f5d74448cc98dec679ab8b, type: 3}
-  m_Controller: {fileID: 9100000, guid: a025eaba5a00f4c4ab1ca9de6fc0c54f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3c680220dd03bc446a62f734e846d8a2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 1
   m_ApplyRootMotion: 0

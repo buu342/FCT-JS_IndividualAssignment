@@ -604,11 +604,10 @@ MonoBehaviour:
   m_Camera: {fileID: 205876208}
   m_NavMesh: {fileID: 3135358089962179253}
   m_Optimizer: {fileID: 1648054410}
+  m_Director: {fileID: 1648054411}
   m_FloorPrefab: {fileID: 4546657156345559804, guid: bcf2f365cb079944abc10eafc74202cc, type: 3}
   m_FloorDustPrefab: {fileID: 5977091273754970389, guid: 2cea54980f6b6aca08f7e6131d0aaf60, type: 3}
   m_CeilingPrefab: {fileID: 919132149155446097, guid: 6700df413555d7e41ab13ea5626c4e6e, type: 3}
-  m_Wall3Prefab: {fileID: 919132149155446097, guid: 1661fcb2a9ac04044930d3b329d15ed5, type: 3}
-  m_DoorWall2Prefab: {fileID: 1512847438612294568, guid: fe599b3bb2dbeb149b8225d0ebf1be04, type: 3}
   m_CorridorPrefab_Straight: {fileID: 6079494987575945719, guid: d28b251c47d11504d88dfb342c0a9b60, type: 3}
   m_CorridorPrefab_Curve: {fileID: 5116925716882930841, guid: ca4254d3dde62b0459ee9e24f1369aa1, type: 3}
   m_CorridorPrefab_T: {fileID: 6079494987575945719, guid: d0f91a69397b4c24989e9852975c5ebf, type: 3}
@@ -625,23 +624,17 @@ MonoBehaviour:
   m_Room2Prefab_GlassWall_Right: {fileID: 1512847438612294568, guid: 1d05e0aca0c19cf47917abb9f28b5db4, type: 3}
   m_Room3Prefab_Floor: {fileID: 4546657156345559804, guid: a6750465ed77517468e1e41ac499c3da, type: 3}
   m_Room3Prefab_Ceiling: {fileID: 4546657156345559804, guid: 910921b5507417c4caf3a1cea86768b7, type: 3}
+  m_Room3Prefab_Wall: {fileID: 1512847438612294568, guid: 88113795f24574c4caf213fe20ef1597, type: 3}
+  m_Room3Prefab_DoorWall: {fileID: 919132149155446097, guid: 46542ae82535bc348be55c1ba1efecbe, type: 3}
+  m_Room3Prefab_GlassWall: {fileID: 919132149155446097, guid: e8e7f505c1e828b4798ebd30f0323bed, type: 3}
+  m_Room3Prefab_GlassWall_Left: {fileID: 1512847438612294568, guid: c7683b5d96ae12a43ba1368c1d2ab02a, type: 3}
+  m_Room3Prefab_GlassWall_Mid: {fileID: 1512847438612294568, guid: 945a6c13e1bbaf94fb59e7e0817b83e4, type: 3}
+  m_Room3Prefab_GlassWall_Right: {fileID: 1512847438612294568, guid: 098566aaa562bef4cbb4d781cc0ab168, type: 3}
   m_MonsterPrefab: {fileID: 6333973165192279540, guid: 91354419b7ffcd751b1b50da384cbaa5, type: 3}
   m_PlayerPrefab: {fileID: 8512297084061567289, guid: edec63f17e0de3643ab1a7dda8bf3853, type: 3}
   m_Airlock: {fileID: 5906908505389256942, guid: 5b45b592b659a834f945e41793770b4c, type: 3}
   m_DoorPrefab: {fileID: 6969831614626464371, guid: ba85e3a3e085aa44dbd56e761cfcc9df, type: 3}
   m_ExitElevator: {fileID: 4546657156345559804, guid: 88b81f0ea483d224494c850bf74700c7, type: 3}
---- !u!114 &1648054409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1648054403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b58107df0872124e88e9bbeefdaa398, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1648054410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,6 +648,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ProcGen: {fileID: 1648054404}
+--- !u!114 &1648054411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648054403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b58107df0872124e88e9bbeefdaa398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2011978147
 PrefabInstance:
   m_ObjectHideFlags: 0
