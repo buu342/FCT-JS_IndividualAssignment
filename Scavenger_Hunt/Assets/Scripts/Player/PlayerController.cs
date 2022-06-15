@@ -4,7 +4,7 @@
 This script handles all of the player controls, movement physics,
 and combat.
 ****************************************************************/
-
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     private const float ReloadStartTime = 0.333f;
     private const float ReloadLoopTime  = 0.833f;
     private const float ReloadEndTime   = 0.333f;
+
+    private Vector3 bulletSpread = new Vector3(0.1f,0.1f,0.1f);
     
     public enum PlayerMovementState
     {
@@ -67,6 +69,9 @@ public class PlayerController : MonoBehaviour
     private PlayerMovementState m_MovementState = PlayerMovementState.Idle;
     private PlayerAimState m_AimState = PlayerAimState.Idle;
     private PlayerCombatState m_CombatState = PlayerCombatState.Idle;
+
+    public TrailRenderer trailOfBullets;
+    public GameObject muzzle;
 
     /*==============================
         Start
@@ -233,6 +238,12 @@ public class PlayerController : MonoBehaviour
                 this.m_AmmoClip--;
                 this.m_PlyAnims.FireAnimation();
                 this.m_CameraController.AddTrauma(0.5f);
+                RaycastHit hitInfo;
+                Vector3 bulletSpawn = muzzle.transform.position;
+                if(Physics.Raycast(this.transform.position,this.transform.forward, out hitInfo)) {
+                    TrailRenderer trail = Instantiate(trailOfBullets, bulletSpawn, Quaternion.identity);
+                    StartCoroutine(SpawnTrail(trail, hitInfo));    
+                }
             }
             else
                 this.m_Audio.Play("Shotgun/DryFire", this.transform.gameObject);
@@ -241,7 +252,19 @@ public class PlayerController : MonoBehaviour
             this.m_CancelReload = true;
         }
     }
-    
+
+    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit) {
+        Vector3 startPosition = trail.transform.position;
+        float time = 0;
+        while(time <1) {
+            trail.transform.position = Vector3.Lerp(startPosition, hit.point,time);
+            time += Time.deltaTime /trail.time;
+            yield return null;
+        }
+
+        trail.transform.position = hit.point;
+        Destroy(trail.gameObject, trail.time);
+    }
     
     /*==============================
         Aim
