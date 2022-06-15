@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: FINAL SCORE
+  m_text: FINAL HAUL
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e43f70928e712e94aa431805876d3a07, type: 2}
   m_sharedMaterial: {fileID: -1475693489528441388, guid: e43f70928e712e94aa431805876d3a07, type: 2}
@@ -759,7 +759,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'CURRENT SCORE: '
+  m_text: 'CURRENT HAUL: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e43f70928e712e94aa431805876d3a07, type: 2}
   m_sharedMaterial: {fileID: -1475693489528441388, guid: e43f70928e712e94aa431805876d3a07, type: 2}
@@ -1163,6 +1163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FadeImage: {fileID: 7383481318320739668}
   m_DeathText: {fileID: 5711560810190262881}
+  m_WinningText: {fileID: 0}
   m_LevelCompleteText: {fileID: 3772167392405035897}
   m_ItemsCollectedText: {fileID: 4085609432247065261}
   m_CurrentScoreText: {fileID: 3410084622008509087}

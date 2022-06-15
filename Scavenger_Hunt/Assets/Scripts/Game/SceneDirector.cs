@@ -18,7 +18,6 @@ public class SceneDirector : MonoBehaviour
         LessCalm
     }
     
-
     [Header("Tutorial Prefabs")]
     public GameObject MovementPrefab;
     public GameObject ReloadPrefab;

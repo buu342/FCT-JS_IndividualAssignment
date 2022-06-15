@@ -139,6 +139,7 @@ public class ProcGenner : MonoBehaviour
     private Dictionary<Graphs.Vertex, List<GameObject>> m_RoomVerts;
     private Transform m_airLockTransform;
     private LevelManager m_LevelManager;
+    private GameObject m_Player;
     
     /*==============================
         GenerateScene
@@ -224,6 +225,7 @@ public class ProcGenner : MonoBehaviour
         PlaceObjectsInRooms();
         
         // Generate a walkable navmesh
+        NavMesh.RemoveAllNavMeshData();
         List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
         NavMeshData navmeshdata = new NavMeshData();
         NavMesh.AddNavMeshData(navmeshdata);
@@ -318,6 +320,7 @@ public class ProcGenner : MonoBehaviour
         // Create the player on the spawn
         instobj = Instantiate(this.m_PlayerPrefab, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
         this.m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
+        this.m_Player = instobj;
         instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
         instobj.GetComponent<PlayerController>().SetSceneController(this.transform.gameObject);
         this.m_LevelManager.SetPlayer(instobj);
@@ -331,7 +334,6 @@ public class ProcGenner : MonoBehaviour
         this.m_Entities.Add(instobj);
 
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
-        Debug.Log(levelcount);
         if (levelcount > 1)
         {
             size = GenerateRoomVector();
@@ -1305,13 +1307,16 @@ public class ProcGenner : MonoBehaviour
                     }
                     else if (!occupied[x, z] && Random.Range(0, 4) == 0)
                     {
+                        GameObject inst;
                         GameObject prefab = this.m_Table;
                         Vector3 tablepos = ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGenner.GridScale;
                         rdef.objects.Add(Instantiate(prefab, tablepos, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0)));
                         prefab = this.m_Items[Random.Range(0, this.m_Items.Count)];
                         if (prefab != this.m_AmmoPrefab)
                             this.m_LevelManager.IncrementPickups();
-                        rdef.objects.Add(Instantiate(prefab, tablepos+ new Vector3(Random.Range(-0.9f, 0.9f), 1.4f, Random.Range(-0.9f, 0.9f)), prefab.transform.rotation*Quaternion.Euler(0, 0, Random.Range(0, 360))));
+                        inst = Instantiate(prefab, tablepos+ new Vector3(Random.Range(-0.9f, 0.9f), 1.4f, Random.Range(-0.9f, 0.9f)), prefab.transform.rotation*Quaternion.Euler(0, 0, Random.Range(0, 360)));
+                        inst.transform.GetChild(0).GetComponent<Pickup>().SetPlayer(this.m_Player);
+                        rdef.objects.Add(inst);
                         occupied[x, z] = true;
                     }
                 }

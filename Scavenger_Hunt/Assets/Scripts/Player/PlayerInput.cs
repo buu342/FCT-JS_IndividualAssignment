@@ -125,6 +125,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pickup"",
+                    ""type"": ""Button"",
+                    ""id"": ""1940c073-57d3-466d-b53c-b4b894eac160"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -422,6 +431,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""JumpPoint4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b9c93e13-0e0c-4936-98da-5aec19850766"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pickup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1040,6 +1060,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_JumpPoint2 = m_Player.FindAction("JumpPoint2", throwIfNotFound: true);
         m_Player_JumpPoint3 = m_Player.FindAction("JumpPoint3", throwIfNotFound: true);
         m_Player_JumpPoint4 = m_Player.FindAction("JumpPoint4", throwIfNotFound: true);
+        m_Player_Pickup = m_Player.FindAction("Pickup", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1123,6 +1144,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_JumpPoint2;
     private readonly InputAction m_Player_JumpPoint3;
     private readonly InputAction m_Player_JumpPoint4;
+    private readonly InputAction m_Player_Pickup;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -1138,6 +1160,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @JumpPoint2 => m_Wrapper.m_Player_JumpPoint2;
         public InputAction @JumpPoint3 => m_Wrapper.m_Player_JumpPoint3;
         public InputAction @JumpPoint4 => m_Wrapper.m_Player_JumpPoint4;
+        public InputAction @Pickup => m_Wrapper.m_Player_Pickup;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1180,6 +1203,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @JumpPoint4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint4;
                 @JumpPoint4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint4;
                 @JumpPoint4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJumpPoint4;
+                @Pickup.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickup;
+                @Pickup.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickup;
+                @Pickup.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickup;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1217,6 +1243,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @JumpPoint4.started += instance.OnJumpPoint4;
                 @JumpPoint4.performed += instance.OnJumpPoint4;
                 @JumpPoint4.canceled += instance.OnJumpPoint4;
+                @Pickup.started += instance.OnPickup;
+                @Pickup.performed += instance.OnPickup;
+                @Pickup.canceled += instance.OnPickup;
             }
         }
     }
@@ -1392,6 +1421,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnJumpPoint2(InputAction.CallbackContext context);
         void OnJumpPoint3(InputAction.CallbackContext context);
         void OnJumpPoint4(InputAction.CallbackContext context);
+        void OnPickup(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

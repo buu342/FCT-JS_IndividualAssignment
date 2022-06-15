@@ -669,3 +669,29 @@ MonoBehaviour:
     canAlertMonster: 0
     maxDistance: 32
     maxDistanceSqr: 0
+  - name: Gameplay/Pickup
+    clip: {fileID: 8300000, guid: db6f80ae27273d84d99bb49a3c431c70, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 0
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0
+  - name: Gameplay/PickupAmmo
+    clip: {fileID: 8300000, guid: 7e1060e41622ace4ebbf3d4f9afbd0db, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 0
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 32
+    maxDistanceSqr: 0

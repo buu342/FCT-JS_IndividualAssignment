@@ -51,12 +51,13 @@ public class ScreenGUI : MonoBehaviour
                     this.m_DeathStateTimer = Time.unscaledTime + 1.0f;
                     break;
                 case 2:
-                    this.m_FinalScoreText.text += "\n"+GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
+                    this.m_FinalScoreText.text += "\n$"+GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
                     this.m_DeathStateTimer = Time.unscaledTime + 2.0f;
                     break;
                 case 3:
-                    if(multiplayer)
+                    if(multiplayer){
                         PhotonNetwork.LeaveRoom();
+                        JoinMultiplayer.Multiplayer=false;}
                     SceneManager.LoadScene("StartMenu");
                     break;
             }
@@ -69,6 +70,7 @@ public class ScreenGUI : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             SceneManager.LoadScene("StartMenu");
+            JoinMultiplayer.Multiplayer=false;
         }
         if(!multiplayer)
         {
@@ -82,12 +84,12 @@ public class ScreenGUI : MonoBehaviour
                         break;
                     case 1:
                         this.m_ItemsCollectedText.enabled = true;
-                        this.m_ItemsCollectedText.text += "AAA" + "/" + GameObject.Find("LevelManager").GetComponent<LevelManager>().GetPickupCount();
+                        this.m_ItemsCollectedText.text += GameObject.Find("LevelManager").GetComponent<LevelManager>().GetCollectedPickupCount() + "/" + GameObject.Find("LevelManager").GetComponent<LevelManager>().GetPickupCount();
                         this.m_NextLevelTimer = Time.unscaledTime + 1.0f;
                         break;
                     case 2:
                         this.m_CurrentScoreText.enabled = true;
-                        this.m_CurrentScoreText.text += GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
+                        this.m_CurrentScoreText.text += "$"+GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
                         this.m_NextLevelTimer = Time.unscaledTime + 3.0f;
                         break;
                     case 3:
