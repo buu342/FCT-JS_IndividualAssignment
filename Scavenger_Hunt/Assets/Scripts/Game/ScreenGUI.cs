@@ -10,6 +10,7 @@ public class ScreenGUI : MonoBehaviour
      public TextMeshProUGUI m_WinningText;
     private int m_DeathState = 0;
     private float m_DeathStateTimer = 0;
+    private float m_NextLevelTimer = 0;
     private bool m_PlayerDead = false;
     private float m_Fade = 255.0f;
     private bool multiplayer=JoinMultiplayer.Multiplayer;
@@ -30,7 +31,7 @@ public class ScreenGUI : MonoBehaviour
                 this.m_FadeImage.color = new Color(0.0f, 0.0f, 0.0f, this.m_Fade/255.0f);
             }
         }
-        if (this.m_DeathStateTimer != 0 && this.m_DeathStateTimer <= Time.unscaledTime)
+        if (this.m_DeathStateTimer != 0 && this.m_DeathStateTimer < Time.unscaledTime)
         {
             switch (this.m_DeathState)
             {
@@ -61,6 +62,12 @@ public class ScreenGUI : MonoBehaviour
             }
              SceneManager.LoadScene("StartMenu");
         }
+        
+        if (this.m_NextLevelTimer != 0 && this.m_NextLevelTimer <= Time.unscaledTime)
+        {
+            Debug.Log("Loaded");
+            GameObject.Find("LevelManager").GetComponent<LevelManager>().LoadNextLevel();
+        }
     }
     
     public void PlayerDied()
@@ -69,5 +76,11 @@ public class ScreenGUI : MonoBehaviour
         this.m_Fade = 255;
         this.m_FadeImage.color = new Color(0.0f, 0.0f, 0.0f, this.m_Fade/255.0f);
         this.m_DeathStateTimer = Time.unscaledTime + 2.0f;
+    }
+    
+    public void LoadNextLevel()
+    {
+        if (this.m_NextLevelTimer == 0)
+            this.m_NextLevelTimer = Time.unscaledTime + 5.0f;
     }
 }
