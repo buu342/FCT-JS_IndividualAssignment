@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5947668141690493230}
-  - component: {fileID: 627297285846281120}
+  - component: {fileID: 6078285790401467184}
   m_Layer: 9
   m_Name: PilferTutorial
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &627297285846281120
+--- !u!114 &6078285790401467184
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,12 +42,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4371270267689059331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a25169657659ca4b9352eb651d2f5ea, type: 3}
+  m_Script: {fileID: 11500000, guid: dc96cd736e9558b4a9975ec7cea97a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Distance: 4.11
-  m_Player: {fileID: 0}
-  DebugRadius: 1
+  m_Distance: 5
+  m_ItemType: 1
+  m_Value: 1000
+  DebugRadius: 0
 --- !u!1 &7157836041458112714
 GameObject:
   m_ObjectHideFlags: 0

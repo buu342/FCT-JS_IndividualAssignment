@@ -39,6 +39,8 @@ public class VisualOptimizerMultiplayer : MonoBehaviour
                     {
                         foreach (GameObject obj in room.objects)
                         {
+                            if (obj == null)
+                                continue;
                             if (obj.GetComponent<SkinnedMeshRenderer>() != null)
                                 obj.GetComponent<SkinnedMeshRenderer>().enabled = visible;
                             if (obj.GetComponent<MeshRenderer>() != null)

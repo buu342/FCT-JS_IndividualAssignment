@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
         public int playerclip;
         public int playerreserve;
         public int levelpickups;
+        public int collectedpickups;
     }
     
     private GameObject m_Player = null;
@@ -48,7 +49,7 @@ public class LevelManager : MonoBehaviour
             StartNewGame();
         }
         
-        if (Playing && (SceneManager.GetActiveScene().name == "SampleScene" || SceneManager.GetActiveScene().name == "SampleSceneMultiplayer"))
+        if (Playing && SceneManager.GetActiveScene().name != "SampleScene" && SceneManager.GetActiveScene().name != "SampleSceneMultiplayer")
         {
             Playing = false;
             StartNewGame();
@@ -57,13 +58,13 @@ public class LevelManager : MonoBehaviour
     
     public void StartNewGame()
     {
-        Debug.Log("Started New Game");
         Playing = true;
         PlyData.score = 0;
         PlyData.levels = 1;
         PlyData.levelpickups = 0;
         PlyData.playerclip = 0;
         PlyData.playerreserve = 0;
+        PlyData.collectedpickups = 0;
     }
     
     public void LoadNextLevel()
@@ -71,6 +72,7 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 1.0f;
         PlyData.levels++;
         PlyData.levelpickups = 0;
+        PlyData.collectedpickups = 0;
         PlyData.playerclip = this.m_Player.GetComponent<PlayerController>().GetPlayerAmmoClip();
         PlyData.playerreserve = this.m_Player.GetComponent<PlayerController>().GetPlayerAmmoReserve();
         SceneManager.LoadScene("SampleScene");
@@ -101,6 +103,11 @@ public class LevelManager : MonoBehaviour
         return PlyData.levelpickups;
     }
     
+    public int GetCollectedPickupCount()
+    {
+        return PlyData.collectedpickups;
+    }
+    
     public void SetPlayer(GameObject obj)
     {
         this.m_Player = obj;
@@ -109,5 +116,15 @@ public class LevelManager : MonoBehaviour
     public void IncrementPickups()
     {
         PlyData.levelpickups++;
+    }
+    
+    public void GiveScore(int score)
+    {
+        PlyData.score += score;
+    }
+    
+    public void PickedUpPickups()
+    {
+        PlyData.collectedpickups++;
     }
 }

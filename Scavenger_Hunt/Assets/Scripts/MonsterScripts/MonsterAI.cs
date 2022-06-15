@@ -85,7 +85,7 @@ public class MonsterAI : MonoBehaviour
             switch(monsterState) {
                 case MonsterState.ChasingPlayer:
                     ChasePlayer();
-                    Debug.Log("chasing");
+                    //Debug.Log("chasing");
                     break;
                 case MonsterState.Patrolling:
                     Patrol();
@@ -171,7 +171,7 @@ public class MonsterAI : MonoBehaviour
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
             destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
             agent.SetDestination(destination);
-            Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
+            //Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
     }
         else if(!agent.hasPath&multiplayer){
            List<RoomDefMulti> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGennerMultiplayer>().GetRoomDefs();
@@ -179,7 +179,7 @@ public class MonsterAI : MonoBehaviour
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
             destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
             agent.SetDestination(destination);
-            Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
+            //Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
         }
     }
 

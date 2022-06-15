@@ -51,7 +51,7 @@ public class ScreenGUI : MonoBehaviour
                     this.m_DeathStateTimer = Time.unscaledTime + 1.0f;
                     break;
                 case 2:
-                    this.m_FinalScoreText.text += "\n"+GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
+                    this.m_FinalScoreText.text += "\n$"+GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
                     this.m_DeathStateTimer = Time.unscaledTime + 2.0f;
                     break;
                 case 3:
@@ -82,12 +82,12 @@ public class ScreenGUI : MonoBehaviour
                         break;
                     case 1:
                         this.m_ItemsCollectedText.enabled = true;
-                        this.m_ItemsCollectedText.text += "AAA" + "/" + GameObject.Find("LevelManager").GetComponent<LevelManager>().GetPickupCount();
+                        this.m_ItemsCollectedText.text += GameObject.Find("LevelManager").GetComponent<LevelManager>().GetCollectedPickupCount() + "/" + GameObject.Find("LevelManager").GetComponent<LevelManager>().GetPickupCount();
                         this.m_NextLevelTimer = Time.unscaledTime + 1.0f;
                         break;
                     case 2:
                         this.m_CurrentScoreText.enabled = true;
-                        this.m_CurrentScoreText.text += GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
+                        this.m_CurrentScoreText.text += "$"+GameObject.Find("LevelManager").GetComponent<LevelManager>().GetScore();
                         this.m_NextLevelTimer = Time.unscaledTime + 3.0f;
                         break;
                     case 3:
