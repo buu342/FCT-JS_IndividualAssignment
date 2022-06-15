@@ -260,7 +260,7 @@ public class PlayerController : MonoBehaviour
             RaycastHit hitInfo;
             Vector3 bulletSpawn = muzzle.transform.position;
             Vector3 bulletDirection = RandomizeDirection(muzzle.transform.forward);
-            if(Physics.Raycast(muzzle.transform.position, bulletDirection, out hitInfo, QueryTriggerInteraction.Ignore)) {
+            if(Physics.Raycast(muzzle.transform.position, bulletDirection, out hitInfo,Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) {
                 Debug.Log("Shot collide");
                 TrailRenderer trail = Instantiate(trailOfBullets, bulletSpawn, Quaternion.identity);
                 StartCoroutine(SpawnTrail(trail, hitInfo));    
