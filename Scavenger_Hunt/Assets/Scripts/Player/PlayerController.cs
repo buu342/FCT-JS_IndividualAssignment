@@ -264,6 +264,8 @@ public class PlayerController : MonoBehaviour
     {
         if(!DebugFeatures.pauseAnimations && !m_CameraController.isInFreeMode()) 
         {
+            if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
+            {
                 if (this.m_AmmoClip > 0)
                 {
                     this.m_Audio.Play("Shotgun/Fire", this.transform.gameObject);
@@ -277,8 +279,9 @@ public class PlayerController : MonoBehaviour
                 else
                     this.m_Audio.Play("Shotgun/DryFire", this.transform.gameObject);
             }
-            else if (this.m_CombatState == PlayerCombatState.ReloadStart || this.m_CombatState == PlayerCombatState.ReloadLoop || this.m_CombatState == PlayerCombatState.ReloadEnd)
-                this.m_CancelReload = true;
+        }
+        else if (this.m_CombatState == PlayerCombatState.ReloadStart || this.m_CombatState == PlayerCombatState.ReloadLoop || this.m_CombatState == PlayerCombatState.ReloadEnd)
+            this.m_CancelReload = true;
     }
 
     private void FireShell() {
@@ -499,7 +502,7 @@ public class PlayerController : MonoBehaviour
     { if(view!=null)
         if(!view.IsMine)
         return;
-        //this.m_Audio.Play("Skye/Death");
+        this.m_Audio.Play("Skye/Death");
         GameObject.Find("MusicManager").GetComponent<MusicManager>().StopMusic();
         this.m_SceneController.transform.Find("GUI").GetComponent<ScreenGUI>().PlayerDied();
         this.m_SceneController.GetComponent<DebugFeatures>().PlayerDied();
