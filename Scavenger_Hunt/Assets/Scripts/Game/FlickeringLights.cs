@@ -7,12 +7,18 @@ public class FlickeringLights : MonoBehaviour
     public Light light; 
     public ParticleSystem particles;
     public float timeToFlick;
-    public bool isFlickering;
+    public MeshRenderer mesh;
+    public Material OnMaterial;
+    public Material OffMaterial;
+    private float flickTimer;
+    private bool isFlickering;
     // Start is called before the first frame update
     void Start()
     {
         particles = GetComponent<ParticleSystem>();
         light = GetComponent<Light>();
+        for (int i=0; i<this.mesh.materials.Length; i++)
+            this.mesh.materials[i] = new Material(this.mesh.materials[i]);
     }
 
     // Update is called once per frame
@@ -25,17 +31,23 @@ public class FlickeringLights : MonoBehaviour
 
     IEnumerator Flicker() {
         isFlickering = true;
+        Material[] mats = (Material[]) this.mesh.materials.Clone();
         bool sparkle = Random.Range(10,20) <= 15;
-        light.enabled = false;
-        timeToFlick = Random.Range(0.5f, 20f);
-        if(sparkle) {
-        }
-        yield return new WaitForSeconds(timeToFlick);
+        flickTimer = 1.5f;
         if(sparkle)
+        {
+            light.enabled = false;
             particles.Play();
+            mats[0] = OffMaterial;
+        }
+        this.mesh.materials = mats;
+        yield return new WaitForSeconds(flickTimer);
+        particles.Stop();
+        mats[0] = OnMaterial;
         light.enabled = true;
-        timeToFlick = Random.Range(0.5f, 1f);
-        yield return new WaitForSeconds(timeToFlick);
+        flickTimer = Random.Range(timeToFlick/2, timeToFlick);
+        this.mesh.materials = mats;
+        yield return new WaitForSeconds(flickTimer);
         particles.Stop();
         isFlickering = false;
     }

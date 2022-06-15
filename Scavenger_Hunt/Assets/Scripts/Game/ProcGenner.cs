@@ -126,7 +126,9 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
     public GameObject m_Table;
-    public GameObject m_Lamp;
+    public GameObject m_LampOn;
+    public GameObject m_LampFlicker;
+    public GameObject m_LampOff;
     public List<GameObject> m_Props;
     public List<GameObject> m_Items;
     
@@ -1296,6 +1298,26 @@ public class ProcGenner : MonoBehaviour
                         occupied[x, z] = true;
                     }
                 }
+            }
+            
+            // Place 4 lamps in the room
+            Vector3[] lamppositions = new Vector3[4];
+            Vector3 mid = (rdef.position-Center + new Vector3(rdef.size.x-1, 0, rdef.size.z-1)/2)*ProcGenner.GridScale;
+            lamppositions[0] = mid + (new Vector3(((float)rdef.size.x)/4, rdef.size.y, ((float)rdef.size.z)/4))*ProcGenner.GridScale;
+            lamppositions[1] = mid + (new Vector3(-((float)rdef.size.x)/4, rdef.size.y, ((float)rdef.size.z)/4))*ProcGenner.GridScale;
+            lamppositions[2] = mid + (new Vector3(-((float)rdef.size.x)/4, rdef.size.y, -((float)rdef.size.z)/4))*ProcGenner.GridScale;
+            lamppositions[3] = mid + (new Vector3(((float)rdef.size.x)/4, rdef.size.y, -((float)rdef.size.z)/4))*ProcGenner.GridScale;
+            for (int i=0; i<4; i++)
+            {
+                GameObject lightprefab = this.m_LampOff;
+                if (Random.Range(0, 10) == 0)
+                {
+                    if (Random.Range(0, 5) == 0)
+                        lightprefab = this.m_LampFlicker;
+                    else
+                        lightprefab = this.m_LampOn;
+                }
+                rdef.objects.Add(Instantiate(lightprefab, lamppositions[i], lightprefab.transform.rotation));
             }
         }
     }

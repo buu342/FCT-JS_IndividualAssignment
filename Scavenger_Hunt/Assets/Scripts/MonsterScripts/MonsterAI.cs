@@ -137,7 +137,8 @@ public class MonsterAI : MonoBehaviour
     }
 
     public void ChasePlayer() {
-        
+        if (playerToChase == null)
+            return;
           //TODO: change music for chasing
         monsterState = MonsterState.ChasingPlayer;
         agent.SetDestination(playerToChase.transform.position);

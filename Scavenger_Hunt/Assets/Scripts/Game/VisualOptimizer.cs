@@ -43,6 +43,21 @@ public class VisualOptimizer : MonoBehaviour
                                 obj.GetComponent<SkinnedMeshRenderer>().enabled = visible;
                             if (obj.GetComponent<MeshRenderer>() != null)
                                 obj.GetComponent<MeshRenderer>().enabled = visible;
+                            if (obj.GetComponent<ParticleSystemRenderer>() != null)
+                                obj.GetComponent<ParticleSystemRenderer>().enabled = visible;
+                            if (obj.gameObject.GetComponent<Light>() != null)
+                                obj.gameObject.GetComponent<Light>().enabled = visible;
+                            foreach(Transform child in obj.transform)
+                            {
+                                if (child.gameObject.GetComponent<SkinnedMeshRenderer>() != null)
+                                    child.gameObject.GetComponent<SkinnedMeshRenderer>().enabled = visible;
+                                if (child.gameObject.GetComponent<MeshRenderer>() != null)
+                                    child.gameObject.GetComponent<MeshRenderer>().enabled = visible;
+                                if (child.gameObject.GetComponent<ParticleSystemRenderer>() != null)
+                                    child.gameObject.GetComponent<ParticleSystemRenderer>().enabled = visible;
+                                if (child.gameObject.GetComponent<Light>() != null)
+                                    child.gameObject.GetComponent<Light>().enabled = visible;
+                            }
                         }
                         this.m_ProcGen.SetRoomVisible(i, visible);
                         #if UNITY_EDITOR

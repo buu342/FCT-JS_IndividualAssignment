@@ -96,7 +96,9 @@ MonoBehaviour:
   m_DoorPrefab: {fileID: 6969831614626464371, guid: ba85e3a3e085aa44dbd56e761cfcc9df, type: 3}
   m_ExitElevator: {fileID: 4546657156345559804, guid: 88b81f0ea483d224494c850bf74700c7, type: 3}
   m_Table: {fileID: 2568041744584808639, guid: a1f01e300f00ca8499e7ae783db1e715, type: 3}
-  m_Lamp: {fileID: 2568041744584808639, guid: 1cc688d4720a69b448378b31caedaf78, type: 3}
+  m_LampOn: {fileID: 2568041744584808639, guid: 1cc688d4720a69b448378b31caedaf78, type: 3}
+  m_LampFlicker: {fileID: 2568041744584808639, guid: 024b0a619def4204e95c0ad6d58f6f9d, type: 3}
+  m_LampOff: {fileID: 2568041744584808639, guid: 3a81a2a61d9744b4ea6e6a6e64b4124d, type: 3}
   m_Props:
   - {fileID: 2568041744584808639, guid: aaf8cd872b99c40449876a43f772f6df, type: 3}
   - {fileID: 2568041744584808639, guid: aaee76889fb6a7749ad796afa3f559c2, type: 3}
