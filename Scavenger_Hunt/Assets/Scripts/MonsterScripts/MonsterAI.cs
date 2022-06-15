@@ -107,22 +107,18 @@ public class MonsterAI : MonoBehaviour
     public void Patrol() {
         
         if(!agent.hasPath&!multiplayer) {
-            if(!startedPatrolling) {
-                startedPatrolling = true;
-                //TODO: start standard music
-                musicManager.PlaySong("Music/Calm", true, true, true);
-            }
+           
             List<RoomDef> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGenner>().GetRoomDefs();
             int roomToCheck = Random.Range(0,roomsInLevel.Count);
+            Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
             destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
             agent.SetDestination(destination);
             Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
-        }
+    }
         else if(!agent.hasPath&multiplayer){
-            List<RoomDefMulti> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGennerMultiplayer>().GetRoomDefs();
-            int roomToCheck = Random.Range(0,roomsInLevel.Count);
+           int roomToCheck = Random.Range(0,roomsInLevel.Count);
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
-            Vector3 destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
+            destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
             agent.SetDestination(destination);
             Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
         }
