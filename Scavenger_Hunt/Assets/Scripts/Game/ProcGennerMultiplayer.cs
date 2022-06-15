@@ -81,7 +81,8 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
     public GameObject m_NavMesh;
     public VisualOptimizerMultiplayer m_Optimizer;
     public SceneDirectorMultiplayer m_Director;
-
+    public DebugFeatures m_Debug;
+    
     [Header("Generic prefabs")]
     public GameObject m_FloorPrefab;
     public GameObject m_FloorDustPrefab;
@@ -124,7 +125,9 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
     public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
     public GameObject m_Table;
-    public GameObject m_Lamp;
+    public GameObject m_LampOn;
+    public GameObject m_LampFlicker;
+    public GameObject m_LampOff;
     public List<GameObject> m_Props;
     public List<GameObject> m_Items;
     
@@ -308,10 +311,7 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
                 instobj.GetComponent<PlayerController>().SetCamera(m_Camera);  
                 this.m_Entities.Add(instobj);
                 this.m_Optimizer.SetPlayer(instobj);
-
-        
-                
-        
+         
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
         if (ltype != LevelType.First)
         {
@@ -338,6 +338,7 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
          exitPosition =coord = new Vector3Int((int)Random.Range(ProcGennerMultiplayer.MaxRoomSize_X, ProcGennerMultiplayer.MapSize_X-ProcGennerMultiplayer.MaxRoomSize_X), ProcGennerMultiplayer.MapSize_Y/2, ProcGennerMultiplayer.MapSize_Z);
         instobj = Instantiate(this.m_ExitElevator, (coord-Center)*ProcGennerMultiplayer.GridScale, this.m_ExitElevator.transform.rotation);
         this.m_Entities.Add(instobj);
+        this.m_Debug.SetJumpPoint(1, this.m_ExitElevator.transform.position + (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
         doorpos = coord + (new Vector3(0, 0, -0.25f)*ProcGennerMultiplayer.GridScale/2);
         this.m_Doors.Add((doorpos, instobj));
         
@@ -485,10 +486,6 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
     }
       
 
-    
-    
-      
-    
     /*==============================
         DoorExists
         Checks if a door exists in a given coordinate
@@ -1092,8 +1089,8 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
                 continue;
             }
             
+
            /* ========== Dead End Edge Case ========== */
-            
             
             // Dead End (Connected at right)
             if (CorridorConnectedLeft(cdef))
@@ -1178,7 +1175,6 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
         return false;
     }
     
-    
     public List<ProcGennerMultiplayer.RoomDef> GetRoomDefs()
     {
         return this.m_Rooms;
@@ -1244,6 +1240,7 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
         return null;
     }
     
+    
 void PlaceObjectsInRooms()
     {
         foreach (RoomDef rdef in this.m_Rooms)
@@ -1294,6 +1291,25 @@ void PlaceObjectsInRooms()
                     }
                 }
             }
+             // Place 4 lamps in the room
+            Vector3[] lamppositions = new Vector3[4];
+            Vector3 mid = (rdef.position-Center + new Vector3(rdef.size.x-1, 0, rdef.size.z-1)/2)*ProcGennerMultiplayer.GridScale;
+            lamppositions[0] = mid + (new Vector3(((float)rdef.size.x)/4, rdef.size.y, ((float)rdef.size.z)/4))*ProcGennerMultiplayer.GridScale;
+            lamppositions[1] = mid + (new Vector3(-((float)rdef.size.x)/4, rdef.size.y, ((float)rdef.size.z)/4))*ProcGennerMultiplayer.GridScale;
+            lamppositions[2] = mid + (new Vector3(-((float)rdef.size.x)/4, rdef.size.y, -((float)rdef.size.z)/4))*ProcGennerMultiplayer.GridScale;
+            lamppositions[3] = mid + (new Vector3(((float)rdef.size.x)/4, rdef.size.y, -((float)rdef.size.z)/4))*ProcGennerMultiplayer.GridScale;
+            for (int i=0; i<4; i++)
+            {
+                GameObject lightprefab = this.m_LampOff;
+                if (Random.Range(0, 10) == 0)
+                {
+                    if (Random.Range(0, 5) == 0)
+                        lightprefab = this.m_LampFlicker;
+                    else
+                        lightprefab = this.m_LampOn;
+                }
+                rdef.objects.Add(Instantiate(lightprefab, lamppositions[i], lightprefab.transform.rotation));
+            }
         }
     }
     #if UNITY_EDITOR
@@ -1322,6 +1338,4 @@ void PlaceObjectsInRooms()
             }
         }
     #endif
-
-  
 }

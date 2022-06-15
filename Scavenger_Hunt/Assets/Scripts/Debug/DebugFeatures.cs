@@ -8,7 +8,6 @@ public class DebugFeatures : MonoBehaviour
     public CameraController m_Camera;
     public GameObject m_Monster;
     public GameObject m_Player;
-    
     private string m_TargetName = "";
     private int frameRate;
     private bool calculateFrames;
@@ -68,7 +67,7 @@ public class DebugFeatures : MonoBehaviour
             else
                 FPSText.text += "\nGame Paused";
         }
-        
+        if(this.m_Camera!=null){
         if (this.m_Camera.isInFreeMode())
         {
             if (FPSText.text == "")
@@ -86,6 +85,7 @@ public class DebugFeatures : MonoBehaviour
         }
         else if (this.m_TargetName != "")
             this.m_TargetName = "";
+            }
     }
 
     private void calculateFramesTriggered(InputAction.CallbackContext context) {

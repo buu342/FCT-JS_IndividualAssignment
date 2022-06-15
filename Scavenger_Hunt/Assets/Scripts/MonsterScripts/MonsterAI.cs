@@ -53,7 +53,9 @@ public class MonsterAI : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   if (!multiplayer1^view.IsMine){
+    {  if(view!=null)
+            if(!view.IsMine)
+            return;
         if (playerToChase != null)
         {
            if (checkIfCanSeePlayer())
@@ -110,7 +112,7 @@ public class MonsterAI : MonoBehaviour
         // Go back to idle state if the timer ran out
         if (monsterCombatState != MonsterCombatState.Idle && this.m_CombatTimer < Time.time)
             this.monsterCombatState = MonsterCombatState.Idle;
-        }
+        
     }
 
     public bool hasReachedDestination() {
