@@ -17,7 +17,8 @@ public class AudioManager : MonoBehaviour
     private ProcGenner m_procgen;
     private ProcGennerMultiplayer mp_procgen;
     private bool multiplayer=JoinMultiplayer.Multiplayer;
-    
+    private MonsterAI m_monster; 
+
     /*==============================
         Awake
         Called before the audio manager is initialized
@@ -244,7 +245,9 @@ public class AudioManager : MonoBehaviour
         }
         else
             source.volume = s.volume;
-        
+        if(s.canAlertMonster) {
+            m_monster.AlertSound(position, s.maxDistanceSqr);
+        }
         // Play the sound
         source.pitch = s.pitch;
         source.Play();
@@ -414,4 +417,8 @@ public class AudioManager : MonoBehaviour
         Sound s = slist[(new System.Random()).Next(0, slist.Length)];
         return s;
     }        
+
+    public void SetMonster(MonsterAI monster) {
+        this.m_monster = monster;
+    }
 }

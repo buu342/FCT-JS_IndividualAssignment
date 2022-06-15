@@ -12,11 +12,6 @@ using Photon.Pun;
 public class PlayerController : MonoBehaviour
 {
     //Sound utilities
-    public delegate void MakeSound(Vector3 origin, float distance);
-    public static event MakeSound makeSound;
-    public static float distanceOfSound = 10.0f;
-    
-
     public  const float Gravity      = -80.0f;
     public  const int   ClipSize     = 8;
     private const float MoveSpeed    = 10.0f;
@@ -101,7 +96,7 @@ public class PlayerController : MonoBehaviour
         InputManagerScript.playerInput.Player.Move.started -= Move;
         InputManagerScript.playerInput.Player.Reload.started -= Reload;
         InputManagerScript.playerInput.Player.Aim.started -= Aim;
-         InputManagerScript.playerInput.Player.Aim.canceled -= Aim;
+        InputManagerScript.playerInput.Player.Aim.canceled -= Aim;
     }
     
 
@@ -114,6 +109,8 @@ public class PlayerController : MonoBehaviour
     { if(view!=null)
             if(!view.IsMine)
             return;  
+    {
+        if(!DebugFeatures.pauseAnimations) {
         this.m_MovementDirection = m_CameraController.isInFreeMode() ? Vector2.zero:InputManagerScript.Move.ReadValue<Vector2>();
         this.m_TargetVelocity = (this.m_MovementDirection.y*this.transform.forward + this.m_MovementDirection.x*this.transform.right)*PlayerController.MoveSpeed;
         
@@ -139,9 +136,9 @@ public class PlayerController : MonoBehaviour
             this.m_TargetFlashLightAngle = this.transform.rotation*this.m_OriginalFlashLightAngles;
         this.m_CurrentFlashLightAngle = Quaternion.Slerp(this.m_CurrentFlashLightAngle, this.m_TargetFlashLightAngle, TurnSpeed);
         this.m_FlashLight.transform.rotation = this.m_CurrentFlashLightAngle;
-        
-    }
-    
+        }
+        }
+    } 
     /*==============================
         FixedUpdate
         Called every engine tick
@@ -212,7 +209,7 @@ public class PlayerController : MonoBehaviour
     } 
 
     /*==============================
-        Fire
+        Move
         Called when the player presses a movement direction
         @param The input value
     ==============================*/
@@ -224,7 +221,6 @@ public class PlayerController : MonoBehaviour
         this.m_MovementState = PlayerMovementState.Moving;
     }
     
-    
     /*==============================
         Fire
         Called when the player presses left click
@@ -233,6 +229,7 @@ public class PlayerController : MonoBehaviour
 
     void Fire(InputAction.CallbackContext context) 
     {
+        if(!DebugFeatures.pauseAnimations) {
         if (this.m_AimState == PlayerAimState.Aiming && this.m_CombatState == PlayerCombatState.Idle)
         {
             if (this.m_AmmoClip > 0)
@@ -249,6 +246,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (this.m_CombatState == PlayerCombatState.ReloadStart || this.m_CombatState == PlayerCombatState.ReloadLoop || this.m_CombatState == PlayerCombatState.ReloadEnd)
             this.m_CancelReload = true;
+        }
     }
     
     
@@ -263,8 +261,10 @@ public class PlayerController : MonoBehaviour
             if(!view.IsMine)
             return;
         this.m_AimState = context.ReadValue<float>() > 0 ? PlayerAimState.Aiming : PlayerAimState.Idle;
+    {
+        this.m_AimState = context.ReadValue<float>() > 0 && !DebugFeatures.pauseAnimations ? PlayerAimState.Aiming : PlayerAimState.Idle;
     }
-    
+    }
     
     /*==============================
         Reload
@@ -277,14 +277,15 @@ public class PlayerController : MonoBehaviour
         if(view!=null)
             if(!view.IsMine)
             return;
-        if (this.m_CombatState == PlayerCombatState.Idle && this.m_AmmoClip < PlayerController.ClipSize && this.m_AmmoReserve > 0)
-        {
-            this.m_CombatState = PlayerCombatState.ReloadStart;
-            this.m_NextFireTime = Time.time + PlayerController.ReloadStartTime;
-            this.m_PlyAnims.StartReloadAnimation(this.m_AmmoClip == 0);
+        if(DebugFeatures.pauseAnimations) {
+            if (this.m_CombatState == PlayerCombatState.Idle && this.m_AmmoClip < PlayerController.ClipSize && this.m_AmmoReserve > 0)
+            {
+                this.m_CombatState = PlayerCombatState.ReloadStart;
+                this.m_NextFireTime = Time.time + PlayerController.ReloadStartTime;
+                this.m_PlyAnims.StartReloadAnimation(this.m_AmmoClip == 0);
+            }
         }
     }
-    
     
     /*******************************
                 Getters
