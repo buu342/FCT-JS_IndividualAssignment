@@ -252,6 +252,7 @@ public class PlayerController : MonoBehaviour
             this.m_CancelReload = true;
         }
     }
+
     private void FireShell() {
         muzzleFlash.Play();
         for (int i=0; i<PlayerController.NumberOfShells; i++)
@@ -259,13 +260,14 @@ public class PlayerController : MonoBehaviour
             RaycastHit hitInfo;
             Vector3 bulletSpawn = muzzle.transform.position;
             Vector3 bulletDirection = RandomizeDirection(muzzle.transform.forward);
-            if(Physics.Raycast(muzzle.transform.position, muzzle.transform.forward, out hitInfo)) {
+            if(Physics.Raycast(muzzle.transform.position, bulletDirection, out hitInfo)) {
                 Debug.Log("Shot collide");
                 TrailRenderer trail = Instantiate(trailOfBullets, bulletSpawn, Quaternion.identity);
                 StartCoroutine(SpawnTrail(trail, hitInfo));    
             }
         }
     }
+
     // Code shown in https://www.youtube.com/watch?v=cI3E7_f74MA for trail generation and bullet spread 
     private Vector3 RandomizeDirection(Vector3 forwardDirection) {
         Vector3 direction = forwardDirection;
