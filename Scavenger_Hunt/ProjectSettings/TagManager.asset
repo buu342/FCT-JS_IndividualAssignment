@@ -4,39 +4,22 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Shootable
+  - Wall
+  - Door
+  - Ceiling
+  - Floor
+  - Trigger
+  - Monster
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - Lighting
-  - Ground
-  - Postprocessing
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Geometry
+  - IgnoreGeometry
+  - GeometryFloor
   - 
   m_SortingLayers:
   - name: Fire
