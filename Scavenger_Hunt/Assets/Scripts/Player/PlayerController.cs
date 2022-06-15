@@ -502,7 +502,9 @@ public class PlayerController : MonoBehaviour
     }
     
     public void KillPlayer()
-    {
+    { if(view!=null)
+        if(!view.IsMine)
+        return;
         //this.m_Audio.Play("Skye/Death");
         GameObject.Find("MusicManager").GetComponent<MusicManager>().StopMusic();
         this.m_SceneController.transform.Find("GUI").GetComponent<ScreenGUI>().PlayerDied();
@@ -512,4 +514,4 @@ public class PlayerController : MonoBehaviour
         this.m_Audio.Play("Gameplay/PlayerHit");
     }
 }
-}
+

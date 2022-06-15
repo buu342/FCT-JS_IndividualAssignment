@@ -255,6 +255,10 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
         this.m_Director = this.transform.gameObject.GetComponent<SceneDirectorMultiplayer>();
         this.m_Director.SetMonster(instobj);
 
+    // Setup the debug stuff
+        this.m_Debug.SetMonster(instobj);
+        this.m_Debug.SetCamera(this.m_Camera);
+
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
             Debug.Log("Level generation data:");
@@ -303,12 +307,14 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
         instobj = Instantiate(this.m_Airlock, this.m_Airlock.transform.position + (coord-Center)*ProcGennerMultiplayer.GridScale, this.m_Airlock.transform.rotation);
         this.m_Entities.Add(instobj);
         doorpos = coord + (new Vector3(0, 0, 0.25f)*ProcGennerMultiplayer.GridScale/2);
+        this.m_Debug.SetJumpPoint(0, this.m_Airlock.transform.position + (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
         this.m_Doors.Add((doorpos, instobj));
+
         // Create the player on the spawn
-      /* if(JoinMultiplayer.RoomCreator & m_Entities.Count==1)*/
                 instobj =PhotonNetwork.Instantiate(this.m_PlayerPrefab.name, (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
                 m_Camera.GetComponent<CameraController>().SetTarget(instobj.transform.Find("CameraTarget").gameObject);
                 instobj.GetComponent<PlayerController>().SetCamera(m_Camera);  
+                instobj.GetComponent<PlayerController>().SetSceneController(this.transform.gameObject);
                 this.m_Entities.Add(instobj);
                 this.m_Optimizer.SetPlayer(instobj);
          
@@ -335,7 +341,7 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
         }
         
         // Then place the exit on the other end
-         exitPosition =coord = new Vector3Int((int)Random.Range(ProcGennerMultiplayer.MaxRoomSize_X, ProcGennerMultiplayer.MapSize_X-ProcGennerMultiplayer.MaxRoomSize_X), ProcGennerMultiplayer.MapSize_Y/2, ProcGennerMultiplayer.MapSize_Z);
+         exitPosition = coord = new Vector3Int((int)Random.Range(ProcGennerMultiplayer.MaxRoomSize_X, ProcGennerMultiplayer.MapSize_X-ProcGennerMultiplayer.MaxRoomSize_X), ProcGennerMultiplayer.MapSize_Y/2, ProcGennerMultiplayer.MapSize_Z);
         instobj = Instantiate(this.m_ExitElevator, (coord-Center)*ProcGennerMultiplayer.GridScale, this.m_ExitElevator.transform.rotation);
         this.m_Entities.Add(instobj);
         this.m_Debug.SetJumpPoint(1, this.m_ExitElevator.transform.position + (coord-Center)*ProcGennerMultiplayer.GridScale, Quaternion.identity);
@@ -1124,7 +1130,7 @@ public  Vector3       Center        = new Vector3(ProcGennerMultiplayer.MapSize_
                 continue;
             }
             
-            /* ========== PROBLEM!!!! ========== */
+            /* ========== PROBLEM (Should never reach here)!!!! ========== */
             
             instobj = Instantiate(this.m_FloorPrefab, (cdef.position-Center)*ProcGennerMultiplayer.GridScale, this.m_FloorPrefab.transform.rotation);
             cdef.prefab = instobj;

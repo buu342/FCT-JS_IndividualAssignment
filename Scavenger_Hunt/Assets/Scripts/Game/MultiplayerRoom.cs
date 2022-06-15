@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class MultiplayerRoom: MonoBehaviourPunCallbacks{
 
     
     void Update(){
         if (PhotonNetwork.CurrentRoom.PlayerCount >= 2){
-             Application.LoadLevel("SampleSceneMultiplayer");
+             SceneManager.LoadScene("SampleSceneMultiplayer");
         }
     }
  
@@ -16,7 +17,7 @@ public class MultiplayerRoom: MonoBehaviourPunCallbacks{
 
     public void leaveRoom(){
         PhotonNetwork.LeaveRoom();
-        Application.LoadLevel("StartMenu");
+        SceneManager.LoadScene("StartMenu");
     }
 
     

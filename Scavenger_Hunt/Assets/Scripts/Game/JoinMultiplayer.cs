@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class JoinMultiplayer: MonoBehaviourPunCallbacks{
 public TMP_InputField createInput;
 public TMP_InputField JoinInput;    
@@ -23,7 +24,7 @@ public static bool Multiplayer=false;
    
  
     public override void OnJoinedRoom(){
-        Application.LoadLevel("WaitingRoom");
+        SceneManager.LoadScene("WaitingRoom");
     }
 
    
