@@ -279,7 +279,6 @@ public class PlayerController : MonoBehaviour
             }
             else if (this.m_CombatState == PlayerCombatState.ReloadStart || this.m_CombatState == PlayerCombatState.ReloadLoop || this.m_CombatState == PlayerCombatState.ReloadEnd)
                 this.m_CancelReload = true;
-        }
     }
 
     private void FireShell() {
