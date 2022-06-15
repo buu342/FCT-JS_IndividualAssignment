@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.26764306, g: 0.14858508, b: 0.31925988, a: 1}
+  m_IndirectSpecularColor: {r: 0.26764098, g: 0.14858118, b: 0.31925803, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -280,6 +280,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1648054404, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: AimPrefab
+      value: 
+      objectReference: {fileID: 4371270267689059331, guid: b9ab912613ad8c18b8748a39d95b91e3, type: 3}
+    - target: {fileID: 1648054404, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: FirePrefab
+      value: 
+      objectReference: {fileID: 4371270267689059331, guid: b5faa7a472d0b0cc3969a32e9fb749ec, type: 3}
+    - target: {fileID: 1648054404, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: PilferPrefab
+      value: 
+      objectReference: {fileID: 4371270267689059331, guid: 95545f8faaef61c3389133f0fe2280fb, type: 3}
+    - target: {fileID: 1648054404, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: ReloadPrefab
+      value: 
+      objectReference: {fileID: 4371270267689059331, guid: dfc18053129616016874868cc99afbd8, type: 3}
+    - target: {fileID: 1648054404, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
+      propertyPath: MovementPrefab
+      value: 
+      objectReference: {fileID: 4371270267689059331, guid: 3b7e58af2f37e024487cdaec7f76c921, type: 3}
     - target: {fileID: 1436194342606117216, guid: dceced04fd66df14199b978ae7a3faf5, type: 3}
       propertyPath: m_RootOrder
       value: 3
