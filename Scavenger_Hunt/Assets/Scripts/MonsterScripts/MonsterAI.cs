@@ -116,6 +116,7 @@ public class MonsterAI : MonoBehaviour
             Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
     }
         else if(!agent.hasPath&multiplayer){
+           List<RoomDefMulti> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGennerMultiplayer>().GetRoomDefs();
            int roomToCheck = Random.Range(0,roomsInLevel.Count);
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
             destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
