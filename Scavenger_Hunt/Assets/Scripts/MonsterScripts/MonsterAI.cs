@@ -49,6 +49,8 @@ public class MonsterAI : MonoBehaviour
         monsterState = MonsterState.Patrolling;
         MonsterSpeed = agent.speed;
         this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        if(multiplayer1)
+         Random.InitState(view.ViewID);
     }
 
     // Update is called once per frame
