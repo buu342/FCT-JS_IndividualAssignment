@@ -325,6 +325,8 @@ public class PlayerController : MonoBehaviour
         trail.transform.position = hit.point;
         if (hit.collider != null && hit.collider.tag == "Monster") {
             hit.collider.gameObject.GetComponent<MonsterAI>().TakeDamage();
+        } else if (hit.collider != null && hit.collider.tag == "Converted") {
+            hit.collider.gameObject.GetComponent<ConvertedAI>().TakeDamage();
         } else {
             Instantiate(impactBullet, hit.point, Quaternion.LookRotation(hit.normal));
         }

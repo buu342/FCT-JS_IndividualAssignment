@@ -734,3 +734,120 @@ MonoBehaviour:
     canAlertMonster: 0
     maxDistance: 16
     maxDistanceSqr: 0
+  - name: Converted/Spot
+    clip: {fileID: 8300000, guid: 9f087355eea615248addc0492de1b368, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0
+  - name: Converted/Spot
+    clip: {fileID: 8300000, guid: e67f32c4ab26e984280f3ae56cc1dca0, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0
+  - name: Converted/Spot
+    clip: {fileID: 8300000, guid: 1607b2e6390ac1c4380fdb43cabb193f, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0
+  - name: Converted/Attack
+    clip: {fileID: 8300000, guid: 909105b700dd77943a51092c9e3d8fe6, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0
+  - name: Converted/Attack
+    clip: {fileID: 8300000, guid: ce156e84f19328049abff2e167b6df11, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0
+  - name: Converted/Attack
+    clip: {fileID: 8300000, guid: 2a7dcda86f78fb346af8ddb052419082, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0
+  - name: Converted/Die
+    clip: {fileID: 8300000, guid: b71dceba40e00074e82f65e16ab0ca78, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0
+  - name: Converted/Die
+    clip: {fileID: 8300000, guid: 93c638517d8859f429184ac237b90fe2, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0
+  - name: Converted/Die
+    clip: {fileID: 8300000, guid: d34fcbfd2c48cc54896cd4bc8c64065c, type: 3}
+    volume: 1
+    pitch: 1
+    pitchBulletTime: 1
+    loop: 0
+    canStack: 0
+    canMuffle: 1
+    canReverb: 1
+    is3D: 1
+    canAlertMonster: 0
+    maxDistance: 16
+    maxDistanceSqr: 0

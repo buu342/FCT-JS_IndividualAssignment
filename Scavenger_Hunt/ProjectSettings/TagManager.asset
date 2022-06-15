@@ -10,6 +10,7 @@ TagManager:
   - Floor
   - Trigger
   - Monster
+  - Converted
   layers:
   - Default
   - TransparentFX

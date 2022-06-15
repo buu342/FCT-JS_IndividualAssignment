@@ -125,6 +125,7 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_LampFlicker;
     public GameObject m_LampOff;
     public GameObject m_AmmoPrefab;
+    public GameObject m_ConvertedPrefab;
     public List<GameObject> m_Props;
     public List<GameObject> m_Items;
     
@@ -1317,6 +1318,13 @@ public class ProcGenner : MonoBehaviour
                         inst = Instantiate(prefab, tablepos+ new Vector3(Random.Range(-0.9f, 0.9f), 1.4f, Random.Range(-0.9f, 0.9f)), prefab.transform.rotation*Quaternion.Euler(0, 0, Random.Range(0, 360)));
                         inst.transform.GetChild(0).GetComponent<Pickup>().SetPlayer(this.m_Player);
                         rdef.objects.Add(inst);
+                        occupied[x, z] = true;
+                    }
+                    else if (!occupied[x, z] && Random.Range(0, 8) == 0)
+                    {
+                        GameObject prefab = this.m_ConvertedPrefab;
+                        prefab = Instantiate(prefab, ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGenner.GridScale, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0));
+                        prefab.GetComponent<ConvertedAI>().SetPlayerTarget(this.m_Player);
                         occupied[x, z] = true;
                     }
                 }
