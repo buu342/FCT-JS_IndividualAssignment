@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 496c27f4a3e70a1468324327b0ce7634
+guid: 5f288ca56e7431f40bde71b8798e43b9
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable:
@@ -20,23 +20,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Wall1__Airlock_Floor4_png
-    second: {fileID: 2100000, guid: e0d5f56e4731e31479fef415956db1b9, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Wall1__DoorGutter_png
-    second: {fileID: 2100000, guid: 88071bf700a2fb74a86e1aadf6052d30, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Wall1__Wall1_png
-    second: {fileID: 2100000, guid: 7fd8e9fcc06b1684f990781f55acaf73, type: 2}
+    second: {fileID: 2100000, guid: 17ec2c0d124dc5b4199a6686e25b40d1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wall2__Wall2_png
-    second: {fileID: 2100000, guid: 30c1f0c1dc425294eb003e3950a8b628, type: 2}
+    second: {fileID: 2100000, guid: 604cbbccc4cff094d885ba9400721059, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WallBottom__WallBottom_png
+    second: {fileID: 2100000, guid: d2fe8cd91167ae640b53da479dfd275e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WallSeparator__WallSeparator_png
+    second: {fileID: 2100000, guid: b1bea0eb4b5a7d94a9ac1a48668f22d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WallTop__WallTop_png
+    second: {fileID: 2100000, guid: 5e118b900c771dd4794240be2dcf01ce, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -124,7 +129,7 @@ ModelImporter:
     globalScale: 0.1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1

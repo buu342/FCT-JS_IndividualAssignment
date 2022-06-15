@@ -83,13 +83,12 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_Camera;
     public GameObject m_NavMesh;
     public VisualOptimizer m_Optimizer;
+    public SceneDirector m_Director;
     
     [Header("Generic prefabs")]
     public GameObject m_FloorPrefab;
     public GameObject m_FloorDustPrefab;
     public GameObject m_CeilingPrefab;
-    public GameObject m_Wall3Prefab;
-    public GameObject m_DoorWall2Prefab;
     
     [Header("Corridor Prefabs")]
     public GameObject m_CorridorPrefab_Straight;
@@ -112,11 +111,16 @@ public class ProcGenner : MonoBehaviour
     [Header("Room (Size 3) Prefabs")]
     public GameObject m_Room3Prefab_Floor;
     public GameObject m_Room3Prefab_Ceiling;
+    public GameObject m_Room3Prefab_Wall;
+    public GameObject m_Room3Prefab_DoorWall;
+    public GameObject m_Room3Prefab_GlassWall;
+    public GameObject m_Room3Prefab_GlassWall_Left;
+    public GameObject m_Room3Prefab_GlassWall_Mid;
+    public GameObject m_Room3Prefab_GlassWall_Right;
     
     [Header("Map Objects")]
-    
-    public GameObject m_MonsterPrefab;
     public GameObject m_PlayerPrefab;
+    public GameObject m_MonsterPrefab;
     public GameObject m_Airlock;
     public GameObject m_DoorPrefab;
     public GameObject m_ExitElevator;
@@ -145,6 +149,7 @@ public class ProcGenner : MonoBehaviour
             int roomsculled = 0;
         #endif
         Vector3Int exitPosition;
+        
         while (true)
         {            
             // Initialize our data structures
@@ -232,13 +237,16 @@ public class ProcGenner : MonoBehaviour
         NavMeshBuilder.CollectSources(navmeshbounds, surface.layerMask, surface.useGeometry, surface.defaultArea, markups, sources);
         sources.RemoveAll(source => source.component != null && source.component.gameObject.GetComponent<NavMeshAgent>() != null);
         NavMeshBuilder.UpdateNavMeshData(navmeshdata, surface.GetBuildSettings(), sources, navmeshbounds);
-        // create monster    
+        
+        // Spawn the monster on the exit room
         Vector3Int coord = exitPosition;
         GameObject instobj = Instantiate(this.m_MonsterPrefab, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
-        MonsterAI monster =instobj.GetComponent<MonsterAI>(); 
+        MonsterAI monster = instobj.GetComponent<MonsterAI>(); 
         monster.SetPlayerTarget(GameObject.Find("CameraTarget"));
         GameObject.Find("AudioManager").GetComponent<AudioManager>().SetMonster(monster);
         this.m_Entities.Add(instobj);
+        this.m_Director = this.transform.gameObject.GetComponent<SceneDirector>();
+        this.m_Director.SetMonster(instobj);
 
         // Show some statistics if we're in debug mode
         #if UNITY_EDITOR
@@ -1181,7 +1189,7 @@ public class ProcGenner : MonoBehaviour
         if (founddoor != null)
         {
             rdef.doors.Add(founddoor);
-            return (rdef.size.y == 3) ? this.m_DoorWall2Prefab : this.m_Room2Prefab_DoorWall;
+            return (rdef.size.y == 3) ? this.m_Room3Prefab_DoorWall : this.m_Room2Prefab_DoorWall;
         }
         
         // Check if we're making a window
@@ -1207,7 +1215,18 @@ public class ProcGenner : MonoBehaviour
         }
         else if (rdef.size.y == 3)
         {
-            return this.m_Wall3Prefab;
+            if (makingwindow)
+            {
+                if ((dir.x != 0 && rdef.size.z == 3) || (dir.z != 0 && rdef.size.x == 3))
+                    return this.m_Room3Prefab_GlassWall;
+                else if (i == 1)
+                    return this.m_Room3Prefab_GlassWall_Left;
+                else if ((dir.x != 0 && i == rdef.size.z-2) || (dir.z != 0 && i == rdef.size.x-2))
+                    return this.m_Room3Prefab_GlassWall_Right;
+                else
+                    return this.m_Room3Prefab_GlassWall_Mid;
+            }
+            return this.m_Room3Prefab_Wall;
         }
         
         // Should never happen
