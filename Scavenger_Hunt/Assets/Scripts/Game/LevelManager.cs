@@ -48,7 +48,7 @@ public class LevelManager : MonoBehaviour
             StartNewGame();
         }
         
-        if (Playing && (SceneManager.GetActiveScene().name == "SampleScene" || SceneManager.GetActiveScene().name == "SampleSceneMultiplayer"))
+        if (Playing && SceneManager.GetActiveScene().name != "SampleScene" && SceneManager.GetActiveScene().name != "SampleSceneMultiplayer")
         {
             Playing = false;
             StartNewGame();

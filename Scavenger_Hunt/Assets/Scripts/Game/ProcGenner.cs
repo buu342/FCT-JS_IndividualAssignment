@@ -321,14 +321,15 @@ public class ProcGenner : MonoBehaviour
         instobj.GetComponent<PlayerController>().SetCamera(this.m_Camera);
         instobj.GetComponent<PlayerController>().SetSceneController(this.transform.gameObject);
         this.m_LevelManager.SetPlayer(instobj);
+        this.m_Director.SetPlayer(instobj);
+        this.m_Optimizer.SetPlayer(instobj);
         if (levelcount > 1)
         {
             instobj.GetComponent<PlayerController>().SetPlayerAmmoClip(this.m_LevelManager.GetPlayerAmmoClip());
             instobj.GetComponent<PlayerController>().SetPlayerAmmoReserve(this.m_LevelManager.GetPlayerAmmoReserve());
         }
         this.m_Entities.Add(instobj);
-        this.m_Optimizer.SetPlayer(instobj);
-        
+
         // Now that we have our spawn generated, place a room at our spawn if we're not playing the first level, otherwise make a corridor
         Debug.Log(levelcount);
         if (levelcount > 1)
