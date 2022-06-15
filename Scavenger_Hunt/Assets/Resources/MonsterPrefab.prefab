@@ -248,13 +248,13 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Attack
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Staggared
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: MoveSpeed
   m_SynchronizeLayers:
   - SynchronizeType: 0
