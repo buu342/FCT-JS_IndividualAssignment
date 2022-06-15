@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
     private PlayerAimState m_AimState = PlayerAimState.Idle;
     private PlayerCombatState m_CombatState = PlayerCombatState.Idle;
 
+    public ParticleSystem impactBullet;
     public TrailRenderer trailOfBullets;
     public GameObject muzzle;
 
@@ -240,11 +241,14 @@ public class PlayerController : MonoBehaviour
                 this.m_AmmoClip--;
                 this.m_PlyAnims.FireAnimation();
                 this.m_CameraController.AddTrauma(0.5f);
+                
                 for (int i=0; i<PlayerController.NumberOfShells; i++)
                 {
                     RaycastHit hitInfo;
                     Vector3 bulletSpawn = muzzle.transform.position;
+                    Vector3 bulletDirection = RandomizeDirection(muzzle.transform.forward);
                     if(Physics.Raycast(muzzle.transform.position, muzzle.transform.forward, out hitInfo)) {
+                        Debug.Log("Shot collide");
                         TrailRenderer trail = Instantiate(trailOfBullets, bulletSpawn, Quaternion.identity);
                         StartCoroutine(SpawnTrail(trail, hitInfo));    
                     }
@@ -258,6 +262,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Code shown in https://www.youtube.com/watch?v=cI3E7_f74MA for trail generation and bullet spread 
+    private Vector3 RandomizeDirection(Vector3 forwardDirection) {
+        Vector3 direction = forwardDirection;
+        direction += new Vector3(Random.Range(-bulletSpread.x,bulletSpread.x),
+        Random.Range(-bulletSpread.y,bulletSpread.y),Random.Range(-bulletSpread.z,bulletSpread.z));
+        direction.Normalize();
+        return direction;
+    }
+
     private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit) {
         Vector3 startPosition = trail.transform.position;
         float time = 0;
@@ -268,6 +281,7 @@ public class PlayerController : MonoBehaviour
         }
 
         trail.transform.position = hit.point;
+        Instantiate(impactBullet, hit.point, Quaternion.LookRotation(hit.normal));
         Destroy(trail.gameObject, trail.time);
         if(hit.collider.tag == "Monster") {
             Debug.Log("Hitted monster");
