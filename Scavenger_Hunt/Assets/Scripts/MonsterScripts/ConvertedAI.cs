@@ -22,6 +22,7 @@ public class ConvertedAI : MonoBehaviour
     }
     
     const float POSITION_THRESHOLD = 2.0f;
+    public  const float Gravity      = -80.0f;
     [HideInInspector]
     public MonsterState monsterState = MonsterState.Idle;
     [HideInInspector]
@@ -32,13 +33,14 @@ public class ConvertedAI : MonoBehaviour
     private Vector3 destination;
     private NavMeshAgent agent;
     //need to guarantee that its centered
-    public GameObject playerToChase;
-    private float m_LastSawPlayerTimer = 0;
+    private GameObject playerToChase;
     private float m_CombatTimer = 0;
     private AudioManager m_Audio;
+    public Rigidbody  m_RigidBody;
     public Animator m_Animator;
     public GameObject m_HurtBoxPlacement;
     public GameObject m_HurtBoxPrefab;
+    public List<SkinnedMeshRenderer> m_HandModels;
 
     private PhotonView view;
 
@@ -49,11 +51,13 @@ public class ConvertedAI : MonoBehaviour
     }
 
     void Start()
-    {   view = GetComponent<PhotonView>();
+    {   
+        view = GetComponent<PhotonView>();
         monsterState = MonsterState.Idle;
         MonsterSpeed = agent.speed;
         this.m_Audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         agent.speed = 0;
+        this.m_HandModels[Random.Range(0, m_HandModels.Count)].enabled = true;
     }
 
     // Update is called once per frame
@@ -68,6 +72,7 @@ public class ConvertedAI : MonoBehaviour
             
         if (playerToChase != null)
         {
+            this.m_RigidBody.AddForce(0, ConvertedAI.Gravity, 0);
             if (monsterCombatState == MonsterCombatState.Idle)
             {
                 if (this.monsterState == MonsterState.Idle && Vector3.Distance(playerToChase.transform.position, transform.position) < 10.0f && checkIfCanSeePlayer())
@@ -133,7 +138,7 @@ public class ConvertedAI : MonoBehaviour
         playerToChase = target;
     }
     
-    public void TakeDamage()
+    public void TakeDamage(Vector3 damagepos)
     {
         agent.enabled = false;
         agent.speed = 0;
@@ -152,6 +157,11 @@ public class ConvertedAI : MonoBehaviour
         // Disable collisions
         this.GetComponent<CapsuleCollider>().enabled = false;
         this.monsterState = MonsterState.Dead;
+        
+        Collider[] colliders = Physics.OverlapSphere(damagepos, 2);
+        foreach (Collider hit in colliders)
+            if (hit.GetComponent<Rigidbody>() && hit.gameObject.tag == "ConvertedRagdoll")
+                hit.GetComponent<Rigidbody>().AddExplosionForce(75, damagepos, 2, 0, ForceMode.Impulse);
     }
     
     public void MakeHurtBox()

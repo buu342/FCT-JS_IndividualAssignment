@@ -36,7 +36,7 @@ public class ProcGenner : MonoBehaviour
     private const int     MaxRoomSize_Z = 6;    // Maximum room size on Z (in grid units)
     private const int     MaxRooms      = 30;   // Maximum number of rooms to generate
     [HideInInspector]
-    public  Vector3       Center        = new Vector3(ProcGenner.MapSize_X/2, ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z/2);
+    public static Vector3       Center  = new Vector3(ProcGenner.MapSize_X/2, ProcGenner.MapSize_Y/2, ProcGenner.MapSize_Z/2);
     
     public enum BlockType
     {
@@ -125,7 +125,8 @@ public class ProcGenner : MonoBehaviour
     public GameObject m_LampFlicker;
     public GameObject m_LampOff;
     public GameObject m_AmmoPrefab;
-    public GameObject m_ConvertedPrefab;
+    public GameObject m_ConvertedPrefab_Female;
+    public GameObject m_ConvertedPrefab_Male;
     public List<GameObject> m_Props;
     public List<GameObject> m_Items;
     
@@ -253,7 +254,7 @@ public class ProcGenner : MonoBehaviour
         Vector3Int coord = exitPosition;
         GameObject instobj = Instantiate(this.m_MonsterPrefab, (coord-Center)*ProcGenner.GridScale, Quaternion.identity);
         MonsterAI monster = instobj.GetComponent<MonsterAI>(); 
-        monster.SetPlayerTarget(GameObject.Find("CameraTarget"));
+        monster.SetPlayerTarget(this.m_Player);
         GameObject.Find("AudioManager").GetComponent<AudioManager>().SetMonster(monster);
         this.m_Entities.Add(instobj);
         this.m_Director = this.transform.gameObject.GetComponent<SceneDirector>();
@@ -1322,7 +1323,9 @@ public class ProcGenner : MonoBehaviour
                     }
                     else if (!occupied[x, z] && Random.Range(0, 8) == 0)
                     {
-                        GameObject prefab = this.m_ConvertedPrefab;
+                        GameObject prefab = this.m_ConvertedPrefab_Male;
+                        if (Random.Range(0, 2) == 0)
+                            prefab = this.m_ConvertedPrefab_Female;
                         prefab = Instantiate(prefab, ((rdef.position + new Vector3(x+Random.Range(-0.25f, 0.25f), 0, z+Random.Range(-0.25f, 0.25f)))-Center)*ProcGenner.GridScale, prefab.transform.rotation*Quaternion.Euler(0, Random.Range(0, 360), 0));
                         prefab.GetComponent<ConvertedAI>().SetPlayerTarget(this.m_Player);
                         occupied[x, z] = true;

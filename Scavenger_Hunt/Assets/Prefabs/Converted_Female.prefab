@@ -786,14 +786,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1519784485131558708}
-  m_LocalRotation: {x: -0.9784983, y: -0.07224894, z: -0.18607485, w: 0.051935606}
-  m_LocalPosition: {x: -1.24, y: -2.12, z: 1.25}
+  m_LocalRotation: {x: -0.86523014, y: -0.32198712, z: -0.3822137, w: 0.040170323}
+  m_LocalPosition: {x: 0.62, y: -2.51, z: -0.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5411567324864917360}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -161.6, y: -42.05, z: -33.7}
 --- !u!1 &1532633431010413654
 GameObject:
   m_ObjectHideFlags: 0
@@ -2602,7 +2602,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 5974dfc8b8958224bb5dab3ae2a433c9, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -2673,12 +2673,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d095a8e216de37d43b01aa9342ce2d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_RigidBody: {fileID: 3991710252494501839}
   monsterState: 0
   monsterCombatState: 0
   playerToChase: {fileID: 0}
   m_Animator: {fileID: 757540918750282702}
   m_HurtBoxPlacement: {fileID: 1519784485131558708}
   m_HurtBoxPrefab: {fileID: 6939511733135602735, guid: 7b785e28ef500904bab2e46c40e5b466, type: 3}
+  m_HandModels:
+  - {fileID: 254421363160041895}
+  - {fileID: 2069574508785881116}
 --- !u!1 &6361979131567699196
 GameObject:
   m_ObjectHideFlags: 0
@@ -3096,7 +3100,7 @@ SkinnedMeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7634603643569585531}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3536,8 +3540,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.396253
-  m_Center: {x: 0, y: -0.396253, z: 0}
+  m_Radius: 0.67
+  m_Center: {x: 0.23, y: -0.36, z: 0.13}
 --- !u!54 &6389395058565854386
 Rigidbody:
   m_ObjectHideFlags: 0

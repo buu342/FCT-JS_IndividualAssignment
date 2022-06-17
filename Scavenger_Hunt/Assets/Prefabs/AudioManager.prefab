@@ -329,7 +329,7 @@ MonoBehaviour:
     canReverb: 1
     is3D: 1
     canAlertMonster: 1
-    maxDistance: 32
+    maxDistance: 48
     maxDistanceSqr: 0
   - name: Shotgun/Fire
     clip: {fileID: 8300000, guid: 63ce4d88f6fa1c547b9fc897000e3e1e, type: 3}
@@ -342,7 +342,7 @@ MonoBehaviour:
     canReverb: 1
     is3D: 1
     canAlertMonster: 1
-    maxDistance: 32
+    maxDistance: 48
     maxDistanceSqr: 0
   - name: Shotgun/Fire
     clip: {fileID: 8300000, guid: 97e80e08816b32a40b75070ac510d96b, type: 3}
@@ -355,7 +355,7 @@ MonoBehaviour:
     canReverb: 1
     is3D: 1
     canAlertMonster: 1
-    maxDistance: 32
+    maxDistance: 48
     maxDistanceSqr: 0
   - name: Shotgun/DryFire
     clip: {fileID: 8300000, guid: 0e6c0c9c2e661854e8c933324657e764, type: 3}
@@ -740,7 +740,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 1
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -753,7 +753,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 1
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -766,7 +766,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 1
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -779,7 +779,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 1
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -792,7 +792,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 1
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -805,7 +805,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 1
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -818,7 +818,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 1
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -831,7 +831,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 1
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1
@@ -844,7 +844,7 @@ MonoBehaviour:
     pitch: 1
     pitchBulletTime: 1
     loop: 0
-    canStack: 0
+    canStack: 1
     canMuffle: 1
     canReverb: 1
     is3D: 1

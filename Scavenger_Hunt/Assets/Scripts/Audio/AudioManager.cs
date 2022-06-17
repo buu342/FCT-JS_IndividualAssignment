@@ -62,7 +62,7 @@ public class AudioManager : MonoBehaviour
         @param The position where the sound was played
         @returns The created sound object
     ==============================*/
- public GameObject PlayMultiplayer(string name, Vector3 position = default(Vector3), GameObject ignore=null)
+    public GameObject PlayMultiplayer(string name, Vector3 position = default(Vector3), GameObject ignore=null)
     {
         // Find all sounds that have the given name
         Sound[] slist = Array.FindAll(this.m_RegisteredSoundsList, sound => sound.name == name);

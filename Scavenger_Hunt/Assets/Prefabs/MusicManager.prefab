@@ -66,6 +66,12 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 759d5f5c707e73545b06f7b9284af988, type: 3}
     volume: 0.5
     BarDuration: 2.08825
+  - name: Music/Menu
+    SongIntro: {fileID: 0}
+    SongTracks:
+    - {fileID: 8300000, guid: 7992e48803471bd44b8fe763efdc651a, type: 3}
+    volume: 0.5
+    BarDuration: 0
 --- !u!82 &2011978152
 AudioSource:
   m_ObjectHideFlags: 0

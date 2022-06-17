@@ -60,6 +60,7 @@ public class SceneDirector : MonoBehaviour
         int levelCount = GameObject.Find("LevelManager").GetComponent<LevelManager>().GetLevelCount();
         proc.GenerateScene(levelCount);
         this.m_Music = GameObject.Find("MusicManager").GetComponent<MusicManager>();
+        this.m_Music.StopMusic();
         this.m_Music.PlaySong("Music/Calm", true, true);
         this.m_MusicType = MusicType.Calm;
         if(levelCount == 1) {

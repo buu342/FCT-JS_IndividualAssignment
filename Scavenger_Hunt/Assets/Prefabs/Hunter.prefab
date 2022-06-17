@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e48d6dc2c64e867108cc0012ffdb7240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_RigidBody: {fileID: 3774664189224017307}
   monsterState: 0
   monsterCombatState: 0
   m_MonsterAnims: {fileID: 1473346724089674796}
@@ -116,7 +117,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
@@ -209,6 +210,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 0d76572d95218cc40bcf436c9dc62f81, type: 2}
+    - target: {fileID: 5866666021909216657, guid: c6611e5a44f1af54bb82fddc448f4b9e, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6611e5a44f1af54bb82fddc448f4b9e, type: 3}
 --- !u!4 &160709210235672954 stripped

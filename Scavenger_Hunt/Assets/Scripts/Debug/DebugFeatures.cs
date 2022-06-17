@@ -47,12 +47,12 @@ public class DebugFeatures : MonoBehaviour
         {
             if(pauseAnimations && Time.timeScale != 0) 
             {
-                Time.timeScale = Mathf.Lerp(Time.timeScale, 0, 0.02f);
+                Time.timeScale = Mathf.Lerp(Time.timeScale, 0, 2.0f*Time.unscaledDeltaTime);
                 if(Time.timeScale<0.02f) { 
                     Time.timeScale = 0;
                 }
             } else if (!pauseAnimations && Time.timeScale != 1.0f) {
-                Time.timeScale = Mathf.Lerp(Time.timeScale,1, 0.02f);
+                Time.timeScale = Mathf.Lerp(Time.timeScale,1, 2.0f*Time.unscaledDeltaTime);
                 if(Time.timeScale > 0.98f)
                     Time.timeScale = 1.0f;
             } 
@@ -63,7 +63,7 @@ public class DebugFeatures : MonoBehaviour
                 frameRate = (int)(1.0f / Time.unscaledDeltaTime);
                 FPSText.text=frameRate.ToString()+" FPS";
             }
-            if (Time.timeScale != 1.0f)
+            if (Time.timeScale != 1.0f && pauseAnimations)
             {
                 if (FPSText.text == "")
                     FPSText.text = "Game Paused";
@@ -160,6 +160,7 @@ public class DebugFeatures : MonoBehaviour
     public bool getPausedGame() {
         return pauseAnimations;
     }
+    
     public bool getCalculateFrames() {
         return calculateFrames;
     }

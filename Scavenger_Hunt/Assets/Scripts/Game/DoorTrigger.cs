@@ -66,7 +66,7 @@ public class DoorTrigger : MonoBehaviour
     
     void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player" || (other.tag == "Monster" && !this.m_IgnoreMonster))
+        if (other.tag == "Player" || (other.tag == "Monster" && !this.m_IgnoreMonster) || (other.tag == "Converted" && !this.m_IgnoreMonster))
         {
             if (this.m_TriggerDelay == 0)
             {

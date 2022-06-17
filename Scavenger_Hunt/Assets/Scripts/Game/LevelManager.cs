@@ -44,6 +44,8 @@ public class LevelManager : MonoBehaviour
     
     void FixedUpdate()
     {
+        if (SceneManager.GetActiveScene().name == "StartMenu")
+            GameObject.Find("MusicManager").gameObject.GetComponent<MusicManager>().PlaySong("Music/Menu");
         if (!Playing && (SceneManager.GetActiveScene().name == "SampleScene" || SceneManager.GetActiveScene().name == "SampleSceneMultiplayer"))
         {
             StartNewGame();

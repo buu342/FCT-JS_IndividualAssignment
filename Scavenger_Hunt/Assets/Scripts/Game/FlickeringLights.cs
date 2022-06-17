@@ -31,12 +31,12 @@ public class FlickeringLights : MonoBehaviour
 
     IEnumerator Flicker() {
         isFlickering = true;
-        GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Gameplay/LightFlicker");
         Material[] mats = (Material[]) this.mesh.materials.Clone();
         bool sparkle = Random.Range(10,20) <= 15;
         flickTimer = 1.5f;
         if(sparkle)
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Gameplay/LightFlicker", this.transform.gameObject);
             this.m_Light.enabled = false;
             particles.Play();
             mats[0] = OffMaterial;

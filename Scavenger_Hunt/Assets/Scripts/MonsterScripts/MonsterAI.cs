@@ -20,15 +20,16 @@ public class MonsterAI : MonoBehaviour
         Staggared
     }
     
-    const float POSITION_THRESHOLD = 2.0f;
+    const float POSITION_THRESHOLD = 5.0f;
+    public  const float Gravity      = -80.0f;
     [HideInInspector]
     public MonsterState monsterState;
     [HideInInspector]
     public MonsterCombatState monsterCombatState = MonsterCombatState.Idle;
+    public Rigidbody  m_RigidBody;
     public HunterAnimations m_MonsterAnims;
     private bool multiplayer=JoinMultiplayer.Multiplayer;
     private float MonsterSpeed;
-    private Vector3 destination;
     private NavMeshAgent agent;
     //need to guarantee that its centered
     private GameObject playerToChase;
@@ -55,29 +56,32 @@ public class MonsterAI : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {  if(view!=null)
+    {
+        if(multiplayer && view!=null)
             if(!view.IsMine)
-            return;
-        if (playerToChase != null)
+                return;
+        
+        this.m_RigidBody.AddForce(0, MonsterAI.Gravity, 0);
+        if (checkIfCanSeePlayer())
         {
-           if (checkIfCanSeePlayer())
+            if (monsterState != MonsterState.ChasingPlayer && monsterCombatState == MonsterCombatState.Idle)
             {
-                if (monsterState != MonsterState.ChasingPlayer && monsterCombatState == MonsterCombatState.Idle)
-                {
-                    this.m_Audio.Stop("Hunter/Damage");
-                    this.m_Audio.Stop("Hunter/HearSound");
-                    this.m_Audio.Stop("Hunter/Attack");
-                    this.m_Audio.Play("Hunter/SpotPlayer", this.transform.gameObject);
-                }
-                monsterState = MonsterState.ChasingPlayer;
-                this.m_LastSawPlayerTimer = 0;
+                this.m_Audio.Stop("Hunter/Damage");
+                this.m_Audio.Stop("Hunter/HearSound");
+                this.m_Audio.Stop("Hunter/Attack");
+                this.m_Audio.Play("Hunter/SpotPlayer", this.transform.gameObject);
             }
-            else if (this.m_LastSawPlayerTimer == 0)
-                this.m_LastSawPlayerTimer = Time.time + 5.0f;
+            monsterState = MonsterState.ChasingPlayer;
+            this.m_LastSawPlayerTimer = 0;
         }
+        else if (this.m_LastSawPlayerTimer == 0 && monsterState == MonsterState.ChasingPlayer)
+            this.m_LastSawPlayerTimer = Time.time + 5.0f;
         
         if (this.m_LastSawPlayerTimer != 0 && this.m_LastSawPlayerTimer < Time.time)
+        {
             monsterState = MonsterState.CheckingSound;
+            this.m_LastSawPlayerTimer = 0;
+        }
 
         if (monsterCombatState == MonsterCombatState.Idle)
         {
@@ -85,19 +89,18 @@ public class MonsterAI : MonoBehaviour
             switch(monsterState) {
                 case MonsterState.ChasingPlayer:
                     ChasePlayer();
-                    //Debug.Log("chasing");
-                    break;
-                case MonsterState.Patrolling:
-                    Patrol();
                     break;
                 case MonsterState.CheckingSound:
                     if(hasReachedDestination()) {
                         monsterState = MonsterState.Patrolling;
                     }
                     break;
+                default:
+                    Patrol();
+                    break;
             }
             
-            if (playerToChase != null && monsterState == MonsterState.ChasingPlayer && Vector3.Distance(playerToChase.transform.position, transform.position) < 2.0f && this.monsterCombatState == MonsterCombatState.Idle)
+            if (monsterState == MonsterState.ChasingPlayer && Vector3.Distance(playerToChase.transform.position, transform.position) < 2.0f && this.monsterCombatState == MonsterCombatState.Idle)
             {
                 this.monsterCombatState = MonsterCombatState.Attacking;
                 this.m_CombatTimer = Time.time + 4.0f;
@@ -115,14 +118,16 @@ public class MonsterAI : MonoBehaviour
         if (monsterCombatState != MonsterCombatState.Idle && this.m_CombatTimer < Time.time)
             this.monsterCombatState = MonsterCombatState.Idle;
         
+        Collider[] colliders = Physics.OverlapSphere(this.transform.position, 1);
+        foreach (Collider hit in colliders)
+            if (hit.GetComponent<Rigidbody>() && hit.gameObject.tag == "Converted")
+                hit.GetComponent<Rigidbody>().AddExplosionForce(75, this.transform.position, 1, 0, ForceMode.Impulse);
     }
 
     public bool hasReachedDestination() {
-        //Debug.Log(Vector3.Distance(destination, transform.position));
-          if(Vector3.Distance(destination, transform.position) < POSITION_THRESHOLD) {
-                //Debug.Log("Arrived to destination");
-                return true;
-            }
+        if(Vector3.Distance(agent.destination, transform.position) < POSITION_THRESHOLD) {
+            return true;
+        }
         return false;
     }
 
@@ -148,14 +153,10 @@ public class MonsterAI : MonoBehaviour
     }
 
     public void ChasePlayer() {
-        if (playerToChase == null)
-            return;
-          //TODO: change music for chasing
         monsterState = MonsterState.ChasingPlayer;
         if(playerToChase!=null){
             agent.SetDestination(playerToChase.transform.position);
-            destination = playerToChase.transform.position;
-            if (Vector3.Distance(destination, transform.position) < 2.0f) {
+            if (Vector3.Distance(agent.destination, transform.position) < 2.0f) {
                     //close to player to attack
                     //TODO: start attacking animation
             }
@@ -163,22 +164,19 @@ public class MonsterAI : MonoBehaviour
     }
 
     public void Patrol() {
-        
-        if(!agent.hasPath&!multiplayer) {
+        if ((hasReachedDestination() || !agent.hasPath) && !multiplayer) {
            
             List<RoomDef> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGenner>().GetRoomDefs();
             int roomToCheck = Random.Range(0,roomsInLevel.Count);
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
-            destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
-            agent.SetDestination(destination);
+            agent.SetDestination(new Vector3(roomMidPoint.x,(roomsInLevel[roomToCheck].position.y-ProcGenner.Center.y)*ProcGenner.GridScale,roomMidPoint.z));
             //Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
-    }
-        else if(!agent.hasPath&multiplayer){
+        }
+        else if ((hasReachedDestination() || !agent.hasPath) && multiplayer){
            List<RoomDefMulti> roomsInLevel = GameObject.Find("SceneController").GetComponent<ProcGennerMultiplayer>().GetRoomDefs();
            int roomToCheck = Random.Range(0,roomsInLevel.Count);
             Vector3 roomMidPoint =roomsInLevel[roomToCheck].midpoint; 
-            destination = new Vector3(roomMidPoint.x,roomsInLevel[roomToCheck].position.y,roomMidPoint.z);
-            agent.SetDestination(destination);
+            agent.SetDestination(new Vector3(roomMidPoint.x,(roomsInLevel[roomToCheck].position.y-ProcGenner.Center.y)*ProcGenner.GridScale,roomMidPoint.z));
             //Debug.Log("Patrolling to: (" + destination.x + "," + destination.y + "," + destination.z + ")");
         }
     }
@@ -186,7 +184,6 @@ public class MonsterAI : MonoBehaviour
     public void AlertSound(Vector3 origin, float maxDistancesqr) {
         if(monsterState == MonsterState.Patrolling) {
             if( (transform.position-origin).sqrMagnitude < (maxDistancesqr)) {
-                destination = origin;
                 agent.SetDestination(origin);
                 this.m_Audio.Stop("Hunter/Damage");
                 this.m_Audio.Stop("Hunter/SpotPlayer");
@@ -199,7 +196,7 @@ public class MonsterAI : MonoBehaviour
 
     public Vector3 GetDestination()
     {
-        return destination;
+        return agent.destination;
     }
 
     public void SetPlayerTarget(GameObject target) {

@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         ReloadEnd
     }
 
-    public Rigidbody  m_RigidBody;  
+    public Rigidbody  m_RigidBody;
     public GameObject m_FlashLight;
     public Light m_MuzzleLight;
     public PlayerAnimations m_PlyAnims;
@@ -326,7 +326,7 @@ public class PlayerController : MonoBehaviour
         if (hit.collider != null && hit.collider.tag == "Monster") {
             hit.collider.gameObject.GetComponent<MonsterAI>().TakeDamage();
         } else if (hit.collider != null && hit.collider.tag == "Converted") {
-            hit.collider.gameObject.GetComponent<ConvertedAI>().TakeDamage();
+            hit.collider.gameObject.GetComponent<ConvertedAI>().TakeDamage(hit.point);
         } else {
             Instantiate(impactBullet, hit.point, Quaternion.LookRotation(hit.normal));
         }
