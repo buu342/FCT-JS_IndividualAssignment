@@ -4,6 +4,8 @@ Being a full-time super hero can be really boring if you have nothing to do. I j
 
 Shell Time is a run and gun side scrolling platformer, made in 2 weeks for the Jogos e Simulação subject at FCT, in the year 2021/2022. A build of the game is available in the [releases](../../releases) page.
 
+[![Video](https://img.youtube.com/vi/VdKHm6tsQ9E/hqdefault.jpg)](https://youtu.be/VdKHm6tsQ9E)
+
 
 ## Controls
 
